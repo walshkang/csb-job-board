@@ -1,57 +1,27 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { URL } = require('url');
 const enricher = require('./enricher');
 const config = require('../config');
+const { callGeminiText } = require('../gemini-text');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
 const OUT_JOBS = path.join(REPO_ROOT, 'data', 'jobs.json');
 const ARTIFACTS_DIR = path.join(REPO_ROOT, 'artifacts', 'html');
-const API_URL = 'https://api.anthropic.com/v1/messages';
-
 function readFileSafe(p) { try { return fs.readFileSync(p, 'utf8'); } catch (e) { return null; } }
 function readJsonSafe(p) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return null; } }
 function ensureDir(p) { if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true }); }
 function writeJSONAtomic(p, obj) { const tmp = p + '.tmp'; ensureDir(path.dirname(p)); fs.writeFileSync(tmp, JSON.stringify(obj, null, 2), 'utf8'); fs.renameSync(tmp, p); }
 
-function callAnthropic(prompt) {
+async function callGeminiExtraction(prompt) {
   const apiKey = config.extraction.apiKey;
-  if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
-  const model = config.extraction.model;
-  const body = JSON.stringify({ model, max_tokens: 1200, temperature: 0.0, messages: [{ role: 'user', content: prompt }] });
-
-  return new Promise((resolve, reject) => {
-    const req = https.request(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    }, res => {
-      let data = '';
-      res.setEncoding('utf8');
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          let text = null;
-          if (json && Array.isArray(json.content) && json.content[0] && json.content[0].text) text = json.content[0].text;
-          else if (json.completion && typeof json.completion === 'string') text = json.completion;
-          else if (json.choices && json.choices[0] && json.choices[0].message && json.choices[0].message.content) text = json.choices[0].message.content;
-          else if (json.output_text) text = json.output_text;
-
-          if (!text) throw new Error('Unexpected response shape from LLM');
-          resolve(text);
-        } catch (err) { reject(err); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  return callGeminiText({
+    apiKey,
+    model: config.extraction.model,
+    prompt,
+    maxOutputTokens: 1200,
   });
 }
 
@@ -113,7 +83,7 @@ const BLOCKER_PATTERNS = [/captcha/i, /please enable cookies/i, /access denied/i
 // runExtraction: calls LLM (or callFn override) on raw HTML, returns array of raw items.
 // Items have: { job_title, url, location, employment_type, description }
 // On blocker detection returns [{ error: 'page_blocked', detail: '...' }]
-async function runExtraction({ html, company, baseUrl, callFn = callAnthropic, promptPath = PROMPT_PATH }) {
+async function runExtraction({ html, company, baseUrl, callFn = callGeminiExtraction, promptPath = PROMPT_PATH }) {
   for (const re of BLOCKER_PATTERNS) {
     if (re.test(html)) return [{ error: 'page_blocked', detail: `Matched blocker pattern: ${re}` }];
   }
@@ -266,7 +236,7 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
       try {
         const html = readFileSafe(htmlPath) || '';
         const baseUrl = company.careers_page_url || company.domain || '';
-        const items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn: callAnthropic, promptPath: PROMPT_PATH });
+        const items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn: callGeminiExtraction, promptPath: PROMPT_PATH });
         if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
           errors.push({ company: company.id, err: items[0] });
         } else {
@@ -299,7 +269,7 @@ async function main() {
     const html = readFileSafe(input);
     if (html == null) { console.error('Failed to read input file', input); process.exit(1); }
     try {
-      const items = await runExtraction({ html, company: companyArg || 'unknown', baseUrl, callFn: callAnthropic, promptPath: PROMPT_PATH });
+      const items = await runExtraction({ html, company: companyArg || 'unknown', baseUrl, callFn: callGeminiExtraction, promptPath: PROMPT_PATH });
       console.log('Extracted', Array.isArray(items) ? items.length : 1, 'items');
     } catch (err) { console.error('Extraction failed:', String(err)); process.exit(1); }
     return;

@@ -3,19 +3,19 @@
 // Override any value in .env.local — per-agent vars take precedence over globals.
 //
 // .env.local keys:
-//   ANTHROPIC_API_KEY        — shared Anthropic key (all Claude agents)
-//   GEMINI_API_KEY           — shared Gemini key (OCR agent)
+//   GEMINI_API_KEY           — shared Gemini key (all LLM agents)
 //   NOTION_API_KEY           — Notion integration
+//   NOTION_COMPANIES_DB_ID   — Notion database id (companies sync)
+//   NOTION_JOBS_DB_ID        — Notion database id (jobs sync)
 //
 //   Per-agent model overrides (uncomment in .env.local to switch):
 //   OCR_MODEL                — default: gemini-2.5-flash-lite
-//   DISCOVERY_MODEL          — default: claude-haiku-4-5-20251001
-//   EXTRACTION_MODEL         — default: claude-sonnet-4-6
-//   ENRICHMENT_MODEL         — default: claude-sonnet-4-6
+//   DISCOVERY_MODEL          — default: gemini-2.5-flash
+//   EXTRACTION_MODEL         — default: gemini-2.5-flash
+//   ENRICHMENT_MODEL         — default: gemini-2.5-flash
 //
-//   Global fallbacks (apply to all agents unless overridden above):
-//   ANTHROPIC_MODEL          — overrides all Claude agent defaults
-//   GEMINI_MODEL             — overrides OCR default
+//   Global fallback (all agents unless overridden above):
+//   GEMINI_MODEL             — overrides non-OCR defaults; OCR still prefers OCR_MODEL
 
 const fs = require('fs');
 const path = require('path');
@@ -23,10 +23,23 @@ const path = require('path');
 // Load .env.local once, here, so agents don't need to do it themselves.
 const envPath = path.join(__dirname, '../.env.local');
 try {
-  const lines = fs.readFileSync(envPath, 'utf8').split('\n');
-  for (const line of lines) {
-    const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/);
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
+  let text = fs.readFileSync(envPath, 'utf8');
+  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
+  for (let line of text.split(/\r?\n/)) {
+    line = line.trim();
+    if (!line || line.startsWith('#')) continue;
+    if (line.startsWith('export ')) line = line.slice(7).trim();
+    const eq = line.indexOf('=');
+    if (eq === -1) continue;
+    const key = line.slice(0, eq).trim();
+    let val = line.slice(eq + 1).trim();
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    if (key && process.env[key] === undefined) process.env[key] = val;
   }
 } catch { /* no .env.local, fine */ }
 
@@ -36,16 +49,16 @@ const cfg = {
     model: process.env.OCR_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
   },
   discovery: {
-    apiKey: process.env.ANTHROPIC_API_KEY || null,
-    model: process.env.DISCOVERY_MODEL || process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    apiKey: process.env.GEMINI_API_KEY || null,
+    model: process.env.DISCOVERY_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   },
   extraction: {
-    apiKey: process.env.ANTHROPIC_API_KEY || null,
-    model: process.env.EXTRACTION_MODEL || process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6',
+    apiKey: process.env.GEMINI_API_KEY || null,
+    model: process.env.EXTRACTION_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   },
   enrichment: {
-    apiKey: process.env.ANTHROPIC_API_KEY || null,
-    model: process.env.ENRICHMENT_MODEL || process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6',
+    apiKey: process.env.GEMINI_API_KEY || null,
+    model: process.env.ENRICHMENT_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   },
   notion: {
     apiKey: process.env.NOTION_API_KEY || null,

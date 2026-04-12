@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const crypto = require('crypto');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
@@ -10,7 +9,7 @@ const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
 const ENRICHMENT_PROMPT_VERSION = '1.1.0';
 
 const config = require('../config');
-const API_URL = 'https://api.anthropic.com/v1/messages';
+const { callGeminiText } = require('../gemini-text');
 
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
 const SENIORITY = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite']);
@@ -44,45 +43,14 @@ function renderPrompt(template, vars) {
   return out;
 }
 
-function callAnthropic(prompt) {
+async function callGeminiEnrichment(prompt) {
   const apiKey = config.enrichment.apiKey;
-  if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
-  const model = config.enrichment.model;
-  const body = JSON.stringify({
-    model,
-    max_tokens: 1200,
-    temperature: 0.0,
-    messages: [{ role: 'user', content: prompt }]
-  });
-
-  return new Promise((resolve, reject) => {
-    const req = https.request(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    }, res => {
-      let data = '';
-      res.setEncoding('utf8');
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          if (json.error) throw new Error(json.error.message || JSON.stringify(json.error));
-          const text = json.content?.[0]?.text;
-          if (!text) throw new Error('Unexpected response shape: ' + JSON.stringify(json).slice(0, 200));
-          resolve(text);
-        } catch (err) {
-          reject(err);
-        }
-      });
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  return callGeminiText({
+    apiKey,
+    model: config.enrichment.model,
+    prompt,
+    maxOutputTokens: 1200,
   });
 }
 
@@ -145,7 +113,7 @@ async function enrichJob(job, categories, promptTemplate) {
     category_names: categories.join(', ')
   });
 
-  const raw = await callAnthropic(prompt);
+  const raw = await callGeminiEnrichment(prompt);
   const parsed = extractJSON(raw);
   const sanitized = sanitize(parsed);
 

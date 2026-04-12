@@ -6,16 +6,15 @@
   Reads data/companies.json and discovers careers page URLs using:
     1) Standard URL patterns
     2) Sitemap
-    3) LLM fallback (Anthropic) if ANTHROPIC_API_KEY present
+    3) LLM fallback (Gemini) if GEMINI_API_KEY present
 
   Writes updates back to data/companies.json every 10 companies (atomic tmp-rename).
 */
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const config = require('../config');
-const API_URL = 'https://api.anthropic.com/v1/messages';
+const { callGeminiText } = require('../gemini-text');
 
 const CONCURRENCY = 5;
 const BATCH_SAVE_SIZE = 10;
@@ -36,7 +35,14 @@ const STANDARD_PATHS = [
 ];
 
 function usage() {
-  console.log('Usage: node src/agents/discovery.js [--force] [--verbose]');
+  console.log('Usage: node src/agents/discovery.js [--force] [--verbose] [--limit=N]');
+}
+
+function parseLimitArg(argv) {
+  const arg = argv.find(a => a.startsWith('--limit='));
+  if (!arg) return null;
+  const n = parseInt(String(arg.split('=')[1]).trim(), 10);
+  return Number.isFinite(n) && n > 0 ? n : null;
 }
 
 function log(...args) { console.log('[discovery]', ...args); }
@@ -159,46 +165,14 @@ async function findSitemapCandidates(domain) {
   return candidates;
 }
 
-// Minimal Anthropic call; if API not present or call fails, fallback to NOT_FOUND
-function callAnthropic(prompt) {
+async function callGeminiLLM(prompt) {
   const apiKey = config.discovery.apiKey;
-  if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
-  const model = config.discovery.model;
-  const body = JSON.stringify({
-    model,
-    max_tokens: 200,
-    temperature: 0.0,
-    messages: [{ role: 'user', content: prompt }]
-  });
-
-  return new Promise((resolve, reject) => {
-    const req = https.request(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    }, res => {
-      let data = '';
-      res.setEncoding('utf8');
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          if (json.error) throw new Error(json.error.message || JSON.stringify(json.error));
-          const text = json.content?.[0]?.text || json.message?.content || json.completion || json.output || (json.choices && (json.choices[0]?.text || json.choices[0]?.message?.content));
-          if (!text) throw new Error('Unexpected response shape: ' + JSON.stringify(json).slice(0, 200));
-          resolve(String(text).trim());
-        } catch (err) {
-          reject(err);
-        }
-      });
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  return callGeminiText({
+    apiKey,
+    model: config.discovery.model,
+    prompt,
+    maxOutputTokens: 256,
   });
 }
 
@@ -270,7 +244,7 @@ async function processCompany(company, opts) {
     }
 
     const prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
-    const completion = await callAnthropic(prompt);
+    const completion = await callGeminiLLM(prompt);
     if (!completion) throw new Error('empty-response');
     let answer = completion.trim().split('\n')[0].trim();
     // Some LLMs return quoted strings
@@ -308,6 +282,7 @@ async function main() {
   if (argv.includes('--help') || argv.includes('-h')) { usage(); process.exit(0); }
   const force = argv.includes('--force');
   const verbose = argv.includes('--verbose');
+  const limit = parseLimitArg(argv);
 
   const dataPath = path.join(process.cwd(), 'data', 'companies.json');
   if (!fs.existsSync(dataPath)) {
@@ -340,6 +315,11 @@ async function main() {
   if (indices.length === 0) {
     log('No companies need discovery (nothing to do).');
     process.exit(0);
+  }
+
+  if (limit != null && indices.length > limit) {
+    indices.splice(limit);
+    log(`--limit=${limit}: processing first ${indices.length} companies only`);
   }
 
   log(`Starting discovery: ${indices.length} companies to process (concurrency=${CONCURRENCY})`);
