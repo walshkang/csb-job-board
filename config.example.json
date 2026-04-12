@@ -1,0 +1,8 @@
+{
+  "airtable": {
+    "apiKeyEnv": "AIRTABLE_API_KEY",
+    "baseIdEnv": "AIRTABLE_BASE_ID",
+    "jobsTable": "Jobs",
+    "companiesTable": "Companies"
+  }
+}
