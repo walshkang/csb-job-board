@@ -13,8 +13,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { URL } = require('url');
 const config = require('../config');
-const { callGeminiText } = require('../gemini-text');
+const { callGeminiText, DailyQuotaError } = require('../gemini-text');
 
 const CONCURRENCY = 5;
 const BATCH_SAVE_SIZE = 10;
@@ -28,10 +29,18 @@ const STANDARD_PATHS = [
   '/jobs',
   '/careers/',
   '/jobs/',
+  '/career',
   '/about/careers',
+  '/about/jobs',
+  '/company/careers',
   '/join',
   '/join-us',
-  '/work-with-us'
+  '/join-the-team',
+  '/work-with-us',
+  '/work-here',
+  '/openings',
+  '/positions',
+  '/hiring',
 ];
 
 function usage() {
@@ -165,6 +174,92 @@ async function findSitemapCandidates(domain) {
   return candidates;
 }
 
+// Derive 2-3 slug candidates from domain and company name for ATS guessing.
+function deriveAtsSlugs(company) {
+  const slugs = new Set();
+  // From domain: www.acme-energy.com -> acme-energy
+  const domain = normalizeDomain(company.domain);
+  if (domain) {
+    const base = domain.replace(/^www\./, '').split('.')[0];
+    if (base) slugs.add(base);
+  }
+  // From company name: strip common suffixes, lowercase, hyphenate
+  const name = (company.name || '').trim();
+  if (name) {
+    const full = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    if (full) slugs.add(full);
+    const short = name.toLowerCase()
+      .replace(/\s+(inc\.?|corp\.?|llc\.?|ltd\.?|co\.?|company|technologies|tech|solutions|group|systems|energy|power|labs?|holdings?)$/i, '')
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    if (short && short !== full) slugs.add(short);
+  }
+  return [...slugs].slice(0, 3);
+}
+
+// Try Greenhouse and Lever ATS URLs using derived slugs.
+async function tryAtsSlugs(company, verbose) {
+  const slugs = deriveAtsSlugs(company);
+  for (const slug of slugs) {
+    const ghUrl = `https://boards.greenhouse.io/${slug}`;
+    try {
+      const res = await tryHeadThenGet(ghUrl, 'boards.greenhouse.io');
+      if (res && res.status === 200) {
+        verboseLog(verbose, `ATS slug hit (greenhouse): ${ghUrl}`);
+        return { found: true, url: res.url || ghUrl, method: 'ats_slug' };
+      }
+    } catch (_) { /* try next */ }
+
+    const leverUrl = `https://jobs.lever.co/${slug}`;
+    try {
+      const res = await tryHeadThenGet(leverUrl, 'jobs.lever.co');
+      if (res && res.status === 200) {
+        verboseLog(verbose, `ATS slug hit (lever): ${leverUrl}`);
+        return { found: true, url: res.url || leverUrl, method: 'ats_slug' };
+      }
+    } catch (_) { /* try next */ }
+  }
+  return null;
+}
+
+// Fetch homepage once and scan <a href> tags for career-related links.
+// Returns the homepage HTML as a side-effect in homepageCache so the LLM
+// fallback doesn't have to fetch it again.
+const CAREER_LINK_RE = /(career|careers|job|jobs|join|openings|positions|hiring|work-with-us|work_with_us)/i;
+
+async function scanHomepageLinks(domain, homepageCache, verbose) {
+  let html = homepageCache.html;
+  if (html === undefined) {
+    try {
+      const res = await domainFetch(domain, `https://${domain}/`, { method: 'GET' });
+      html = (res && res.status === 200) ? await res.text() : null;
+    } catch (_) { html = null; }
+    homepageCache.html = html;
+  }
+  if (!html) return null;
+
+  const hrefs = [];
+  const re = /<a\s[^>]*\bhref=["']([^"'#][^"']*)["']/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) hrefs.push(m[1]);
+
+  const candidates = hrefs.filter(h => CAREER_LINK_RE.test(h));
+  for (const href of candidates) {
+    let url;
+    try { url = new URL(href, `https://${domain}`).toString(); } catch (_) { continue; }
+    if (!/^https?:\/\//i.test(url)) continue;
+    try {
+      const res = await tryHeadThenGet(url, new URL(url).hostname);
+      if (res && res.status === 200) {
+        verboseLog(verbose, `Homepage link scan hit: ${url}`);
+        return { found: true, url: res.url || url, method: 'homepage_link_scan' };
+      }
+    } catch (_) { /* try next candidate */ }
+  }
+  return null;
+}
+
 async function callGeminiLLM(prompt) {
   const apiKey = config.discovery.apiKey;
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
@@ -192,33 +287,38 @@ async function processCompany(company, opts) {
   const domain = normalizeDomain(company.domain);
   if (!domain) return { skipped: true, reason: 'no-domain' };
 
-  // 1) Standard patterns
+  // Shared cache so homepage is only fetched once across steps 3 and 4.
+  const homepageCache = {};
+
+  // 1) Standard paths
   for (const p of STANDARD_PATHS) {
     const candidate = `https://${domain}${p}`;
     try {
       const res = await tryHeadThenGet(candidate, domain);
       if (res && res.status === 200) {
-        const finalUrl = res.url || candidate;
-        return {
-          found: true,
-          url: finalUrl,
-          method: 'standard_pattern'
-        };
+        return { found: true, url: res.url || candidate, method: 'standard_pattern' };
       }
     } catch (err) {
       verboseLog(verbose, `standard check failed for ${candidate}:`, err.message);
     }
   }
 
-  // 2) Sitemap
+  // 2) ATS slug guessing (Greenhouse + Lever)
+  const atsResult = await tryAtsSlugs(company, verbose);
+  if (atsResult) return atsResult;
+
+  // 3) Homepage link scan — one fetch, regex over <a href> tags
+  const linkResult = await scanHomepageLinks(domain, homepageCache, verbose);
+  if (linkResult) return linkResult;
+
+  // 4) Sitemap
   try {
     const candidates = await findSitemapCandidates(domain);
     for (const cand of candidates) {
       try {
         const res = await tryHeadThenGet(cand, domain);
         if (res && res.status === 200) {
-          const finalUrl = res.url || cand;
-          return { found: true, url: finalUrl, method: 'sitemap' };
+          return { found: true, url: res.url || cand, method: 'sitemap' };
         }
       } catch (err) {
         verboseLog(verbose, 'sitemap candidate failed:', cand, err.message);
@@ -228,42 +328,26 @@ async function processCompany(company, opts) {
     verboseLog(verbose, 'sitemap fetch failed for', domain, err.message);
   }
 
-  // 3) LLM fallback
+  // 5) LLM fallback — uses cached homepage HTML if available
+  if (!config.discovery.apiKey) return { found: false, method: 'not_found' };
   try {
-    if (!config.discovery.apiKey) throw new Error('no-key');
-
-    let homepageHtml = '';
-    try {
-      const homeRes = await domainFetch(domain, `https://${domain}/`, { method: 'GET' });
-      if (homeRes && homeRes.status === 200) {
-        let txt = await homeRes.text();
-        homepageHtml = txt.slice(0, 10000);
-      }
-    } catch (err) {
-      verboseLog(verbose, 'homepage fetch failed for LLM fallback:', err.message);
-    }
-
+    const homepageHtml = (homepageCache.html || '').slice(0, 10000);
     const prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
-    const completion = await callGeminiLLM(prompt);
-    if (!completion) throw new Error('empty-response');
-    let answer = completion.trim().split('\n')[0].trim();
-    // Some LLMs return quoted strings
-    answer = answer.replace(/^['"]?(.*?)['"]?$/, '$1');
+    const completion = await callGeminiLLM(prompt); // DailyQuotaError bubbles up
+    if (!completion) return { found: false, method: 'not_found' };
+    let answer = completion.trim().split('\n')[0].trim().replace(/^['"]?(.*?)['"]?$/, '$1');
 
     if (!answer || /^NOT[_ -]?FOUND$/i.test(answer)) {
       return { found: false, method: 'not_found' };
     }
 
-    // Normalize relative paths
     if (answer.startsWith('/')) answer = `https://${domain}${answer}`;
     if (!/^https?:\/\//i.test(answer)) answer = `https://${answer}`;
 
-    // Validate
     try {
       const res = await tryHeadThenGet(answer, domain);
       if (res && res.status === 200) {
-        const finalUrl = res.url || answer;
-        return { found: true, url: finalUrl, method: 'llm_fallback' };
+        return { found: true, url: res.url || answer, method: 'llm_fallback' };
       }
     } catch (err) {
       verboseLog(verbose, 'llm-proposed-url validation failed:', err.message);
@@ -271,8 +355,8 @@ async function processCompany(company, opts) {
 
     return { found: false, method: 'not_found' };
   } catch (err) {
-    // LLM not available or failed -> not_found (don't crash)
-    verboseLog(verbose, 'LLM fallback skipped/failed:', err.message);
+    if (err.name === 'DailyQuotaError') throw err; // let it abort the run
+    verboseLog(verbose, 'LLM fallback failed:', err.message);
     return { found: false, method: 'not_found' };
   }
 }
@@ -328,8 +412,9 @@ async function main() {
   let totalProcessed = 0;
   let foundCount = 0;
   let notFoundCount = 0;
-  const methodCounts = { standard_pattern: 0, sitemap: 0, llm_fallback: 0, not_found: 0 };
+  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, llm_fallback: 0, not_found: 0 };
   const errorDomains = new Set();
+  let dailyQuotaHit = false;
 
   let writeQueue = Promise.resolve();
   function scheduleSave() {
@@ -365,6 +450,13 @@ async function main() {
           methodCounts[company.careers_page_discovery_method] = (methodCounts[company.careers_page_discovery_method] || 0) + 1;
         }
       } catch (err) {
+        if (err.name === 'DailyQuotaError') {
+          warn('Daily quota exhausted — saving progress and stopping.');
+          warn(err.message);
+          dailyQuotaHit = true;
+          indices.length = 0; // drain queue so all workers exit
+          break;
+        }
         warn('Error processing company', company.domain || company.name, err.message);
         errorDomains.add(company.domain || company.name || 'unknown');
       }
@@ -393,6 +485,10 @@ async function main() {
   log('  not_found:', notFoundCount);
   log('  method distribution:', methodCounts);
   if (errorDomains.size) log('  domains with errors:', Array.from(errorDomains).slice(0, 50));
+  if (dailyQuotaHit) {
+    log('  Stopped early: Gemini daily quota exhausted. Re-run tomorrow or enable billing.');
+    process.exit(1);
+  }
 }
 
 main().catch(err => {
