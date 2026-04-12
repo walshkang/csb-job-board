@@ -80,7 +80,7 @@ async function callGeminiOCR(imagePath) {
   if (process.env.GEMINI_API_KEY) {
     const { GoogleGenerativeAI } = require('@google/generative-ai');
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite-preview-06-17' });
+    const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite' });
     const imageData = fs.readFileSync(imagePath).toString('base64');
     const mimeType = imagePath.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
     const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr.txt'), 'utf8');

@@ -59,17 +59,24 @@ function extractJSONFromText(text) {
   if (!text) throw new Error('Empty LLM response');
   let s = text.replace(/```(?:json)?/g, '\n').trim();
   // try array
-  let firstArr = s.indexOf('[');
-  let lastArr = s.lastIndexOf(']');
+  const firstArr = s.indexOf('[');
+  const lastArr = s.lastIndexOf(']');
   if (firstArr !== -1 && lastArr !== -1 && lastArr > firstArr) {
-    let candidate = s.slice(firstArr, lastArr + 1);
-    try { return JSON.parse(candidate); } catch (e) { const fixed = candidate.replace(/,\s*]/g, ']').replace(/,\s*}/g, '}'); try { return JSON.parse(fixed); } catch (e2) { /* */ } }
-  // fallback object
-  let firstObj = s.indexOf('{');
-  let lastObj = s.lastIndexOf('}');
+    const candidate = s.slice(firstArr, lastArr + 1);
+    try { return JSON.parse(candidate); } catch (e) {
+      const fixed = candidate.replace(/,\s*]/g, ']').replace(/,\s*}/g, '}');
+      try { return JSON.parse(fixed); } catch (e2) { /* fall through to object */ }
+    }
+  }
+  // fallback: try object
+  const firstObj = s.indexOf('{');
+  const lastObj = s.lastIndexOf('}');
   if (firstObj !== -1 && lastObj !== -1 && lastObj > firstObj) {
-    let candidate = s.slice(firstObj, lastObj + 1);
-    try { return JSON.parse(candidate); } catch (e) { const fixed = candidate.replace(/,\s*}/g, '}'); try { return JSON.parse(fixed); } catch (e2) { /* */ } }
+    const candidate = s.slice(firstObj, lastObj + 1);
+    try { return JSON.parse(candidate); } catch (e) {
+      const fixed = candidate.replace(/,\s*}/g, '}');
+      try { return JSON.parse(fixed); } catch (e2) { /* fall through */ }
+    }
   }
   throw new Error('No JSON array or object found in LLM response');
 }
@@ -98,6 +105,30 @@ function mapLever(json, company) {
     location: j.categories && (j.categories.location || j.categories.locations) ? (Array.isArray(j.categories.location) ? j.categories.location.join(' | ') : j.categories.location) : null,
     employment_type: null,
     description: j.descriptionPlain || j.description || null
+  }));
+}
+
+const BLOCKER_PATTERNS = [/captcha/i, /please enable cookies/i, /access denied/i, /cookie consent/i, /set your browser to accept cookies/i, /you are being redirected/i];
+
+// runExtraction: calls LLM (or callFn override) on raw HTML, returns array of raw items.
+// Items have: { job_title, url, location, employment_type, description }
+// On blocker detection returns [{ error: 'page_blocked', detail: '...' }]
+async function runExtraction({ html, company, baseUrl, callFn = callAnthropic, promptPath = PROMPT_PATH }) {
+  for (const re of BLOCKER_PATTERNS) {
+    if (re.test(html)) return [{ error: 'page_blocked', detail: `Matched blocker pattern: ${re}` }];
+  }
+  const MAX_HTML_CHARS = 12000;
+  const htmlForPrompt = html.length > MAX_HTML_CHARS ? html.slice(0, MAX_HTML_CHARS) : html;
+  const promptTemplate = readFileSafe(promptPath) || 'Extract all job listings from this careers page HTML. Return a JSON array. {html}';
+  const prompt = enricher.renderPrompt(promptTemplate, { company_name: company, base_url: baseUrl, html: htmlForPrompt });
+  const rawResponse = await callFn(prompt);
+  const parsed = extractJSONFromText(rawResponse);
+  const items = Array.isArray(parsed) ? parsed : [parsed];
+  // Normalize location arrays and resolve relative URLs at the raw level
+  return items.map(it => ({
+    ...it,
+    url: it.url ? resolveUrl(String(it.url), baseUrl) : null,
+    location: Array.isArray(it.location) ? it.location.map(String).join(' | ') : (it.location || null)
   }));
 }
 

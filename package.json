@@ -7,13 +7,16 @@
     "ocr": "node src/agents/ocr.js",
     "test": "jest --runInBand",
     "discovery": "node src/agents/discovery.js",
-    "scrape": "node src/agents/scraper.js"
+    "scrape": "node src/agents/scraper.js",
+    "extract": "node src/agents/extraction.js",
+    "enrich": "node src/agents/enricher.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "@notionhq/client": "^3.4.0"
   }
 }
