@@ -1,0 +1,602 @@
+[
+  {
+    "Tech Category Name": "Wind",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Waste-Based Production",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Waste Heat Recovery",
+    "Related Opportunity Area": "Industrial Heat",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Waste & Recycling",
+    "Related Opportunity Area": "Cross-Cutting Solutions",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Thermal",
+    "Related Opportunity Area": "Energy Storage & Demand Flexibility",
+    "Primary Sector": "Electricity",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Textile Circularity",
+    "Related Opportunity Area": "Fashion & Textiles",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Teleworking & Digital Solutions",
+    "Related Opportunity Area": "Efficiency & Reduced Demand",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "System Monitoring & Optimization",
+    "Related Opportunity Area": "Enhanced Transmission & Distribution",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Synthetic E-fuels",
+    "Related Opportunity Area": "Sustainable Fuels",
+    "Primary Sector": "Transportation",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Supply Chain",
+    "Related Opportunity Area": "Reduced Food Waste",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Solar",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Smart Buildings",
+    "Related Opportunity Area": "Operational Efficiency",
+    "Primary Sector": "Buildings",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Seed Editing & Breeding",
+    "Related Opportunity Area": "Sustainable Crops",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Scrap-Based EAF",
+    "Related Opportunity Area": "Clean Steel",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Route & Logistics Optimization",
+    "Related Opportunity Area": "Efficiency & Reduced Demand",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Restoration & Conservation",
+    "Related Opportunity Area": "Protecting Nature",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Response",
+    "Related Opportunity Area": "Fire Mitigation",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Regenerative Agriculture",
+    "Related Opportunity Area": "Sustainable Crops",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Reforestation & Afforestation",
+    "Related Opportunity Area": "Biological Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Reducing Contrail Formation",
+    "Related Opportunity Area": "Efficiency & Reduced Demand",
+    "Primary Sector": "Transportation",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Recycled Concrete",
+    "Related Opportunity Area": "Clean Cement & Concrete",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Public & Shared Transit Systems",
+    "Related Opportunity Area": "Efficiency & Reduced Demand",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Production & Process Efficiency",
+    "Related Opportunity Area": "Fashion & Textiles",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Prevention",
+    "Related Opportunity Area": "Fire Mitigation",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Precision Agriculture",
+    "Related Opportunity Area": "Sustainable Crops",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Plant-Based",
+    "Related Opportunity Area": "Alternative Proteins & Fats",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Plant MRV",
+    "Related Opportunity Area": "Biological Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Ocean Capture",
+    "Related Opportunity Area": "Engineered Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Novel Production Processes",
+    "Related Opportunity Area": "Clean Cement & Concrete",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Nitrous Oxide (N₂O) Removal",
+    "Related Opportunity Area": "Methane & Nitrous Oxide Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Monitoring",
+    "Related Opportunity Area": "Fire Mitigation",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Mineral Recovery & Circular Mining",
+    "Related Opportunity Area": "Mining",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Mineral MRV",
+    "Related Opportunity Area": "Mineral Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Mineral Discovery",
+    "Related Opportunity Area": "Mining",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Methane (CH₄) Removal",
+    "Related Opportunity Area": "Methane & Nitrous Oxide Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Methane & Fugitive Emissions Mitigation",
+    "Related Opportunity Area": "Mining",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Mechanical",
+    "Related Opportunity Area": "Energy Storage & Demand Flexibility",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Marine",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Manure Management",
+    "Related Opportunity Area": "Sustainable Animal & Fish Production",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Magnetic",
+    "Related Opportunity Area": "Energy Storage & Demand Flexibility",
+    "Primary Sector": "Electricity",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Low-Emission Powertrain Vehicles",
+    "Related Opportunity Area": "Vehicle Electrification",
+    "Primary Sector": "Transportation",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Lightweight Materials, Engines & Aerodynamic Designs",
+    "Related Opportunity Area": "Efficiency & Reduced Demand",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Lifespan",
+    "Related Opportunity Area": "Reduced Food Waste",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Insect-Based",
+    "Related Opportunity Area": "Alternative Proteins & Fats",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Industrial Thermal Energy Storage",
+    "Related Opportunity Area": "Industrial Heat",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Industrial Nuclear",
+    "Related Opportunity Area": "Industrial Heat",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Industrial Heat Pumps",
+    "Related Opportunity Area": "Industrial Heat",
+    "Primary Sector": "-",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Hydrogen-Based Production",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Hydrogen & Derivatives",
+    "Related Opportunity Area": "Sustainable Fuels",
+    "Primary Sector": "Transportation",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Hydro",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Hybrids",
+    "Related Opportunity Area": "Vehicle Electrification",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Heating & Cooling",
+    "Related Opportunity Area": "Operational Efficiency",
+    "Primary Sector": "Buildings",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Harvest",
+    "Related Opportunity Area": "Reduced Food Waste",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "H2-Based Iron Reduction",
+    "Related Opportunity Area": "Clean Steel",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Green Materials",
+    "Related Opportunity Area": "Sustainable Construction & Design",
+    "Primary Sector": "Buildings",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Geothermal",
+    "Related Opportunity Area": "Low-Emissions Generation, Industrial Heat",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Geothermal",
+    "Related Opportunity Area": "Low-Emissions Generation, Industrial Heat",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Fusion",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Fossil Fuels with CCUS",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Fission",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Fertilizers & Nutrients",
+    "Related Opportunity Area": "Sustainable Crops",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Fermented",
+    "Related Opportunity Area": "Alternative Proteins & Fats",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Extraction",
+    "Related Opportunity Area": "Mining",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Energy Efficiency & Process Optimization",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Electrochemical",
+    "Related Opportunity Area": "Energy Storage & Demand Flexibility",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Electrification and alternative fuels for mining equipment",
+    "Related Opportunity Area": "Mining",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Electrification",
+    "Related Opportunity Area": "Clean Cement & Concrete",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Ecosystem Monitoring",
+    "Related Opportunity Area": "Protecting Nature",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Disposal & Reuse",
+    "Related Opportunity Area": "Sustainable Construction & Design",
+    "Primary Sector": "Buildings",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Direct Electrification",
+    "Related Opportunity Area": "Industrial Heat",
+    "Primary Sector": "-",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Direct Air Capture (DAC)",
+    "Related Opportunity Area": "Engineered Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Deconstruction",
+    "Related Opportunity Area": "Sustainable Construction & Design",
+    "Primary Sector": "Buildings",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Cultivated",
+    "Related Opportunity Area": "Alternative Proteins & Fats",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Construction",
+    "Related Opportunity Area": "Sustainable Construction & Design",
+    "Primary Sector": "Buildings",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Clean Mineral Processing",
+    "Related Opportunity Area": "Mining",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Circularity",
+    "Related Opportunity Area": "Reduced Food Waste",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Chemical",
+    "Related Opportunity Area": "Energy Storage & Demand Flexibility",
+    "Primary Sector": "Electricity",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Charging Infrastructure",
+    "Related Opportunity Area": "Vehicle Electrification",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Carbon Storage",
+    "Related Opportunity Area": "Engineered Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Carbon Mineralization",
+    "Related Opportunity Area": "Mineral Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Carbon Capture, Utilization, & Storage",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics, Cross-Cutting Solutions",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Burp Mitigation",
+    "Related Opportunity Area": "Sustainable Animal & Fish Production",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Biomass-Based Production",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Biomass Utilization and Storage",
+    "Related Opportunity Area": "Biological Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Biofuels",
+    "Related Opportunity Area": "Sustainable Fuels",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Bio Energy- BECCS",
+    "Related Opportunity Area": "Biological Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Battery Electric Vehicles",
+    "Related Opportunity Area": "Vehicle Electrification",
+    "Primary Sector": "Transportation",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Atmospheric Oxidation Enhancement",
+    "Related Opportunity Area": "Methane & Nitrous Oxide Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Aquaculture & Fishing",
+    "Related Opportunity Area": "Sustainable Animal & Fish Production",
+    "Primary Sector": "Food, Ag & Nature",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Appliances",
+    "Related Opportunity Area": "Operational Efficiency",
+    "Primary Sector": "Buildings",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Alternative Refrigerants",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Alternative Iron Reduction",
+    "Related Opportunity Area": "Clean Steel",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Alternative Fuels",
+    "Related Opportunity Area": "Low-Emissions Generation",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Alternative Fuel Infrastructure",
+    "Related Opportunity Area": "Sustainable Fuels",
+    "Primary Sector": "Transportation",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Alternative Flexibility Solutions",
+    "Related Opportunity Area": "Energy Storage & Demand Flexibility",
+    "Primary Sector": "Electricity",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Alternative Fibers",
+    "Related Opportunity Area": "Fashion & Textiles",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "-"
+  },
+  {
+    "Tech Category Name": "Alternative Feedstocks & Binders",
+    "Related Opportunity Area": "Clean Cement & Concrete",
+    "Primary Sector": "Manufacturing",
+    "Readiness": "Commercial"
+  },
+  {
+    "Tech Category Name": "Alkalinity Enhancement",
+    "Related Opportunity Area": "Mineral Carbon Removal",
+    "Primary Sector": "GHG Removal",
+    "Readiness": "Lab"
+  },
+  {
+    "Tech Category Name": "Advanced Components",
+    "Related Opportunity Area": "Enhanced Transmission & Distribution",
+    "Primary Sector": "Electricity",
+    "Readiness": "Pilot"
+  },
+  {
+    "Tech Category Name": "Advanced Battery Technologies",
+    "Related Opportunity Area": "Vehicle Electrification",
+    "Primary Sector": "Transportation",
+    "Readiness": "Pilot"
+  }
+]
