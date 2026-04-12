@@ -4,6 +4,7 @@
   "private": false,
   "scripts": {
     "start": "node src/index.js",
-    "ocr": "node src/agents/ocr.js"
+    "ocr": "node src/agents/ocr.js",
+    "test": "node test/run-tests.js"
   }
 }

@@ -240,6 +240,15 @@ async function main() {
   console.log('Climate relevance true/false:', climateTrue, '/', climateFalse, `( ${Math.round((climateTrue/totalClimate)*100)}% true )`);
 }
 
+module.exports = {
+  sha256,
+  extractJSON,
+  sanitize,
+  renderPrompt,
+  chunkArray,
+  ENRICHMENT_PROMPT_VERSION
+};
+
 if (require.main === module) {
   main().catch(err => {
     console.error(err);
