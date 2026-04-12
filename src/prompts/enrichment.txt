@@ -1,0 +1,31 @@
+You are classifying jobs for a climate-tech job board aimed at MBA candidates. Given this job:
+
+Title: {job_title_raw}
+Company: {company_name}
+Location: {location_raw}
+Description: {description_raw}
+
+And this list of climate-tech categories: {category_names}
+
+Return ONLY a single JSON object (no surrounding text) with the following keys exactly:
+{
+  "job_title_normalized": "...",
+  "job_function": "...",
+  "seniority_level": "...",
+  "location_type": "...",
+  "mba_relevance_score": 0,
+  "description_summary": "2-3 sentences",
+  "climate_relevance_confirmed": true,
+  "climate_relevance_reason": "one sentence why"
+}
+
+Notes and rules:
+- Truncate the description to 8000 characters when placing into the prompt.
+- Be precise with seniority: 'Manager' alone is mid-to-senior, not director.
+- job_function must be one of: engineering, product, design, operations, sales, marketing, finance, legal, hr, data_science, strategy, policy, supply_chain, other.
+- seniority_level must be one of: intern, entry, mid, senior, staff, director, vp, c_suite.
+- location_type must be one of: remote, hybrid, on_site, unknown. Infer from location and description.
+- mba_relevance_score: integer 0-100. Weight strategic/leadership roles higher.
+- climate_relevance_confirmed: boolean indicating whether the role/company is genuinely in climate tech. Use the provided category list to decide. Provide a one-sentence reason in climate_relevance_reason.
+
+Be concise and return valid JSON only.
