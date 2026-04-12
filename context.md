@@ -53,3 +53,36 @@ Notion integration
 Validation and QA
 - Each slice must include spot-check steps and sample-size validation criteria (e.g., spot-check 10–20 records)
 
+Next steps (as of 2026-04-12)
+
+Pipeline status
+- Slices 1–6 and Notion sync are all implemented and committed
+- OCR has been run: data/companies.json populated (~37 companies from test image)
+- Discovery has been partially run; hit Gemini free-tier daily quota (20 req/day) on first full run
+
+Immediate actions
+1. Run discovery to completion
+   - Free tier: run in batches with --limit=N across days, or enable billing in Google AI Studio
+   - New step order: standard paths → ATS slug guesses → homepage link scan → sitemap → LLM fallback
+   - LLM is now last resort; most companies should resolve without it
+   - Daily quota now exits cleanly with progress saved
+
+2. Run the full pipeline end-to-end for the first time
+   npm run discovery
+   npm run scrape
+   npm run extract
+   npm run enrich
+
+3. Set up Notion databases
+   - Create Companies and Jobs databases in Notion
+   - Add all expected properties (see agents.md for field list)
+   - Add NOTION_API_KEY, NOTION_COMPANIES_DB_ID, NOTION_JOBS_DB_ID to .env.local
+   - Run: node src/agents/notion-sync.js --dry-run --verbose, then without --dry-run
+
+4. Add more Pitchbook screenshots and re-run OCR to grow companies.json
+
+Open questions
+- Discovery yield: what % of companies are found via each method? Review methodCounts in summary log
+- Enrichment quality: spot-check mba_relevance_score and climate_relevance_confirmed on 10-20 jobs
+- Notion schema: confirm property names match what notion-sync.js expects before first live sync
+
