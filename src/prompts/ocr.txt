@@ -1,0 +1,13 @@
+Extract all tabular data from this Pitchbook screenshot.
+
+Return a JSON array where each element represents one company row. Use the column headers visible in the image as JSON keys — reproduce them exactly as shown (e.g., "Companies (1,480)", "Last Financing Deal Type").
+
+Rules:
+- One JSON object per row. Do not merge or skip rows.
+- Use null for any cell that is empty, blank, or unreadable.
+- Preserve original formatting for numbers (e.g., "174.35" not 174.35) and dates (e.g., "10-Apr-2026").
+- If a company name spans multiple lines or has a parenthetical (e.g., "Kira (Alternative Energy Equipment)"), include the full text as a single string.
+- Website URLs: include exactly as shown, without adding "https://" if not displayed.
+- If the image contains multiple pages or partial rows at the top/bottom, include them — mark uncertain values with a trailing "?" in the string (e.g., "Magnif?").
+
+Return ONLY the JSON array. No markdown fences, no explanation.

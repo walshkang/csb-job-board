@@ -5,9 +5,15 @@
   "scripts": {
     "start": "node src/index.js",
     "ocr": "node src/agents/ocr.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "discovery": "node src/agents/discovery.js",
+    "scrape": "node src/agents/scraper.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "node-fetch": "^2.6.7"
   }
 }

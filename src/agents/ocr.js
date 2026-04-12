@@ -78,21 +78,19 @@ async function listImages(dir) {
 //   mapRowToCompanySchema handles this with a regex match.
 async function callGeminiOCR(imagePath) {
   if (process.env.GEMINI_API_KEY) {
-    // Real implementation: base64-encode the image and call Gemini vision API.
-    // const { GoogleGenerativeAI } = require('@google/generative-ai');
-    // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    // const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
-    // const imageData = fs.readFileSync(imagePath).toString('base64');
-    // const mimeType = imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
-    // const result = await model.generateContent([
-    //   { inlineData: { data: imageData, mimeType } },
-    //   'Extract all tabular data from this Pitchbook screenshot. ' +
-    //   'Return a JSON array where each element is one company row, ' +
-    //   'with keys exactly matching the column headers as shown in the image. ' +
-    //   'Use null for empty cells. Return only the JSON array, no markdown.'
-    // ]);
-    // return JSON.parse(result.response.text());
-    throw new Error('Gemini API integration not yet implemented — uncomment the code above and install @google/generative-ai');
+    const { GoogleGenerativeAI } = require('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite-preview-06-17' });
+    const imageData = fs.readFileSync(imagePath).toString('base64');
+    const mimeType = imagePath.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
+    const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr.txt'), 'utf8');
+    const result = await model.generateContent([
+      { inlineData: { data: imageData, mimeType } },
+      promptText
+    ]);
+    const raw = result.response.text().trim();
+    const clean = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+    return JSON.parse(clean);
   }
 
   // Fallback placeholder: derive a fake row from filename so the pipeline runs.

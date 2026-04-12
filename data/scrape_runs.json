@@ -1,0 +1,22 @@
+[
+  {
+    "company_id": "example",
+    "scraped_at": "2026-04-12T18:01:14.172Z",
+    "status_code": 404,
+    "content_type": "application/json; charset=utf-8",
+    "byte_length": 41,
+    "method": "lever_api",
+    "success": false,
+    "error": null
+  },
+  {
+    "company_id": "example",
+    "scraped_at": "2026-04-12T18:01:59.326Z",
+    "status_code": null,
+    "content_type": null,
+    "byte_length": 0,
+    "method": "direct_html",
+    "success": false,
+    "error": "fetch failed"
+  }
+]

@@ -1,0 +1,29 @@
+Extract all job listings from this careers page HTML. Return a JSON array of job objects.
+
+For each job found, return:
+{
+  "job_title": "exact title as displayed",
+  "url": "absolute URL to the individual job posting",
+  "location": "location text if shown, or null",
+  "employment_type": "full_time | part_time | contract | intern | null",
+  "description": "full job description text if available on this page, or null"
+}
+
+Company: {company_name}
+Base URL (for resolving relative links): {base_url}
+
+Rules:
+- Return every distinct job listing. Do not summarize or deduplicate.
+- For url: resolve relative paths against the base URL. If only a fragment or anchor exists, combine with base URL. If no link exists for a job, use null.
+- For employment_type: only set if explicitly stated on the page. Do not guess from the title.
+- For description: extract the full text, stripped of HTML tags. If the page only shows titles (no inline descriptions), set to null — the description lives on the individual job page.
+- For location: extract exactly as shown. Include parentheticals like "(Remote)" or "(Hybrid - NYC)". If multiple locations, join with " | ".
+- If the page contains department/team groupings, do NOT create a job for the department header — only for individual roles.
+- If the page is empty, shows "no open positions", or contains no job listings, return an empty array: []
+- If the page appears to be a redirect notice, cookie wall, or CAPTCHA, return: [{"error": "page_blocked", "detail": "brief description of what you see"}]
+
+Return ONLY the JSON array. No markdown fences, no explanation.
+
+---
+HTML (may be truncated):
+{html}

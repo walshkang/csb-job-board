@@ -1,31 +1,79 @@
-You are classifying jobs for a climate-tech job board aimed at MBA candidates. Given this job:
+Classify this job listing for a climate-tech job board aimed at MBA candidates.
 
 Title: {job_title_raw}
 Company: {company_name}
 Location: {location_raw}
-Description: {description_raw}
+Description (truncated): {description_raw}
 
-And this list of climate-tech categories: {category_names}
+Climate-tech categories for reference: {category_names}
 
-Return ONLY a single JSON object (no surrounding text) with the following keys exactly:
+Return ONLY a single JSON object with these keys:
+
 {
-  "job_title_normalized": "...",
-  "job_function": "...",
-  "seniority_level": "...",
-  "location_type": "...",
-  "mba_relevance_score": 0,
-  "description_summary": "2-3 sentences",
-  "climate_relevance_confirmed": true,
-  "climate_relevance_reason": "one sentence why"
+  "job_title_normalized": "standardized title",
+  "job_function": "one of the allowed values",
+  "seniority_level": "one of the allowed values",
+  "location_type": "one of the allowed values",
+  "mba_relevance_score": 0-100,
+  "description_summary": "2-3 sentence summary",
+  "climate_relevance_confirmed": true/false,
+  "climate_relevance_reason": "one sentence"
 }
 
-Notes and rules:
-- Truncate the description to 8000 characters when placing into the prompt.
-- Be precise with seniority: 'Manager' alone is mid-to-senior, not director.
-- job_function must be one of: engineering, product, design, operations, sales, marketing, finance, legal, hr, data_science, strategy, policy, supply_chain, other.
-- seniority_level must be one of: intern, entry, mid, senior, staff, director, vp, c_suite.
-- location_type must be one of: remote, hybrid, on_site, unknown. Infer from location and description.
-- mba_relevance_score: integer 0-100. Weight strategic/leadership roles higher.
-- climate_relevance_confirmed: boolean indicating whether the role/company is genuinely in climate tech. Use the provided category list to decide. Provide a one-sentence reason in climate_relevance_reason.
+## Field rules
 
-Be concise and return valid JSON only.
+job_title_normalized:
+- Expand abbreviations: "Sr." -> "Senior", "Eng." -> "Engineer", "Mgr" -> "Manager"
+- Standardize level prefixes: "Senior Software Engineer", not "Sr. SWE III"
+- Keep the functional title intact — don't invent one
+
+job_function — exactly one of:
+  engineering, product, design, operations, sales, marketing, finance,
+  legal, hr, data_science, strategy, policy, supply_chain, other
+- "Business Development" -> sales
+- "Chief of Staff" / "Strategy & Ops" -> strategy
+- "Program Manager" -> operations (unless explicitly product-focused)
+- If genuinely ambiguous, use the primary responsibility from the description
+
+seniority_level — exactly one of:
+  intern, entry, mid, senior, staff, director, vp, c_suite
+- "Manager" with direct reports -> senior
+- "Manager" as IC title (e.g., "Account Manager") -> mid
+- "Head of" with < 50 employees company -> senior; otherwise director
+- "Principal" / "Staff" -> staff
+- "Associate" -> entry (unless "Associate Director" -> director)
+- No title clues + 3-5 years experience -> mid
+- No title clues + 7+ years experience -> senior
+
+location_type — exactly one of:
+  remote, hybrid, on_site, unknown
+- Infer from BOTH location_raw and description text
+- "Remote" or "Anywhere" -> remote
+- "Hybrid" or city + "flexible" -> hybrid
+- City with no remote mention -> on_site
+- No signal at all -> unknown
+
+mba_relevance_score (integer 0-100):
+- 80-100: strategy, biz dev, product leadership, GM, ops leadership, venture/finance roles
+- 60-79: product management, marketing leadership, partnerships, supply chain leadership
+- 40-59: senior IC engineering, senior data science, policy, mid-level ops
+- 20-39: mid-level IC engineering, design, junior ops
+- 0-19: entry-level IC, intern, purely technical with no business context
+
+climate_relevance_confirmed:
+- true if the company operates in one of the provided climate-tech categories OR the job description explicitly references climate, energy transition, sustainability, decarbonization, cleantech
+- false if the company/role has no apparent connection to climate tech
+- When false, explain why in climate_relevance_reason (e.g., "Company is a generic SaaS platform with no climate focus")
+
+## Examples
+
+Input: Title="VP of Business Development", Company="Arcadia" (clean energy), Location="Remote", 5+ years in energy markets
+Output: job_function=sales, seniority_level=vp, mba_relevance_score=92, location_type=remote, climate_relevance_confirmed=true
+
+Input: Title="Junior Frontend Engineer", Company="Climate startup", Location="San Francisco, CA", 1-2 years experience
+Output: job_function=engineering, seniority_level=entry, mba_relevance_score=12, location_type=on_site, climate_relevance_confirmed=true
+
+Input: Title="Account Manager", Company="SolarEdge", Location="Austin, TX (Hybrid)"
+Output: job_function=sales, seniority_level=mid, mba_relevance_score=55, location_type=hybrid, climate_relevance_confirmed=true
+
+Return valid JSON only. No markdown fences.
