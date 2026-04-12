@@ -29,6 +29,20 @@ Define small, focused agents (processes) per slice. Agents should be idempotent,
 - Output: jobs.json (raw-extracted)
 - Responsibilities: dedup, compute description_hash, attach metadata about extraction confidence
 
+Extraction Agent (implementation)
+- Location: src/agents/extraction.js
+- Prompt: src/prompts/extraction.txt (used to instruct the LLM how to parse HTML into a JSON array)
+- CLI usage examples:
+  - From file: node src/agents/extraction.js --input artifacts/html/<company>.html --company "Acme Inc" --base-url "https://acme.example" --out data/jobs-extracted/acme.json
+  - From stdin: cat artifacts/html/acme.html | node src/agents/extraction.js --company "Acme Inc" --base-url "https://acme.example" > data/jobs-extracted/acme.json
+- Env vars:
+  - ANTHROPIC_API_KEY (required)
+  - ANTHROPIC_MODEL (optional; defaults to claude-sonnet-4-5)
+- Output: JSON array written to data/jobs-extracted/<company-slug>.json (or --out path). Each entry follows the schema in src/prompts/extraction.txt.
+- Notes:
+  - The agent trims very large HTML snippets before sending to the LLM; the prompt supports truncated HTML.
+  - The agent detects obvious cookie/captcha walls and returns the page_blocked shape described in the prompt.
+
 5) Enrichment Agent (Slice 5)
 - Input: jobs.json
 - Tooling: Claude for classification and enrichment
