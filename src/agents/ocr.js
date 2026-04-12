@@ -18,6 +18,16 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// Load .env.local if present (no external dependency needed)
+const envPath = path.join(__dirname, '../../.env.local');
+try {
+  const lines = fs.readFileSync(envPath, 'utf8').split('\n');
+  for (const line of lines) {
+    const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/);
+    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
+  }
+} catch { /* no .env.local, that's fine */ }
+
 const USAGE = `Usage: node src/agents/ocr.js <images_dir> [--dry-run]`;
 
 function slugify(str) {
@@ -59,41 +69,107 @@ async function listImages(dir) {
   }
 }
 
-// Placeholder OCR implementation: returns an array of row objects.
-// Replace this with a real call to Gemini 2.5 Flash-Lite Vision API.
+// Call Gemini 2.5 Flash-Lite Vision API to OCR a Pitchbook screenshot.
+// Returns an array of row objects keyed by column headers (as shown in the image).
+// Expected Pitchbook columns: "Companies (N)", "Website", "Employees",
+//   "Last Financing Date", "Last Financing Deal Type", "Last Financing Size",
+//   "Total Raised", "HQ Location"
+// NOTE: The first column header will contain the row count, e.g. "Companies (1,480)".
+//   mapRowToCompanySchema handles this with a regex match.
 async function callGeminiOCR(imagePath) {
-  // If GEMINI_API_KEY is set, you can implement a real API call here.
-  // For now, return a best-effort extraction from filename.
+  if (process.env.GEMINI_API_KEY) {
+    // Real implementation: base64-encode the image and call Gemini vision API.
+    // const { GoogleGenerativeAI } = require('@google/generative-ai');
+    // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    // const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+    // const imageData = fs.readFileSync(imagePath).toString('base64');
+    // const mimeType = imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+    // const result = await model.generateContent([
+    //   { inlineData: { data: imageData, mimeType } },
+    //   'Extract all tabular data from this Pitchbook screenshot. ' +
+    //   'Return a JSON array where each element is one company row, ' +
+    //   'with keys exactly matching the column headers as shown in the image. ' +
+    //   'Use null for empty cells. Return only the JSON array, no markdown.'
+    // ]);
+    // return JSON.parse(result.response.text());
+    throw new Error('Gemini API integration not yet implemented — uncomment the code above and install @google/generative-ai');
+  }
+
+  // Fallback placeholder: derive a fake row from filename so the pipeline runs.
   const base = path.basename(imagePath, path.extname(imagePath));
-  // Try to split by underscores or spaces into pseudo-columns
-  const parts = base.split(/[_\s-]+/).slice(0,4);
+  const parts = base.split(/[_\s-]+/).slice(0, 4);
   const name = parts.join(' ');
   return [
     {
-      'Company Name': name || base,
-      'Website': (name ? `${slugify(name)}.com` : null),
-      'Funding': null,
-      'Sector': null
+      'Companies (placeholder)': name || base,
+      'Website': name ? `${slugify(name)}.com` : null,
+      'Employees': null,
+      'Last Financing Date': null,
+      'Last Financing Deal Type': null,
+      'Last Financing Size': null,
+      'Total Raised': null,
+      'HQ Location': null,
     }
   ];
 }
 
-// Placeholder mapping using simple heuristics. Replace with LLM mapping call.
+// Resolve company name from Pitchbook column headers.
+// Pitchbook exports the column as "Companies (N,NNN)" with the count embedded.
+function resolveCompanyName(row) {
+  // Try exact key first, then fuzzy match for Pitchbook's count-suffixed header
+  if (row['Company Name']) return row['Company Name'];
+  if (row['name']) return row['name'];
+  const key = Object.keys(row).find(k => /^companies/i.test(k));
+  return key ? row[key] : 'unknown';
+}
+
+// Map a Pitchbook row to the Company schema.
+// Handles actual Pitchbook export columns:
+//   Companies (N), Website, Employees, Last Financing Date,
+//   Last Financing Deal Type, Last Financing Size, Total Raised, HQ Location
 async function mapRowToCompanySchema(row) {
-  const name = row['Company Name'] || row.name || 'unknown';
-  const domainRaw = row['Website'] || row.website || null;
+  // Strip trailing '?' from any string cell produced by OCR and set an uncertainty flag
+  let ocr_uncertain = false;
+  const cleanRow = {};
+  for (const k of Object.keys(row)) {
+    let v = row[k];
+    if (typeof v === 'string') {
+      if (v.trim().endsWith('?')) {
+        ocr_uncertain = true;
+        v = v.replace(/\?+$/g, '').trim();
+      } else {
+        v = v.trim();
+      }
+    }
+    cleanRow[k] = v;
+  }
+
+  const name = resolveCompanyName(cleanRow);
+  const domainRaw = cleanRow['Website'] || cleanRow['website'] || null;
   const domain = domainRaw ? domainRaw.replace(/^https?:\/\//, '').replace(/\/$/, '') : null;
   const id = domain ? slugify(domain) : deterministicId(name);
+
   const funding_signals = [];
-  if (row['Funding'] && row['Funding'] !== '-') {
-    funding_signals.push({ raw: row['Funding'] });
+  const date = cleanRow['Last Financing Date'] || null;
+  const dealType = cleanRow['Last Financing Deal Type'] || null;
+  const size = cleanRow['Last Financing Size'] || null;
+  const totalRaised = cleanRow['Total Raised'] || null;
+  if (date || dealType || size) {
+    funding_signals.push({
+      date,
+      deal_type: dealType,
+      size_mm: size ? parseFloat(String(size).replace(/[^0-9.]/g, '')) || null : null,
+      total_raised_mm: totalRaised ? parseFloat(String(totalRaised).replace(/[^0-9.]/g, '')) || null : null,
+    });
   }
+
   const company_profile = {
-    sector: row['Sector'] || null,
-    description: row['Description'] || null,
-    hq: row['HQ'] || null,
-    employees: row['Employees'] || null
+    sector: cleanRow['Sector'] || null,
+    description: cleanRow['Description'] || null,
+    hq: cleanRow['HQ Location'] || cleanRow['HQ'] || null,
+    employees: cleanRow['Employees'] ? parseInt(String(cleanRow['Employees']).replace(/[^0-9]/g, ''), 10) || null : null,
   };
+
   return {
     id,
     name,
@@ -101,7 +177,8 @@ async function mapRowToCompanySchema(row) {
     funding_signals,
     company_profile,
     careers_page_url: null,
-    ats_platform: null
+    ats_platform: null,
+    ocr_uncertain,
   };
 }
 

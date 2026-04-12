@@ -65,19 +65,35 @@ async function saveCompanies(filePath, companies) {
 }
 
 function mapRowToCompanySchema(row) {
-  const name = row['Company Name'] || row.name || 'unknown';
-  const domainRaw = row['Website'] || row.website || null;
+  // Strip trailing '?' from any string cell produced by OCR and set an uncertainty flag
+  let ocr_uncertain = false;
+  const cleanRow = {};
+  for (const k of Object.keys(row)) {
+    let v = row[k];
+    if (typeof v === 'string') {
+      if (v.trim().endsWith('?')) {
+        ocr_uncertain = true;
+        v = v.replace(/\?+$/g, '').trim();
+      } else {
+        v = v.trim();
+      }
+    }
+    cleanRow[k] = v;
+  }
+
+  const name = cleanRow['Company Name'] || cleanRow.name || 'unknown';
+  const domainRaw = cleanRow['Website'] || cleanRow.website || null;
   const domain = domainRaw ? domainRaw.replace(/^https?:\/\//, '').replace(/\/$/, '') : null;
   const id = domain ? slugify(domain) : deterministicId(name);
   const funding_signals = [];
-  if (row['Funding'] && row['Funding'] !== '-') {
-    funding_signals.push({ raw: row['Funding'] });
+  if (cleanRow['Funding'] && cleanRow['Funding'] !== '-') {
+    funding_signals.push({ raw: cleanRow['Funding'] });
   }
   const company_profile = {
-    sector: row['Sector'] || null,
-    description: row['Description'] || null,
-    hq: row['HQ'] || null,
-    employees: row['Employees'] || null
+    sector: cleanRow['Sector'] || null,
+    description: cleanRow['Description'] || null,
+    hq: cleanRow['HQ'] || null,
+    employees: cleanRow['Employees'] || null
   };
   return {
     id,
@@ -86,7 +102,8 @@ function mapRowToCompanySchema(row) {
     funding_signals,
     company_profile,
     careers_page_url: null,
-    ats_platform: null
+    ats_platform: null,
+    ocr_uncertain
   };
 }
 
