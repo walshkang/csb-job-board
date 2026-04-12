@@ -44,9 +44,11 @@ Data model notes
 - companies.json: canonical company id, name, domain, funding signals, company_profile fields, careers_page_url, ats_platform
 - jobs.json: job id, company_id, job_title_raw, description_raw, source_url, location_raw, employment_type, timestamps (first_seen, last_seen)
 
-Airtable integration
-- Airtable acts as the backend: Jobs and Companies tables mirror the JSON schema
-- Use environment variables for AIRTABLE_API_KEY and AIRTABLE_BASE_ID; do not commit secrets
+Notion integration
+- Notion acts as the backend: Jobs and Companies databases mirror the JSON schema
+- Jobs link to Companies via a Notion relation property
+- Use environment variables for NOTION_API_KEY, NOTION_COMPANIES_DB_ID, NOTION_JOBS_DB_ID; do not commit secrets
+- Sync agent: src/agents/notion-sync.js (supports --companies-only, --jobs-only, --dry-run)
 
 Validation and QA
 - Each slice must include spot-check steps and sample-size validation criteria (e.g., spot-check 10–20 records)
