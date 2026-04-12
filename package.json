@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "ocr": "node src/agents/ocr.js"
   }
 }
