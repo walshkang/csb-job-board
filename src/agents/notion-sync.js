@@ -5,16 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { Client } = require('@notionhq/client');
-
-// Load .env.local if present (no external dependency needed)
-const envPath = path.join(__dirname, '../../.env.local');
-try {
-  const lines = fs.readFileSync(envPath, 'utf8').split('\n');
-  for (const line of lines) {
-    const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/);
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
-  }
-} catch { /* no .env.local, that's fine */ }
+const config = require('../config');
 
 const USAGE = `Usage: node src/agents/notion-sync.js [--companies-only] [--jobs-only] [--dry-run] [--verbose]`;
 
@@ -51,9 +42,7 @@ async function readJsonSafe(p) {
 
 async function main() {
   const args = readArgs();
-  const NOTION_API_KEY = process.env.NOTION_API_KEY;
-  const NOTION_COMPANIES_DB_ID = process.env.NOTION_COMPANIES_DB_ID;
-  const NOTION_JOBS_DB_ID = process.env.NOTION_JOBS_DB_ID;
+  const { apiKey: NOTION_API_KEY, companiesDbId: NOTION_COMPANIES_DB_ID, jobsDbId: NOTION_JOBS_DB_ID } = config.notion;
 
   if (!NOTION_API_KEY || (!NOTION_COMPANIES_DB_ID && !args.jobsOnly) || (!NOTION_JOBS_DB_ID && !args.companiesOnly)) {
     console.log('Missing NOTION_API_KEY or NOTION_COMPANIES_DB_ID/NOTION_JOBS_DB_ID. Set env vars or .env.local. Exiting.');

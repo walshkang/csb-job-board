@@ -17,16 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-
-// Load .env.local (no dependency)
-const envPath = path.join(__dirname, '../../.env.local');
-try {
-  const lines = fs.readFileSync(envPath, 'utf8').split('\n');
-  for (const line of lines) {
-    const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/);
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
-  }
-} catch { /* ignore if no .env.local */ }
+require('../config'); // loads .env.local as a side effect
 
 function log(...args) { console.log('[temporal]', ...args); }
 function verboseLog(enabled, ...args) { if (enabled) console.log('[temporal]', ...args); }

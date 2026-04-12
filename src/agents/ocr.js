@@ -17,16 +17,7 @@ Environment variables:
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-
-// Load .env.local if present (no external dependency needed)
-const envPath = path.join(__dirname, '../../.env.local');
-try {
-  const lines = fs.readFileSync(envPath, 'utf8').split('\n');
-  for (const line of lines) {
-    const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/);
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
-  }
-} catch { /* no .env.local, that's fine */ }
+const config = require('../config');
 
 const USAGE = `Usage: node src/agents/ocr.js <images_dir> [--dry-run]`;
 
@@ -80,7 +71,7 @@ async function callGeminiOCR(imagePath) {
   if (process.env.GEMINI_API_KEY) {
     const { GoogleGenerativeAI } = require('@google/generative-ai');
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite' });
+    const model = genAI.getGenerativeModel({ model: config.ocr.model });
     const imageData = fs.readFileSync(imagePath).toString('base64');
     const mimeType = imagePath.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
     const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr.txt'), 'utf8');

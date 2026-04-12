@@ -3,12 +3,12 @@ const path = require('path');
 const https = require('https');
 const { URL } = require('url');
 const enricher = require('./enricher');
+const config = require('../config');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
 const OUT_JOBS = path.join(REPO_ROOT, 'data', 'jobs.json');
 const ARTIFACTS_DIR = path.join(REPO_ROOT, 'artifacts', 'html');
-const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5';
 const API_URL = 'https://api.anthropic.com/v1/messages';
 
 function readFileSafe(p) { try { return fs.readFileSync(p, 'utf8'); } catch (e) { return null; } }
@@ -17,9 +17,9 @@ function ensureDir(p) { if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true
 function writeJSONAtomic(p, obj) { const tmp = p + '.tmp'; ensureDir(path.dirname(p)); fs.writeFileSync(tmp, JSON.stringify(obj, null, 2), 'utf8'); fs.renameSync(tmp, p); }
 
 function callAnthropic(prompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = config.extraction.apiKey;
   if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
-  const model = process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+  const model = config.extraction.model;
   const body = JSON.stringify({ model, max_tokens: 1200, temperature: 0.0, messages: [{ role: 'user', content: prompt }] });
 
   return new Promise((resolve, reject) => {

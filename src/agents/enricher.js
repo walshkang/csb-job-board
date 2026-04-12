@@ -9,7 +9,7 @@ const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categor
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
 const ENRICHMENT_PROMPT_VERSION = '1.1.0';
 
-const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5';
+const config = require('../config');
 const API_URL = 'https://api.anthropic.com/v1/messages';
 
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
@@ -45,9 +45,9 @@ function renderPrompt(template, vars) {
 }
 
 function callAnthropic(prompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = config.enrichment.apiKey;
   if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
-  const model = process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+  const model = config.enrichment.model;
   const body = JSON.stringify({
     model,
     max_tokens: 1200,

@@ -14,18 +14,8 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5';
+const config = require('../config');
 const API_URL = 'https://api.anthropic.com/v1/messages';
-
-// Load .env.local (same pattern as src/agents/ocr.js)
-const envPath = path.join(__dirname, '../../.env.local');
-try {
-  const lines = fs.readFileSync(envPath, 'utf8').split('\n');
-  for (const line of lines) {
-    const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/);
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
-  }
-} catch { /* no .env.local, that's fine */ }
 
 const CONCURRENCY = 5;
 const BATCH_SAVE_SIZE = 10;
@@ -171,9 +161,9 @@ async function findSitemapCandidates(domain) {
 
 // Minimal Anthropic call; if API not present or call fails, fallback to NOT_FOUND
 function callAnthropic(prompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = config.discovery.apiKey;
   if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
-  const model = process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+  const model = config.discovery.model;
   const body = JSON.stringify({
     model,
     max_tokens: 200,
@@ -266,7 +256,7 @@ async function processCompany(company, opts) {
 
   // 3) LLM fallback
   try {
-    if (!process.env.ANTHROPIC_API_KEY) throw new Error('no-key');
+    if (!config.discovery.apiKey) throw new Error('no-key');
 
     let homepageHtml = '';
     try {
