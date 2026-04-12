@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node src/index.js",
     "ocr": "node src/agents/ocr.js",
-    "test": "node test/run-tests.js"
+    "test": "jest --runInBand"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
