@@ -67,6 +67,35 @@ async function listImages(dir) {
 //   "Total Raised", "HQ Location"
 // NOTE: The first column header will contain the row count, e.g. "Companies (1,480)".
 //   mapRowToCompanySchema handles this with a regex match.
+// Robustly extract a JSON array or object from an LLM response.
+// Strips markdown fences, finds the outermost [ ] or { }, fixes trailing commas.
+function parseJSONResponse(text) {
+  if (!text) throw new Error('Empty response from OCR model');
+  let s = text.replace(/```(?:json)?/g, '\n').trim();
+
+  // try array first
+  const fa = s.indexOf('['), la = s.lastIndexOf(']');
+  if (fa !== -1 && la > fa) {
+    const c = s.slice(fa, la + 1);
+    try { return JSON.parse(c); } catch (_) {
+      const fixed = c.replace(/,\s*]/g, ']').replace(/,\s*}/g, '}');
+      try { return JSON.parse(fixed); } catch (_2) { /* fall through */ }
+    }
+  }
+
+  // try object
+  const fo = s.indexOf('{'), lo = s.lastIndexOf('}');
+  if (fo !== -1 && lo > fo) {
+    const c = s.slice(fo, lo + 1);
+    try { return JSON.parse(c); } catch (_) {
+      const fixed = c.replace(/,\s*}/g, '}');
+      try { return JSON.parse(fixed); } catch (_2) { /* fall through */ }
+    }
+  }
+
+  throw new Error('No JSON found in OCR response. Raw (truncated): ' + text.slice(0, 300));
+}
+
 async function callGeminiOCR(imagePath) {
   if (process.env.GEMINI_API_KEY) {
     const { GoogleGenerativeAI } = require('@google/generative-ai');
@@ -80,8 +109,7 @@ async function callGeminiOCR(imagePath) {
       promptText
     ]);
     const raw = result.response.text().trim();
-    const clean = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
-    return JSON.parse(clean);
+    return parseJSONResponse(raw);
   }
 
   // Fallback placeholder: derive a fake row from filename so the pipeline runs.
