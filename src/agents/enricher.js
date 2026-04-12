@@ -7,10 +7,10 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const JOBS_PATH = path.join(REPO_ROOT, 'data', 'jobs.json');
 const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categories.json');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
-const ENRICHMENT_PROMPT_VERSION = '1.0.0';
+const ENRICHMENT_PROMPT_VERSION = '1.1.0';
 
-const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-2.1';
-const API_URL = 'https://api.anthropic.com/v1/complete';
+const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5';
+const API_URL = 'https://api.anthropic.com/v1/messages';
 
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
 const SENIORITY = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite']);
@@ -48,7 +48,12 @@ function callAnthropic(prompt) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY');
   const model = process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
-  const body = JSON.stringify({ model, prompt, max_tokens_to_sample: 1200, temperature: 0.0 });
+  const body = JSON.stringify({
+    model,
+    max_tokens: 1200,
+    temperature: 0.0,
+    messages: [{ role: 'user', content: prompt }]
+  });
 
   return new Promise((resolve, reject) => {
     const req = https.request(API_URL, {
@@ -56,6 +61,7 @@ function callAnthropic(prompt) {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
         'Content-Length': Buffer.byteLength(body)
       }
     }, res => {
@@ -65,11 +71,12 @@ function callAnthropic(prompt) {
       res.on('end', () => {
         try {
           const json = JSON.parse(data);
-          const text = json.completion || json.completion || json.output || json.text || json.completion_text || (typeof json === 'string' ? json : null);
-          resolve(text || JSON.stringify(json));
+          if (json.error) throw new Error(json.error.message || JSON.stringify(json.error));
+          const text = json.content?.[0]?.text;
+          if (!text) throw new Error('Unexpected response shape: ' + JSON.stringify(json).slice(0, 200));
+          resolve(text);
         } catch (err) {
-          // not JSON -> return raw
-          resolve(data);
+          reject(err);
         }
       });
     });
