@@ -86,3 +86,32 @@ Open questions
 - Enrichment quality: spot-check mba_relevance_score and climate_relevance_confirmed on 10-20 jobs
 - Notion schema: confirm property names match what notion-sync.js expects before first live sync
 
+Postmortem — 2026-04-13
+
+Summary:
+- Good:
+  - Modular, tested agents; atomic JSON writes; clear artifacts folder pattern.
+  - ATS adapters and Notion sync worked after a quick schema fix.
+- Bad / Blockers:
+  - Many careers pages blocked by CAPTCHA/cookie walls or returned 403, causing large data loss during extraction.
+  - LLM fragility: transient Gemini 503s and occasional parse failures led to partial enrichment.
+  - Placeholder 'example' was present in companies.json and polluted scrape/run stats.
+  - Notion schema mismatch initially blocked sync until DB props were added.
+
+Key lessons and high‑level improvements (prioritized):
+1) Preflight & data hygiene (urgent): validate companies.json before runs; remove placeholders like 'example'; fail fast with clear errors.
+2) Enrichment resiliency (urgent): implement retries with exponential backoff, alternate-model fallback, and strict JSON/schema validation of LLM outputs. Add a re‑enrichment scheduler for failed items.
+3) Notion resilience (urgent): discover DB property names at runtime, map common aliases, and fall back gracefully with logging so syncs don't hard-fail.
+4) Scraping strategy (short‑term): prefer ATS/API adapters (Greenhouse, Lever) and expand adapters before resorting to HTML scraping. Record method and failure reasons per company.
+5) Scraping fallback (medium‑term): add a headless/browser scraping fallback (Playwright) for pages blocked by client-side protections — ensure legal review and respectful throttling.
+6) Observability & ops (medium‑term): add metrics, dashboards, and alerts for scrape success rate, enrichment failure rate, LLM error patterns, and Notion upsert failures.
+7) Testing & CI (medium‑term): add end‑to‑end smoke tests for a small sample dataset and CI checks for Notion sync.
+
+Immediate next steps (short list):
+- Remove 'example' from data/companies.json (data hygiene).
+- Implement notion-sync dynamic schema mapping and re-run jobs-only sync (jobs were synced successfully after manual DB update).
+- Implement enrichment retries/backoff and schedule re-enrichment for jobs with enrichment_error.
+- Evaluate headless scraping for top blocked domains and plan legal/ops approach.
+- Create tracked todos (session/plan.md + session SQL) and assign owners/PRs.
+
+See session/plan.md for a prioritized todo list and owners.

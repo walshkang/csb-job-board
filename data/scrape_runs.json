@@ -18,5 +18,195 @@
     "method": "direct_html",
     "success": false,
     "error": "fetch failed"
+  },
+  {
+    "company_id": "example",
+    "scraped_at": "2026-04-13T19:12:33.992Z",
+    "status_code": null,
+    "content_type": null,
+    "byte_length": 0,
+    "method": "direct_html",
+    "success": false,
+    "error": "fetch failed"
+  },
+  {
+    "company_id": "wwwstructurebotcom",
+    "scraped_at": "2026-04-13T19:12:34.035Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 13760,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwavalanchefusioncom",
+    "scraped_at": "2026-04-13T19:12:34.075Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 33837,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "lionenergycom",
+    "scraped_at": "2026-04-13T19:12:34.036Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 180362,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwnorcalcontrolsnet",
+    "scraped_at": "2026-04-13T19:12:34.406Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 215170,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwsedroncom",
+    "scraped_at": "2026-04-13T19:12:34.576Z",
+    "status_code": 403,
+    "content_type": "text/html",
+    "byte_length": 75193,
+    "method": "direct_html",
+    "success": false,
+    "error": null
+  },
+  {
+    "company_id": "wwwgetlumencom",
+    "scraped_at": "2026-04-13T19:12:34.445Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 53113,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwgoflexcom",
+    "scraped_at": "2026-04-13T19:12:34.944Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 126022,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwheat2powerus",
+    "scraped_at": "2026-04-13T19:12:34.979Z",
+    "status_code": 200,
+    "content_type": "text/html;charset=utf-8",
+    "byte_length": 131262,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwcoastalmeasurescom",
+    "scraped_at": "2026-04-13T19:12:35.227Z",
+    "status_code": 200,
+    "content_type": "text/html",
+    "byte_length": 7995,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwcoreshellcom",
+    "scraped_at": "2026-04-13T19:12:35.688Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 23939,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwsolideccom",
+    "scraped_at": "2026-04-13T19:12:35.692Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 31615,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwwastedearth",
+    "scraped_at": "2026-04-13T19:12:35.353Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 96196,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwtmt-ipecom",
+    "scraped_at": "2026-04-13T19:12:36.239Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 466204,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwcesrenewablescom",
+    "scraped_at": "2026-04-13T19:12:36.051Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 228917,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "voltifycom",
+    "scraped_at": "2026-04-13T19:12:36.538Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 225190,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwdimension-energycom",
+    "scraped_at": "2026-04-13T19:12:36.754Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 38339,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwvulcanelementscom",
+    "scraped_at": "2026-04-13T19:12:36.749Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 73406,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwdpsenergycom",
+    "scraped_at": "2026-04-13T19:12:36.978Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 349895,
+    "method": "direct_html",
+    "success": true,
+    "error": null
   }
 ]
