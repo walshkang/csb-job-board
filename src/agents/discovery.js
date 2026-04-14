@@ -331,14 +331,22 @@ async function processCompany(company, opts) {
   // 5) LLM fallback — uses cached homepage HTML if available
   if (!config.discovery.apiKey) return { found: false, method: 'not_found' };
   try {
+    // If homepage was previously fetched and found unreachable (or never fetched), skip calling LLM to avoid wasting quota.
+    if (!homepageCache.html) {
+      return { found: false, method: 'not_found' };
+    }
+
     const homepageHtml = (homepageCache.html || '').slice(0, 10000);
     const prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
+
+    // Call LLM and mark that it was attempted so callers can record metrics.
     const completion = await callGeminiLLM(prompt); // DailyQuotaError bubbles up
-    if (!completion) return { found: false, method: 'not_found' };
+
+    if (!completion) return { found: false, method: 'not_found', llm_attempted: true };
     let answer = completion.trim().split('\n')[0].trim().replace(/^['"]?(.*?)['"]?$/, '$1');
 
     if (!answer || /^NOT[_ -]?FOUND$/i.test(answer)) {
-      return { found: false, method: 'not_found' };
+      return { found: false, method: 'not_found', llm_attempted: true };
     }
 
     if (answer.startsWith('/')) answer = `https://${domain}${answer}`;
@@ -347,17 +355,17 @@ async function processCompany(company, opts) {
     try {
       const res = await tryHeadThenGet(answer, domain);
       if (res && res.status === 200) {
-        return { found: true, url: res.url || answer, method: 'llm_fallback' };
+        return { found: true, url: res.url || answer, method: 'llm_fallback', llm_attempted: true };
       }
     } catch (err) {
       verboseLog(verbose, 'llm-proposed-url validation failed:', err.message);
     }
 
-    return { found: false, method: 'not_found' };
+    return { found: false, method: 'not_found', llm_attempted: true };
   } catch (err) {
     if (err.name === 'DailyQuotaError') throw err; // let it abort the run
-    verboseLog(verbose, 'LLM fallback failed:', err.message);
-    return { found: false, method: 'not_found' };
+    warn(`LLM fallback failed for ${company.name || domain}:`, err.message);
+    return { found: false, method: 'not_found', llm_attempted: true, llm_error: true };
   }
 }
 
@@ -416,9 +424,10 @@ async function main() {
   let totalProcessed = 0;
   let foundCount = 0;
   let notFoundCount = 0;
-  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, llm_fallback: 0, not_found: 0 };
+  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, llm_fallback: 0, llm_fallback_attempted: 0, not_found: 0 };
   const errorDomains = new Set();
   let dailyQuotaHit = false;
+  let llmErrorCount = 0;
 
   let writeQueue = Promise.resolve();
   function scheduleSave() {
@@ -453,6 +462,12 @@ async function main() {
           notFoundCount++;
           methodCounts[company.careers_page_discovery_method] = (methodCounts[company.careers_page_discovery_method] || 0) + 1;
         }
+
+        // Record if the LLM fallback was attempted (separate from successes)
+        if (result && result.llm_attempted) {
+          methodCounts.llm_fallback_attempted = (methodCounts.llm_fallback_attempted || 0) + 1;
+        }
+        if (result && result.llm_error) llmErrorCount++;
       } catch (err) {
         if (err.name === 'DailyQuotaError') {
           warn('Daily quota exhausted — saving progress and stopping.');
@@ -489,10 +504,12 @@ async function main() {
   log('  not_found:', notFoundCount);
   log('  method distribution:', methodCounts);
   if (errorDomains.size) log('  domains with errors:', Array.from(errorDomains).slice(0, 50));
+  if (llmErrorCount > 0) warn(`  LLM fallback errors: ${llmErrorCount} — check GEMINI_API_KEY and quota`);
   if (dailyQuotaHit) {
     log('  Stopped early: Gemini daily quota exhausted. Re-run tomorrow or enable billing.');
     process.exit(1);
   }
+  process.exit(0);
 }
 
 main().catch(err => {
