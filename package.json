@@ -9,7 +9,9 @@
     "discovery": "node src/agents/discovery.js",
     "scrape": "node src/agents/scraper.js",
     "extract": "node src/agents/extraction.js",
-    "enrich": "node src/agents/enricher.js"
+    "enrich": "node src/agents/enricher.js",
+    "qa": "node src/agents/qa.js",
+    "fingerprint": "node src/agents/fingerprinter.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"

@@ -9,7 +9,7 @@ const config = require('../config');
 
 // Canonical -> list of alias display names to try when resolving Notion DB properties.
 // Add common variants used across teams. Matching is case-insensitive; exact canonical name is always tried first.
-const CANONICAL_PROPERTY_ALIASES = {
+const COMPANY_CANONICAL_ALIASES = {
   // Companies DB
   'Name': ['Name', 'Company', 'Company Name'],
   'id': ['id', 'ID'],
@@ -23,7 +23,9 @@ const CANONICAL_PROPERTY_ALIASES = {
   'ATS Platform': ['ATS Platform', 'ATS'],
   'Dormant': ['Dormant', 'Inactive'],
   'Consecutive Empty Scrapes': ['Consecutive Empty Scrapes', 'Empty Scrapes'],
+};
 
+const JOB_CANONICAL_ALIASES = {
   // Jobs DB
   'Title': ['Title', 'Name'],
   'Job Title Normalized': ['Job Title Normalized', 'Title Normalized', 'Job Title'],
@@ -78,10 +80,10 @@ function resolvePropertyName(canonical, dbPropNames, aliases) {
   return null;
 }
 
-function buildResolvedNameMap(dbPropNames, databaseId, warnedMissingProps) {
+function buildResolvedNameMap(dbPropNames, databaseId, warnedMissingProps, aliases) {
   const map = {};
-  for (const canonical of Object.keys(CANONICAL_PROPERTY_ALIASES)) {
-    const resolved = resolvePropertyName(canonical, dbPropNames, CANONICAL_PROPERTY_ALIASES[canonical]);
+  for (const canonical of Object.keys(aliases)) {
+    const resolved = resolvePropertyName(canonical, dbPropNames, aliases[canonical]);
     map[canonical] = resolved;
     if (!resolved) {
       const key = `${databaseId}::${canonical}`;
@@ -254,13 +256,13 @@ async function main() {
   // and builds a canonical -> actual display name mapping using CANONICAL_PROPERTY_ALIASES.
   if (NOTION_COMPANIES_DB_ID) {
     const companyDbProps = await getDatabasePropertyNames(notion, NOTION_COMPANIES_DB_ID, RATE_DELAY_MS);
-    resolvedNameMapCompanies = buildResolvedNameMap(companyDbProps, NOTION_COMPANIES_DB_ID, warnedMissingProps);
+    resolvedNameMapCompanies = buildResolvedNameMap(companyDbProps, NOTION_COMPANIES_DB_ID, warnedMissingProps, COMPANY_CANONICAL_ALIASES);
   } else {
     resolvedNameMapCompanies = {};
   }
   if (NOTION_JOBS_DB_ID) {
     const jobsDbProps = await getDatabasePropertyNames(notion, NOTION_JOBS_DB_ID, RATE_DELAY_MS);
-    resolvedNameMapJobs = buildResolvedNameMap(jobsDbProps, NOTION_JOBS_DB_ID, warnedMissingProps);
+    resolvedNameMapJobs = buildResolvedNameMap(jobsDbProps, NOTION_JOBS_DB_ID, warnedMissingProps, JOB_CANONICAL_ALIASES);
   } else {
     resolvedNameMapJobs = {};
   }
