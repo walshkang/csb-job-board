@@ -210,7 +210,14 @@ function mergeJobs(existingJobs, newJobs) {
 }
 
 async function batchExtract({ companyFilter = null, dryRun = false, verbose = false }) {
-  const companies = readJsonSafe(path.join(REPO_ROOT, 'data', 'companies.json')) || [];
+  const companiesRaw = readJsonSafe(path.join(REPO_ROOT, 'data', 'companies.json')) || [];
+  let companies;
+  try {
+    companies = config.validateCompanies(companiesRaw);
+  } catch (err) {
+    console.error('Company validation failed:', err.message);
+    process.exit(1);
+  }
   const extracted = [];
   const errors = [];
   const companiesProcessed = [];

@@ -7,6 +7,93 @@ const path = require('path');
 const { Client } = require('@notionhq/client');
 const config = require('../config');
 
+// Canonical -> list of alias display names to try when resolving Notion DB properties.
+// Add common variants used across teams. Matching is case-insensitive; exact canonical name is always tried first.
+const CANONICAL_PROPERTY_ALIASES = {
+  // Companies DB
+  'Name': ['Name', 'Company', 'Company Name'],
+  'id': ['id', 'ID'],
+  'Domain': ['Domain', 'Website', 'URL'],
+  'Funding Signals': ['Funding Signals', 'Funding'],
+  'Profile Description': ['Profile Description', 'Company Description', 'Description'],
+  'Sector': ['Sector', 'Industry'],
+  'HQ': ['HQ', 'Headquarters', 'Headquarter'],
+  'Employees': ['Employees', 'Headcount', 'Team Size'],
+  'Careers Page': ['Careers Page', 'Careers', 'Jobs Page', 'Careers URL'],
+  'ATS Platform': ['ATS Platform', 'ATS'],
+  'Dormant': ['Dormant', 'Inactive'],
+  'Consecutive Empty Scrapes': ['Consecutive Empty Scrapes', 'Empty Scrapes'],
+
+  // Jobs DB
+  'Title': ['Title', 'Name'],
+  'Job Title Normalized': ['Job Title Normalized', 'Title Normalized', 'Job Title'],
+  'Source URL': ['Source URL', 'Source', 'URL'],
+  'Location Raw': ['Location Raw', 'Location'],
+  'Employment Type': ['Employment Type', 'Employment'],
+  'Description': ['Description', 'Job Description'],
+  'Description Hash': ['Description Hash', 'Desc Hash'],
+  'First Seen': ['First Seen', 'First Seen At', 'Created At'],
+  'Last Seen': ['Last Seen', 'Last Seen At', 'Updated At'],
+  'Removed At': ['Removed At', 'Removed'],
+  'Days Live': ['Days Live', 'Days'],
+  'Job Function': ['Job Function', 'Function'],
+  'Seniority Level': ['Seniority Level', 'Seniority'],
+  'Location Type': ['Location Type'],
+  'MBA Relevance Score': ['MBA Relevance Score', 'MBA Score'],
+  'Description Summary': ['Description Summary', 'Summary'],
+  'Climate Relevance Confirmed': ['Climate Relevance Confirmed', 'Climate Relevance'],
+  'Climate Relevance Reason': ['Climate Relevance Reason', 'Climate Reason'],
+  'Enrichment Prompt Version': ['Enrichment Prompt Version', 'Enrichment Version'],
+  'Company': ['Company', 'Company Relation', 'Company Link'],
+};
+
+
+async function getDatabasePropertyNames(notionClient, databaseId, RATE_DELAY_MS) {
+  try {
+    const db = await notionClient.databases.retrieve({ database_id: databaseId });
+    await sleep(RATE_DELAY_MS);
+    return Object.keys(db.properties || {});
+  } catch (err) {
+    console.warn(`Notion sync: could not retrieve properties for DB ${databaseId}:`, err && err.message ? err.message : err);
+    return [];
+  }
+}
+
+function resolvePropertyName(canonical, dbPropNames, aliases) {
+  if (!dbPropNames || dbPropNames.length === 0) return null;
+  const lowerMap = Object.create(null);
+  for (const n of dbPropNames) lowerMap[n.toLowerCase()] = n;
+  // exact canonical
+  if (lowerMap[canonical.toLowerCase()]) return lowerMap[canonical.toLowerCase()];
+  // aliases
+  const aliasList = Array.isArray(aliases) && aliases.length ? aliases : [canonical];
+  for (const a of aliasList) {
+    if (lowerMap[a.toLowerCase()]) return lowerMap[a.toLowerCase()];
+  }
+  // try loose match: remove spaces and compare
+  const canonicalNoSpace = canonical.replace(/\s+/g, '').toLowerCase();
+  for (const n of dbPropNames) {
+    if (n.replace(/\s+/g, '').toLowerCase() === canonicalNoSpace) return n;
+  }
+  return null;
+}
+
+function buildResolvedNameMap(dbPropNames, databaseId, warnedMissingProps) {
+  const map = {};
+  for (const canonical of Object.keys(CANONICAL_PROPERTY_ALIASES)) {
+    const resolved = resolvePropertyName(canonical, dbPropNames, CANONICAL_PROPERTY_ALIASES[canonical]);
+    map[canonical] = resolved;
+    if (!resolved) {
+      const key = `${databaseId}::${canonical}`;
+      if (!warnedMissingProps.has(key)) {
+        console.warn(`Notion sync: property "${canonical}" not found in DB ${databaseId}; skipping that property for this DB.`);
+        warnedMissingProps.add(key);
+      }
+    }
+  }
+  return map;
+}
+
 const USAGE = `Usage: node src/agents/notion-sync.js [--companies-only] [--jobs-only] [--dry-run] [--verbose]`;
 
 function readArgs() {
@@ -53,11 +140,21 @@ async function main() {
   // Simple fixed delay to respect ~3 req/s limit
   const RATE_DELAY_MS = 350;
 
+  const warnedMissingProps = new Set(); // keys: `${databaseId}::${canonical}`
+  let resolvedNameMapCompanies = null;
+  let resolvedNameMapJobs = null;
+
   const dataDir = path.join(__dirname, '../../data');
   const companiesPath = path.join(dataDir, 'companies.json');
   const jobsPath = path.join(dataDir, 'jobs.json');
 
-  const companies = await readJsonSafe(companiesPath);
+  let companies = await readJsonSafe(companiesPath);
+  try {
+    companies = config.validateCompanies(companies);
+  } catch (err) {
+    console.error('Company validation failed:', err.message);
+    process.exit(1);
+  }
   const jobs = await readJsonSafe(jobsPath);
 
   const summary = { created: 0, updated: 0, errors: [] };
@@ -97,23 +194,28 @@ async function main() {
     }
   }
 
-  function companyToProps(c) {
-    const props = {
-      Name: { title: [{ text: { content: c.name || '' } }] },
-      id: { rich_text: [{ text: { content: String(c.id) } }] },
-      Domain: c.domain ? { url: c.domain } : undefined,
+  function companyToProps(c, resolvedNameMap, databaseId) {
+    const canonicalProps = {
+      'Name': { title: [{ text: { content: c.name || '' } }] },
+      'id': { rich_text: [{ text: { content: String(c.id) } }] },
+      'Domain': c.domain ? { url: c.domain } : undefined,
       'Funding Signals': { rich_text: [{ text: { content: truncate(JSON.stringify(c.funding_signals || []), 2000) } }] },
       'Profile Description': c.company_profile && c.company_profile.description ? { rich_text: [{ text: { content: truncate(c.company_profile.description, 2000) } }] } : undefined,
-      Sector: c.company_profile && c.company_profile.sector ? { select: { name: String(c.company_profile.sector) } } : undefined,
-      HQ: c.company_profile && c.company_profile.hq ? { rich_text: [{ text: { content: String(c.company_profile.hq) } }] } : undefined,
-      Employees: c.company_profile && typeof c.company_profile.employees === 'number' ? { number: c.company_profile.employees } : undefined,
+      'Sector': c.company_profile && c.company_profile.sector ? { select: { name: String(c.company_profile.sector) } } : undefined,
+      'HQ': c.company_profile && c.company_profile.hq ? { rich_text: [{ text: { content: String(c.company_profile.hq) } }] } : undefined,
+      'Employees': c.company_profile && typeof c.company_profile.employees === 'number' ? { number: c.company_profile.employees } : undefined,
       'Careers Page': c.careers_page_url ? { url: c.careers_page_url } : undefined,
       'ATS Platform': c.ats_platform ? { select: { name: String(c.ats_platform) } } : undefined,
-      Dormant: typeof c.dormant === 'boolean' ? { checkbox: c.dormant } : undefined,
+      'Dormant': typeof c.dormant === 'boolean' ? { checkbox: c.dormant } : undefined,
       'Consecutive Empty Scrapes': typeof c.consecutive_empty_scrapes === 'number' ? { number: c.consecutive_empty_scrapes } : undefined,
     };
-    // remove undefined
-    Object.keys(props).forEach(k => props[k] === undefined && delete props[k]);
+    const props = {};
+    for (const [canonical, val] of Object.entries(canonicalProps)) {
+      if (val === undefined) continue; // skip undefined canonical values
+      const resolvedName = resolvedNameMap && resolvedNameMap[canonical] ? resolvedNameMap[canonical] : null;
+      if (!resolvedName) continue; // skip if not present in DB
+      props[resolvedName] = val;
+    }
     return props;
   }
 
@@ -124,7 +226,7 @@ async function main() {
         return { action: 'dry', pageId: null };
       }
       const existing = await notionQueryById(NOTION_COMPANIES_DB_ID, c.id);
-      const props = companyToProps(c);
+      const props = companyToProps(c, resolvedNameMapCompanies, NOTION_COMPANIES_DB_ID);
       if (existing) {
         await notion.pages.update({ page_id: existing.id, properties: props });
         await sleep(RATE_DELAY_MS);
@@ -148,6 +250,21 @@ async function main() {
   // Build mapping from company.id -> notion page id
   const companyNotionIdByCompanyId = {};
 
+  // Prepare resolved name maps for Notion DBs (cached per run). This fetches the DB property schema
+  // and builds a canonical -> actual display name mapping using CANONICAL_PROPERTY_ALIASES.
+  if (NOTION_COMPANIES_DB_ID) {
+    const companyDbProps = await getDatabasePropertyNames(notion, NOTION_COMPANIES_DB_ID, RATE_DELAY_MS);
+    resolvedNameMapCompanies = buildResolvedNameMap(companyDbProps, NOTION_COMPANIES_DB_ID, warnedMissingProps);
+  } else {
+    resolvedNameMapCompanies = {};
+  }
+  if (NOTION_JOBS_DB_ID) {
+    const jobsDbProps = await getDatabasePropertyNames(notion, NOTION_JOBS_DB_ID, RATE_DELAY_MS);
+    resolvedNameMapJobs = buildResolvedNameMap(jobsDbProps, NOTION_JOBS_DB_ID, warnedMissingProps);
+  } else {
+    resolvedNameMapJobs = {};
+  }
+
   if (!args.jobsOnly) {
     console.log(`Processing ${companies.length} companies`);
     for (const c of companies) {
@@ -166,15 +283,15 @@ async function main() {
     }
   }
 
-  function jobToProps(j, companyPageId) {
-    const props = {
-      Title: { title: [{ text: { content: j.job_title_raw || (j.job_title_normalized || '') } }] },
-      id: { rich_text: [{ text: { content: String(j.id) } }] },
+  function jobToProps(j, resolvedNameMap, databaseId, companyPageId) {
+    const canonicalProps = {
+      'Title': { title: [{ text: { content: j.job_title_raw || (j.job_title_normalized || '') } }] },
+      'id': { rich_text: [{ text: { content: String(j.id) } }] },
       'Job Title Normalized': j.job_title_normalized ? { rich_text: [{ text: { content: String(j.job_title_normalized) } }] } : undefined,
       'Source URL': j.source_url ? { url: j.source_url } : undefined,
       'Location Raw': j.location_raw ? { rich_text: [{ text: { content: String(j.location_raw) } }] } : undefined,
       'Employment Type': j.employment_type ? { select: { name: String(j.employment_type) } } : undefined,
-      Description: j.description_raw ? { rich_text: [{ text: { content: truncate(j.description_raw, 2000) } }] } : undefined,
+      'Description': j.description_raw ? { rich_text: [{ text: { content: truncate(j.description_raw, 2000) } }] } : undefined,
       'Description Hash': j.description_hash ? { rich_text: [{ text: { content: String(j.description_hash) } }] } : undefined,
       'First Seen': j.first_seen_at ? { date: { start: j.first_seen_at } } : undefined,
       'Last Seen': j.last_seen_at ? { date: { start: j.last_seen_at } } : undefined,
@@ -189,8 +306,16 @@ async function main() {
       'Climate Relevance Reason': j.climate_relevance_reason ? { rich_text: [{ text: { content: truncate(j.climate_relevance_reason, 2000) } }] } : undefined,
       'Enrichment Prompt Version': j.enrichment_prompt_version ? { rich_text: [{ text: { content: String(j.enrichment_prompt_version) } }] } : undefined,
     };
-    if (companyPageId) props.Company = { relation: [{ id: companyPageId }] };
-    Object.keys(props).forEach(k => props[k] === undefined && delete props[k]);
+    const props = {};
+    for (const [canonical, val] of Object.entries(canonicalProps)) {
+      if (val === undefined) continue;
+      const resolvedName = resolvedNameMap && resolvedNameMap[canonical] ? resolvedNameMap[canonical] : null;
+      if (!resolvedName) continue;
+      props[resolvedName] = val;
+    }
+    // relation for company
+    const companyResolvedName = resolvedNameMap && resolvedNameMap['Company'] ? resolvedNameMap['Company'] : null;
+    if (companyPageId && companyResolvedName) props[companyResolvedName] = { relation: [{ id: companyPageId }] };
     return props;
   }
 
@@ -202,7 +327,7 @@ async function main() {
       }
       const existing = await notionQueryById(NOTION_JOBS_DB_ID, j.id);
       const companyPageId = companyNotionIdByCompanyId[j.company_id] || null;
-      const props = jobToProps(j, companyPageId);
+      const props = jobToProps(j, resolvedNameMapJobs, NOTION_JOBS_DB_ID, companyPageId);
       if (existing) {
         await notion.pages.update({ page_id: existing.id, properties: props });
         await sleep(RATE_DELAY_MS);

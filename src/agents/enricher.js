@@ -49,6 +49,7 @@ async function callGeminiEnrichment(prompt) {
   return callGeminiText({
     apiKey,
     model: config.enrichment.model,
+    fallbackModel: config.enrichment.fallbackModel || null,
     prompt,
     maxOutputTokens: 1200,
   });
@@ -160,13 +161,20 @@ async function main() {
 
   // decide which jobs to enrich
   const toEnrich = [];
-  for (const job of jobs) {
-    const prevVersion = job.enrichment_prompt_version || null;
-    const descHash = sha256(job.description_raw || '');
-    const requiredFields = ['job_title_normalized','job_function','seniority_level','location_type','mba_relevance_score','description_summary','climate_relevance_confirmed'];
-    const missing = requiredFields.some(f => job[f] == null);
-    const changed = job.description_raw_hash !== descHash;
-    if (force || prevVersion !== ENRICHMENT_PROMPT_VERSION || changed || missing) toEnrich.push(job);
+  const retryErrors = args.includes('--retry-errors');
+  if (retryErrors) {
+    for (const job of jobs) {
+      if (job.enrichment_error) toEnrich.push(job);
+    }
+  } else {
+    for (const job of jobs) {
+      const prevVersion = job.enrichment_prompt_version || null;
+      const descHash = sha256(job.description_raw || '');
+      const requiredFields = ['job_title_normalized','job_function','seniority_level','location_type','mba_relevance_score','description_summary','climate_relevance_confirmed'];
+      const missing = requiredFields.some(f => job[f] == null);
+      const changed = job.description_raw_hash !== descHash;
+      if (force || prevVersion !== ENRICHMENT_PROMPT_VERSION || changed || missing) toEnrich.push(job);
+    }
   }
 
   if (toEnrich.length === 0) {
@@ -208,8 +216,10 @@ async function main() {
   }
 
   // print distribution
+  const errorCount = jobs.filter(j => j.enrichment_error).length;
   console.log('\nEnrichment complete');
   console.log('Total enriched:', enrichedCount);
+  console.log('Jobs with enrichment_error:', errorCount);
   console.log('MBA relevance buckets (0-19,20-39,40-59,60-79,80-100):', scoreBuckets.join(', '));
   const totalClimate = climateTrue + climateFalse || 1;
   console.log('Climate relevance true/false:', climateTrue, '/', climateFalse, `( ${Math.round((climateTrue/totalClimate)*100)}% true )`);

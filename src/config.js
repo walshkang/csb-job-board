@@ -59,12 +59,28 @@ const cfg = {
   enrichment: {
     apiKey: process.env.GEMINI_API_KEY || null,
     model: process.env.ENRICHMENT_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    fallbackModel: process.env.ENRICHMENT_FALLBACK_MODEL || 'gemini-1.5-flash',
   },
   notion: {
     apiKey: process.env.NOTION_API_KEY || null,
     companiesDbId: process.env.NOTION_COMPANIES_DB_ID || null,
     jobsDbId: process.env.NOTION_JOBS_DB_ID || null,
   },
+};
+
+cfg.validateCompanies = function validateCompanies(companies) {
+  const arr = Array.isArray(companies) ? companies : [];
+  const filtered = arr.filter(c => {
+    const id = c && c.id ? String(c.id).trim().toLowerCase() : '';
+    const name = c && c.name ? String(c.name).trim() : '';
+    if (!name) return false;
+    if (id === 'example' || name.toLowerCase() === 'example') return false;
+    return true;
+  });
+  const removed = arr.length - filtered.length;
+  console.info(`[validateCompanies] removed ${removed} entries`);
+  if (filtered.length === 0) throw new Error('[validateCompanies] No companies remain after validation');
+  return filtered;
 };
 
 module.exports = cfg;

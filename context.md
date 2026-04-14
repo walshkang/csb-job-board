@@ -115,3 +115,25 @@ Immediate next steps (short list):
 - Create tracked todos (session/plan.md + session SQL) and assign owners/PRs.
 
 See session/plan.md for a prioritized todo list and owners.
+
+Future: Streaming LLM output
+Currently all LLM calls (OCR, discovery, enrichment, extraction) are fire-and-wait — the user sees nothing until the call completes. This creates a poor experience during long runs.
+
+Goal: stream LLM thinking/output tokens in real time so progress is visible in the terminal. Each agent should surface per-job status lines (e.g. "Enriching [Company] — [job title]...") as tokens arrive rather than after the fact.
+
+This is also the foundation for a future lightweight frontend (a simple web UI or terminal dashboard) that shows live pipeline progress: which company is being processed, current step, running counts of successes/failures, and enrichment scores as they come in.
+
+Suggested approach:
+- src/gemini-text.js is Gemini-specific; the abstraction should be provider-agnostic — a streamLLMText() wrapper that supports Gemini (generateContentStream), Anthropic (stream: true), and others
+- Agents opt in per-call; no need to rewrite everything at once
+- Log streamed output to stderr so stdout stays clean for JSON artifacts
+
+Future: ATS fingerprinting + adapter expansion
+Discovery currently classifies most careers pages as "custom" because it only checks URL patterns. Many climate-tech companies use Greenhouse, Lever, Ashby, or Workday under a custom domain — these all have public JSON endpoints that return clean structured data without scraping.
+
+Goal: after fetching careers page HTML, scan for ATS fingerprints (Greenhouse iframe/embed, Lever API script tags, Ashby widget, Workday URL patterns) and update ats_platform accordingly. The scraper then routes to the right JSON API instead of parsing HTML, eliminating most CAPTCHA/403 failures.
+
+Suggested approach:
+- Add ATS fingerprint detection step in scraper.js (or as a post-discovery enrichment pass)
+- Expand ATS adapter coverage: Greenhouse (boards.greenhouse.io/<slug>), Lever (jobs.lever.co/<slug>), Ashby (jobs.ashbyhq.com/<slug>), Workday
+- Only fall back to HTML scraping (and eventually Playwright) for companies with no detectable ATS

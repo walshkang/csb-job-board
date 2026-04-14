@@ -14,6 +14,7 @@
 const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
+const config = require('../config');
 
 // Prefer global fetch, fallback to node-fetch if not available
 let fetchImpl = global.fetch;
@@ -133,7 +134,8 @@ async function loadCompanies(companiesPath) {
     const raw = await fsp.readFile(companiesPath, 'utf8');
     const arr = JSON.parse(raw);
     if (!Array.isArray(arr)) throw new Error('companies.json must be an array');
-    return arr.filter(c => c && c.careers_page_reachable === true);
+    const validated = config.validateCompanies(arr);
+    return validated.filter(c => c && c.careers_page_reachable === true);
   } catch (e) {
     throw new Error(`Failed to read companies file at ${companiesPath}: ${e.message}`);
   }

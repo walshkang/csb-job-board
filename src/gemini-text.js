@@ -16,10 +16,10 @@ class DailyQuotaError extends Error {
 }
 
 /**
- * @param {{ apiKey: string, model: string, prompt: string, maxOutputTokens?: number }} opts
+ * @param {{ apiKey: string, model: string, prompt: string, maxOutputTokens?: number, fallbackModel?: string, baseDelayMs?: number }} opts
  * @returns {Promise<string>}
  */
-async function callGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192 }) {
+async function callGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192, fallbackModel = null, baseDelayMs = 2000 }) {
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
   const genAI = new GoogleGenerativeAI(apiKey);
   const m = genAI.getGenerativeModel({
@@ -43,6 +43,7 @@ async function callGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192 })
       const msg = String(err && err.message ? err.message : err);
       const isResourceExhausted = /RESOURCE_EXHAUSTED/i.test(msg);
       const hasRetryHint = /retry in [\d.]+s/i.test(msg);
+      const isServiceUnavailable = /503|SERVICE_UNAVAILABLE/i.test(msg);
 
       // Daily quota: RESOURCE_EXHAUSTED with no per-minute retry hint.
       // Retrying is pointless — bubble up immediately.
@@ -50,14 +51,35 @@ async function callGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192 })
         throw new DailyQuotaError(`Gemini daily quota exceeded (${model}): ${msg.slice(0, 200)}`);
       }
 
-      const isRateLimited = /429|Too Many Requests/i.test(msg) || isResourceExhausted;
+      const isRateLimited = /429|Too Many Requests/i.test(msg) || isResourceExhausted || isServiceUnavailable;
       if (!isRateLimited || attempt === maxAttempts - 1) throw err;
-      let waitMs = 45000;
-      const retryIn = msg.match(/retry in ([\d.]+)s/i);
-      if (retryIn) waitMs = Math.ceil(parseFloat(retryIn[1]) * 1000) + 1500;
-      await delay(Math.min(waitMs, 120000));
+
+      // exponential backoff: baseDelayMs * 2^attempt, capped at 120s
+      const waitMs = Math.min(120000, Math.ceil(baseDelayMs * Math.pow(2, attempt)));
+      await delay(waitMs);
     }
   }
+
+  // if we reached here, primary model exhausted attempts
+  if (fallbackModel) {
+    try {
+      const fbModel = genAI.getGenerativeModel({
+        model: fallbackModel,
+        generationConfig: {
+          temperature: 0,
+          maxOutputTokens,
+        },
+      });
+      const result = await fbModel.generateContent(prompt);
+      const text = result.response.text();
+      if (!text || !String(text).trim()) throw new Error('Empty response from Gemini (fallback)');
+      return String(text).trim();
+    } catch (fbErr) {
+      // surface fallback error
+      throw fbErr;
+    }
+  }
+
   throw lastErr;
 }
 

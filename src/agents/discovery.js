@@ -383,12 +383,16 @@ async function main() {
     process.exit(1);
   }
 
-  if (!Array.isArray(companiesRaw) || companiesRaw.length === 0) {
-    console.warn('data/companies.json exists but contains 0 companies. Nothing to do.');
-    process.exit(0);
+  // Validate companies list (filter out example/blank names)
+  let companies;
+  try {
+    companies = config.validateCompanies(companiesRaw);
+  } catch (err) {
+    console.error('Company validation failed:', err.message);
+    process.exit(1);
   }
 
-  const companies = companiesRaw; // operate in-place
+  // operate in-place on the validated array
   const indices = [];
   companies.forEach((c, i) => {
     if (!c || !c.domain) return; // only process companies with known domain
