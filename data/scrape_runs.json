@@ -208,5 +208,235 @@
     "method": "direct_html",
     "success": true,
     "error": null
+  },
+  {
+    "company_id": "wwwstructurebotcom",
+    "scraped_at": "2026-04-14T01:39:10.957Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 13760,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwbiomasscontrolscom",
+    "scraped_at": "2026-04-14T01:39:10.994Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 66183,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwavalanchefusioncom",
+    "scraped_at": "2026-04-14T01:39:11.327Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 33837,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "lionenergycom",
+    "scraped_at": "2026-04-14T01:39:10.995Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 180362,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwkorapowercom",
+    "scraped_at": "2026-04-14T01:39:11.516Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 122218,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwgetlumencom",
+    "scraped_at": "2026-04-14T01:39:11.810Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 53113,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwsedroncom",
+    "scraped_at": "2026-04-14T01:39:12.758Z",
+    "status_code": 403,
+    "content_type": "text/html",
+    "byte_length": 75193,
+    "method": "direct_html",
+    "success": false,
+    "error": null
+  },
+  {
+    "company_id": "wwwnorcalcontrolsnet",
+    "scraped_at": "2026-04-14T01:39:11.447Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 215687,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwgoflexcom",
+    "scraped_at": "2026-04-14T01:39:12.885Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 139030,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwheat2powerus",
+    "scraped_at": "2026-04-14T01:39:12.987Z",
+    "status_code": 200,
+    "content_type": "text/html;charset=utf-8",
+    "byte_length": 131262,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwenvirosparkenergycom",
+    "scraped_at": "2026-04-14T01:39:11.427Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 162431,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwterawatt-technologycom",
+    "scraped_at": "2026-04-14T01:39:13.198Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 204211,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwcoreshellcom",
+    "scraped_at": "2026-04-14T01:39:13.329Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 23939,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwcoastalmeasurescom",
+    "scraped_at": "2026-04-14T01:39:13.255Z",
+    "status_code": 200,
+    "content_type": "text/html",
+    "byte_length": 7995,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwcesrenewablescom",
+    "scraped_at": "2026-04-14T01:39:13.539Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 228917,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwsolideccom",
+    "scraped_at": "2026-04-14T01:39:13.457Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 31615,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "voltifycom",
+    "scraped_at": "2026-04-14T01:39:14.099Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 225190,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwwastedearth",
+    "scraped_at": "2026-04-14T01:39:13.298Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 96204,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwvulcanelementscom",
+    "scraped_at": "2026-04-14T01:39:14.334Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 73406,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwdimension-energycom",
+    "scraped_at": "2026-04-14T01:39:14.600Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 38339,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwvalaratomicscom",
+    "scraped_at": "2026-04-14T01:39:14.813Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 26935,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwdpsenergycom",
+    "scraped_at": "2026-04-14T01:39:14.650Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 347459,
+    "method": "direct_html",
+    "success": true,
+    "error": null
+  },
+  {
+    "company_id": "wwwtmt-ipecom",
+    "scraped_at": "2026-04-14T01:39:14.068Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 487096,
+    "method": "direct_html",
+    "success": true,
+    "error": null
   }
 ]
