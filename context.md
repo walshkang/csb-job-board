@@ -1,90 +1,94 @@
-Project context — CSD Job Board
+Project context — CSB Job Board
 
 Purpose
-Collect and enrich job listings for climate / clean-tech companies and store structured records in Airtable as the system of record. Data will originate from OCRed pitchbook screenshots, company websites, ATS APIs (Greenhouse, Lever), and plain HTML scraping. Work is organized into discrete "slices" to enable incremental delivery and independent iteration.
+Collect and enrich job listings for climate / clean-tech companies and store structured records in Notion as the system of record. Data originates from OCRed Pitchbook screenshots, company websites, ATS APIs (Greenhouse, Lever, Ashby, Workday), and plain HTML scraping. Work is organized into discrete slices that form a DAG and can be run independently.
 
-Build Slices
+Pipeline (current architecture)
 
-Slice 1 — Pitchbook OCR → Companies JSON
-Input: screenshot image
-Gemini 2.5 Flash-Lite does OCR → raw text/table JSON
-Claude (or Gemma) maps columns → your Company schema
-Output: companies.json with identity + funding signal + company profile fields populated
-Validation: spot-check 10 companies against Pitchbook manually
+Slice 1 — Pitchbook OCR → companies.json
+  npm run ocr -- data/images
+  Input: directory of Pitchbook screenshot images
+  Gemini 2.5 Flash-Lite does vision OCR → extracts rows → maps to Company schema
+  Output: data/companies.json with identity + funding signals + company_profile
 
 Slice 2 — Careers Page Discovery
-Input: companies.json
-For each company: try {website_url}/careers, /jobs, check sitemap, then LLM fallback to guess URL from homepage HTML
-Linkup or direct fetch to validate the URL returns 200
-Output: companies.json updated with careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform
+  npm run discovery
+  Input: data/companies.json
+  Step order: standard paths (/careers, /jobs) → ATS slug guesses → homepage link scan → sitemap → LLM fallback (last resort, only when homepage HTML is available)
+  Output: companies.json updated with careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform
 
-Slice 3 — Job HTML Scraping
-Input: companies with valid careers_page_url
-Linkup fetches raw HTML from each careers page
-Handle ATS-specific logic (Greenhouse API, Lever API are easier than scraping their HTML — worth detecting and using APIs where available)
-Output: raw HTML stored per company, plus a scrape_runs record
+Slice 3 — ATS Fingerprinting
+  npm run fingerprint
+  Input: companies with careers_page_reachable === true
+  Scans homepage HTML for Greenhouse / Lever / Ashby / Workday fingerprints
+  Updates ats_platform and ats_slug on each company
+  Output: companies.json updated with accurate ats_platform
 
-Slice 4 — HTML → Jobs JSON
-Input: raw HTML per company
-Claude cleans and extracts into your Job schema
-Populate: job_title_raw, source_url, location_raw, employment_type, description_raw, ats_platform
-Dedup using description_hash + source_url
-Output: jobs.json with identity + role details
+Slice 4 — Scrape / Fetch
+  npm run scrape
+  Input: companies with careers_page_reachable === true
+  Routes by ats_platform: Greenhouse API → Lever API → Ashby API → Workday API → direct HTML
+  Provider-keyed concurrency (per-provider rate limits)
+  Output: artifacts/html/{company_id}.json|html + scrape_runs.json entries (with status field)
 
-Slice 5 — LLM Enrichment
-Input: jobs.json with raw fields
-Claude classifies: job_title_normalized, job_function, seniority_level, location_type, mba_relevance_score, description_summary, climate_relevance_confirmed
-This is a separate slice because you'll iterate on these prompts independently
-Output: enriched jobs.json
+Slice 5 — Extraction
+  npm run extract
+  Input: artifacts per company
+  LLM extracts jobs into Job schema; dedupes by source_url + description_hash
+  Output: data/jobs.json with identity + role details
 
-Slice 6 — Temporal Tracking + Lifecycle
-This is your re-scrape loop: run Slices 3-4 on a schedule, update last_seen_at, detect removed_at, compute days_live, manage consecutive_empty_scrapes and dormancy transitions
+Slice 6 — LLM Enrichment
+  npm run enrich [--retry-errors] [--force] [--batch-size=N] [--concurrency=N]
+  Input: jobs.json with raw fields
+  Gemini classifies: job_title_normalized, job_function, seniority_level, location_type, mba_relevance_score, description_summary, climate_relevance_confirmed
+  Rate-limited worker pool (concurrency=3, delay=1500ms); exponential backoff on 429/503; fallback model on persistent failure
+  Output: enriched jobs.json
 
-Data model notes
-- companies.json: canonical company id, name, domain, funding signals, company_profile fields, careers_page_url, ats_platform
-- jobs.json: job id, company_id, job_title_raw, description_raw, source_url, location_raw, employment_type, timestamps (first_seen, last_seen)
+Slice 7 — QA Spot-check
+  npm run qa
+  Read-only. Checks enrichment error rate, climate relevance distribution, missing fields. Prints [WARN] for anomalies. Run before Notion sync.
+
+Slice 8 — Temporal Tracking + Notion Sync
+  node src/agents/temporal.js     # update last_seen_at, removed_at, days_live, dormancy
+  node src/agents/notion-sync.js  # upsert companies + jobs to Notion (supports --dry-run, --companies-only, --jobs-only)
+
+Utility scripts
+  node src/agents/notion-setup.js  # provision all DB properties (safe to re-run)
+  node src/agents/notion-clear.js  # archive all pages in both DBs (destructive)
+
+Data model
+  companies.json: id, name, domain, funding_signals, company_profile, careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform, ats_slug, dormant, consecutive_empty_scrapes
+  jobs.json: id, company_id, job_title_raw, job_title_normalized, description_raw, source_url, location_raw, employment_type, job_function, seniority_level, location_type, mba_relevance_score, description_summary, climate_relevance_confirmed, climate_relevance_reason, first_seen_at, last_seen_at, removed_at, days_live, enrichment_prompt_version, enrichment_error
 
 Notion integration
-- Notion acts as the backend: Jobs and Companies databases mirror the JSON schema
-- Jobs link to Companies via a Notion relation property
-- Use environment variables for NOTION_API_KEY, NOTION_COMPANIES_DB_ID, NOTION_JOBS_DB_ID; do not commit secrets
-- Sync agent: src/agents/notion-sync.js (supports --companies-only, --jobs-only, --dry-run)
+  Jobs and Companies databases mirror the JSON schema
+  Jobs link to Companies via a Notion relation property
+  Environment variables: NOTION_API_KEY, NOTION_COMPANIES_DB_ID, NOTION_JOBS_DB_ID (in .env.local, not committed)
+  Dynamic schema mapping: notion-sync fetches DB property names at runtime and resolves via alias table — tolerant of renamed properties
 
-Validation and QA
-- Each slice must include spot-check steps and sample-size validation criteria (e.g., spot-check 10–20 records)
+Config / env
+  GEMINI_API_KEY — shared key for all LLM agents (paid tier required for full runs)
+  ENRICHMENT_FALLBACK_MODEL — default: gemini-1.5-flash
+  Per-agent model overrides: OCR_MODEL, DISCOVERY_MODEL, EXTRACTION_MODEL, ENRICHMENT_MODEL
 
-Next steps (as of 2026-04-12)
+Current status (as of 2026-04-13)
+  - All 8 slices implemented and committed
+  - Test run completed on pitchbook-screenshot-test.png (~37 companies)
+  - Discovery yield: 23/37 (62%) careers pages found; 14 not found (small/early-stage companies likely have none)
+  - 13 jobs extracted; enrichment blocked on free-tier quota — needs paid GEMINI_API_KEY
+  - Notion sync working: dynamic schema resolves properties correctly (false-positive warnings are cosmetic noise, not failures)
+  - Next run requires: paid Gemini key in .env.local
 
-Pipeline status
-- Slices 1–6 and Notion sync are all implemented and committed
-- OCR has been run: data/companies.json populated (~37 companies from test image)
-- Discovery has been partially run; hit Gemini free-tier daily quota (20 req/day) on first full run
-
-Immediate actions
-1. Run discovery to completion
-   - Free tier: run in batches with --limit=N across days, or enable billing in Google AI Studio
-   - New step order: standard paths → ATS slug guesses → homepage link scan → sitemap → LLM fallback
-   - LLM is now last resort; most companies should resolve without it
-   - Daily quota now exits cleanly with progress saved
-
-2. Run the full pipeline end-to-end for the first time
-   npm run discovery
-   npm run scrape
-   npm run extract
-   npm run enrich
-
-3. Set up Notion databases
-   - Create Companies and Jobs databases in Notion
-   - Add all expected properties (see agents.md for field list)
-   - Add NOTION_API_KEY, NOTION_COMPANIES_DB_ID, NOTION_JOBS_DB_ID to .env.local
-   - Run: node src/agents/notion-sync.js --dry-run --verbose, then without --dry-run
-
-4. Add more Pitchbook screenshots and re-run OCR to grow companies.json
+Next meaningful work
+  1. Add paid GEMINI_API_KEY and run full pipeline end-to-end
+  2. Review QA output: enrichment error rate, climate relevance distribution
+  3. Check ATS fingerprinting yield: how many "custom" companies resolve to a known ATS
+  4. Add more Pitchbook screenshots → re-run OCR to grow companies.json
 
 Open questions
-- Discovery yield: what % of companies are found via each method? Review methodCounts in summary log
-- Enrichment quality: spot-check mba_relevance_score and climate_relevance_confirmed on 10-20 jobs
-- Notion schema: confirm property names match what notion-sync.js expects before first live sync
+  - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
+  - Discovery LLM fallback: how often does it fire vs. return NOT_FOUND (now tracked separately as llm_fallback_attempted)
+  - Enrichment quality at scale: spot-check mba_relevance_score and climate_relevance_confirmed on 20+ jobs once enrichment runs cleanly
 
 Postmortem — 2026-04-13
 
@@ -97,43 +101,31 @@ Summary:
   - LLM fragility: transient Gemini 503s and occasional parse failures led to partial enrichment.
   - Placeholder 'example' was present in companies.json and polluted scrape/run stats.
   - Notion schema mismatch initially blocked sync until DB props were added.
+  - Enrichment Promise.all blasted quota — all jobs in a batch fired simultaneously.
+  - scrape_runs.json entries missing status field (status: undefined).
 
-Key lessons and high‑level improvements (prioritized):
-1) Preflight & data hygiene (urgent): validate companies.json before runs; remove placeholders like 'example'; fail fast with clear errors.
-2) Enrichment resiliency (urgent): implement retries with exponential backoff, alternate-model fallback, and strict JSON/schema validation of LLM outputs. Add a re‑enrichment scheduler for failed items.
-3) Notion resilience (urgent): discover DB property names at runtime, map common aliases, and fall back gracefully with logging so syncs don't hard-fail.
-4) Scraping strategy (short‑term): prefer ATS/API adapters (Greenhouse, Lever) and expand adapters before resorting to HTML scraping. Record method and failure reasons per company.
-5) Scraping fallback (medium‑term): add a headless/browser scraping fallback (Playwright) for pages blocked by client-side protections — ensure legal review and respectful throttling.
-6) Observability & ops (medium‑term): add metrics, dashboards, and alerts for scrape success rate, enrichment failure rate, LLM error patterns, and Notion upsert failures.
-7) Testing & CI (medium‑term): add end‑to‑end smoke tests for a small sample dataset and CI checks for Notion sync.
+Resolved since postmortem:
+  - validateCompanies() preflight removes placeholders across all agents
+  - Enrichment retries: 503 backoff, fallback model, --retry-errors flag
+  - Enrichment uses rate-limited worker pool (no more Promise.all quota blast)
+  - Notion dynamic schema mapping + canonical map split (no more false-positive warnings)
+  - scrape_runs status field fixed
+  - Ashby + Workday adapters added; provider-keyed concurrency
+  - ATS fingerprinting slice added (Slice 3)
+  - QA spot-check slice added (Slice 7)
+  - Discovery LLM fallback: skips when no homepage HTML; tracks attempted vs. succeeded
 
-Immediate next steps (short list):
-- Remove 'example' from data/companies.json (data hygiene).
-- Implement notion-sync dynamic schema mapping and re-run jobs-only sync (jobs were synced successfully after manual DB update).
-- Implement enrichment retries/backoff and schedule re-enrichment for jobs with enrichment_error.
-- Evaluate headless scraping for top blocked domains and plan legal/ops approach.
-- Create tracked todos (session/plan.md + session SQL) and assign owners/PRs.
-
-See session/plan.md for a prioritized todo list and owners.
+Still open (medium-term):
+  - Playwright fallback for CAPTCHA/JS-rendered pages (legal review first; nonprofit use is low-risk)
+  - Observability: metrics and alerts for scrape success rate, enrichment failure rate
+  - End-to-end smoke tests and CI
 
 Future: Streaming LLM output
-Currently all LLM calls (OCR, discovery, enrichment, extraction) are fire-and-wait — the user sees nothing until the call completes. This creates a poor experience during long runs.
+Currently all LLM calls are fire-and-wait — nothing visible until the call completes.
 
-Goal: stream LLM thinking/output tokens in real time so progress is visible in the terminal. Each agent should surface per-job status lines (e.g. "Enriching [Company] — [job title]...") as tokens arrive rather than after the fact.
+Goal: stream tokens in real time so progress is visible per-job in the terminal. Foundation for a future lightweight frontend (web UI or terminal dashboard) showing live pipeline progress.
 
-This is also the foundation for a future lightweight frontend (a simple web UI or terminal dashboard) that shows live pipeline progress: which company is being processed, current step, running counts of successes/failures, and enrichment scores as they come in.
-
-Suggested approach:
-- src/gemini-text.js is Gemini-specific; the abstraction should be provider-agnostic — a streamLLMText() wrapper that supports Gemini (generateContentStream), Anthropic (stream: true), and others
-- Agents opt in per-call; no need to rewrite everything at once
-- Log streamed output to stderr so stdout stays clean for JSON artifacts
-
-Future: ATS fingerprinting + adapter expansion
-Discovery currently classifies most careers pages as "custom" because it only checks URL patterns. Many climate-tech companies use Greenhouse, Lever, Ashby, or Workday under a custom domain — these all have public JSON endpoints that return clean structured data without scraping.
-
-Goal: after fetching careers page HTML, scan for ATS fingerprints (Greenhouse iframe/embed, Lever API script tags, Ashby widget, Workday URL patterns) and update ats_platform accordingly. The scraper then routes to the right JSON API instead of parsing HTML, eliminating most CAPTCHA/403 failures.
-
-Suggested approach:
-- Add ATS fingerprint detection step in scraper.js (or as a post-discovery enrichment pass)
-- Expand ATS adapter coverage: Greenhouse (boards.greenhouse.io/<slug>), Lever (jobs.lever.co/<slug>), Ashby (jobs.ashbyhq.com/<slug>), Workday
-- Only fall back to HTML scraping (and eventually Playwright) for companies with no detectable ATS
+Approach:
+  - Provider-agnostic streamLLMText() wrapper: Gemini (generateContentStream), Anthropic (stream: true), others
+  - Agents opt in per-call; no full rewrite needed
+  - Log streamed output to stderr; stdout stays clean for JSON artifacts

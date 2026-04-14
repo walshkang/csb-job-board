@@ -3,3 +3,7 @@ node_modules/
 .env.local
 .DS_Store
 artifacts/html/
+
+# Runtime data artifacts — not source controlled
+data/*.json
+!data/climate-tech-map-industry-categories.json
