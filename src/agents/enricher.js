@@ -9,7 +9,7 @@ const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
 const ENRICHMENT_PROMPT_VERSION = '1.1.0';
 
 const config = require('../config');
-const { callGeminiText } = require('../gemini-text');
+const { callGeminiText, streamGeminiText } = require('../gemini-text');
 
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
 const SENIORITY = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite']);
@@ -43,16 +43,22 @@ function renderPrompt(template, vars) {
   return out;
 }
 
-async function callGeminiEnrichment(prompt) {
+async function callGeminiEnrichment(prompt, { stream = false, label = '' } = {}) {
   const apiKey = config.enrichment.apiKey;
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-  return callGeminiText({
+  const opts = {
     apiKey,
     model: config.enrichment.model,
     fallbackModel: config.enrichment.fallbackModel || null,
     prompt,
     maxOutputTokens: 1200,
-  });
+  };
+  if (stream) {
+    const prefix = label ? `\n[${label}] ` : '\n';
+    process.stderr.write(prefix);
+    return streamGeminiText({ ...opts, onToken: chunk => process.stderr.write(chunk) });
+  }
+  return callGeminiText(opts);
 }
 
 function extractJSON(text) {
@@ -104,7 +110,7 @@ function sanitize(parsed) {
   return out;
 }
 
-async function enrichJob(job, categories, promptTemplate) {
+async function enrichJob(job, categories, promptTemplate, options = {}) {
   const desc = (job.description_raw || '').slice(0, 8000);
   const prompt = renderPrompt(promptTemplate, {
     job_title_raw: job.job_title_raw || job.title || '',
@@ -114,7 +120,7 @@ async function enrichJob(job, categories, promptTemplate) {
     category_names: categories.join(', ')
   });
 
-  const raw = await callGeminiEnrichment(prompt);
+  const raw = await callGeminiEnrichment(prompt, options);
   const parsed = extractJSON(raw);
   const sanitized = sanitize(parsed);
 
@@ -180,6 +186,7 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
 async function main() {
   const args = process.argv.slice(2);
   const force = args.includes('--force');
+  const useStream = args.includes('--stream');
   const batchSizeArg = args.find(a => a.startsWith('--batch-size='));
   const BATCH_SIZE = batchSizeArg ? parseInt(batchSizeArg.split('=')[1], 10) || 10 : 10;
   const concurrencyArg = args.find(a => a.startsWith('--concurrency='));
@@ -233,8 +240,9 @@ async function main() {
     console.log(`Processing batch ${i+1}/${batches.length} (${batch.length} jobs)`);
 
     const tasks = batch.map(job => async () => {
+      const enrichOptions = { stream: useStream, label: job.id || job.job_title_raw || '' };
       try {
-        await enrichJob(job, categories, promptTemplate);
+        await enrichJob(job, categories, promptTemplate, enrichOptions);
         enrichedCount += 1;
         const s = job.mba_relevance_score || 0;
         const idx = Math.min(4, Math.floor(s / 20));
