@@ -40,7 +40,7 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
           try {
             await tasks[taskIndex]();
           } catch (e) {
-            // swallow - individual tasks set errors on jobs
+            // swallow - individual tasks handle errors
           }
         })();
         inFlight.add(p);
@@ -58,14 +58,16 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
   };
 }
 
-async function categorizeCompany(companyId, companyName, repJob, categoriesList, jobsForCompany, opts) {
+async function categorizeCompany(companyRecord, repJob, categoriesList, opts) {
   const { apiKey, model, dryRun } = opts;
+  const companyId = companyRecord.id;
+  const companyName = companyRecord.name || companyRecord.company || String(companyId);
   const jobTitle = repJob.job_title_normalized || repJob.job_title_raw || '';
   const jobFunction = repJob.job_function || '';
   const climateReason = repJob.climate_relevance_reason || '';
   const descSummary = repJob.description_summary || '';
 
-  const prompt = `You are categorizing a job at a climate-tech company for an MBA-focused job board.\n\nCompany: ${companyName}\nJob title: ${jobTitle}\nJob function: ${jobFunction}\nClimate relevance reason: ${climateReason}\nDescription summary: ${descSummary}\n\nClimate-tech categories (Tech Category Name | Related Opportunity Area | Primary Sector):\n${categoriesList}\n\nTask: Select the single best-matching Tech Category Name for this company/role. If the company clearly operates in one category, use that — the job function doesn't need to match. If the company operates across multiple categories, pick the most specific one. If no category fits (e.g. generic SaaS, pure finance), return "None".\n\nReturn ONLY a JSON object:\n{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}`;
+  const prompt = `You are categorizing a climate-tech company for an MBA-focused job board.\n\nCompany: ${companyName}\nRepresentative job title: ${jobTitle}\nJob function: ${jobFunction}\nClimate relevance reason: ${climateReason}\nDescription summary: ${descSummary}\n\nClimate-tech categories (Tech Category Name | Related Opportunity Area | Primary Sector):\n${categoriesList}\n\nTask: Select the single best-matching Tech Category Name for this company. The category should reflect what the company does, not the specific job. If the company operates across multiple categories, pick the most specific one. If no category fits (e.g. generic SaaS, pure finance), return "None".\n\nReturn ONLY a JSON object:\n{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}`;
 
   try {
     const raw = await callGeminiText({ apiKey, model, prompt, maxOutputTokens: 4096 });
@@ -73,25 +75,21 @@ async function categorizeCompany(companyId, companyName, repJob, categoriesList,
     try {
       parsed = extractJSON(raw);
     } catch (e) {
-      const err = { message: 'parse_failed', detail: String(e.message || e), raw_response: raw };
-      for (const j of jobsForCompany) j.category_error = err;
       console.error(`Company ${companyId} (${companyName}): JSON parse failed`);
+      companyRecord.category_error = String(e.message || e);
       return;
     }
 
-    // Apply parsed fields to all jobs for this company
     const ctc = parsed.climate_tech_category == null ? null : String(parsed.climate_tech_category).trim();
     const primary = parsed.primary_sector == null ? null : String(parsed.primary_sector).trim();
     const opp = parsed.opportunity_area == null ? null : String(parsed.opportunity_area).trim();
     const conf = parsed.category_confidence == null ? null : String(parsed.category_confidence).trim();
 
-    for (const j of jobsForCompany) {
-      j.climate_tech_category = ctc;
-      j.primary_sector = primary;
-      j.opportunity_area = opp;
-      j.category_confidence = conf;
-      delete j.category_error;
-    }
+    companyRecord.climate_tech_category = ctc;
+    companyRecord.primary_sector = primary;
+    companyRecord.opportunity_area = opp;
+    companyRecord.category_confidence = conf;
+    delete companyRecord.category_error;
 
     if (dryRun) {
       console.log(`DRY ${companyId} -> ${ctc} (${conf})`);
@@ -99,9 +97,8 @@ async function categorizeCompany(companyId, companyName, repJob, categoriesList,
       console.info(`Company ${companyId} -> ${ctc} (${conf})`);
     }
   } catch (err) {
-    const eobj = { message: 'call_failed', detail: String(err.message || err) };
-    for (const j of jobsForCompany) j.category_error = eobj;
-    console.error(`Company ${companyId} (${companyName}): callGeminiText failed: ${String(err.message || err)}`);
+    console.error(`Company ${companyId} (${companyName}): call failed: ${String(err.message || err)}`);
+    companyRecord.category_error = String(err.message || err);
   }
 }
 
@@ -111,11 +108,9 @@ async function main() {
   const dryRun = args.includes('--dry-run');
 
   const jobs = readJSONSafe(JOBS_PATH, null);
-  if (!jobs) {
-    console.error('No data/jobs.json found');
-    process.exit(1);
-  }
-  const companies = readJSONSafe(COMPANIES_PATH, []);
+  if (!jobs) { console.error('No data/jobs.json found'); process.exit(1); }
+  const companies = readJSONSafe(COMPANIES_PATH, null);
+  if (!companies) { console.error('No data/companies.json found'); process.exit(1); }
   const taxonomy = readJSONSafe(TAX_PATH, []);
 
   const categoriesList = taxonomy.map(c => {
@@ -125,31 +120,40 @@ async function main() {
     return `${name} | ${area} | ${sector}`;
   }).join('\n');
 
-  // Group jobs by company_id
-  const byCompany = new Map();
+  // Build representative job map: company_id → best job (prefer enriched)
+  const repJobByCompany = new Map();
   for (const job of jobs) {
-    const cid = job.company_id || job.company || 'unknown';
-    if (!byCompany.has(cid)) byCompany.set(cid, []);
-    byCompany.get(cid).push(job);
+    const cid = job.company_id;
+    if (!cid) continue;
+    const existing = repJobByCompany.get(cid);
+    if (!existing || (job.last_enriched_at && !existing.last_enriched_at)) {
+      repJobByCompany.set(cid, job);
+    }
   }
 
-  // Build tasks: one per company
-  const tasks = [];
   const apiKey = config.enrichment.apiKey;
   const model = config.enrichment.model;
   const pool = createRateLimitedPool(3, 1000);
 
-  for (const [companyId, jobsForCompany] of byCompany.entries()) {
-    // skip when first job already has climate_tech_category and not --force
-    const firstJob = jobsForCompany[0] || {};
-    if (!force && firstJob.climate_tech_category) continue;
+  const tasks = [];
+  for (const company of companies) {
+    // Skip if already categorized unless --force
+    if (!force && company.climate_tech_category) continue;
 
-    const companyRecord = (companies || []).find(c => String(c.id) === String(companyId) || String(c.id) === String(firstJob.company_id));
-    const companyName = (companyRecord && (companyRecord.name || companyRecord.company || companyRecord.title)) || firstJob.company_name || String(companyId);
+    // Representative job: prefer a real job, otherwise synthesize from company description
+    let repJob = repJobByCompany.get(company.id);
+    if (!repJob) {
+      const cp = company.company_profile || {};
+      const desc = (cp.description && String(cp.description).trim()) || company.description || company.name || '';
+      repJob = {
+        job_title_normalized: '',
+        job_function: '',
+        description_summary: desc,
+        climate_relevance_reason: '',
+      };
+    }
 
-    const repJob = firstJob;
-
-    tasks.push(async () => categorizeCompany(companyId, companyName, repJob, categoriesList, jobsForCompany, { apiKey, model, dryRun }));
+    tasks.push(async () => categorizeCompany(company, repJob, categoriesList, { apiKey, model, dryRun }));
   }
 
   if (tasks.length === 0) {
@@ -161,16 +165,38 @@ async function main() {
   await pool(tasks);
 
   if (dryRun) {
-    console.log('Dry-run complete. No file written.');
+    console.log('Dry-run complete. No files written.');
     return;
   }
 
+  // Write companies (source of truth for category)
   try {
-    writeJSONAtomic(JOBS_PATH, jobs);
-    console.log('Wrote updated data/jobs.json');
+    writeJSONAtomic(COMPANIES_PATH, companies);
+    console.log('Wrote updated data/companies.json');
   } catch (e) {
-    console.error('Failed to write jobs.json:', e.message || e);
+    console.error('Failed to write companies.json:', e.message || e);
     process.exit(1);
+  }
+
+  // Scrub category fields from jobs (they now live on companies)
+  let scrubbed = 0;
+  for (const job of jobs) {
+    if ('climate_tech_category' in job || 'primary_sector' in job || 'opportunity_area' in job || 'category_confidence' in job || 'category_error' in job) {
+      delete job.climate_tech_category;
+      delete job.primary_sector;
+      delete job.opportunity_area;
+      delete job.category_confidence;
+      delete job.category_error;
+      scrubbed++;
+    }
+  }
+  if (scrubbed > 0) {
+    try {
+      writeJSONAtomic(JOBS_PATH, jobs);
+      console.log(`Scrubbed category fields from ${scrubbed} job(s) in data/jobs.json`);
+    } catch (e) {
+      console.error('Failed to write jobs.json:', e.message || e);
+    }
   }
 }
 
