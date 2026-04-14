@@ -3,600 +3,1800 @@
     "Tech Category Name": "Wind",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "offshore wind",
+      "onshore wind",
+      "rotor blades",
+      "wind energy",
+      "wind power",
+      "wind turbines"
+    ],
+    "short_description": "Technologies that harness kinetic energy from wind to generate electricity via onshore or offshore turbines.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Wind_power",
+      "https://www.iea.org/energy-system/renewables/wind"
+    ]
   },
   {
     "Tech Category Name": "Waste-Based Production",
     "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Pilot"
+    "keywords": [
+      "biomass conversion",
+      "circular manufacturing",
+      "municipal solid waste",
+      "syngas",
+      "waste-to-chemicals"
+    ],
+    "short_description": "Converting waste materials into useful chemicals and plastics to reduce virgin fossil fuel use.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Waste-to-energy",
+      "https://www.nrel.gov/bioenergy/waste-to-energy.html"
+    ]
   },
   {
     "Tech Category Name": "Waste Heat Recovery",
     "Related Opportunity Area": "Industrial Heat",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "cogeneration",
+      "heat exchangers",
+      "industrial efficiency",
+      "thermal energy recovery",
+      "waste heat recovery"
+    ],
+    "short_description": "Capturing and reusing excess heat generated during industrial processes to improve overall energy efficiency.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Waste_heat_recovery_unit",
+      "https://www.energy.gov/eere/amo/waste-heat-recovery"
+    ]
   },
   {
     "Tech Category Name": "Waste & Recycling",
     "Related Opportunity Area": "Cross-Cutting Solutions",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "circular economy",
+      "material recovery",
+      "recycling technologies",
+      "upcycling",
+      "waste management"
+    ],
+    "short_description": "Systems and processes for recovering, sorting, and processing waste materials into secondary raw materials.",
+    "confidence": "high",
+    "sources": [
+      "https://www.epa.gov/recycle",
+      "https://en.wikipedia.org/wiki/Recycling"
+    ]
   },
   {
     "Tech Category Name": "Thermal",
     "Related Opportunity Area": "Energy Storage & Demand Flexibility",
     "Primary Sector": "Electricity",
-    "Readiness": "Pilot"
+    "keywords": [
+      "latent heat storage",
+      "molten salt",
+      "sensible heat",
+      "thermal energy storage",
+      "thermochemical storage"
+    ],
+    "short_description": "Storing energy as heat or cold for later use in electricity generation or direct temperature control.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Thermal_energy_storage",
+      "https://www.iea.org/reports/innovation-in-thermal-energy-storage"
+    ]
   },
   {
     "Tech Category Name": "Textile Circularity",
     "Related Opportunity Area": "Fashion & Textiles",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "circular fashion",
+      "fiber-to-fiber recycling",
+      "garment recycling",
+      "sustainable textiles",
+      "textile recovery"
+    ],
+    "short_description": "Technologies that enable the recycling and closed-loop lifecycle of fabrics and clothing materials.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Textile_recycling",
+      "https://www.ellenmacarthurfoundation.org/fashion-and-the-circular-economy-deep-dive"
+    ]
   },
   {
     "Tech Category Name": "Teleworking & Digital Solutions",
     "Related Opportunity Area": "Efficiency & Reduced Demand",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "digital collaboration",
+      "remote work",
+      "telecommuting",
+      "transport demand reduction",
+      "virtual meetings"
+    ],
+    "short_description": "Digital platforms and practices that reduce the need for physical commuting and business travel.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Telecommuting",
+      "https://www.iea.org/reports/working-from-home-can-save-energy-and-reduce-emissions"
+    ]
   },
   {
     "Tech Category Name": "System Monitoring & Optimization",
     "Related Opportunity Area": "Enhanced Transmission & Distribution",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "advanced metering infrastructure",
+      "demand response",
+      "grid edge computing",
+      "grid optimization",
+      "scada",
+      "smart grid"
+    ],
+    "short_description": "Software and sensor networks that monitor and dynamically balance electricity grids to improve efficiency.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Smart_grid",
+      "https://www.energy.gov/oe/grid-modernization-and-smart-grid"
+    ]
   },
   {
     "Tech Category Name": "Synthetic E-fuels",
     "Related Opportunity Area": "Sustainable Fuels",
     "Primary Sector": "Transportation",
-    "Readiness": "Pilot"
+    "keywords": [
+      "e-fuels",
+      "electrofuels",
+      "green hydrogen fuels",
+      "power-to-liquid",
+      "synthetic aviation fuel"
+    ],
+    "short_description": "Drop-in synthetic fuels produced using captured carbon dioxide and low-emission electricity.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/energy-system/low-emission-fuels/e-fuels",
+      "https://en.wikipedia.org/wiki/Electrofuel"
+    ]
   },
   {
     "Tech Category Name": "Supply Chain",
     "Related Opportunity Area": "Reduced Food Waste",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "cold chain optimization",
+      "food traceability",
+      "inventory management",
+      "spoilage prevention",
+      "supply chain tracking"
+    ],
+    "short_description": "Logistics and tracking technologies designed to minimize food loss from farm to retail.",
+    "confidence": "high",
+    "sources": [
+      "https://www.fao.org/food-loss-and-food-waste/en/",
+      "https://en.wikipedia.org/wiki/Food_loss_and_waste"
+    ]
   },
   {
     "Tech Category Name": "Solar",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "photovoltaics",
+      "pv",
+      "rooftop solar",
+      "solar",
+      "solar inverters",
+      "solar panels"
+    ],
+    "short_description": "Technologies that convert sunlight into electricity (photovoltaics) for distributed and utility-scale power.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Photovoltaics",
+      "https://www.iea.org/reports/solar-pv"
+    ]
   },
   {
     "Tech Category Name": "Smart Buildings",
     "Related Opportunity Area": "Operational Efficiency",
     "Primary Sector": "Buildings",
-    "Readiness": "Commercial"
+    "keywords": [
+      "bems",
+      "building automation",
+      "energy management systems",
+      "hvac optimization",
+      "iot buildings",
+      "smart meters"
+    ],
+    "short_description": "Automated systems and IoT sensors that optimize energy consumption, heating, and lighting in built environments.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Building_automation",
+      "https://www.iea.org/energy-system/buildings"
+    ]
   },
   {
     "Tech Category Name": "Seed Editing & Breeding",
     "Related Opportunity Area": "Sustainable Crops",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Pilot"
+    "keywords": [
+      "crispr agriculture",
+      "crop yield improvement",
+      "drought-resistant seeds",
+      "gene editing",
+      "plant breeding"
+    ],
+    "short_description": "Advanced genetic engineering and breeding techniques to create resilient, high-yield, low-input crops.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Plant_breeding",
+      "https://www.isaaa.org/"
+    ]
   },
   {
     "Tech Category Name": "Scrap-Based EAF",
     "Related Opportunity Area": "Clean Steel",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "eaf",
+      "electric arc furnace",
+      "green steel",
+      "scrap steel recycling",
+      "secondary steelmaking"
+    ],
+    "short_description": "Using electric arc furnaces to melt and recycle scrap steel, significantly reducing emissions compared to primary steelmaking.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Electric_arc_furnace",
+      "https://www.iea.org/reports/iron-and-steel"
+    ]
   },
   {
     "Tech Category Name": "Route & Logistics Optimization",
     "Related Opportunity Area": "Efficiency & Reduced Demand",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "fleet management",
+      "freight optimization",
+      "last-mile efficiency",
+      "logistics ai",
+      "route planning software"
+    ],
+    "short_description": "Software solutions that calculate the most fuel-efficient routes for shipping and transit fleets.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Route_optimization",
+      "https://www.epa.gov/smartway"
+    ]
   },
   {
     "Tech Category Name": "Restoration & Conservation",
     "Related Opportunity Area": "Protecting Nature",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "biodiversity protection",
+      "ecological restoration",
+      "habitat conservation",
+      "peatland conservation",
+      "wetland restoration"
+    ],
+    "short_description": "Practices and tech supporting the recovery and protection of ecosystems to preserve biodiversity and carbon sinks.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ecological_restoration",
+      "https://www.iucn.org/"
+    ]
   },
   {
     "Tech Category Name": "Response",
     "Related Opportunity Area": "Fire Mitigation",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "aerial firefighting",
+      "fire management",
+      "first responder tech",
+      "incident command systems",
+      "wildfire suppression"
+    ],
+    "short_description": "Technologies and systems utilized during active wildfire events to suppress flames and protect resources.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Wildfire_suppression",
+      "https://www.fs.usda.gov/managing-land/fire"
+    ]
   },
   {
     "Tech Category Name": "Regenerative Agriculture",
     "Related Opportunity Area": "Sustainable Crops",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "carbon farming",
+      "cover cropping",
+      "crop rotation",
+      "no-till farming",
+      "soil health"
+    ],
+    "short_description": "Farming practices that restore soil biodiversity, improve water retention, and sequester carbon.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Regenerative_agriculture",
+      "https://www.nature.org/en-us/what-we-do/our-priorities/provide-food-and-water-sustainably/food-and-water-stories/regenerative-agriculture/"
+    ]
   },
   {
     "Tech Category Name": "Reforestation & Afforestation",
     "Related Opportunity Area": "Biological Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Commercial"
+    "keywords": [
+      "afforestation",
+      "carbon sinks",
+      "forest restoration",
+      "silviculture",
+      "tree planting"
+    ],
+    "short_description": "Planting trees in deforested areas (reforestation) or establishing new forests (afforestation) to capture carbon.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Reforestation",
+      "https://www.wri.org/forests"
+    ]
   },
   {
     "Tech Category Name": "Reducing Contrail Formation",
     "Related Opportunity Area": "Efficiency & Reduced Demand",
     "Primary Sector": "Transportation",
-    "Readiness": "Lab"
+    "keywords": [
+      "aviation contrails",
+      "aviation emissions",
+      "cirrus cloud mitigation",
+      "contrail avoidance",
+      "flight path optimization"
+    ],
+    "short_description": "Adjusting flight altitudes and routes to prevent the formation of warming condensation trails from aircraft.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Contrail",
+      "https://www.ipcc.ch/report/aviation-and-the-global-atmosphere/"
+    ]
   },
   {
     "Tech Category Name": "Recycled Concrete",
     "Related Opportunity Area": "Clean Cement & Concrete",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "circular construction",
+      "concrete crushing",
+      "construction demolition waste",
+      "rca",
+      "recycled concrete aggregate"
+    ],
+    "short_description": "Processing demolished concrete into aggregate for use in new construction, reducing demand for virgin materials.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Concrete_recycling",
+      "https://www.epa.gov/smm/sustainable-management-construction-and-demolition-materials"
+    ]
   },
   {
     "Tech Category Name": "Public & Shared Transit Systems",
     "Related Opportunity Area": "Efficiency & Reduced Demand",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "bus rapid transit",
+      "carpooling",
+      "mass transit",
+      "micromobility",
+      "public transportation",
+      "rail networks"
+    ],
+    "short_description": "Infrastructure and platforms promoting mass transit, ride-sharing, and non-individualized motorized transport.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Public_transport",
+      "https://www.apta.com/"
+    ]
   },
   {
     "Tech Category Name": "Production & Process Efficiency",
     "Related Opportunity Area": "Fashion & Textiles",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "fabric waste reduction",
+      "garment tech",
+      "sustainable apparel",
+      "textile manufacturing efficiency",
+      "waterless dyeing"
+    ],
+    "short_description": "Innovations in textile factories that minimize water, energy, and material waste during garment production.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Sustainable_fashion",
+      "https://www.unep.org/explore-topics/resource-efficiency/what-we-do/sustainable-lifestyles/textiles-and-fashion"
+    ]
   },
   {
     "Tech Category Name": "Prevention",
     "Related Opportunity Area": "Fire Mitigation",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "brush clearing",
+      "controlled burns",
+      "fire breaks",
+      "forest thinning",
+      "ignition prevention"
+    ],
+    "short_description": "Land management techniques aimed at reducing fuel loads and mitigating the risk of severe wildfires starting.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Wildfire_management",
+      "https://www.nifc.gov/"
+    ]
   },
   {
     "Tech Category Name": "Precision Agriculture",
     "Related Opportunity Area": "Sustainable Crops",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "agtech",
+      "drone agriculture",
+      "gps farming",
+      "smart farming",
+      "variable rate technology"
+    ],
+    "short_description": "Using data, drones, and sensors to optimize crop inputs like water and fertilizer on a site-specific basis.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Precision_agriculture",
+      "https://www.usda.gov/topics/farming/precision-agriculture"
+    ]
   },
   {
     "Tech Category Name": "Plant-Based",
     "Related Opportunity Area": "Alternative Proteins & Fats",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "-"
+    "keywords": [
+      "meat substitutes",
+      "pea protein",
+      "plant-based meat",
+      "soy protein",
+      "vegan alternatives"
+    ],
+    "short_description": "Food products derived entirely from plants that mimic the taste, texture, and nutrition of animal products.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Meat_analogue",
+      "https://gfi.org/plant-based/"
+    ]
   },
   {
     "Tech Category Name": "Plant MRV",
     "Related Opportunity Area": "Biological Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Pilot"
+    "keywords": [
+      "biomass monitoring",
+      "forest carbon tracking",
+      "measurement reporting verification",
+      "mrv",
+      "remote sensing"
+    ],
+    "short_description": "Measurement, reporting, and verification tech used to quantify carbon stored in plant biomass and soils.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Measurement,_reporting_and_verification",
+      "https://www.wri.org/initiatives/global-forest-watch"
+    ]
   },
   {
     "Tech Category Name": "Ocean Capture",
     "Related Opportunity Area": "Engineered Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Lab"
+    "keywords": [
+      "direct ocean capture",
+      "doc",
+      "electrodialysis",
+      "marine cdr",
+      "ocean carbon dioxide removal"
+    ],
+    "short_description": "Engineered technologies that extract dissolved carbon dioxide directly from seawater.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ocean_carbon_dioxide_removal",
+      "https://www.wri.org/insights/ocean-based-carbon-dioxide-removal"
+    ]
   },
   {
     "Tech Category Name": "Novel Production Processes",
     "Related Opportunity Area": "Clean Cement & Concrete",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Lab"
+    "keywords": [
+      "alternative clinker",
+      "calcination alternatives",
+      "carbon-negative cement",
+      "geopolymers",
+      "low-carbon cement"
+    ],
+    "short_description": "New chemical pathways or manufacturing techniques that eliminate or reduce CO2 emissions during cement production.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Geopolymer_cement",
+      "https://www.iea.org/reports/cement"
+    ]
   },
   {
     "Tech Category Name": "Nitrous Oxide (N₂O) Removal",
     "Related Opportunity Area": "Methane & Nitrous Oxide Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Lab"
+    "keywords": [
+      "agricultural emissions reduction",
+      "catalytic decomposition",
+      "n2o abatement",
+      "nitrous oxide destruction",
+      "non-co2 ghgs"
+    ],
+    "short_description": "Technologies designed to capture or break down nitrous oxide, a potent greenhouse gas, from industrial or agricultural sources.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Nitrous_oxide#Environmental_impact",
+      "https://www.epa.gov/ghgemissions/overview-greenhouse-gases#nitrous-oxide"
+    ]
   },
   {
     "Tech Category Name": "Monitoring",
     "Related Opportunity Area": "Fire Mitigation",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "early warning systems",
+      "satellite fire tracking",
+      "smoke detection algorithms",
+      "thermal cameras",
+      "wildfire detection"
+    ],
+    "short_description": "Sensor networks, cameras, and satellite arrays designed to detect wildfires in their early stages.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Wildfire#Detection",
+      "https://firms.modaps.eosdis.nasa.gov/"
+    ]
   },
   {
     "Tech Category Name": "Mineral Recovery & Circular Mining",
     "Related Opportunity Area": "Mining",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "battery recycling",
+      "critical mineral recovery",
+      "e-waste mining",
+      "tailings reprocessing",
+      "urban mining"
+    ],
+    "short_description": "Extracting valuable metals and minerals from electronic waste, mine tailings, or end-of-life products.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Urban_mining",
+      "https://www.iea.org/reports/the-role-of-critical-minerals-in-clean-energy-transitions"
+    ]
   },
   {
     "Tech Category Name": "Mineral MRV",
     "Related Opportunity Area": "Mineral Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Lab"
+    "keywords": [
+      "carbon accounting",
+      "enhanced weathering mrv",
+      "geochemical verification",
+      "mineralization tracking",
+      "soil inorganic carbon"
+    ],
+    "short_description": "Measurement and verification frameworks to accurately account for CO2 permanently sequestered via rock weathering.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Enhanced_weathering",
+      "https://cdrprimer.org/"
+    ]
   },
   {
     "Tech Category Name": "Mineral Discovery",
     "Related Opportunity Area": "Mining",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "ai in mining",
+      "critical minerals mapping",
+      "geospatial exploration",
+      "ore detection",
+      "resource surveying"
+    ],
+    "short_description": "Using advanced software, AI, and remote sensing to discover new deposits of critical transition minerals.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mineral_exploration",
+      "https://www.usgs.gov/programs/mineral-resources-program"
+    ]
   },
   {
     "Tech Category Name": "Methane (CH₄) Removal",
     "Related Opportunity Area": "Methane & Nitrous Oxide Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Lab"
+    "keywords": [
+      "atmospheric methane removal",
+      "ch4 destruction",
+      "methane oxidation",
+      "methanotrophs",
+      "photocatalytic removal"
+    ],
+    "short_description": "Emerging technologies aimed at actively removing existing methane from the ambient atmosphere.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Atmospheric_methane",
+      "https://www.nationalacademies.org/our-work/atmospheric-methane-removal-development-of-a-research-agenda"
+    ]
   },
   {
     "Tech Category Name": "Methane & Fugitive Emissions Mitigation",
     "Related Opportunity Area": "Mining",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "coal mine methane",
+      "flaring reduction",
+      "fugitive emissions",
+      "leak detection",
+      "ventilation air methane"
+    ],
+    "short_description": "Capturing or destroying methane leaking from active or abandoned mining and extraction operations.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Coal_mine_methane",
+      "https://www.epa.gov/cmop"
+    ]
   },
   {
     "Tech Category Name": "Mechanical",
     "Related Opportunity Area": "Energy Storage & Demand Flexibility",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "caes",
+      "compressed air energy storage",
+      "flywheel energy storage",
+      "gravity storage",
+      "pumped hydro"
+    ],
+    "short_description": "Using mechanical physics, like gravity or rotational inertia, to store and release electrical energy.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Energy_storage#Mechanical",
+      "https://www.energy.gov/oe/energy-storage"
+    ]
   },
   {
     "Tech Category Name": "Marine",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Pilot"
+    "keywords": [
+      "marine hydrokinetic",
+      "ocean thermal energy conversion",
+      "otec",
+      "tidal power",
+      "wave energy"
+    ],
+    "short_description": "Harnessing the kinetic or thermal energy of ocean waves, tides, and currents to generate electricity.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Marine_energy",
+      "https://www.nrel.gov/water/marine-energy.html"
+    ]
   },
   {
     "Tech Category Name": "Manure Management",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "anaerobic digesters",
+      "biogas recovery",
+      "methane capture",
+      "nutrient recovery",
+      "slurry management"
+    ],
+    "short_description": "Processing agricultural waste to capture methane emissions and generate renewable biogas or fertilizer.",
+    "confidence": "high",
+    "sources": [
+      "https://www.epa.gov/agstar",
+      "https://en.wikipedia.org/wiki/Anaerobic_digestion"
+    ]
   },
   {
     "Tech Category Name": "Magnetic",
     "Related Opportunity Area": "Energy Storage & Demand Flexibility",
     "Primary Sector": "Electricity",
-    "Readiness": "Pilot"
+    "keywords": [
+      "grid flexibility",
+      "magnetic storage",
+      "short-term power response",
+      "smes",
+      "superconducting magnetic energy storage"
+    ],
+    "short_description": "Storing energy in the magnetic field created by the flow of direct current in a superconducting coil.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Superconducting_magnetic_energy_storage"
+    ]
   },
   {
     "Tech Category Name": "Low-Emission Powertrain Vehicles",
     "Related Opportunity Area": "Vehicle Electrification",
     "Primary Sector": "Transportation",
-    "Readiness": "Pilot"
+    "keywords": [
+      "alternative drivetrains",
+      "fcev",
+      "fuel cell electric vehicles",
+      "hydrogen vehicles",
+      "zero-emission vehicles"
+    ],
+    "short_description": "Vehicles utilizing alternative clean propulsion systems, typically hydrogen fuel cells, rather than traditional combustion.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Fuel_cell_vehicle",
+      "https://www.afdc.energy.gov/vehicles/fuel_cell.html"
+    ]
   },
   {
     "Tech Category Name": "Lightweight Materials, Engines & Aerodynamic Designs",
     "Related Opportunity Area": "Efficiency & Reduced Demand",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "aerodynamic drag reduction",
+      "carbon fiber transport",
+      "composites",
+      "efficient engines",
+      "vehicle lightweighting"
+    ],
+    "short_description": "Reducing vehicle weight and improving aerodynamics to decrease the energy required for propulsion.",
+    "confidence": "high",
+    "sources": [
+      "https://www.energy.gov/eere/vehicles/lightweight-materials-cars-and-trucks",
+      "https://en.wikipedia.org/wiki/Lightweighting"
+    ]
   },
   {
     "Tech Category Name": "Lifespan",
     "Related Opportunity Area": "Reduced Food Waste",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "edible coatings",
+      "preservation tech",
+      "shelf-life extension",
+      "smart packaging",
+      "spoilage delay"
+    ],
+    "short_description": "Packaging and biological coatings designed to extend the shelf-life of perishable food products.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Shelf_life",
+      "https://www.fao.org/food-loss-and-food-waste/en/"
+    ]
   },
   {
     "Tech Category Name": "Insect-Based",
     "Related Opportunity Area": "Alternative Proteins & Fats",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "-"
+    "keywords": [
+      "animal feed alternative",
+      "black soldier fly",
+      "cricket flour",
+      "entomophagy",
+      "insect protein"
+    ],
+    "short_description": "Farming insects to produce highly efficient, low-footprint protein for human consumption or animal feed.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Insects_as_food",
+      "https://www.fao.org/edible-insects/en/"
+    ]
   },
   {
     "Tech Category Name": "Industrial Thermal Energy Storage",
     "Related Opportunity Area": "Industrial Heat",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "heat batteries",
+      "high-temperature thermal storage",
+      "industrial decarbonization",
+      "process heat storage",
+      "thermal bricks"
+    ],
+    "short_description": "Technologies that store massive amounts of thermal energy for high-temperature industrial processes.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/reports/innovation-in-thermal-energy-storage",
+      "https://en.wikipedia.org/wiki/Thermal_energy_storage"
+    ]
   },
   {
     "Tech Category Name": "Industrial Nuclear",
     "Related Opportunity Area": "Industrial Heat",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "advanced reactors",
+      "microreactors",
+      "nuclear process heat",
+      "small modular reactors",
+      "smr"
+    ],
+    "short_description": "Using advanced, often smaller, nuclear reactors to provide direct, emissions-free heat for industrial manufacturing.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Small_modular_reactor",
+      "https://www.energy.gov/ne/advanced-small-modular-reactors-smrs"
+    ]
   },
   {
     "Tech Category Name": "Industrial Heat Pumps",
     "Related Opportunity Area": "Industrial Heat",
     "Primary Sector": "-",
-    "Readiness": "-"
+    "keywords": [
+      "high-temperature heat pumps",
+      "industrial electrification",
+      "process heating",
+      "vapor compression",
+      "waste heat upgrading"
+    ],
+    "short_description": "Large-scale heat pumps capable of reaching high temperatures necessary for industrial manufacturing processes.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/reports/the-future-of-heat-pumps",
+      "https://en.wikipedia.org/wiki/Heat_pump"
+    ]
   },
   {
     "Tech Category Name": "Hydrogen-Based Production",
     "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "clean methanol",
+      "green ammonia",
+      "green hydrogen synthesis",
+      "hydrogen chemicals",
+      "power-to-x"
+    ],
+    "short_description": "Using low-carbon hydrogen as a primary feedstock to produce essential chemicals like ammonia and methanol.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/energy-system/low-emission-fuels/hydrogen",
+      "https://en.wikipedia.org/wiki/Green_hydrogen"
+    ]
   },
   {
     "Tech Category Name": "Hydrogen & Derivatives",
     "Related Opportunity Area": "Sustainable Fuels",
     "Primary Sector": "Transportation",
-    "Readiness": "Pilot"
+    "keywords": [
+      "ammonia fuel",
+      "h2 transportation",
+      "hydrogen fuel",
+      "liquid hydrogen",
+      "maritime hydrogen"
+    ],
+    "short_description": "Deploying hydrogen and its derivatives (like ammonia) as primary fuels for heavy-duty and maritime transport.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/energy-system/low-emission-fuels/hydrogen",
+      "https://en.wikipedia.org/wiki/Hydrogen_vehicle"
+    ]
   },
   {
     "Tech Category Name": "Hydro",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "dams",
+      "hydroelectric power",
+      "hydropower",
+      "renewable generation",
+      "run-of-the-river"
+    ],
+    "short_description": "Generating electricity by harnessing the energy of flowing or falling water.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Hydropower",
+      "https://www.iea.org/energy-system/renewables/hydroelectricity"
+    ]
   },
   {
     "Tech Category Name": "Hybrids",
     "Related Opportunity Area": "Vehicle Electrification",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "hev",
+      "hybrid electric vehicles",
+      "phev",
+      "plug-in hybrid",
+      "transitional drivetrains"
+    ],
+    "short_description": "Vehicles combining an internal combustion engine with an electric motor to improve fuel efficiency.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Hybrid_electric_vehicle",
+      "https://www.afdc.energy.gov/vehicles/electric_basics_phev.html"
+    ]
   },
   {
     "Tech Category Name": "Heating & Cooling",
     "Related Opportunity Area": "Operational Efficiency",
     "Primary Sector": "Buildings",
-    "Readiness": "Commercial"
+    "keywords": [
+      "air-source heat pumps",
+      "building decarbonization",
+      "district heating",
+      "geothermal heat pumps",
+      "hvac systems"
+    ],
+    "short_description": "High-efficiency systems for climate control in buildings, primarily focusing on electrified heat pumps.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/HVAC",
+      "https://www.iea.org/energy-system/buildings/heating"
+    ]
   },
   {
     "Tech Category Name": "Harvest",
     "Related Opportunity Area": "Reduced Food Waste",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "ag robotics",
+      "automated harvesting",
+      "crop loss reduction",
+      "harvest optimization",
+      "yield sensing"
+    ],
+    "short_description": "Equipment and data tools to ensure crops are picked at optimal times and with minimal physical damage.",
+    "confidence": "high",
+    "sources": [
+      "https://www.fao.org/food-loss-and-food-waste/en/",
+      "https://en.wikipedia.org/wiki/Agricultural_robot"
+    ]
   },
   {
     "Tech Category Name": "H2-Based Iron Reduction",
     "Related Opportunity Area": "Clean Steel",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Pilot"
+    "keywords": [
+      "direct reduced iron",
+      "dri",
+      "fossil-free steel",
+      "green iron",
+      "hydrogen steelmaking"
+    ],
+    "short_description": "Replacing coking coal with green hydrogen in the direct reduction of iron ore to dramatically cut steelmaking emissions.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Direct_reduced_iron",
+      "https://www.iea.org/reports/iron-and-steel"
+    ]
   },
   {
     "Tech Category Name": "Green Materials",
     "Related Opportunity Area": "Sustainable Construction & Design",
     "Primary Sector": "Buildings",
-    "Readiness": "Pilot"
+    "keywords": [
+      "bio-based materials",
+      "hempcrete",
+      "low-carbon materials",
+      "mass timber",
+      "sustainable insulation"
+    ],
+    "short_description": "Construction materials with lower embodied carbon, such as sustainably sourced timber or bio-composites.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Green_building",
+      "https://www.usgbc.org/"
+    ]
   },
   {
     "Tech Category Name": "Geothermal",
     "Related Opportunity Area": "Low-Emissions Generation, Industrial Heat",
-    "Primary Sector": "Manufacturing",
-    "Readiness": "-"
-  },
-  {
-    "Tech Category Name": "Geothermal",
-    "Related Opportunity Area": "Low-Emissions Generation, Industrial Heat",
-    "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "Primary Sector": "Manufacturing, Electricity",
+    "keywords": [
+      "baseload renewables",
+      "binary cycle plants",
+      "deep geothermal",
+      "direct use geothermal",
+      "earth heat",
+      "egs",
+      "enhanced geothermal systems",
+      "geothermal heat",
+      "geothermal power",
+      "industrial geothermal"
+    ],
+    "short_description": "Utilizing heat extracted directly from the earth's crust to power high-temperature industrial manufacturing processes.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Geothermal_energy",
+      "https://www.nrel.gov/geothermal/",
+      "https://en.wikipedia.org/wiki/Geothermal_power",
+      "https://www.energy.gov/eere/geothermal/geothermal-basics"
+    ]
   },
   {
     "Tech Category Name": "Fusion",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Lab"
+    "keywords": [
+      "inertial confinement",
+      "magnetic confinement",
+      "next-gen nuclear",
+      "nuclear fusion",
+      "tokamak"
+    ],
+    "short_description": "Experimental energy generation replicating the power of the sun by fusing atomic nuclei.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Nuclear_fusion",
+      "https://www.iter.org/"
+    ]
   },
   {
     "Tech Category Name": "Fossil Fuels with CCUS",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Pilot"
+    "keywords": [
+      "abated fossil fuels",
+      "carbon capture",
+      "ccus",
+      "clean coal",
+      "post-combustion capture"
+    ],
+    "short_description": "Traditional fossil fuel power plants outfitted with technology to capture and store their carbon emissions.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/energy-system/carbon-capture-utilisation-and-storage",
+      "https://en.wikipedia.org/wiki/Carbon_capture_and_storage"
+    ]
   },
   {
     "Tech Category Name": "Fission",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "baseload power",
+      "light water reactors",
+      "nuclear fission",
+      "nuclear power",
+      "uranium energy"
+    ],
+    "short_description": "Conventional nuclear energy generation splitting heavy atomic nuclei to produce zero-carbon electricity.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Nuclear_power",
+      "https://www.iaea.org/"
+    ]
   },
   {
     "Tech Category Name": "Fertilizers & Nutrients",
     "Related Opportunity Area": "Sustainable Crops",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Pilot"
+    "keywords": [
+      "biofertilizers",
+      "controlled-release fertilizers",
+      "green fertilizers",
+      "nitrogen fixation",
+      "synthetic nutrient alternatives"
+    ],
+    "short_description": "Low-carbon or biologically derived alternatives to traditional, fossil-fuel heavy synthetic fertilizers.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Fertilizer",
+      "https://www.fao.org/soils-portal/soil-management/soil-fertility/en/"
+    ]
   },
   {
     "Tech Category Name": "Fermented",
     "Related Opportunity Area": "Alternative Proteins & Fats",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "-"
+    "keywords": [
+      "alt-dairy",
+      "biomass fermentation",
+      "microbial protein",
+      "mycoprotein",
+      "precision fermentation"
+    ],
+    "short_description": "Using microorganisms and fermentation processes to produce specific proteins or fats as animal-free food alternatives.",
+    "confidence": "high",
+    "sources": [
+      "https://gfi.org/fermentation/",
+      "https://en.wikipedia.org/wiki/Cellular_agriculture"
+    ]
   },
   {
     "Tech Category Name": "Extraction",
     "Related Opportunity Area": "Mining",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "direct lithium extraction",
+      "dle",
+      "in-situ recovery",
+      "low-impact mining",
+      "sustainable extraction"
+    ],
+    "short_description": "Newer, less environmentally destructive methods for extracting critical minerals like lithium from brines or ores.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Lithium_extraction",
+      "https://www.energy.gov/eere/amo/critical-materials-institute"
+    ]
   },
   {
     "Tech Category Name": "Energy Efficiency & Process Optimization",
     "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "catalyst optimization",
+      "chemical engineering",
+      "energy audits",
+      "industrial decarbonization",
+      "process intensification"
+    ],
+    "short_description": "Optimizing chemical plant operations to require less energy and material input per unit of output.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/reports/chemicals",
+      "https://en.wikipedia.org/wiki/Process_intensification"
+    ]
   },
   {
     "Tech Category Name": "Electrochemical",
     "Related Opportunity Area": "Energy Storage & Demand Flexibility",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "battery energy storage systems",
+      "bess",
+      "flow batteries",
+      "lithium-ion batteries",
+      "solid-state batteries"
+    ],
+    "short_description": "Utility-scale and distributed battery systems storing electricity chemically for flexible grid dispatch.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Battery_storage_power_station",
+      "https://www.energy.gov/oe/energy-storage"
+    ]
   },
   {
     "Tech Category Name": "Electrification and alternative fuels for mining equipment",
     "Related Opportunity Area": "Mining",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "battery-electric mining",
+      "electric haul trucks",
+      "hydrogen mine vehicles",
+      "mining electrification",
+      "zero-emission mining"
+    ],
+    "short_description": "Replacing diesel-powered heavy mining machinery with electric or hydrogen-fueled alternatives.",
+    "confidence": "high",
+    "sources": [
+      "https://www.icmm.com/en-gb/innovation/innovation-for-cleaner-safer-vehicles",
+      "https://en.wikipedia.org/wiki/Mining_equipment"
+    ]
   },
   {
     "Tech Category Name": "Electrification",
     "Related Opportunity Area": "Clean Cement & Concrete",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Lab"
+    "keywords": [
+      "cement electrification",
+      "electric calcination",
+      "electric kilns",
+      "plasma heating",
+      "zero-carbon cement"
+    ],
+    "short_description": "Transitioning the extreme heat required for cement kilns away from fossil fuels to clean electricity.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/reports/cement",
+      "https://en.wikipedia.org/wiki/Cement_kiln"
+    ]
   },
   {
     "Tech Category Name": "Ecosystem Monitoring",
     "Related Opportunity Area": "Protecting Nature",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "biodiversity tracking",
+      "conservation tech",
+      "edna",
+      "environmental sensors",
+      "satellite ecology"
+    ],
+    "short_description": "Deploying sensors, drones, and eDNA sampling to monitor the health and biodiversity of natural ecosystems.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Environmental_monitoring",
+      "https://www.unep.org/"
+    ]
   },
   {
     "Tech Category Name": "Disposal & Reuse",
     "Related Opportunity Area": "Sustainable Construction & Design",
     "Primary Sector": "Buildings",
-    "Readiness": "Pilot"
+    "keywords": [
+      "architectural salvage",
+      "building material reuse",
+      "c d waste",
+      "circular architecture",
+      "material passports"
+    ],
+    "short_description": "Processes ensuring building components are safely dismantled and repurposed rather than sent to landfills.",
+    "confidence": "high",
+    "sources": [
+      "https://www.epa.gov/smm/sustainable-management-construction-and-demolition-materials",
+      "https://en.wikipedia.org/wiki/Deconstruction_(building)"
+    ]
   },
   {
     "Tech Category Name": "Direct Electrification",
     "Related Opportunity Area": "Industrial Heat",
     "Primary Sector": "-",
-    "Readiness": "-"
+    "keywords": [
+      "electric arc",
+      "electric boilers",
+      "induction heating",
+      "industrial electrification",
+      "resistive heating"
+    ],
+    "short_description": "Using electricity directly—via induction, resistance, or plasma—to replace fossil fuels in industrial heating.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/reports/electrification",
+      "https://en.wikipedia.org/wiki/Electric_heating"
+    ]
   },
   {
     "Tech Category Name": "Direct Air Capture (DAC)",
     "Related Opportunity Area": "Engineered Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Pilot"
+    "keywords": [
+      "carbon dioxide removal",
+      "dac",
+      "direct air capture",
+      "liquid solvents",
+      "solid sorbents"
+    ],
+    "short_description": "Mechanical systems that use chemical reactions to pull carbon dioxide directly out of the ambient air.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/energy-system/carbon-capture-utilisation-and-storage/direct-air-capture",
+      "https://en.wikipedia.org/wiki/Direct_air_capture"
+    ]
   },
   {
     "Tech Category Name": "Deconstruction",
     "Related Opportunity Area": "Sustainable Construction & Design",
     "Primary Sector": "Buildings",
-    "Readiness": "Pilot"
+    "keywords": [
+      "building unbuilding",
+      "circular demolition",
+      "design for deconstruction",
+      "dfd",
+      "selective dismantling"
+    ],
+    "short_description": "Carefully dismantling buildings to recover structural materials for reuse, minimizing demolition waste.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Deconstruction_(building)",
+      "https://www.epa.gov/smm/sustainable-management-construction-and-demolition-materials"
+    ]
   },
   {
     "Tech Category Name": "Cultivated",
     "Related Opportunity Area": "Alternative Proteins & Fats",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "-"
+    "keywords": [
+      "cell-based meat",
+      "cellular agriculture",
+      "cultivated meat",
+      "cultured protein",
+      "lab-grown meat"
+    ],
+    "short_description": "Growing genuine animal meat directly from cells in bioreactors, eliminating the need to raise and slaughter animals.",
+    "confidence": "high",
+    "sources": [
+      "https://gfi.org/cultivated/",
+      "https://en.wikipedia.org/wiki/Cultured_meat"
+    ]
   },
   {
     "Tech Category Name": "Construction",
     "Related Opportunity Area": "Sustainable Construction & Design",
     "Primary Sector": "Buildings",
-    "Readiness": "Commercial"
+    "keywords": [
+      "3d printed buildings",
+      "green construction",
+      "lean construction",
+      "modular construction",
+      "prefabrication"
+    ],
+    "short_description": "Innovative building methods like prefabrication and 3D printing that reduce material waste and energy use on-site.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Modular_building",
+      "https://www.usgbc.org/"
+    ]
   },
   {
     "Tech Category Name": "Clean Mineral Processing",
     "Related Opportunity Area": "Mining",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "bioleaching",
+      "cyanide alternatives",
+      "dry processing",
+      "green refining",
+      "hydrometallurgy"
+    ],
+    "short_description": "Using less toxic, lower-energy chemical or biological pathways to refine extracted ores into pure metals.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Hydrometallurgy",
+      "https://en.wikipedia.org/wiki/Bioleaching"
+    ]
   },
   {
     "Tech Category Name": "Circularity",
     "Related Opportunity Area": "Reduced Food Waste",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "biomass cascading",
+      "circular food economy",
+      "composting",
+      "food upcycling",
+      "food waste valorization"
+    ],
+    "short_description": "Repurposing food by-products and unmarketable produce into new food items, cosmetics, or compost.",
+    "confidence": "high",
+    "sources": [
+      "https://ellenmacarthurfoundation.org/topics/food/overview",
+      "https://en.wikipedia.org/wiki/Food_waste"
+    ]
   },
   {
     "Tech Category Name": "Chemical",
     "Related Opportunity Area": "Energy Storage & Demand Flexibility",
     "Primary Sector": "Electricity",
-    "Readiness": "Pilot"
+    "keywords": [
+      "ammonia storage",
+      "chemical energy storage",
+      "hydrogen storage",
+      "power-to-gas",
+      "synthetic fuels storage"
+    ],
+    "short_description": "Converting surplus electricity into stable chemical bonds (like hydrogen) for long-duration seasonal storage.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Energy_storage#Chemical",
+      "https://www.iea.org/energy-system/low-emission-fuels/hydrogen"
+    ]
   },
   {
     "Tech Category Name": "Charging Infrastructure",
     "Related Opportunity Area": "Vehicle Electrification",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "dc fast chargers",
+      "ev charging stations",
+      "evse",
+      "smart charging",
+      "v2g",
+      "wireless charging"
+    ],
+    "short_description": "The physical hardware and software networks required to safely and rapidly recharge electric vehicles.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Charging_station",
+      "https://www.afdc.energy.gov/fuels/electricity_infrastructure.html"
+    ]
   },
   {
     "Tech Category Name": "Carbon Storage",
     "Related Opportunity Area": "Engineered Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Pilot"
+    "keywords": [
+      "ccs",
+      "co2 injection",
+      "depleted oil reservoirs",
+      "geologic sequestration",
+      "saline aquifers"
+    ],
+    "short_description": "Permanently injecting and sealing captured carbon dioxide deep underground in stable geological formations.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Carbon_capture_and_storage",
+      "https://www.globalccsinstitute.com/"
+    ]
   },
   {
     "Tech Category Name": "Carbon Mineralization",
     "Related Opportunity Area": "Mineral Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Pilot"
+    "keywords": [
+      "basalt injection",
+      "enhanced rock weathering",
+      "mineral carbonation",
+      "olivine weathering",
+      "solid carbonate"
+    ],
+    "short_description": "Accelerating natural weathering processes where reactive rocks chemically bond with CO2 to form solid carbonate minerals.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Carbon_mineralization",
+      "https://www.wri.org/insights/mineralization-carbon-removal"
+    ]
   },
   {
     "Tech Category Name": "Carbon Capture, Utilization, & Storage",
     "Related Opportunity Area": "Low-Emissions Chemicals & Plastics, Cross-Cutting Solutions",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Pilot"
+    "keywords": [
+      "carbon utilization",
+      "ccus",
+      "co2 valorization",
+      "industrial ccs",
+      "point-source capture"
+    ],
+    "short_description": "Capturing carbon emissions from industrial smokestacks to either permanently store them or use them to make products.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/energy-system/carbon-capture-utilisation-and-storage",
+      "https://en.wikipedia.org/wiki/Carbon_capture_and_utilization"
+    ]
   },
   {
     "Tech Category Name": "Burp Mitigation",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "-"
+    "keywords": [
+      "bovine methane",
+      "enteric fermentation",
+      "feed additives",
+      "livestock emissions",
+      "methane inhibitors",
+      "seaweed feed"
+    ],
+    "short_description": "Feed additives and dietary changes that reduce enteric methane emissions (burps) from ruminant livestock.",
+    "confidence": "high",
+    "sources": [
+      "https://www.fao.org/gleam/en/",
+      "https://en.wikipedia.org/wiki/Enteric_fermentation"
+    ]
   },
   {
     "Tech Category Name": "Biomass-Based Production",
     "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "bio-based polymers",
+      "biochemicals",
+      "bioplastics",
+      "lignocellulosic biomass",
+      "renewable chemicals"
+    ],
+    "short_description": "Manufacturing plastics and industrial chemicals using biological materials instead of petrochemicals.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Bioplastic",
+      "https://www.nrel.gov/bioenergy/biochemicals.html"
+    ]
   },
   {
     "Tech Category Name": "Biomass Utilization and Storage",
     "Related Opportunity Area": "Biological Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Pilot"
+    "keywords": [
+      "bioccs",
+      "biochar",
+      "biomass burial",
+      "carbon-storing materials",
+      "wood vaults"
+    ],
+    "short_description": "Processing waste biomass into stable forms like biochar or securely burying it to prevent decomposition and CO2 release.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Biochar",
+      "https://www.energy.gov/eere/bioenergy/bioenergy-technologies-office"
+    ]
   },
   {
     "Tech Category Name": "Biofuels",
     "Related Opportunity Area": "Sustainable Fuels",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "biodiesel",
+      "cellulosic ethanol",
+      "ethanol",
+      "renewable diesel",
+      "saf",
+      "sustainable aviation fuel"
+    ],
+    "short_description": "Liquid fuels produced from renewable organic materials, used as drop-in replacements for transportation.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Biofuel",
+      "https://www.iea.org/energy-system/low-emission-fuels/bioenergy"
+    ]
   },
   {
     "Tech Category Name": "Bio Energy- BECCS",
     "Related Opportunity Area": "Biological Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Pilot"
+    "keywords": [
+      "beccs",
+      "bioenergy with carbon capture",
+      "biomass power",
+      "carbon dioxide removal",
+      "negative emissions"
+    ],
+    "short_description": "Generating energy by burning biomass and capturing the resulting CO2 for storage, theoretically creating net-negative emissions.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Bioenergy_with_carbon_capture_and_storage",
+      "https://www.globalccsinstitute.com/"
+    ]
   },
   {
     "Tech Category Name": "Battery Electric Vehicles",
     "Related Opportunity Area": "Vehicle Electrification",
     "Primary Sector": "Transportation",
-    "Readiness": "Commercial"
+    "keywords": [
+      "bev",
+      "electric cars",
+      "electric fleets",
+      "lithium-ion evs",
+      "zero-emission vehicles"
+    ],
+    "short_description": "Vehicles powered entirely by electricity stored in high-capacity onboard battery packs.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Battery_electric_vehicle",
+      "https://www.afdc.energy.gov/vehicles/electric_basics_ev.html"
+    ]
   },
   {
     "Tech Category Name": "Atmospheric Oxidation Enhancement",
     "Related Opportunity Area": "Methane & Nitrous Oxide Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Lab"
+    "keywords": [
+      "atmospheric chemistry",
+      "climate intervention",
+      "hydroxyl radicals",
+      "iron salt aerosols",
+      "methane oxidation"
+    ],
+    "short_description": "Early-stage concepts to release particles or catalysts that speed up the natural breakdown of methane in the atmosphere.",
+    "confidence": "low",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Atmospheric_methane#Removal",
+      "https://www.nationalacademies.org/our-work/atmospheric-methane-removal-development-of-a-research-agenda"
+    ]
   },
   {
     "Tech Category Name": "Aquaculture & Fishing",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
     "Primary Sector": "Food, Ag & Nature",
-    "Readiness": "Commercial"
+    "keywords": [
+      "bycatch reduction",
+      "offshore farming",
+      "ras",
+      "recirculating aquaculture systems",
+      "sustainable aquaculture"
+    ],
+    "short_description": "Technologies improving the efficiency and reducing the ecological impact of farmed seafood and wild fisheries.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Aquaculture",
+      "https://www.fao.org/fishery/en"
+    ]
   },
   {
     "Tech Category Name": "Appliances",
     "Related Opportunity Area": "Operational Efficiency",
     "Primary Sector": "Buildings",
-    "Readiness": "Commercial"
+    "keywords": [
+      "appliance electrification",
+      "energy star",
+      "high-efficiency appliances",
+      "induction stoves",
+      "smart appliances"
+    ],
+    "short_description": "Consumer electronics and white goods engineered to consume minimal electricity and eliminate fossil fuel use.",
+    "confidence": "high",
+    "sources": [
+      "https://www.energystar.gov/",
+      "https://en.wikipedia.org/wiki/Energy_efficiency_in_appliances"
+    ]
   },
   {
     "Tech Category Name": "Alternative Refrigerants",
     "Related Opportunity Area": "Low-Emissions Chemicals & Plastics",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "co2 refrigerants",
+      "hfc phase-down",
+      "kigali amendment",
+      "low-gwp refrigerants",
+      "natural refrigerants"
+    ],
+    "short_description": "Replacing highly potent greenhouse gas refrigerants (HFCs) with low global warming potential alternatives.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Refrigerant#Environmental_issues",
+      "https://www.unep.org/ozonaction/who-we-are/about-kigali-amendment"
+    ]
   },
   {
     "Tech Category Name": "Alternative Iron Reduction",
     "Related Opportunity Area": "Clean Steel",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Lab"
+    "keywords": [
+      "electrowinning",
+      "green steel",
+      "iron ore electrolysis",
+      "molten oxide electrolysis",
+      "non-h2 dri"
+    ],
+    "short_description": "Emerging lab-stage technologies like molten oxide electrolysis that produce iron from ore using electricity directly.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Steelmaking#Future_technologies",
+      "https://www.energy.gov/eere/amo/iron-and-steel"
+    ]
   },
   {
     "Tech Category Name": "Alternative Fuels",
     "Related Opportunity Area": "Low-Emissions Generation",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "ammonia power generation",
+      "biomass electricity",
+      "clean peaker plants",
+      "co-firing",
+      "hydrogen turbines"
+    ],
+    "short_description": "Modifying traditional thermal power plants to burn low-carbon fuels like ammonia or hydrogen instead of fossil gas or coal.",
+    "confidence": "high",
+    "sources": [
+      "https://www.iea.org/reports/the-role-of-low-emission-fuels-in-clean-energy-transitions",
+      "https://en.wikipedia.org/wiki/Alternative_fuel"
+    ]
   },
   {
     "Tech Category Name": "Alternative Fuel Infrastructure",
     "Related Opportunity Area": "Sustainable Fuels",
     "Primary Sector": "Transportation",
-    "Readiness": "Pilot"
+    "keywords": [
+      "alternative fuel pipelines",
+      "ammonia bunkering",
+      "biofuel distribution",
+      "hydrogen refueling stations",
+      "saf logistics"
+    ],
+    "short_description": "The dedicated storage, transportation, and dispensing networks required to supply zero-emission liquid and gas fuels.",
+    "confidence": "high",
+    "sources": [
+      "https://www.afdc.energy.gov/fuels/",
+      "https://en.wikipedia.org/wiki/Hydrogen_infrastructure"
+    ]
   },
   {
     "Tech Category Name": "Alternative Flexibility Solutions",
     "Related Opportunity Area": "Energy Storage & Demand Flexibility",
     "Primary Sector": "Electricity",
-    "Readiness": "Commercial"
+    "keywords": [
+      "demand side response",
+      "grid flexibility",
+      "v2g",
+      "vehicle-to-grid",
+      "virtual power plants",
+      "vpp"
+    ],
+    "short_description": "Using software, aggregated home batteries, and EV integration to balance supply and demand without traditional power plants.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Virtual_power_plant",
+      "https://www.energy.gov/oe/grid-modernization-and-smart-grid"
+    ]
   },
   {
     "Tech Category Name": "Alternative Fibers",
     "Related Opportunity Area": "Fashion & Textiles",
     "Primary Sector": "Manufacturing",
-    "Readiness": "-"
+    "keywords": [
+      "algae textiles",
+      "bio-based fabrics",
+      "cellulosic fibers",
+      "hemp fabric",
+      "mycelium leather",
+      "next-gen materials"
+    ],
+    "short_description": "Developing new textile materials from fungi, algae, or sustainably managed plant sources to replace synthetics and resource-heavy cotton.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Sustainable_fashion",
+      "https://materialinnovation.org/"
+    ]
   },
   {
     "Tech Category Name": "Alternative Feedstocks & Binders",
     "Related Opportunity Area": "Clean Cement & Concrete",
     "Primary Sector": "Manufacturing",
-    "Readiness": "Commercial"
+    "keywords": [
+      "calcined clay",
+      "clinker substitution",
+      "fly ash",
+      "scm",
+      "slag cement",
+      "supplementary cementitious materials"
+    ],
+    "short_description": "Replacing emissions-intensive clinker in concrete with industrial by-products or novel binders to lower its carbon footprint.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Portland_cement#Supplementary_cementitious_materials",
+      "https://www.iea.org/reports/cement"
+    ]
   },
   {
     "Tech Category Name": "Alkalinity Enhancement",
     "Related Opportunity Area": "Mineral Carbon Removal",
     "Primary Sector": "GHG Removal",
-    "Readiness": "Lab"
+    "keywords": [
+      "marine carbon removal",
+      "mineral dosing",
+      "oae",
+      "ocean alkalinity enhancement",
+      "ocean antacid"
+    ],
+    "short_description": "Adding alkaline minerals to the ocean to increase its capacity to absorb CO2 and counter ocean acidification.",
+    "confidence": "medium",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ocean_alkalinity_enhancement",
+      "https://www.wri.org/insights/ocean-based-carbon-dioxide-removal"
+    ]
   },
   {
     "Tech Category Name": "Advanced Components",
     "Related Opportunity Area": "Enhanced Transmission & Distribution",
     "Primary Sector": "Electricity",
-    "Readiness": "Pilot"
+    "keywords": [
+      "advanced conductors",
+      "dynamic line rating",
+      "facts",
+      "hvdc",
+      "solid-state transformers",
+      "superconducting cables"
+    ],
+    "short_description": "High-tech physical hardware upgrades that increase the capacity, efficiency, and range of power transmission grids.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/High-voltage_direct_current",
+      "https://www.energy.gov/oe/transmission"
+    ]
   },
   {
     "Tech Category Name": "Advanced Battery Technologies",
     "Related Opportunity Area": "Vehicle Electrification",
     "Primary Sector": "Transportation",
-    "Readiness": "Pilot"
+    "keywords": [
+      "lithium-sulfur",
+      "next-gen ev batteries",
+      "silicon anodes",
+      "sodium-ion batteries",
+      "solid-state batteries"
+    ],
+    "short_description": "Next-generation energy storage chemistries designed to increase range, lower cost, and improve safety over current lithium-ion models.",
+    "confidence": "high",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Solid-state_battery",
+      "https://www.nrel.gov/transportation/energy-storage.html"
+    ]
   }
 ]
