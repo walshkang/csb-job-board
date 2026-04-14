@@ -142,11 +142,50 @@ function chunkArray(arr, size) {
   return out;
 }
 
+function delayMs(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
+  return async function runTasks(tasks) {
+    const inFlight = new Set();
+    let index = 0;
+    while (index < tasks.length || inFlight.size > 0) {
+      while (index < tasks.length && inFlight.size < concurrency) {
+        const taskIndex = index++;
+        let p = null;
+        p = (async () => {
+          try {
+            await tasks[taskIndex]();
+          } catch (e) {
+            // task handles its own error; swallow here to keep pool running
+          }
+        })();
+        inFlight.add(p);
+        p.finally(() => inFlight.delete(p));
+        // throttle starts
+        await delayMs(delayBetweenMs);
+      }
+      if (inFlight.size > 0) {
+        try {
+          await Promise.race(Array.from(inFlight));
+        } catch (e) {
+          // ignore - individual tasks already handle errors
+        }
+      }
+    }
+  };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const force = args.includes('--force');
   const batchSizeArg = args.find(a => a.startsWith('--batch-size='));
   const BATCH_SIZE = batchSizeArg ? parseInt(batchSizeArg.split('=')[1], 10) || 10 : 10;
+  const concurrencyArg = args.find(a => a.startsWith('--concurrency='));
+  const delayArg = args.find(a => a.startsWith('--delay='));
+  const CONCURRENCY = concurrencyArg ? parseInt(concurrencyArg.split('=')[1], 10) || 3 : 3;
+  const DELAY_BETWEEN_MS = delayArg ? parseInt(delayArg.split('=')[1], 10) || 1500 : 1500;
 
   const jobs = readJSONSafe(JOBS_PATH, null);
   if (!jobs) {
@@ -192,7 +231,8 @@ async function main() {
   for (let i = 0; i < batches.length; i++) {
     const batch = batches[i];
     console.log(`Processing batch ${i+1}/${batches.length} (${batch.length} jobs)`);
-    await Promise.all(batch.map(async (job) => {
+
+    const tasks = batch.map(job => async () => {
       try {
         await enrichJob(job, categories, promptTemplate);
         enrichedCount += 1;
@@ -204,7 +244,10 @@ async function main() {
         job.enrichment_error = String(err.message || err);
         console.error('Failed to enrich job', job.id || job.url || job.job_title_raw, err.message || err);
       }
-    }));
+    });
+
+    const pool = createRateLimitedPool(CONCURRENCY, DELAY_BETWEEN_MS);
+    await pool(tasks);
 
     // write back after each batch
     try {
