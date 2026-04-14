@@ -3,6 +3,7 @@ const path = require('path');
 const { URL } = require('url');
 const enricher = require('./enricher');
 const config = require('../config');
+const { startRun, endRun } = require('../utils/run-log');
 const { callGeminiText } = require('../gemini-text');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
@@ -264,6 +265,7 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
 }
 
 async function main() {
+  const run = startRun('extraction');
   const argv = process.argv.slice(2);
   const input = argv.find(a => a.startsWith('--input=')) ? argv.find(a => a.startsWith('--input=')).split('=')[1] : null;
   const companyArg = argv.find(a => a.startsWith('--company=')) ? argv.find(a => a.startsWith('--company=')).split('=')[1] : null;
@@ -288,6 +290,7 @@ async function main() {
   console.log('  extracted items:', res.extractedCount);
   console.log('  jobs written:', res.written);
   if (res.errors.length) console.log('  errors:', res.errors.slice(0, 20));
+  await endRun(run, { processed: res.companiesProcessed.length, extracted: res.extractedCount, errors: res.errors.length });
 }
 
 module.exports = {

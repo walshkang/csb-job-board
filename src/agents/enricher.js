@@ -9,7 +9,9 @@ const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
 const ENRICHMENT_PROMPT_VERSION = '1.1.0';
 
 const config = require('../config');
+const { startRun, endRun } = require('../utils/run-log');
 const { callGeminiText, streamGeminiText } = require('../gemini-text');
+const Progress = require('../utils/progress');
 
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
 const SENIORITY = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite']);
@@ -111,6 +113,23 @@ function sanitize(parsed) {
 }
 
 async function enrichJob(job, categories, promptTemplate, options = {}) {
+  // Skip LLM call when there's no description — apply null defaults and mark complete.
+  if (!job.description_raw) {
+    job.job_title_normalized = job.job_title_normalized || job.job_title_raw || null;
+    job.job_function = job.job_function || 'other';
+    job.seniority_level = job.seniority_level || null;
+    job.location_type = job.location_type || 'unknown';
+    job.mba_relevance_score = typeof job.mba_relevance_score === 'number' ? job.mba_relevance_score : 0;
+    job.description_summary = null;
+    job.climate_relevance_confirmed = false;
+    job.climate_relevance_reason = null;
+    job.enrichment_prompt_version = ENRICHMENT_PROMPT_VERSION;
+    job.description_raw_hash = sha256('');
+    job.last_enriched_at = new Date().toISOString();
+    delete job.enrichment_error;
+    return;
+  }
+
   const desc = (job.description_raw || '').slice(0, 8000);
   const prompt = renderPrompt(promptTemplate, {
     job_title_raw: job.job_title_raw || job.title || '',
@@ -184,6 +203,7 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
 }
 
 async function main() {
+  const run = startRun('enricher');
   const args = process.argv.slice(2);
   const force = args.includes('--force');
   const useStream = args.includes('--stream');
@@ -229,9 +249,10 @@ async function main() {
   }
 
   console.log(`Enriching ${toEnrich.length} jobs in batches of ${BATCH_SIZE}...`);
+  const progress = new Progress(toEnrich.length, 'enricher');
 
   const batches = chunkArray(toEnrich, BATCH_SIZE);
-  let enrichedCount = 0;
+  let enrichedCount = 0; let errorCountLocal = 0;
   const scoreBuckets = [0,0,0,0,0]; // 0-19,20-39,40-59,60-79,80-100
   let climateTrue = 0, climateFalse = 0;
 
@@ -250,7 +271,10 @@ async function main() {
         if (job.climate_relevance_confirmed) climateTrue += 1; else climateFalse += 1;
       } catch (err) {
         job.enrichment_error = String(err.message || err);
+        errorCountLocal += 1;
         console.error('Failed to enrich job', job.id || job.url || job.job_title_raw, err.message || err);
+      } finally {
+        try { progress.tick(enrichedCount + errorCountLocal, job.job_title_raw || ''); } catch (_) {}
       }
     });
 
@@ -267,6 +291,7 @@ async function main() {
   }
 
   // print distribution
+  progress.done();
   const errorCount = jobs.filter(j => j.enrichment_error).length;
   console.log('\nEnrichment complete');
   console.log('Total enriched:', enrichedCount);
@@ -274,6 +299,8 @@ async function main() {
   console.log('MBA relevance buckets (0-19,20-39,40-59,60-79,80-100):', scoreBuckets.join(', '));
   const totalClimate = climateTrue + climateFalse || 1;
   console.log('Climate relevance true/false:', climateTrue, '/', climateFalse, `( ${Math.round((climateTrue/totalClimate)*100)}% true )`);
+  // finalize run log
+  await endRun(run, { processed: toEnrich.length, enriched: enrichedCount, errors: errorCount });
 }
 
 module.exports = {

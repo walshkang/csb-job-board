@@ -15,6 +15,7 @@ const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
 const config = require('../config');
+const { startRun, endRun } = require('../utils/run-log');
 
 // Prefer global fetch, fallback to node-fetch if not available
 let fetchImpl = global.fetch;
@@ -378,6 +379,7 @@ async function handleCompany(company, index) {
 }
 
 async function run(companiesPath) {
+  const run = startRun('scraper');
   // load companies
   let companies = [];
   try {
@@ -395,7 +397,11 @@ async function run(companiesPath) {
 
   const results = await Promise.all(promises);
   console.log('Scrape run complete');
-  return results.filter(Boolean);
+  const finalResults = results.filter(Boolean);
+  const processed = finalResults.length;
+  const errors = finalResults.filter(r => !r.success).length;
+  await endRun(run, { processed, errors });
+  return finalResults;
 }
 
 if (require.main === module) {

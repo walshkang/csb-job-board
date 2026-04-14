@@ -113,11 +113,11 @@
       "hq": "Woodstock, CT",
       "employees": 5
     },
-    "careers_page_url": "https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fsearch%2Fresults%2Fpeople%2F%3FfacetCurrentCompany%3D%255B%25229401241%2522%255D&amp;trk=login_reg_redirect",
-    "ats_platform": "custom",
+    "careers_page_url": null,
+    "ats_platform": null,
     "ocr_uncertain": false,
-    "careers_page_reachable": true,
-    "careers_page_discovery_method": "homepage_link_scan"
+    "careers_page_reachable": false,
+    "careers_page_discovery_method": "not_found"
   },
   {
     "id": "lionenergycom",
@@ -147,7 +147,7 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "llm_fallback"
+    "careers_page_discovery_method": "homepage_link_scan"
   },
   {
     "id": "dmri-inccom",
@@ -413,11 +413,11 @@
       "hq": "Sedro-Woolley, WA",
       "employees": 250
     },
-    "careers_page_url": "https://sedron.com/careers/",
-    "ats_platform": "custom",
+    "careers_page_url": null,
+    "ats_platform": null,
     "ocr_uncertain": false,
-    "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_reachable": false,
+    "careers_page_discovery_method": "not_found"
   },
   {
     "id": "wwwgoflexcom",
@@ -443,11 +443,11 @@
       "hq": "Miami, FL",
       "employees": 40
     },
-    "careers_page_url": "https://www.linkedin.com/company/goflex-inc/jobs/",
-    "ats_platform": "custom",
+    "careers_page_url": "https://job-boards.greenhouse.io/flex",
+    "ats_platform": "greenhouse",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "llm_fallback"
+    "careers_page_discovery_method": "ats_slug"
   },
   {
     "id": "wwwheat2powerus",
@@ -773,11 +773,11 @@
       "hq": "Houston, TX",
       "employees": 126
     },
-    "careers_page_url": "https://www.cesrenewables.com/",
-    "ats_platform": "custom",
+    "careers_page_url": null,
+    "ats_platform": null,
     "ocr_uncertain": false,
-    "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_reachable": false,
+    "careers_page_discovery_method": "not_found"
   },
   {
     "id": "wwwtmt-ipecom",
@@ -953,11 +953,11 @@
       "hq": "Pearland, TX",
       "employees": 45
     },
-    "careers_page_url": "https://kodiakgas.com/dps-acquisition/",
-    "ats_platform": "custom",
+    "careers_page_url": null,
+    "ats_platform": null,
     "ocr_uncertain": false,
-    "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_reachable": false,
+    "careers_page_discovery_method": "not_found"
   },
   {
     "id": "wwwfastmetalsinccom",

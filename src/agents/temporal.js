@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 require('../config'); // loads .env.local as a side effect
+const { startRun, endRun } = require('../utils/run-log');
 
 function log(...args) { console.log('[temporal]', ...args); }
 function verboseLog(enabled, ...args) { if (enabled) console.log('[temporal]', ...args); }
@@ -157,6 +158,7 @@ function updateCompaniesDormancy(companies, scrapeRuns, verbose) {
 }
 
 async function main() {
+  const run = startRun('temporal');
   const argv = process.argv.slice(2);
   const dryRun = argv.includes('--dry-run');
   const verbose = argv.includes('--verbose');
@@ -193,6 +195,7 @@ async function main() {
   log(`jobs updated: ${jobStats.updated}, jobs marked removed: ${jobStats.removed}`);
   log(`companies gone dormant: ${companyStats.goneDormant}, companies reactivated: ${companyStats.reactivated}`);
   if (dryRun) log('Dry-run: no files modified');
+  await endRun(run, { processed: (jobStats.updated || 0) + (jobStats.removed || 0), updated: jobStats.updated || 0, removed: jobStats.removed || 0, goneDormant: companyStats.goneDormant || 0, reactivated: companyStats.reactivated || 0, errors: 0 });
 }
 
 if (require.main === module) {

@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { Client } = require('@notionhq/client');
 const config = require('../config');
+const { startRun, endRun } = require('../utils/run-log');
 
 // Canonical -> list of alias display names to try when resolving Notion DB properties.
 // Add common variants used across teams. Matching is case-insensitive; exact canonical name is always tried first.
@@ -14,7 +15,9 @@ const COMPANY_CANONICAL_ALIASES = {
   'Name': ['Name', 'Company', 'Company Name'],
   'id': ['id', 'ID'],
   'Domain': ['Domain', 'Website', 'URL'],
-  'Funding Signals': ['Funding Signals', 'Funding'],
+  'Latest Stage': ['Latest Stage', 'Stage', 'Deal Type'],
+  'Total Raised ($M)': ['Total Raised ($M)', 'Total Raised'],
+  'Latest Round Size ($M)': ['Latest Round Size ($M)', 'Round Size'],
   'Profile Description': ['Profile Description', 'Company Description', 'Description'],
   'Sector': ['Sector', 'Industry'],
   'HQ': ['HQ', 'Headquarters', 'Headquarter'],
@@ -130,6 +133,7 @@ async function readJsonSafe(p) {
 }
 
 async function main() {
+  const run = startRun('notion-sync');
   const args = readArgs();
   const { apiKey: NOTION_API_KEY, companiesDbId: NOTION_COMPANIES_DB_ID, jobsDbId: NOTION_JOBS_DB_ID } = config.notion;
 
@@ -201,7 +205,9 @@ async function main() {
       'Name': { title: [{ text: { content: c.name || '' } }] },
       'id': { rich_text: [{ text: { content: String(c.id) } }] },
       'Domain': c.domain ? { url: c.domain } : undefined,
-      'Funding Signals': { rich_text: [{ text: { content: truncate(JSON.stringify(c.funding_signals || []), 2000) } }] },
+      'Latest Stage': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals[0]; return f && f.deal_type ? { select: { name: String(f.deal_type) } } : undefined; })(),
+      'Total Raised ($M)': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals[0]; return f && typeof f.total_raised_mm === 'number' ? { number: f.total_raised_mm } : undefined; })(),
+      'Latest Round Size ($M)': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals[0]; return f && typeof f.size_mm === 'number' ? { number: f.size_mm } : undefined; })(),
       'Profile Description': c.company_profile && c.company_profile.description ? { rich_text: [{ text: { content: truncate(c.company_profile.description, 2000) } }] } : undefined,
       'Sector': c.company_profile && c.company_profile.sector ? { select: { name: String(c.company_profile.sector) } } : undefined,
       'HQ': c.company_profile && c.company_profile.hq ? { rich_text: [{ text: { content: String(c.company_profile.hq) } }] } : undefined,
@@ -362,6 +368,7 @@ async function main() {
   console.log('Pages created/updated:', summary.created + summary.updated);
   console.log('Created:', summary.created, 'Updated:', summary.updated, 'Errors:', summary.errors.length);
   if (summary.errors.length > 0) console.error('Errors:', JSON.stringify(summary.errors, null, 2));
+  await endRun(run, { processed: summary.created + summary.updated, errors: summary.errors.length });
 }
 
 main().catch(err => {

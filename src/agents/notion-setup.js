@@ -18,7 +18,9 @@ const RATE_DELAY_MS = 350;
 const COMPANIES_PROPERTIES = [
   { name: 'id',                       type: 'rich_text' },
   { name: 'Domain',                   type: 'url' },
-  { name: 'Funding Signals',          type: 'rich_text' },
+  { name: 'Latest Stage',             type: 'select' },
+  { name: 'Total Raised ($M)',        type: 'number' },
+  { name: 'Latest Round Size ($M)',   type: 'number' },
   { name: 'Profile Description',      type: 'rich_text' },
   { name: 'Sector',                   type: 'select' },
   { name: 'HQ',                       type: 'rich_text' },

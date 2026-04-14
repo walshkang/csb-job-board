@@ -20,8 +20,7 @@
     "climate_relevance_reason": "The job title and truncated description do not provide enough information to determine climate relevance.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:14:24.804Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 36.357032718s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"36s\"}]"
+    "last_enriched_at": "2026-04-14T13:31:21.509Z"
   },
   {
     "id": "42bda13611707df7fa7cb0ddafd1fbae68b87ad2712abd0718b238682c210837",
@@ -39,13 +38,12 @@
     "seniority_level": "director",
     "location_type": "unknown",
     "mba_relevance_score": 90,
-    "description_summary": "This role focuses on project finance within the climate-tech sector, likely involving financial modeling, deal structuring, and fundraising for climate-related projects. The position requires a strong understanding of financial markets and the ability to drive investment in sustainable initiatives.",
+    "description_summary": "This role involves leading the financial structuring, modeling, and fundraising efforts for climate-tech projects. It requires expertise in project finance to secure capital for large-scale initiatives.",
     "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and context of a climate-tech job board strongly indicate a focus on financing climate-related projects, aligning with categories like Solar, Wind, Carbon Capture, and other energy transition technologies.",
+    "climate_relevance_reason": "The job is listed on a climate-tech job board, and Project Finance is a critical function for funding renewable energy and other climate infrastructure projects.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:02.827Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.307694249s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"model\":\"gemini-2.5-flash-lite\",\"location\":\"global\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:40:14.826Z"
   },
   {
     "id": "053c2773cb67dda6570d5f234aeca0dd9ab3e47bffd147938d303e7ca09c0b60",
@@ -58,7 +56,17 @@
     "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "first_seen_at": "2026-04-13T19:13:39.619Z",
     "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 36.382831177s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"36s\"}]"
+    "job_title_normalized": "Director, Project Development",
+    "job_function": "operations",
+    "seniority_level": "director",
+    "location_type": "unknown",
+    "mba_relevance_score": 85,
+    "description_summary": "This role focuses on leading the development of climate-tech projects, likely involving renewable energy or other decarbonization initiatives. Responsibilities include managing project lifecycles from origination to financial close, requiring strong strategic, financial, and operational acumen.",
+    "climate_relevance_confirmed": true,
+    "climate_relevance_reason": "The job title and context of a climate-tech job board strongly suggest a focus on climate-related projects, such as renewable energy development.",
+    "enrichment_prompt_version": "1.1.0",
+    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "last_enriched_at": "2026-04-14T13:31:22.908Z"
   },
   {
     "id": "5cfa2360a1f93a4966e25468d5a35d9946e14bc3c913af2ab0ccf3981163ef75",
@@ -75,14 +83,13 @@
     "job_function": "operations",
     "seniority_level": "mid",
     "location_type": "unknown",
-    "mba_relevance_score": 45,
-    "description_summary": "This role involves managing construction projects, likely within the climate-tech sector. Responsibilities include planning, execution, and oversight of construction activities to ensure successful project delivery.",
+    "mba_relevance_score": 65,
+    "description_summary": "The job description was truncated and no summary can be provided.",
     "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title 'Project Manager, Construction' combined with the context of a climate-tech job board strongly suggests the role is related to building climate-related infrastructure.",
+    "climate_relevance_reason": "The role is in Construction, which is a listed climate-tech category, and is for a climate-tech job board.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:02.727Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.326552807s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"model\":\"gemini-2.5-flash-lite\",\"location\":\"global\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:40:17.930Z"
   },
   {
     "id": "131c8c89e3289ac6cefd9a47f698074939de103d06374ff571beedb4f9da990c",
@@ -100,13 +107,12 @@
     "seniority_level": "senior",
     "location_type": "unknown",
     "mba_relevance_score": 45,
-    "description_summary": "This role involves managing development projects, likely within a climate-tech context. Responsibilities include planning, execution, and stakeholder communication to ensure successful project delivery and alignment with company goals.",
-    "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and context of a climate-tech job board strongly suggest a focus on climate-related development projects.",
+    "description_summary": null,
+    "climate_relevance_confirmed": false,
+    "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:02.989Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.324131132s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:59:04.880Z"
   },
   {
     "id": "36fe634fc2af15b9487a62a4b4e863e8993f8174601bd199169e22f88ff29f8d",
@@ -123,14 +129,13 @@
     "job_function": "finance",
     "seniority_level": "entry",
     "location_type": "unknown",
-    "mba_relevance_score": 85,
-    "description_summary": "This role focuses on project finance within the climate-tech sector. The Associate will be involved in financial modeling, deal structuring, and supporting the execution of financing for climate-related projects.",
+    "mba_relevance_score": 90,
+    "description_summary": "This role involves financial analysis and structuring for projects, focusing on funding and investment strategies. It is critical for securing capital for climate-tech initiatives.",
     "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and description explicitly mention project finance for climate-tech projects.",
+    "climate_relevance_reason": "The job is listed for a climate-tech job board and project finance is essential for funding climate-related projects and companies.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:14:24.815Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.333491916s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:40:20.792Z"
   },
   {
     "id": "0a2b29130f998d04509906c54d8bc00fe01d67e30cb36e2c61b766a68baea3e7",
@@ -144,17 +149,16 @@
     "first_seen_at": "2026-04-13T19:13:39.619Z",
     "last_seen_at": "2026-04-13T19:13:39.619Z",
     "job_title_normalized": "Associate, Project Development",
-    "job_function": "operations",
+    "job_function": "sales",
     "seniority_level": "entry",
     "location_type": "unknown",
-    "mba_relevance_score": 50,
-    "description_summary": "This role focuses on the development of climate-related projects, likely involving renewable energy or other sustainability initiatives. The Associate will support the entire project lifecycle, from initial concept to execution, requiring strong analytical and organizational skills.",
+    "mba_relevance_score": 90,
+    "description_summary": "This role involves supporting the full lifecycle of climate-tech projects, from initial feasibility studies and site selection to securing permits, financing, and off-take agreements. The Associate will contribute to strategic planning, financial modeling, and stakeholder engagement to bring new renewable energy or climate infrastructure projects to fruition.",
     "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and description strongly imply a focus on climate-tech project development, aligning with categories like Solar, Wind, or other energy transition initiatives.",
+    "climate_relevance_reason": "The job is listed on a climate-tech job board and 'Project Development' is a core function in renewable energy and climate infrastructure sectors.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:02.629Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.319935631s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:40:24.481Z"
   },
   {
     "id": "04807c938f9b96f459b9c21b6958270a0d21703ef087c217b755996193c5c655",
@@ -172,13 +176,12 @@
     "seniority_level": "entry",
     "location_type": "unknown",
     "mba_relevance_score": 85,
-    "description_summary": "This role involves financial analysis for projects, likely within the climate-tech sector. Responsibilities include financial modeling, risk assessment, and supporting investment decisions. The position is suitable for individuals with strong analytical skills and an interest in project finance.",
-    "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and context of a climate-tech job board strongly suggest a focus on financing climate-related projects.",
+    "description_summary": null,
+    "climate_relevance_confirmed": false,
+    "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:14:24.802Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.316520382s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"model\":\"gemini-2.5-flash-lite\",\"location\":\"global\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:59:06.382Z"
   },
   {
     "id": "da0fd249f294e6065ab7c6c601aaf6461b8ff8098f26c35634b221201383970d",
@@ -192,17 +195,16 @@
     "first_seen_at": "2026-04-13T19:13:39.619Z",
     "last_seen_at": "2026-04-13T19:13:39.619Z",
     "job_title_normalized": "Analyst, Project Development",
-    "job_function": "strategy",
+    "job_function": "sales",
     "seniority_level": "entry",
     "location_type": "unknown",
-    "mba_relevance_score": 70,
-    "description_summary": "This role focuses on the early-stage development of climate-related projects, involving market analysis, financial modeling, and stakeholder engagement. The analyst will support the team in identifying opportunities and structuring projects for successful execution.",
+    "mba_relevance_score": 80,
+    "description_summary": "This role supports the identification, evaluation, and execution of new climate-tech projects. Responsibilities likely include market research, financial modeling, and stakeholder coordination to advance project feasibility and development.",
     "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and description strongly imply a focus on project development within the climate-tech sector, likely involving renewable energy or other decarbonization initiatives.",
+    "climate_relevance_reason": "The job is listed on a climate-tech job board and 'Project Development' in this context implies developing climate-related projects.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:02.859Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.327203647s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:40:27.967Z"
   },
   {
     "id": "4334c281341f7638482c39f8015a89ffefe9dbbe56392485e38fe348a7a70858",
@@ -238,7 +240,17 @@
     "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "first_seen_at": "2026-04-13T19:13:39.619Z",
     "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 36.356516043s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"36s\"}]"
+    "job_title_normalized": "Intern, Project Finance",
+    "job_function": "finance",
+    "seniority_level": "intern",
+    "location_type": "unknown",
+    "mba_relevance_score": 90,
+    "description_summary": "This internship focuses on project finance within the climate-tech sector. The role involves supporting financial modeling, deal structuring, and due diligence for climate-related projects.",
+    "climate_relevance_confirmed": true,
+    "climate_relevance_reason": "The job title and description explicitly mention project finance for climate-tech, aligning with categories like Solar, Wind, and Carbon Capture.",
+    "enrichment_prompt_version": "1.1.0",
+    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "last_enriched_at": "2026-04-14T13:31:24.415Z"
   },
   {
     "id": "d83497208f79ec91ae8167b8042db098e78627f965276c925185ed3a41cf59a8",
@@ -256,13 +268,12 @@
     "seniority_level": "intern",
     "location_type": "unknown",
     "mba_relevance_score": 85,
-    "description_summary": "This internship focuses on project development within the climate-tech sector. The role involves supporting the team in various aspects of project lifecycle, from initial concept to execution, likely involving market research, financial modeling, and stakeholder engagement.",
-    "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title and context of a climate-tech job board strongly indicate a focus on climate-related projects.",
+    "description_summary": null,
+    "climate_relevance_confirmed": false,
+    "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:04.190Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.334261132s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:59:07.883Z"
   },
   {
     "id": "6f28479fef4e84d8d628307ae33ebc7bd1528d8e1fdfc540538e768da14f1a1b",
@@ -275,17 +286,16 @@
     "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "first_seen_at": "2026-04-13T19:13:39.620Z",
     "last_seen_at": "2026-04-13T19:13:39.620Z",
-    "job_title_normalized": "Intern, Construction",
+    "job_title_normalized": "Construction Intern",
     "job_function": "operations",
     "seniority_level": "intern",
     "location_type": "unknown",
-    "mba_relevance_score": 25,
-    "description_summary": "This is an internship position focused on construction within a company. The role likely involves supporting construction projects and gaining practical experience in the field.",
+    "mba_relevance_score": 10,
+    "description_summary": "This internship involves supporting construction activities, likely focusing on project execution and site operations within a climate-tech context.",
     "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The job title 'Construction' aligns with the 'Construction' climate-tech category.",
+    "climate_relevance_reason": "The job title explicitly mentions 'Construction', which is a recognized climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-13T19:15:03.897Z",
-    "enrichment_error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: [429 Too Many Requests] You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash-lite\nPlease retry in 58.334186651s. [{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Learn more about Gemini API quotas\",\"url\":\"https://ai.google.dev/gemini-api/docs/rate-limits\"}]},{\"@type\":\"type.googleapis.com/google.rpc.QuotaFailure\",\"violations\":[{\"quotaMetric\":\"generativelanguage.googleapis.com/generate_content_free_tier_requests\",\"quotaId\":\"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",\"quotaDimensions\":{\"location\":\"global\",\"model\":\"gemini-2.5-flash-lite\"},\"quotaValue\":\"20\"}]},{\"@type\":\"type.googleapis.com/google.rpc.RetryInfo\",\"retryDelay\":\"58s\"}]"
+    "last_enriched_at": "2026-04-14T13:40:31.443Z"
   }
 ]

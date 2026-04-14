@@ -15,7 +15,10 @@ const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
 const config = require('../config');
+const { startRun, endRun } = require('../utils/run-log');
+const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
 const { callGeminiText, DailyQuotaError } = require('../gemini-text');
+const Progress = require('../utils/progress');
 
 const CONCURRENCY = 5;
 const BATCH_SAVE_SIZE = 10;
@@ -23,6 +26,21 @@ const REQUEST_TIMEOUT_MS = 10000; // 10s
 const DOMAIN_MIN_INTERVAL_MS = 1000; // 1 request / second per domain
 const MAX_FETCH_RETRIES = 4;
 const RETRY_BASE_MS = 1000;
+
+const USER_AGENTS = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15',
+  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 16_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1',
+  'Mozilla/5.0 (iPad; CPU OS 16_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1',
+  'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+];
+
+function chooseUserAgent(i) {
+  return USER_AGENTS[i % USER_AGENTS.length];
+}
+
+let fetchCounter = 0;
 
 const STANDARD_PATHS = [
   '/careers',
@@ -41,6 +59,14 @@ const STANDARD_PATHS = [
   '/openings',
   '/positions',
   '/hiring',
+  '/work-at-us',
+  '/opportunities',
+  '/team/careers',
+  '/team/jobs',
+  '/company/jobs',
+  '/about/join',
+  '/culture',
+  '/we-are-hiring',
 ];
 
 function usage() {
@@ -91,7 +117,15 @@ async function performFetchWithRetries(url, opts = {}) {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     try {
-      const res = await fetch(url, { redirect: 'follow', signal: controller.signal, ...opts });
+      // Merge default browser-like headers, allowing caller to override
+      const defaultHeaders = {
+        'User-Agent': chooseUserAgent(fetchCounter++),
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9'
+      };
+      const mergedHeaders = Object.assign({}, defaultHeaders, opts.headers || {});
+      const fetchOpts = { redirect: 'follow', signal: controller.signal, ...opts, headers: mergedHeaders };
+      const res = await fetch(url, fetchOpts);
       clearTimeout(id);
       if (res.status === 429) {
         if (attempt >= MAX_FETCH_RETRIES) return res;
@@ -124,19 +158,9 @@ async function domainFetch(domain, url, opts = {}) {
 }
 
 async function tryHeadThenGet(url, domain) {
-  // Try HEAD first, fallback to GET
+  // Use GET only; many servers 403 on HEAD
   try {
-    let res;
-    try {
-      res = await domainFetch(domain, url, { method: 'HEAD' });
-      if (res && res.status === 200) return res;
-    } catch (err) {
-      // HEAD failed; continue to GET
-    }
-
-    // Try GET
-    res = await domainFetch(domain, url, { method: 'GET' });
-    if (res && res.status === 200) return res;
+    const res = await domainFetch(domain, url, { method: 'GET' });
     return res;
   } catch (err) {
     throw err;
@@ -148,6 +172,7 @@ function detectAtsPlatform(url) {
   const u = url.toLowerCase();
   if (u.includes('boards.greenhouse.io') || u.includes('greenhouse.io')) return 'greenhouse';
   if (u.includes('jobs.lever.co')) return 'lever';
+  if (u.includes('jobs.ashby.com') || u.includes('ashby.com')) return 'ashby';
   if (u.includes('myworkdayjobs.com')) return 'workday';
   if (u.includes('icims.com')) return 'icims';
   return 'custom';
@@ -219,6 +244,15 @@ async function tryAtsSlugs(company, verbose) {
         return { found: true, url: res.url || leverUrl, method: 'ats_slug' };
       }
     } catch (_) { /* try next */ }
+
+    const ashbyUrl = `https://jobs.ashby.com/${slug}`;
+    try {
+      const res = await tryHeadThenGet(ashbyUrl, 'jobs.ashby.com');
+      if (res && res.status === 200) {
+        verboseLog(verbose, `ATS slug hit (ashby): ${ashbyUrl}`);
+        return { found: true, url: res.url || ashbyUrl, method: 'ats_slug' };
+      }
+    } catch (_) { /* try next */ }
   }
   return null;
 }
@@ -228,7 +262,7 @@ async function tryAtsSlugs(company, verbose) {
 // fallback doesn't have to fetch it again.
 const CAREER_LINK_RE = /(career|careers|job|jobs|join|openings|positions|hiring|work-with-us|work_with_us)/i;
 
-async function scanHomepageLinks(domain, homepageCache, verbose) {
+async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright = false) {
   let html = homepageCache.html;
   if (html === undefined) {
     try {
@@ -239,24 +273,47 @@ async function scanHomepageLinks(domain, homepageCache, verbose) {
   }
   if (!html) return null;
 
-  const hrefs = [];
   const re = /<a\s[^>]*\bhref=["']([^"'#][^"']*)["']/gi;
   let m;
-  while ((m = re.exec(html)) !== null) hrefs.push(m[1]);
 
-  const candidates = hrefs.filter(h => CAREER_LINK_RE.test(h));
-  for (const href of candidates) {
-    let url;
-    try { url = new URL(href, `https://${domain}`).toString(); } catch (_) { continue; }
-    if (!/^https?:\/\//i.test(url)) continue;
-    try {
-      const res = await tryHeadThenGet(url, new URL(url).hostname);
-      if (res && res.status === 200) {
-        verboseLog(verbose, `Homepage link scan hit: ${url}`);
-        return { found: true, url: res.url || url, method: 'homepage_link_scan' };
-      }
-    } catch (_) { /* try next candidate */ }
+  function extractCandidates(src) {
+    re.lastIndex = 0;
+    const hrefs = [];
+    while ((m = re.exec(src)) !== null) hrefs.push(m[1]);
+    return hrefs.filter(h => CAREER_LINK_RE.test(h));
   }
+
+  async function tryCandidates(candidates, method) {
+    for (const href of candidates) {
+      let url;
+      try { url = new URL(href, `https://${domain}`).toString(); } catch (_) { continue; }
+      if (!/^https?:\/\//i.test(url)) continue;
+      try {
+        const res = await tryHeadThenGet(url, new URL(url).hostname);
+        if (res && res.status === 200) {
+          verboseLog(verbose, `${method} hit: ${url}`);
+          return { found: true, url: res.url || url, method };
+        }
+      } catch (_) { /* try next */ }
+    }
+    return null;
+  }
+
+  // Static scan
+  const staticResult = await tryCandidates(extractCandidates(html), 'homepage_link_scan');
+  if (staticResult) return staticResult;
+
+  // Playwright fallback — only if opted in and static scan found nothing
+  if (usePlaywright) {
+    verboseLog(verbose, `Static scan empty for ${domain}, trying Playwright...`);
+    const rendered = await fetchRenderedHtml(`https://${domain}/`);
+    if (rendered) {
+      homepageCache.html = rendered; // update so LLM fallback gets rendered HTML too
+      const result = await tryCandidates(extractCandidates(rendered), 'playwright_scan');
+      if (result) return result;
+    }
+  }
+
   return null;
 }
 
@@ -277,7 +334,7 @@ function normalizeDomain(domainRaw) {
 }
 
 async function processCompany(company, opts) {
-  const { force, verbose } = opts;
+  const { force, verbose, usePlaywright } = opts;
   if (!company || !company.domain) return { skipped: true, reason: 'no-domain' };
 
   if (!force && company.careers_page_url && company.careers_page_reachable) {
@@ -308,7 +365,7 @@ async function processCompany(company, opts) {
   if (atsResult) return atsResult;
 
   // 3) Homepage link scan — one fetch, regex over <a href> tags
-  const linkResult = await scanHomepageLinks(domain, homepageCache, verbose);
+  const linkResult = await scanHomepageLinks(domain, homepageCache, verbose, usePlaywright);
   if (linkResult) return linkResult;
 
   // 4) Sitemap
@@ -370,10 +427,12 @@ async function processCompany(company, opts) {
 }
 
 async function main() {
+  const run = startRun('discovery');
   const argv = process.argv.slice(2);
   if (argv.includes('--help') || argv.includes('-h')) { usage(); process.exit(0); }
   const force = argv.includes('--force');
   const verbose = argv.includes('--verbose');
+  const usePlaywright = argv.includes('--playwright');
   const limit = parseLimitArg(argv);
 
   const dataPath = path.join(process.cwd(), 'data', 'companies.json');
@@ -418,13 +477,14 @@ async function main() {
     log(`--limit=${limit}: processing first ${indices.length} companies only`);
   }
 
+  const progress = new Progress(indices.length, 'discovery');
   log(`Starting discovery: ${indices.length} companies to process (concurrency=${CONCURRENCY})`);
 
   let processedSinceSave = 0;
   let totalProcessed = 0;
   let foundCount = 0;
   let notFoundCount = 0;
-  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, llm_fallback: 0, llm_fallback_attempted: 0, not_found: 0 };
+  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, playwright_scan: 0, llm_fallback: 0, llm_fallback_attempted: 0, not_found: 0 };
   const errorDomains = new Set();
   let dailyQuotaHit = false;
   let llmErrorCount = 0;
@@ -443,7 +503,7 @@ async function main() {
       if (idx === undefined) break;
       const company = companies[idx];
       try {
-        const result = await processCompany(company, { force, verbose });
+        const result = await processCompany(company, { force, verbose, usePlaywright });
         totalProcessed++;
         if (result.skipped) {
           // no change
@@ -468,6 +528,9 @@ async function main() {
           methodCounts.llm_fallback_attempted = (methodCounts.llm_fallback_attempted || 0) + 1;
         }
         if (result && result.llm_error) llmErrorCount++;
+
+        // update progress
+        try { progress.tick(totalProcessed, company.name || company.domain || ''); } catch(_) {}
       } catch (err) {
         if (err.name === 'DailyQuotaError') {
           warn('Daily quota exhausted — saving progress and stopping.');
@@ -478,6 +541,9 @@ async function main() {
         }
         warn('Error processing company', company.domain || company.name, err.message);
         errorDomains.add(company.domain || company.name || 'unknown');
+        // count this as processed and update progress
+        totalProcessed++;
+        try { progress.tick(totalProcessed, company.name || company.domain || ''); } catch(_) {}
       }
 
       processedSinceSave++;
@@ -492,6 +558,7 @@ async function main() {
   const workers = [];
   for (let i = 0; i < CONCURRENCY; i++) workers.push(workerLoop());
   await Promise.all(workers);
+  progress.done();
 
   // Final save if needed
   await scheduleSave();
@@ -509,6 +576,7 @@ async function main() {
     log('  Stopped early: Gemini daily quota exhausted. Re-run tomorrow or enable billing.');
     process.exit(1);
   }
+  await closeBrowser();
   process.exit(0);
 }
 
