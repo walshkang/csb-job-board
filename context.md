@@ -153,3 +153,15 @@ Approach:
   - Provider-agnostic streamLLMText() wrapper: Gemini (generateContentStream), Anthropic (stream: true), others
   - Agents opt in per-call; no full rewrite needed
   - Log streamed output to stderr; stdout stays clean for JSON artifacts
+
+Project todos (session DB):
+1. define-pitchbook-query — Define Pitchbook query: Decide and document exact Pitchbook filters that define "climate company" (NAICS, keywords, investor tags). Produce reproducible query and example export.
+2. careers-page-discovery — Implement careers page discovery: Add heuristics (standard paths), LLM-assisted discovery, and fallback rules. Save discovered URL and reachable flag; include manual review flow.
+3. ats-priority-adapters — Prioritize ATS adapters: Implement/improve adapters for Greenhouse, Lever, Ashby, Workday; prefer API ingestion over scraping; add concurrency limits.
+4. categorizer-dry-run-review — Run TF‑IDF + LLM dry-run, review /tmp/tfidf_proposed_categories.json, and mark taxonomy entries needing human edits.
+5. taxonomy-human-review — Coordinate human review of data/climate-tech-map-industry-categories.json; do not auto-apply changes until approved.
+6. mba-rubric — Define MBA relevance rubric: write explicit scoring rubric and sample labeled examples for LLM prompting.
+7. scraping-cadence-dormancy — Implement scraping cadence (3–5 days) and dormancy logic (consecutive empty scrapes >=6 → dormant).
+8. notion-sync-qa — Notion sync dry-run & QA: run node src/agents/notion-sync.js --dry-run after categorize/enrich and verify property mappings.
+9. analytics-metrics — Add analytics to compute days_live, funding_to_posting_lag, posting longevity buckets, and surface reporter metrics.
+10. user-facing-filters — Design user-facing filters and mock a Notion view for MBA users (function, location, remote, seniority, MBA score).
