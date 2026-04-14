@@ -41,9 +41,45 @@ const DEFAULT_COMPANIES_PATH = path.resolve(__dirname, '../../data/companies.jso
 const ARTIFACTS_DIR = path.resolve(__dirname, '../../artifacts/html');
 const SCRAPE_RUNS_PATH = path.resolve(__dirname, '../../data/scrape_runs.json');
 
-const CONCURRENCY = 3;
 const TIMEOUT_MS = 15000;
 const MAX_RETRIES = 2; // up to 2 retries (total attempts = 1 + MAX_RETRIES)
+
+// Provider concurrency limits
+const PROVIDER_LIMITS = {
+  greenhouse_api: 5,
+  lever_api: 5,
+  ashby_api: 5,
+  workday_api: 2,
+  direct_html: 3
+};
+
+// Minimal semaphore implementation per provider
+const providerSemaphores = {};
+for (const [k, limit] of Object.entries(PROVIDER_LIMITS)) {
+  providerSemaphores[k] = { count: 0, limit, queue: [] };
+}
+function acquireProvider(provider) {
+  if (!providerSemaphores[provider]) providerSemaphores[provider] = { count: 0, limit: 3, queue: [] };
+  const sem = providerSemaphores[provider];
+  return new Promise(resolve => {
+    if (sem.count < sem.limit) {
+      sem.count += 1;
+      resolve();
+    } else {
+      sem.queue.push(resolve);
+    }
+  });
+}
+function releaseProvider(provider) {
+  if (!providerSemaphores[provider]) providerSemaphores[provider] = { count: 0, limit: 3, queue: [] };
+  const sem = providerSemaphores[provider];
+  sem.count = Math.max(0, sem.count - 1);
+  if (sem.queue.length > 0) {
+    const next = sem.queue.shift();
+    sem.count += 1;
+    next();
+  }
+}
 
 function chooseUserAgent(i) {
   return USER_AGENTS[i % USER_AGENTS.length];
@@ -79,6 +115,41 @@ function extractLeverSlug(url) {
       if (m && m[1]) return m[1];
       const hostParts = host.split('.');
       if (hostParts[0] && hostParts[0] !== 'www') return hostParts[0];
+    }
+  } catch (e) {
+    return null;
+  }
+  return null;
+}
+
+function extractAshbySlug(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (host.includes('ashbyhq.com') || host.includes('jobs.ashbyhq.com')) {
+      // Try query param first
+      const qp = u.searchParams.get('organizationHostedJobsPageName');
+      if (qp) return qp;
+      // Otherwise use last path segment
+      const parts = u.pathname.split('/').filter(Boolean);
+      if (parts.length) return parts[parts.length - 1];
+      // fallback to hostname subdomain
+      const hostParts = host.split('.');
+      if (hostParts.length >= 3) return hostParts[0];
+    }
+  } catch (e) {
+    return null;
+  }
+  return null;
+}
+
+function extractWorkdayTenant(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (host.includes('myworkdayjobs.com') || host.includes('workday.com') || (host.includes('wd') && host.includes('workday'))) {
+      const parts = u.pathname.split('/').filter(Boolean);
+      if (parts.length) return { baseUrl: `${u.protocol}//${u.hostname}`, tenant: parts[0] };
     }
   } catch (e) {
     return null;
@@ -125,7 +196,8 @@ async function ensureDir(dir) {
   try {
     await fsp.mkdir(dir, { recursive: true });
   } catch (e) {
-    // ignore
+    console.error('[scraper] Failed to create directory', dir, ':', e.message);
+    throw e;
   }
 }
 
@@ -181,11 +253,14 @@ async function handleCompany(company, index) {
     byte_length: 0,
     method: null,
     success: false,
-    error: null
+    error: null,
+    status: null
   };
 
   if (!careersUrl) {
     result.error = 'No careers_page_url';
+    result.success = false;
+    result.status = 'error';
     await appendScrapeRun(result);
     return result;
   }
@@ -193,13 +268,23 @@ async function handleCompany(company, index) {
   // detect ATS
   const ghToken = extractGreenhouseToken(careersUrl);
   const leverSlug = extractLeverSlug(careersUrl);
+  const ashbySlug = extractAshbySlug(careersUrl);
+  const workdayInfo = extractWorkdayTenant(careersUrl); // { baseUrl, tenant } or null
 
+  // choose provider key (priority: greenhouse, lever, ashby, workday, html)
+  let providerKey = 'direct_html';
+  if (ghToken) providerKey = 'greenhouse_api';
+  else if (leverSlug) providerKey = 'lever_api';
+  else if (ashbySlug) providerKey = 'ashby_api';
+  else if (workdayInfo && workdayInfo.tenant) providerKey = 'workday_api';
+
+  await acquireProvider(providerKey);
   try {
-    if (ghToken) {
-      // Greenhouse API
+    const ua = chooseUserAgent(index);
+
+    if (providerKey === 'greenhouse_api') {
       const apiUrl = `https://boards-api.greenhouse.io/v1/boards/${ghToken}/jobs`;
       result.method = 'greenhouse_api';
-      const ua = chooseUserAgent(index);
       const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
       result.status_code = res.status;
       result.content_type = res.headers.get('content-type') || null;
@@ -208,15 +293,14 @@ async function handleCompany(company, index) {
       if (result.byte_length < 1024) console.warn(`[warn] greenhouse response small for ${companyId} (${result.byte_length} bytes)`);
       await saveArtifact(companyId, 'greenhouse_api', body, true);
       result.success = res.ok;
+      result.status = result.success ? 'success' : 'error';
       await appendScrapeRun(result);
       return result;
     }
 
-    if (leverSlug) {
-      // Lever API
+    if (providerKey === 'lever_api') {
       const apiUrl = `https://api.lever.co/v0/postings/${leverSlug}?mode=json`;
       result.method = 'lever_api';
-      const ua = chooseUserAgent(index);
       const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
       result.status_code = res.status;
       result.content_type = res.headers.get('content-type') || null;
@@ -225,13 +309,52 @@ async function handleCompany(company, index) {
       if (result.byte_length < 1024) console.warn(`[warn] lever response small for ${companyId} (${result.byte_length} bytes)`);
       await saveArtifact(companyId, 'lever_api', body, true);
       result.success = res.ok;
+      result.status = result.success ? 'success' : 'error';
       await appendScrapeRun(result);
       return result;
     }
 
+    if (providerKey === 'ashby_api') {
+      // Ashby: POST to their job-board endpoint with organizationHostedJobsPageName slug
+      const apiUrl = `https://jobs.ashbyhq.com/api/non-user-facing/job-board/jobs?organizationHostedJobsPageName=${encodeURIComponent(ashbySlug)}`;
+      result.method = 'ashby_api';
+      const res = await attemptFetchWithRetries(apiUrl, { method: 'POST', headers: { 'User-Agent': ua, 'Content-Type': 'application/json', Accept: 'application/json' }, body: '{}' });
+      result.status_code = res.status;
+      result.content_type = res.headers.get('content-type') || null;
+      const body = await res.text();
+      result.byte_length = Buffer.byteLength(body, 'utf8');
+      if (result.byte_length < 256) console.warn(`[warn] ashby response small for ${companyId} (${result.byte_length} bytes)`);
+      await saveArtifact(companyId, 'ashby_api', body, true);
+      result.success = res.ok;
+      result.status = result.success ? 'success' : 'error';
+      await appendScrapeRun(result);
+      return result;
+    }
+
+    if (providerKey === 'workday_api') {
+      // Workday: construct jobs endpoint
+      if (!workdayInfo || !workdayInfo.tenant) {
+        console.warn(`[warn] Could not parse Workday tenant for ${companyId} (${careersUrl}), falling back to HTML`);
+      } else {
+        const apiUrl = `${workdayInfo.baseUrl}/wday/cxs/${workdayInfo.tenant}/jobs`;
+        result.method = 'workday_api';
+        const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
+        result.status_code = res.status;
+        result.content_type = res.headers.get('content-type') || null;
+        const body = await res.text();
+        result.byte_length = Buffer.byteLength(body, 'utf8');
+        if (result.byte_length < 256) console.warn(`[warn] workday response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'workday_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        await appendScrapeRun(result);
+        return result;
+      }
+      // fall through to HTML fetch if parsing failed
+    }
+
     // fallback: direct HTML fetch
     result.method = 'direct_html';
-    const ua = chooseUserAgent(index);
     const res = await attemptFetchWithRetries(careersUrl, { headers: { 'User-Agent': ua, Accept: 'text/html' } });
     result.status_code = res.status;
     result.content_type = res.headers.get('content-type') || null;
@@ -240,12 +363,17 @@ async function handleCompany(company, index) {
     if (result.byte_length < 1024) console.warn(`[warn] HTML response small for ${companyId} (${result.byte_length} bytes). Possible block or empty page.`);
     await saveArtifact(companyId, 'direct_html', body, false);
     result.success = res.ok;
+    result.status = result.success ? 'success' : 'error';
     await appendScrapeRun(result);
     return result;
   } catch (err) {
     result.error = err.message || String(err);
+    result.success = false;
+    result.status = 'error';
     await appendScrapeRun(result);
     return result;
+  } finally {
+    releaseProvider(providerKey);
   }
 }
 
@@ -260,26 +388,14 @@ async function run(companiesPath) {
   }
 
   console.log(`Found ${companies.length} companies with careers_page_reachable=true`);
-  // concurrency pool
-  let i = 0;
-  const results = [];
-  const pool = new Array(CONCURRENCY).fill(null).map(async () => {
-    while (i < companies.length) {
-      const idx = i++;
-      const c = companies[idx];
-      try {
-        // sprinkle index into UA choice
-        const res = await handleCompany(c, idx);
-        results.push(res);
-      } catch (err) {
-        console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
-      }
-    }
-  });
+  const promises = companies.map((c, idx) => handleCompany(c, idx).catch(err => {
+    console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
+    return null;
+  }));
 
-  await Promise.all(pool);
+  const results = await Promise.all(promises);
   console.log('Scrape run complete');
-  return results;
+  return results.filter(Boolean);
 }
 
 if (require.main === module) {

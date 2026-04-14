@@ -102,6 +102,7 @@ function updateJobsForLastRun(jobs, lastRun, nowIso) {
         job.days_live = 0;
       }
     } catch (err) {
+      console.warn('[temporal] days_live calculation failed for job', job.id || job.source_url, ':', err.message);
       job.days_live = 0;
     }
   }
