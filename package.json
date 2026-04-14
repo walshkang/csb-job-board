@@ -13,7 +13,8 @@
     "qa": "node src/agents/qa.js",
     "fingerprint": "node src/agents/fingerprinter.js",
     "reporter": "node src/agents/reporter.js",
-    "review": "node src/agents/reviewer.js"
+    "review": "node src/agents/reviewer.js",
+    "categorize": "node src/agents/categorizer.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"

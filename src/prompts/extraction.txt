@@ -6,7 +6,7 @@ For each job found, return:
   "url": "absolute URL to the individual job posting",
   "location": "location text if shown, or null",
   "employment_type": "full_time | part_time | contract | intern | null",
-  "description": "full job description text if available on this page, or null"
+  "description": "first 500 characters of job description text if available on this page, or null"
 }
 
 Company: {company_name}
@@ -14,9 +14,9 @@ Base URL (for resolving relative links): {base_url}
 
 Rules:
 - Return every distinct job listing. Do not summarize or deduplicate.
-- For url: resolve relative paths against the base URL. If only a fragment or anchor exists, combine with base URL. If no link exists for a job, use null.
+- For url: use ONLY href attribute values that are literally present in the HTML. Resolve relative paths against the base URL. If only a fragment or anchor exists, combine with base URL. If no href link exists for a job, use null. NEVER construct or guess URLs.
 - For employment_type: only set if explicitly stated on the page. Do not guess from the title.
-- For description: extract the full text, stripped of HTML tags. If the page only shows titles (no inline descriptions), set to null — the description lives on the individual job page.
+- For description: copy VERBATIM text from the HTML only — up to 500 characters, stripped of tags, truncated at a word boundary. NEVER generate, infer, or paraphrase descriptions. If the description text is not literally present in the HTML provided, set to null.
 - For location: extract exactly as shown. Include parentheticals like "(Remote)" or "(Hybrid - NYC)". If multiple locations, join with " | ".
 - If the page contains department/team groupings, do NOT create a job for the department header — only for individual roles.
 - If the page is empty, shows "no open positions", or contains no job listings, return an empty array: []

@@ -57,7 +57,15 @@ Slice 8 — Temporal Tracking + Notion Sync
   node src/agents/temporal.js     # update last_seen_at, removed_at, days_live, dormancy
   node src/agents/notion-sync.js  # upsert companies + jobs to Notion (supports --dry-run, --companies-only, --jobs-only)
 
-Slice 9 — Observability
+Slice 9 — Industry Categorization
+  npm run categorize [--force] [--dry-run]
+  Input: data/jobs.json + data/companies.json + data/climate-tech-map-industry-categories.json
+  One LLM call per unique company (not per job) — result applied to all jobs for that company
+  Writes: climate_tech_category, primary_sector, opportunity_area, category_confidence onto each job
+  Skips companies already categorized unless --force; rate-limited pool (concurrency=3, delay=1000ms)
+  Note: requires maxOutputTokens >= 4096 when using gemini-2.5-flash (thinking tokens consume budget)
+
+Slice 10 — Observability
   npm run reporter   # aggregates scrape_runs.json + companies.json + jobs.json → data/runs/YYYY-MM-DD-HH.json + data/runs/latest.json
   npm run review     # reads latest.json + samples failures → calls Gemini → writes data/postmortems/YYYY-MM-DD.md
   Reporter: per-provider scrape success rates, discovery yield, ATS distribution, enrichment error rate, climate relevance %, MBA score avg
@@ -83,20 +91,21 @@ Config / env
   Per-agent model overrides: OCR_MODEL, DISCOVERY_MODEL, EXTRACTION_MODEL, ENRICHMENT_MODEL
 
 Current status (as of 2026-04-14)
-  - 9 slices implemented; Playwright fallback, batch enrichment, and observability added since first test run
-  - Test run completed on pitchbook-screenshot-test.png (~37 companies)
-  - Discovery yield: 23/37 (62%) careers pages found; 14 not found (small/early-stage companies likely have none)
-  - 13 jobs extracted; enrichment blocked on free-tier quota — needs paid GEMINI_API_KEY
-  - Notion sync working: dynamic schema resolves properties correctly
-  - Scraper now routes by fingerprinter-detected ats_platform; Playwright fallback fires on 4xx / <5KB / non-HTML responses
-  - Observability: npm run reporter → run summary JSON; npm run review → LLM postmortem markdown
-  - Enricher: --batch-mode sends 5 jobs per LLM call; HTML stripped before truncation
+  - 10 slices implemented and running end-to-end
+  - 37 companies from test screenshots; 19 reachable careers pages
+  - 15 companies blocked by CAPTCHA/JS rendering — no jobs extractable without browser fingerprint spoofing
+  - Jobs extracted from API adapters (Greenhouse, Lever, Ashby, Workday) and direct HTML where accessible
+  - Enrichment, categorization, and observability working with gemini-2.5-flash (paid tier)
+  - Key bug fixed: gemini-2.5-flash thinking tokens consume maxOutputTokens budget — all agents now use 4096+
+  - Extraction prompt hardened: no hallucination of URLs or descriptions not present in HTML
+  - Industry categorization: one LLM call per company, result applied to all jobs
+  - Notion sync working end-to-end with dynamic schema mapping
 
 Next meaningful work
-  1. Add paid GEMINI_API_KEY and run full pipeline end-to-end
-  2. Run npm run reporter then npm run review after first enriched run
-  3. Add more Pitchbook screenshots → re-run OCR to grow companies.json
-  4. Check ATS fingerprinting yield: how many "custom" companies resolve to a known ATS
+  1. Add more Pitchbook screenshots → re-run OCR to grow companies.json
+  2. Fingerprinter: scan careers page in addition to homepage (catches ATS embeds like Valar Atomics/Greenhouse)
+  3. Run npm run reporter + npm run review after each full pipeline run
+  4. Commit postmortem outputs to repo for training data
 
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?

@@ -15,6 +15,12 @@
         "deal_type": "Seed Round",
         "size_mm": null,
         "total_raised_mm": 1.9
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 1.9
       }
     ],
     "company_profile": {
@@ -27,13 +33,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvaireco",
     "name": "Vaire",
     "domain": "www.vaire.co",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 9.5
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -57,13 +71,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstructurebotcom",
     "name": "StructureBot",
     "domain": "www.structurebot.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 5,
+        "total_raised_mm": 0.14
+      },
       {
         "date": null,
         "deal_type": "Seed Round",
@@ -87,13 +109,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwbiomasscontrolscom",
     "name": "Biomass Controls",
     "domain": "www.biomasscontrols.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 1
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -117,13 +148,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 1,
+    "dormant": false
   },
   {
     "id": "lionenergycom",
     "name": "Lion Energy",
     "domain": "lionenergy.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 25
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -147,13 +186,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "homepage_link_scan"
+    "careers_page_discovery_method": "homepage_link_scan",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "pages"
   },
   {
     "id": "dmri-inccom",
     "name": "DMR International",
     "domain": "dmri-inc.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 2,
+        "total_raised_mm": 0.6
+      },
       {
         "date": null,
         "deal_type": "Seed Round",
@@ -177,13 +225,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwavalanchefusioncom",
     "name": "Avalanche (Alternative Energy Equipment)",
     "domain": "www.avalanchefusion.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Grant",
+        "size_mm": 5.2,
+        "total_raised_mm": 174.35
+      },
       {
         "date": null,
         "deal_type": "Grant",
@@ -207,13 +263,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwenvirosparkenergycom",
     "name": "EnviroSpark",
     "domain": "www.envirosparkenergy.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 3.01,
+        "total_raised_mm": 68.73
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -237,13 +302,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "homepage_link_scan"
+    "careers_page_discovery_method": "homepage_link_scan",
+    "consecutive_empty_scrapes": 1,
+    "dormant": false,
+    "ats_slug": "who-we-are"
   },
   {
     "id": "wwwnorcalcontrolsnet",
     "name": "Nor-Cal Controls ES",
     "domain": "www.norcalcontrols.net",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -267,13 +341,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwkorapowercom",
     "name": "Kora (Alternative Energy Equipment)",
     "domain": "www.korapower.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 4.55,
+        "total_raised_mm": 4.55
+      },
       {
         "date": null,
         "deal_type": "Early Stage VC",
@@ -297,13 +380,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "homepage_link_scan"
+    "careers_page_discovery_method": "homepage_link_scan",
+    "consecutive_empty_scrapes": 1,
+    "dormant": false,
+    "ats_slug": "pages"
   },
   {
     "id": "wwwgetlumencom",
     "name": "Lumen Energy",
     "domain": "www.getlumen.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 2.98,
+        "total_raised_mm": 18.27
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -324,16 +416,26 @@
       "employees": 29
     },
     "careers_page_url": "https://getlumen.com/careers",
-    "ats_platform": "custom",
+    "ats_platform": "ashby",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_detection_source": "careers_page",
+    "ats_slug": "careers"
   },
   {
     "id": "wwwnirovacom",
     "name": "Nirova",
     "domain": "www.nirova.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 3,
+        "total_raised_mm": 3
+      },
       {
         "date": null,
         "deal_type": "Seed Round",
@@ -357,7 +459,9 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwplumfindercom",
@@ -387,13 +491,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsedroncom",
     "name": "Sedron Technologies",
     "domain": "www.sedron.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "PE Growth/Expansion",
+        "size_mm": 500,
+        "total_raised_mm": 500
+      },
       {
         "date": null,
         "deal_type": "PE Growth/Expansion",
@@ -417,13 +529,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwgoflexcom",
     "name": "Flex",
     "domain": "www.goflex.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 50.14,
+        "total_raised_mm": 51.14
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -447,13 +567,23 @@
     "ats_platform": "greenhouse",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "ats_slug"
+    "careers_page_discovery_method": "ats_slug",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_detection_source": "careers_page",
+    "ats_slug": "flex"
   },
   {
     "id": "wwwheat2powerus",
     "name": "Heat2Power",
     "domain": "www.heat2power.us",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 15.25,
+        "total_raised_mm": 18.25
+      },
       {
         "date": null,
         "deal_type": "Early Stage VC",
@@ -477,13 +607,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "symglasscom",
     "name": "Symglass",
     "domain": "symglass.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 2.2
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -507,13 +646,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwterawatt-technologycom",
     "name": "TeraWatt Technology",
     "domain": "www.terawatt-technology.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 96.5,
+        "total_raised_mm": 140.4
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -537,13 +684,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "homepage_link_scan"
+    "careers_page_discovery_method": "homepage_link_scan",
+    "consecutive_empty_scrapes": 1,
+    "dormant": false,
+    "ats_slug": "news-releases"
   },
   {
     "id": "wwwcoastalmeasurescom",
     "name": "Coastal Measures",
     "domain": "www.coastalmeasures.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 0.4,
+        "total_raised_mm": 1.25
+      },
       {
         "date": null,
         "deal_type": "Seed Round",
@@ -567,13 +723,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwearndltcom",
     "name": "EarnDLT",
     "domain": "www.earndlt.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 10,
+        "total_raised_mm": 4.94
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -597,13 +762,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwagronetzerocom",
     "name": "AgroNet Zero",
     "domain": "www.agronetzero.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.01
+      },
       {
         "date": null,
         "deal_type": "Accelerator/Incubator",
@@ -627,13 +800,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstandardcarboncom",
     "name": "Standard Carbon",
     "domain": "www.standardcarbon.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": 9.8
+      },
       {
         "date": null,
         "deal_type": "Equity Crowdfunding",
@@ -657,13 +838,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwastedearth",
     "name": "wasted*",
     "domain": "www.wasted.earth",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 3.21,
+        "total_raised_mm": 12.31
+      },
       {
         "date": null,
         "deal_type": "Seed Round",
@@ -687,13 +876,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwcoreshellcom",
     "name": "Coreshell",
     "domain": "www.coreshell.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 46.3,
+        "total_raised_mm": 86.2
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -717,7 +915,10 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwsolideccom",
@@ -747,13 +948,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwcesrenewablescom",
     "name": "Clean Energy Services",
     "domain": "www.cesrenewables.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 8
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -777,13 +987,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwtmt-ipecom",
     "name": "Thermal Management Technologies",
     "domain": "www.tmt-ipe.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -807,13 +1025,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "about"
   },
   {
     "id": "voltifycom",
     "name": "Voltify",
     "domain": "voltify.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 29.68,
+        "total_raised_mm": 29.68
+      },
       {
         "date": null,
         "deal_type": "Seed Round",
@@ -837,13 +1064,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwvulcanelementscom",
     "name": "Vulcan Elements",
     "domain": "www.vulcanelements.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 430.72,
+        "total_raised_mm": 504.63
+      },
       {
         "date": null,
         "deal_type": "Early Stage VC",
@@ -864,16 +1100,26 @@
       "employees": 30
     },
     "careers_page_url": "https://vulcanelements.com/careers/",
-    "ats_platform": "custom",
+    "ats_platform": "greenhouse",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_detection_source": "homepage",
+    "ats_slug": "careers"
   },
   {
     "id": "wwwcarbonbridgeio",
     "name": "CarbonBridge",
     "domain": "www.carbonbridge.io",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 1.35
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -897,7 +1143,9 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwdimension-energycom",
@@ -915,6 +1163,12 @@
         "deal_type": "Project Financing",
         "size_mm": 415,
         "total_raised_mm": 1584.5
+      },
+      {
+        "date": null,
+        "deal_type": "Project Financing",
+        "size_mm": null,
+        "total_raised_mm": 1584.5
       }
     ],
     "company_profile": {
@@ -927,13 +1181,22 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false,
+    "ats_slug": "careers"
   },
   {
     "id": "wwwdpsenergycom",
     "name": "Distributed Power Solutions",
     "domain": "www.dpsenergy.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": 675,
+        "total_raised_mm": null
+      },
       {
         "date": null,
         "deal_type": "Merger/Acquisition",
@@ -957,13 +1220,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwfastmetalsinccom",
     "name": "FAST Metals",
     "domain": "www.fastmetalsinc.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 0.1
+      },
       {
         "date": null,
         "deal_type": "Early Stage VC",
@@ -987,13 +1258,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmartiecom",
     "name": "Martie",
     "domain": "www.martie.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "PE Growth/Expansion",
+        "size_mm": null,
+        "total_raised_mm": 10
+      },
       {
         "date": null,
         "deal_type": "PE Growth/Expansion",
@@ -1017,13 +1296,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstakmobilitycom",
     "name": "Stak",
     "domain": "www.stakmobility.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 0.35
+      },
       {
         "date": null,
         "deal_type": "Later Stage VC",
@@ -1047,13 +1334,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtatleauxsolarcom",
     "name": "Tatleaux Solar Group",
     "domain": "www.tatleauxsolar.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Debt - General",
+        "size_mm": null,
+        "total_raised_mm": null
+      },
       {
         "date": null,
         "deal_type": "Debt - General",
@@ -1077,13 +1372,21 @@
     "ats_platform": null,
     "ocr_uncertain": false,
     "careers_page_reachable": false,
-    "careers_page_discovery_method": "not_found"
+    "careers_page_discovery_method": "not_found",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvalaratomicscom",
     "name": "Valar Atomics",
     "domain": "www.valaratomics.com",
     "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 450,
+        "total_raised_mm": 600.5
+      },
       {
         "date": null,
         "deal_type": "Early Stage VC",
@@ -1107,6 +1410,1569 @@
     "ats_platform": "custom",
     "ocr_uncertain": false,
     "careers_page_reachable": true,
-    "careers_page_discovery_method": "standard_pattern"
+    "careers_page_discovery_method": "standard_pattern",
+    "consecutive_empty_scrapes": 1,
+    "dormant": false,
+    "ats_slug": "careers"
+  },
+  {
+    "id": "wwwcapturetechorg",
+    "name": "Capture Tech",
+    "domain": "www.capturetech.org",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.02
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Ann Arbor, MI",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwgevocom",
+    "name": "Gevo (NAS: GEVO)",
+    "domain": "www.gevo.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Debt Refinancing",
+        "size_mm": 90,
+        "total_raised_mm": 879.68
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Englewood, CO",
+      "employees": 151
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwinertiacom",
+    "name": "Inertia",
+    "domain": "www.inertia.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 450,
+        "total_raised_mm": 450
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Francisco, CA",
+      "employees": 15
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwlanzajetcom",
+    "name": "Lanzajet",
+    "domain": "www.lanzajet.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 47,
+        "total_raised_mm": 153.2
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Deerfield, IL",
+      "employees": 116
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwstarcloudcom",
+    "name": "Starcloud",
+    "domain": "www.starcloud.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 170,
+        "total_raised_mm": 197.46
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Redmond, WA",
+      "employees": 30
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwutilityglobalcom",
+    "name": "Utility Global",
+    "domain": "www.utilityglobal.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 100,
+        "total_raised_mm": 183
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Houston, TX",
+      "employees": 92
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwdeepfissioncom",
+    "name": "Deep Fission",
+    "domain": "www.deepfission.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "PIPE",
+        "size_mm": 80,
+        "total_raised_mm": 114
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Berkeley, CA",
+      "employees": 28
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwelysiabiocom",
+    "name": "Elysia Bio",
+    "domain": "www.elysiabio.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 0.46,
+        "total_raised_mm": 0.46
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Raleigh, NC",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwgreenbuttscom",
+    "name": "Greenbutts",
+    "domain": "www.greenbutts.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 2.44,
+        "total_raised_mm": 2.74
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Diego, CA",
+      "employees": 10
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwhaulerherocom",
+    "name": "Hauler Hero",
+    "domain": "www.haulerhero.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 16,
+        "total_raised_mm": 26
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Diego, CA",
+      "employees": 47
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwlitmotorscom",
+    "name": "Lit Motors",
+    "domain": "www.litmotors.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": 0.01,
+        "total_raised_mm": 13.78
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Portland, OR",
+      "employees": 27
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwmiviumcom",
+    "name": "Mivium",
+    "domain": "www.mivium.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 6.34
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Fremont, CA",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwneosansystemscom",
+    "name": "NeoSan Systems",
+    "domain": "www.neosansystems.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 4,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Albuquerque, NM",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwqneticenergy",
+    "name": "Qnetic",
+    "domain": "www.qnetic.energy",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": 9.56
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Newark, NJ",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwwindscapeai",
+    "name": "Windscape AI",
+    "domain": "www.windscape.ai",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 0.7
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Berkeley, CA",
+      "employees": 4
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwfathomsciencecom",
+    "name": "Fathom Science",
+    "domain": "www.fathomscience.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 1
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Raleigh, NC",
+      "employees": 11
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "found-industriescom",
+    "name": "Found Energy",
+    "domain": "found-industries.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 5.4,
+        "total_raised_mm": 22.22
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Boston, MA",
+      "employees": 33
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "nineenergy",
+    "name": "NineDot Energy",
+    "domain": "nine.energy",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Project Financing",
+        "size_mm": 431,
+        "total_raised_mm": 1031.49
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Brooklyn, NY",
+      "employees": 90
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwupkeptio",
+    "name": "Upkept",
+    "domain": "www.upkept.io",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Angel (Individual)",
+        "size_mm": 0.1,
+        "total_raised_mm": 0.2
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Rogers, AR",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwbrightpavemarkerscom",
+    "name": "Brightpave Markers",
+    "domain": "www.brightpavemarkers.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 0.48,
+        "total_raised_mm": 1.33
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Littleton, CO",
+      "employees": 4
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwclearsolarcocom",
+    "name": "Clear Solar",
+    "domain": "www.clearsolarco.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.22
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Hurley, NY",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "eioncarboncom",
+    "name": "Eion",
+    "domain": "eioncarbon.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 16.06
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Princeton, NJ",
+      "employees": 50
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwfractalpowercom",
+    "name": "Fractal Power",
+    "domain": "www.fractalpower.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 9.85,
+        "total_raised_mm": 9.85
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "New York, NY",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwheronpowercom",
+    "name": "Heron Power",
+    "domain": "www.heronpower.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 140,
+        "total_raised_mm": 183.25
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Scotts Valley, CA",
+      "employees": 69
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "tilttechnology",
+    "name": "Tilt (Systems and Information Manageme...",
+    "domain": "tilt.technology",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 4,
+        "total_raised_mm": 4
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Francisco, CA",
+      "employees": 21
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwboxpowerio",
+    "name": "BoxPower",
+    "domain": "www.boxpower.io",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 15.97
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Grass Valley, CA",
+      "employees": 49
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwdeeprootbiocom",
+    "name": "Deep Root Biolabs",
+    "domain": "www.deeprootbio.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 1.18
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Baltimore, MD",
+      "employees": 3
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwphathomtech",
+    "name": "pHathom Technologies",
+    "domain": "www.phathom.tech",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 4,
+        "total_raised_mm": 4
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Austin, TX",
+      "employees": 9
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwxkcorpcom",
+    "name": "Xandar Kardian",
+    "domain": "www.xkcorp.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 25,
+        "total_raised_mm": 28.63
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "New York, NY",
+      "employees": 39
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwarkeabiocom",
+    "name": "ArkeaBio",
+    "domain": "www.arkeabio.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 7,
+        "total_raised_mm": 45.5
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Charlestown, MA",
+      "employees": 40
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwgetshinecom",
+    "name": "Shine (Business/Productivity Software)",
+    "domain": "www.getshine.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 1.12,
+        "total_raised_mm": 1.12
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Heber, UT",
+      "employees": 7
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwstratusautocom",
+    "name": "Stratus Automation",
+    "domain": "www.stratusauto.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "IPO",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Renton, WA",
+      "employees": 449
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwpoasbioenergycom",
+    "name": "Poás Bioenergy",
+    "domain": "www.poasbioenergy.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.2
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Ann Arbor, MI",
+      "employees": 7
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwdrivepowerlinecom",
+    "name": "Powerline",
+    "domain": "www.drivepowerline.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 7,
+        "total_raised_mm": 10.4
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Palo Alto, CA",
+      "employees": 13
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwsuwanneeriverfarmscom",
+    "name": "Suwannee River Farms",
+    "domain": "www.suwanneeriverfarms.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Saint Petersburg, FL",
+      "employees": 7
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwtersussolutionscom",
+    "name": "Tersus Solutions",
+    "domain": "www.tersussolutions.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 5.39
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Englewood, CO",
+      "employees": 57
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwagriwatertech",
+    "name": "Agriwater",
+    "domain": "www.agriwater.tech",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.25
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Knoxville, TN",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwcarbovoltcom",
+    "name": "CarboVolt Labs",
+    "domain": "www.carbovolt.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Angel (individual)",
+        "size_mm": 1,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Wilmington, DE",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwweco-fabcom",
+    "name": "EcoFab",
+    "domain": "www.eco-fab.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Buyout/LBO",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Justin, TX",
+      "employees": 24
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwfactorialenergycom",
+    "name": "Factorial",
+    "domain": "www.factorialenergy.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "PIPE",
+        "size_mm": 100,
+        "total_raised_mm": 260.31
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Billerica, MA",
+      "employees": 124
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwintegrativechargingcom",
+    "name": "Integrative Charging",
+    "domain": "www.integrativecharging.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 0.65,
+        "total_raised_mm": 0.65
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Sausalito, CA",
+      "employees": 3
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwpopwheelsclub",
+    "name": "Popwheels",
+    "domain": "www.popwheels.club",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 4.7,
+        "total_raised_mm": 5.18
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "New York, NY",
+      "employees": 24
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwtaecom",
+    "name": "Tae",
+    "domain": "www.tae.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": 6000,
+        "total_raised_mm": 1792.5
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Lake Forest, CA",
+      "employees": 282
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwepicchargingcom",
+    "name": "Epic Charging",
+    "domain": "www.epiccharging.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Corporate",
+        "size_mm": null,
+        "total_raised_mm": 5.68
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Belmont, CA",
+      "employees": 18
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwmaia-analyticscom",
+    "name": "MAIA Analytics",
+    "domain": "www.maia-analytics.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Redondo Beach, CA",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwpangeamovementcom",
+    "name": "Pangea Movement",
+    "domain": "www.pangeamovement.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 0.29,
+        "total_raised_mm": 1.15
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Francisco, CA",
+      "employees": 11
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwpivotenergynet",
+    "name": "Pivot Energy",
+    "domain": "www.pivotenergy.net",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Project Financing",
+        "size_mm": 225,
+        "total_raised_mm": 978
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Denver, CO",
+      "employees": 170
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwradiantnuclearcom",
+    "name": "Radiant",
+    "domain": "www.radiantnuclear.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 350,
+        "total_raised_mm": 568.98
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "El Segundo, CA",
+      "employees": 194
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwsoltagecom",
+    "name": "Soltage",
+    "domain": "www.soltage.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Project Financing",
+        "size_mm": 80,
+        "total_raised_mm": 340
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Jersey City, NJ",
+      "employees": 49
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "tarragonsystemscom",
+    "name": "Tarragon Systems",
+    "domain": "tarragonsystems.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Angel (individual)",
+        "size_mm": 0.5,
+        "total_raised_mm": 0.5
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Boston, MA",
+      "employees": 3
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwweathermaticcom",
+    "name": "Weathermatic",
+    "domain": "www.weathermatic.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "PE Growth/Expansion",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Garland, TX",
+      "employees": 112
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwarc-cleantechcom",
+    "name": "ARC Clean Technology",
+    "domain": "www.arc-cleantech.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 26.4
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Washington, DC",
+      "employees": 16
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwcollideio",
+    "name": "Collide (Media and Information Services)",
+    "domain": "www.collide.io",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 6.67,
+        "total_raised_mm": 13.89
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Houston, TX",
+      "employees": 37
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwculturebiosciencescom",
+    "name": "Culture Biosciences",
+    "domain": "www.culturebiosciences.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 107.22
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "South San Francisco, CA",
+      "employees": 80
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwenderamotorscom",
+    "name": "Endera",
+    "domain": "www.enderamotors.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 48.46,
+        "total_raised_mm": 68.9
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Ottawa, OH",
+      "employees": 52
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwivoltdcom",
+    "name": "Ivo (Aerospace and Defense)",
+    "domain": "www.ivoltd.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Angel (individual)",
+        "size_mm": 0.75,
+        "total_raised_mm": 0.75
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Greenville, SC",
+      "employees": 4
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwp6technologiescom",
+    "name": "P6 Technologies",
+    "domain": "www.p6technologies.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Buyout/LBO",
+        "size_mm": null,
+        "total_raised_mm": 3.25
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Spicewood, TX",
+      "employees": 15
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwsymbrosiaco",
+    "name": "Symbrosia",
+    "domain": "www.symbrosia.co",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 5.8,
+        "total_raised_mm": 14.18
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Kailua-Kona, HI",
+      "employees": 27
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "amatiscontrolscom",
+    "name": "Amatis Controls",
+    "domain": "amatiscontrols.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 2.3
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Detroit, MI",
+      "employees": 9
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwemerencom",
+    "name": "Emeren Group",
+    "domain": "www.emeren.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 366
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Norwalk, CT",
+      "employees": 160
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwekoadesign",
+    "name": "Lingrove",
+    "domain": "www.ekoa.design",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 2.96,
+        "total_raised_mm": 19.32
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Rafael, CA",
+      "employees": 18
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwpaladinpowercom",
+    "name": "Paladin Power",
+    "domain": "www.paladinpower.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "IPO",
+        "size_mm": null,
+        "total_raised_mm": 16.63
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Carlsbad, CA",
+      "employees": 12
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwskiptechnologycom",
+    "name": "Skip Tech",
+    "domain": "www.skiptechnology.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 3.97,
+        "total_raised_mm": 6.21
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Portland, OR",
+      "employees": 10
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwplumefindercom",
+    "name": "Plume (Environmental Services (B2B))",
+    "domain": "www.plumefinder.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 3.81,
+        "total_raised_mm": 4.31
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "San Francisco, CA",
+      "employees": 3
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
+  },
+  {
+    "id": "wwwsolidteccom",
+    "name": "Solidtec",
+    "domain": "www.solidtec.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 2.12,
+        "total_raised_mm": 2.47
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "hq": "Houston, TX",
+      "employees": 11
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   }
 ]

@@ -17,7 +17,7 @@ const { URL } = require('url');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
-const { callGeminiText, DailyQuotaError } = require('../gemini-text');
+const { callGeminiText, streamGeminiText, DailyQuotaError } = require('../gemini-text');
 const Progress = require('../utils/progress');
 
 const CONCURRENCY = 5;
@@ -317,14 +317,16 @@ async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright =
   return null;
 }
 
-async function callGeminiLLM(prompt) {
+async function callGeminiLLM(prompt, domain) {
   const apiKey = config.discovery.apiKey;
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-  return callGeminiText({
+  process.stderr.write('\n[discovery: ' + (domain || 'unknown') + ']\n');
+  return streamGeminiText({
     apiKey,
     model: config.discovery.model,
     prompt,
     maxOutputTokens: 256,
+    onToken: chunk => process.stderr.write(chunk)
   });
 }
 
@@ -397,7 +399,7 @@ async function processCompany(company, opts) {
     const prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
 
     // Call LLM and mark that it was attempted so callers can record metrics.
-    const completion = await callGeminiLLM(prompt); // DailyQuotaError bubbles up
+    const completion = await callGeminiLLM(prompt, domain); // DailyQuotaError bubbles up
 
     if (!completion) return { found: false, method: 'not_found', llm_attempted: true };
     let answer = completion.trim().split('\n')[0].trim().replace(/^['"]?(.*?)['"]?$/, '$1');

@@ -135,16 +135,62 @@ async function run() {
       }
     }
 
-    const detected = detectFromHtml(html);
+    // detect from homepage
+    let detected = detectFromHtml(html);
+    const homepageUrl = c.domain ? `https://${c.domain.replace(/https?:\/\//, '')}/` : null;
+    const normalize = u => u ? u.replace(/\/+$/, '').toLowerCase() : null;
     const slug = extractSlugFromUrl(c.careers_page_url);
 
     let changed = false;
-    if (detected && (!origPlatform || origPlatform === 'custom')) {
-      c.ats_platform = detected;
-      platformCounts[detected] = (platformCounts[detected] || 0) + 1;
-      changed = true;
-    } else if (detected) {
-      platformCounts[origPlatform || detected] = (platformCounts[origPlatform || detected] || 0) + 1;
+
+    if (detected) {
+      if (!origPlatform || origPlatform === 'custom') {
+        c.ats_platform = detected;
+        platformCounts[detected] = (platformCounts[detected] || 0) + 1;
+        changed = true;
+      } else {
+        platformCounts[origPlatform || detected] = (platformCounts[origPlatform || detected] || 0) + 1;
+      }
+      // mark where detection came from
+      c.ats_detection_source = 'homepage';
+    } else if (c.careers_page_url) {
+      // only fetch careers page if it's different from homepage URL
+      if (normalize(c.careers_page_url) !== normalize(homepageUrl)) {
+        const careersPath = path.join(artifactsDir, `${c.id}.careers.html`);
+        let careersHtml = null;
+        try {
+          careersHtml = await fs.promises.readFile(careersPath, 'utf8');
+        } catch (e) {
+          // not cached -> fetch
+          careersHtml = await fetchWithTimeout(c.careers_page_url);
+          if (careersHtml) {
+            try {
+              await ensureDir(artifactsDir);
+              await fs.promises.writeFile(careersPath, careersHtml, 'utf8');
+            } catch (e2) {
+              // ignore write errors
+            }
+          }
+        }
+
+        const detectedFromCareers = detectFromHtml(careersHtml);
+        if (detectedFromCareers) {
+          if (!origPlatform || origPlatform === 'custom') {
+            c.ats_platform = detectedFromCareers;
+            platformCounts[detectedFromCareers] = (platformCounts[detectedFromCareers] || 0) + 1;
+            changed = true;
+          } else {
+            platformCounts[origPlatform || detectedFromCareers] = (platformCounts[origPlatform || detectedFromCareers] || 0) + 1;
+          }
+          c.ats_detection_source = 'careers_page';
+          // re-run slug extraction against careers page URL
+          const careersSlug = extractSlugFromUrl(c.careers_page_url);
+          if (careersSlug && !c.ats_slug) {
+            c.ats_slug = careersSlug;
+            changed = true;
+          }
+        }
+      }
     }
 
     if (slug && !c.ats_slug) {

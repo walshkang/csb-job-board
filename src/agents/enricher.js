@@ -53,7 +53,7 @@ async function callGeminiEnrichment(prompt, { stream = false, label = '' } = {})
     model: config.enrichment.model,
     fallbackModel: config.enrichment.fallbackModel || null,
     prompt,
-    maxOutputTokens: 1200,
+    maxOutputTokens: 4096,
   };
   if (stream) {
     const prefix = label ? `\n[${label}] ` : '\n';
@@ -297,8 +297,8 @@ async function main() {
   const run = startRun('enricher');
   const args = process.argv.slice(2);
   const force = args.includes('--force');
-  const useStream = args.includes('--stream');
   const batchMode = args.includes('--batch-mode');
+  const useStream = !args.includes('--no-stream') && !batchMode;
   const batchSizeArg = args.find(a => a.startsWith('--batch-size='));
   const defaultBatch = batchMode ? 5 : 10;
   const BATCH_SIZE = batchSizeArg ? parseInt(batchSizeArg.split('=')[1], 10) || defaultBatch : defaultBatch;
@@ -439,22 +439,6 @@ module.exports = {
   chunkArray,
   ENRICHMENT_PROMPT_VERSION,
   enrichJobBatch
-};
-
-if (require.main === module) {
-  main().catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
-}
-
-module.exports = {
-  sha256,
-  extractJSON,
-  sanitize,
-  renderPrompt,
-  chunkArray,
-  ENRICHMENT_PROMPT_VERSION
 };
 
 if (require.main === module) {

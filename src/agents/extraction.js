@@ -4,7 +4,7 @@ const { URL } = require('url');
 const enricher = require('./enricher');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
-const { callGeminiText } = require('../gemini-text');
+const { callGeminiText, streamGeminiText } = require('../gemini-text');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
@@ -18,11 +18,12 @@ function writeJSONAtomic(p, obj) { const tmp = p + '.tmp'; ensureDir(path.dirnam
 async function callGeminiExtraction(prompt) {
   const apiKey = config.extraction.apiKey;
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-  return callGeminiText({
+  return streamGeminiText({
     apiKey,
     model: config.extraction.model,
     prompt,
-    maxOutputTokens: 1200,
+    maxOutputTokens: 8192,
+    onToken: chunk => process.stderr.write(chunk)
   });
 }
 
@@ -127,6 +128,7 @@ async function runExtraction({ html, company, baseUrl, callFn = callGeminiExtrac
   const htmlForPrompt = html.length > MAX_HTML_CHARS ? html.slice(0, MAX_HTML_CHARS) : html;
   const promptTemplate = readFileSafe(promptPath) || 'Extract all job listings from this careers page HTML. Return a JSON array. {html}';
   const prompt = enricher.renderPrompt(promptTemplate, { company_name: company, base_url: baseUrl, html: htmlForPrompt });
+  process.stderr.write('\n[extraction: ' + (company || 'unknown') + ']\n');
   const rawResponse = await callFn(prompt);
   const parsed = extractJSONFromText(rawResponse);
   const items = Array.isArray(parsed) ? parsed : [parsed];
@@ -150,6 +152,7 @@ function normalizeExtractedItem(it, companyId, companyName, baseUrl) {
   return {
     id,
     company_id: companyId,
+    company_name: companyName || null,
     job_title_raw: job_title_raw || null,
     source_url: source_url || null,
     location_raw: location_raw || null,

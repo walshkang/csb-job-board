@@ -5,7 +5,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { callGeminiText, DailyQuotaError } = require('../gemini-text');
+const { callGeminiText, streamGeminiText, DailyQuotaError } = require('../gemini-text');
 const config = require('../config');
 
 function safeReadJSON(p) {
@@ -186,7 +186,8 @@ Be specific. No generic advice. If data is missing or errors are zero, say so.
 
   let postmortemText;
   try {
-    postmortemText = await callGeminiText({ apiKey, model, prompt, maxOutputTokens: 2000, fallbackModel: config.enrichment && config.enrichment.fallbackModel });
+    process.stderr.write('\n[reviewer] generating postmortem...\n');
+    postmortemText = await streamGeminiText({ apiKey, model, prompt, maxOutputTokens: 2000, fallbackModel: config.enrichment && config.enrichment.fallbackModel, onToken: chunk => process.stderr.write(chunk) });
   } catch (err) {
     if (err && err.name === 'DailyQuotaError') {
       console.error(`Gemini quota error: ${err.message}`);
