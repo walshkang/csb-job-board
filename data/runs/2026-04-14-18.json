@@ -1,0 +1,92 @@
+{
+  "run_at": "2026-04-14T18:59:02.510Z",
+  "scrape": {
+    "total": 44,
+    "success": 39,
+    "error": 5,
+    "by_method": {
+      "greenhouse_api": 0,
+      "lever_api": 1,
+      "ashby_api": 0,
+      "workday_api": 0,
+      "direct_html": 43,
+      "playwright_html": 0
+    },
+    "by_status_code": {
+      "200": 39,
+      "403": 2,
+      "404": 1,
+      "unknown": 2
+    },
+    "small_body_count": 3,
+    "errors": [
+      {
+        "company_id": "example",
+        "error": "status_code:404"
+      },
+      {
+        "company_id": "example",
+        "error": "fetch failed"
+      },
+      {
+        "company_id": "example",
+        "error": "fetch failed"
+      },
+      {
+        "company_id": "wwwsedroncom",
+        "error": "status_code:403"
+      },
+      {
+        "company_id": "wwwsedroncom",
+        "error": "status_code:403"
+      }
+    ]
+  },
+  "discovery": {
+    "total_companies": 37,
+    "reachable": 19,
+    "not_reachable": 18,
+    "reachable_pct": 51.4,
+    "by_method": {
+      "not_found": 18,
+      "standard_pattern": 14,
+      "homepage_link_scan": 4,
+      "ats_slug": 1
+    },
+    "by_ats_platform": {
+      "greenhouse": 1,
+      "lever": 0,
+      "ashby": 0,
+      "workday": 0,
+      "custom": 18,
+      "unknown": 18
+    }
+  },
+  "extraction": {
+    "total_jobs": 13,
+    "enriched": 13,
+    "enrichment_errors": 0,
+    "enrichment_error_rate_pct": 0,
+    "missing_title": 0,
+    "missing_description": 13
+  },
+  "enrichment": {
+    "climate_confirmed_pct": 69.2,
+    "mba_relevance_avg": 65,
+    "by_job_function": {
+      "other": 1,
+      "finance": 4,
+      "operations": 5,
+      "sales": 2,
+      "strategy": 1
+    },
+    "by_seniority": {
+      "unknown": 1,
+      "director": 2,
+      "mid": 1,
+      "senior": 1,
+      "entry": 5,
+      "intern": 3
+    }
+  }
+}
