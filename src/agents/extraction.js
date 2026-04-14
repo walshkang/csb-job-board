@@ -79,6 +79,41 @@ function mapLever(json, company) {
   }));
 }
 
+function mapAshby(json, company) {
+  if (!json || !Array.isArray(json.jobs)) return [];
+  return json.jobs.map(j => {
+    const desc = j.descriptionHtml ? String(j.descriptionHtml).replace(/<[^>]+>/g, ' ').trim() : (j.descriptionPlain || null);
+    const location = j.location && typeof j.location === 'object' ? (j.location.name || j.location.city || null) : j.location || null;
+    const url = j.jobUrl || j.hostedUrl || j.url || null;
+    return {
+      job_title: j.title || j.name || null,
+      url,
+      location,
+      employment_type: j.employmentType || j.employment_type || null,
+      description: desc
+    };
+  });
+}
+
+function mapWorkday(json, company) {
+  if (!json || !Array.isArray(json.jobPostings)) return [];
+  return json.jobPostings.map(p => {
+    const base = (company && (company.careers_page_url || company.domain)) || '';
+    const url = p.externalPath ? resolveUrl(p.externalPath, base) : null;
+    let description = null;
+    if (Array.isArray(p.bulletFields) && p.bulletFields.length) description = p.bulletFields.join('\n');
+    else if (p.description) description = p.description;
+    else if (p.jobDescription) description = p.jobDescription;
+    return {
+      job_title: p.title || p.jobTitle || null,
+      url,
+      location: p.locationsText || p.location || null,
+      employment_type: p.employmentType || p.employment_type || null,
+      description: description || null
+    };
+  });
+}
+
 const BLOCKER_PATTERNS = [/captcha/i, /please enable cookies/i, /access denied/i, /cookie consent/i, /set your browser to accept cookies/i, /you are being redirected/i];
 
 // runExtraction: calls LLM (or callFn override) on raw HTML, returns array of raw items.
@@ -233,9 +268,17 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
         const raw = readJsonSafe(jsonPath);
         // try detect platform shape
         let items = [];
-        if (raw && raw.jobs && Array.isArray(raw.jobs)) items = mapGreenhouse(raw, company);
-        else if (Array.isArray(raw)) items = mapLever(raw, company);
-        else items = [];
+        if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) {
+          items = mapAshby(raw, company);
+        } else if (raw && Array.isArray(raw.jobPostings)) {
+          items = mapWorkday(raw, company);
+        } else if (raw && Array.isArray(raw.jobs)) {
+          items = mapGreenhouse(raw, company);
+        } else if (Array.isArray(raw)) {
+          items = mapLever(raw, company);
+        } else {
+          items = [];
+        }
         for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || ''));
         processed = true;
       } catch (err) { errors.push({ company: company.id, err: String(err) }); }
@@ -300,6 +343,8 @@ module.exports = {
   runExtraction,
   mapGreenhouse,
   mapLever,
+  mapAshby,
+  mapWorkday,
   normalizeExtractedItem,
   mergeJobs,
   batchExtract

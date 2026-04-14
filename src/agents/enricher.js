@@ -130,7 +130,8 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
     return;
   }
 
-  const desc = (job.description_raw || '').slice(0, 8000);
+  const rawDesc = (job.description_raw || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const desc = rawDesc.slice(0, 8000);
   const prompt = renderPrompt(promptTemplate, {
     job_title_raw: job.job_title_raw || job.title || '',
     company_name: job.company_name || job.company || '',
@@ -159,6 +160,96 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
 
   // clear any previous error
   delete job.enrichment_error;
+}
+
+// Batch enrichment: accept 2-10 jobs and return results mapped back by index.
+async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {}) {
+  const N = jobsArray.length;
+  if (N < 2 || N > 10) throw new Error('enrichJobBatch requires 2-10 jobs');
+
+  // build numbered jobs list
+  const jobsRendered = jobsArray.map((job, idx) => {
+    const title = job.job_title_raw || job.title || '';
+    const company = job.company_name || job.company || '';
+    const location = job.location_raw || job.location || '';
+    const description = (job.description_raw || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 8000);
+    return `Job ${idx + 1}:\nTitle: ${title}\nCompany: ${company}\nLocation: ${location}\nDescription: ${description}`;
+  }).join('\n\n');
+
+  // extract field rules from the single-job prompt if present
+  let fieldRules = promptTemplate;
+  const frIdx = promptTemplate.indexOf('## Field rules');
+  if (frIdx !== -1) fieldRules = promptTemplate.slice(frIdx);
+
+  const prompt = `Classify these ${N} job listings for a climate-tech job board aimed at MBA candidates.\n\nReturn a JSON array of exactly ${N} objects in the same order. Each object must have the same keys as the single-job format.\n\nClimate-tech categories for reference: ${categories.join(', ')}\n\n## Jobs\n${jobsRendered}\n\n${fieldRules}\n\nReturn a JSON array only. No markdown fences.`;
+
+  const raw = await callGeminiEnrichment(prompt, options);
+
+  // Try to extract an outermost JSON array first
+  let parsedArray = null;
+  try {
+    if (!raw) throw new Error('Empty LLM response');
+    const s = raw.replace(/```(?:json)?/g, '\n').trim();
+    const firstArr = s.indexOf('[');
+    const lastArr = s.lastIndexOf(']');
+    if (firstArr !== -1 && lastArr !== -1 && lastArr > firstArr) {
+      const candidate = s.slice(firstArr, lastArr + 1);
+      parsedArray = JSON.parse(candidate);
+    }
+  } catch (e) {
+    parsedArray = null;
+  }
+
+  // Fallback: try extractJSON and unwrap array from object
+  if (!Array.isArray(parsedArray)) {
+    try {
+      const maybeObj = extractJSON(raw);
+      if (Array.isArray(maybeObj)) parsedArray = maybeObj;
+      else if (maybeObj && typeof maybeObj === 'object') {
+        const vals = Object.values(maybeObj);
+        const found = vals.find(v => Array.isArray(v));
+        if (found) parsedArray = found;
+      }
+    } catch (e) {
+      parsedArray = null;
+    }
+  }
+
+  const now = new Date().toISOString();
+  if (!Array.isArray(parsedArray) || parsedArray.length !== N) {
+    // set metadata and errors so these jobs will be retried individually later
+    for (let i = 0; i < N; i++) {
+      const job = jobsArray[i];
+      job.enrichment_prompt_version = ENRICHMENT_PROMPT_VERSION;
+      job.description_raw_hash = sha256(job.description_raw || '');
+      job.last_enriched_at = now;
+      job.enrichment_error = `batch result missing for index ${i}`;
+    }
+    throw new Error('Failed to parse batch array of expected length');
+  }
+
+  // Map results back to jobs by index
+  for (let i = 0; i < N; i++) {
+    const job = jobsArray[i];
+    const res = parsedArray[i];
+    job.enrichment_prompt_version = ENRICHMENT_PROMPT_VERSION;
+    job.description_raw_hash = sha256(job.description_raw || '');
+    job.last_enriched_at = now;
+    if (res && typeof res === 'object') {
+      const sanitized = sanitize(res);
+      job.job_title_normalized = sanitized.job_title_normalized || job.job_title_normalized || null;
+      job.job_function = sanitized.job_function || job.job_function || 'other';
+      job.seniority_level = sanitized.seniority_level || job.seniority_level || null;
+      job.location_type = sanitized.location_type || job.location_type || 'unknown';
+      job.mba_relevance_score = typeof sanitized.mba_relevance_score === 'number' ? sanitized.mba_relevance_score : (job.mba_relevance_score || 0);
+      job.description_summary = sanitized.description_summary || job.description_summary || null;
+      job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
+      job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
+      delete job.enrichment_error;
+    } else {
+      job.enrichment_error = `batch result missing for index ${i}`;
+    }
+  }
 }
 
 function chunkArray(arr, size) {
@@ -207,12 +298,14 @@ async function main() {
   const args = process.argv.slice(2);
   const force = args.includes('--force');
   const useStream = args.includes('--stream');
+  const batchMode = args.includes('--batch-mode');
   const batchSizeArg = args.find(a => a.startsWith('--batch-size='));
-  const BATCH_SIZE = batchSizeArg ? parseInt(batchSizeArg.split('=')[1], 10) || 10 : 10;
+  const defaultBatch = batchMode ? 5 : 10;
+  const BATCH_SIZE = batchSizeArg ? parseInt(batchSizeArg.split('=')[1], 10) || defaultBatch : defaultBatch;
   const concurrencyArg = args.find(a => a.startsWith('--concurrency='));
   const delayArg = args.find(a => a.startsWith('--delay='));
   const CONCURRENCY = concurrencyArg ? parseInt(concurrencyArg.split('=')[1], 10) || 3 : 3;
-  const DELAY_BETWEEN_MS = delayArg ? parseInt(delayArg.split('=')[1], 10) || 1500 : 1500;
+  const DELAY_BETWEEN_MS = delayArg ? parseInt(delayArg.split('=')[1], 10) || (batchMode ? 2000 : 1500) : (batchMode ? 2000 : 1500);
 
   const jobs = readJSONSafe(JOBS_PATH, null);
   if (!jobs) {
@@ -260,23 +353,58 @@ async function main() {
     const batch = batches[i];
     console.log(`Processing batch ${i+1}/${batches.length} (${batch.length} jobs)`);
 
-    const tasks = batch.map(job => async () => {
-      const enrichOptions = { stream: useStream, label: job.id || job.job_title_raw || '' };
-      try {
-        await enrichJob(job, categories, promptTemplate, enrichOptions);
-        enrichedCount += 1;
-        const s = job.mba_relevance_score || 0;
-        const idx = Math.min(4, Math.floor(s / 20));
-        scoreBuckets[idx] += 1;
-        if (job.climate_relevance_confirmed) climateTrue += 1; else climateFalse += 1;
-      } catch (err) {
-        job.enrichment_error = String(err.message || err);
-        errorCountLocal += 1;
-        console.error('Failed to enrich job', job.id || job.url || job.job_title_raw, err.message || err);
-      } finally {
-        try { progress.tick(enrichedCount + errorCountLocal, job.job_title_raw || ''); } catch (_) {}
-      }
-    });
+    let tasks = [];
+
+    if (batchMode) {
+      // single task per batch: call enrichJobBatch once
+      tasks = [async () => {
+        const enrichOptions = { stream: useStream, label: batch.map(j => j.id || j.job_title_raw || '').join(',') };
+        try {
+          await enrichJobBatch(batch, categories, promptTemplate, enrichOptions);
+          // update counters per job
+          for (const job of batch) {
+            if (!job.enrichment_error) {
+              enrichedCount += 1;
+              const s = job.mba_relevance_score || 0;
+              const idx = Math.min(4, Math.floor(s / 20));
+              scoreBuckets[idx] += 1;
+              if (job.climate_relevance_confirmed) climateTrue += 1; else climateFalse += 1;
+            } else {
+              errorCountLocal += 1;
+            }
+          }
+        } catch (err) {
+          // mark any without errors
+          for (let k = 0; k < batch.length; k++) {
+            const job = batch[k];
+            if (!job.enrichment_error) job.enrichment_error = String(err.message || err);
+          }
+          errorCountLocal += batch.length;
+          console.error('Failed to enrich batch', i + 1, err.message || err);
+        } finally {
+          try { progress.tick(enrichedCount + errorCountLocal, batch.map(j => j.job_title_raw || '').join('; ')); } catch (_) {}
+        }
+      }];
+    } else {
+      // existing per-job tasks
+      tasks = batch.map(job => async () => {
+        const enrichOptions = { stream: useStream, label: job.id || job.job_title_raw || '' };
+        try {
+          await enrichJob(job, categories, promptTemplate, enrichOptions);
+          enrichedCount += 1;
+          const s = job.mba_relevance_score || 0;
+          const idx = Math.min(4, Math.floor(s / 20));
+          scoreBuckets[idx] += 1;
+          if (job.climate_relevance_confirmed) climateTrue += 1; else climateFalse += 1;
+        } catch (err) {
+          job.enrichment_error = String(err.message || err);
+          errorCountLocal += 1;
+          console.error('Failed to enrich job', job.id || job.url || job.job_title_raw, err.message || err);
+        } finally {
+          try { progress.tick(enrichedCount + errorCountLocal, job.job_title_raw || ''); } catch (_) {}
+        }
+      });
+    }
 
     const pool = createRateLimitedPool(CONCURRENCY, DELAY_BETWEEN_MS);
     await pool(tasks);
@@ -301,6 +429,23 @@ async function main() {
   console.log('Climate relevance true/false:', climateTrue, '/', climateFalse, `( ${Math.round((climateTrue/totalClimate)*100)}% true )`);
   // finalize run log
   await endRun(run, { processed: toEnrich.length, enriched: enrichedCount, errors: errorCount });
+}
+
+module.exports = {
+  sha256,
+  extractJSON,
+  sanitize,
+  renderPrompt,
+  chunkArray,
+  ENRICHMENT_PROMPT_VERSION,
+  enrichJobBatch
+};
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }
 
 module.exports = {

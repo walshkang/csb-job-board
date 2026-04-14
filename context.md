@@ -23,12 +23,15 @@ Slice 3 — ATS Fingerprinting
   Scans homepage HTML for Greenhouse / Lever / Ashby / Workday fingerprints
   Updates ats_platform and ats_slug on each company
   Output: companies.json updated with accurate ats_platform
+  Note: scraper trusts ats_platform from this slice for provider routing; URL extraction is fallback only
 
 Slice 4 — Scrape / Fetch
   npm run scrape
   Input: companies with careers_page_reachable === true
   Routes by ats_platform: Greenhouse API → Lever API → Ashby API → Workday API → direct HTML
   Provider-keyed concurrency (per-provider rate limits)
+  Playwright fallback: direct HTML responses that are 4xx, <5KB, or non-HTML are retried with headless Chromium
+  Playwright saves artifacts as {company_id}.playwright.html; skips if body matches known blocker patterns
   Output: artifacts/html/{company_id}.json|html + scrape_runs.json entries (with status field)
 
 Slice 5 — Extraction
@@ -38,10 +41,12 @@ Slice 5 — Extraction
   Output: data/jobs.json with identity + role details
 
 Slice 6 — LLM Enrichment
-  npm run enrich [--retry-errors] [--force] [--batch-size=N] [--concurrency=N]
+  npm run enrich [--retry-errors] [--force] [--batch-size=N] [--concurrency=N] [--batch-mode]
   Input: jobs.json with raw fields
   Gemini classifies: job_title_normalized, job_function, seniority_level, location_type, mba_relevance_score, description_summary, climate_relevance_confirmed
   Rate-limited worker pool (concurrency=3, delay=1500ms); exponential backoff on 429/503; fallback model on persistent failure
+  --batch-mode: sends 5 jobs per LLM call instead of 1; reduces API calls 5x; individual failures within a batch fall back to --retry-errors
+  Description HTML stripped before truncation to maximize signal within the 8000-char window
   Output: enriched jobs.json
 
 Slice 7 — QA Spot-check
@@ -51,6 +56,12 @@ Slice 7 — QA Spot-check
 Slice 8 — Temporal Tracking + Notion Sync
   node src/agents/temporal.js     # update last_seen_at, removed_at, days_live, dormancy
   node src/agents/notion-sync.js  # upsert companies + jobs to Notion (supports --dry-run, --companies-only, --jobs-only)
+
+Slice 9 — Observability
+  npm run reporter   # aggregates scrape_runs.json + companies.json + jobs.json → data/runs/YYYY-MM-DD-HH.json + data/runs/latest.json
+  npm run review     # reads latest.json + samples failures → calls Gemini → writes data/postmortems/YYYY-MM-DD.md
+  Reporter: per-provider scrape success rates, discovery yield, ATS distribution, enrichment error rate, climate relevance %, MBA score avg
+  Reviewer: LLM-written postmortem; requires GEMINI_API_KEY; outputs markdown with what went well, failures, worst stage, one prompt suggestion
 
 Utility scripts
   node src/agents/notion-setup.js  # provision all DB properties (safe to re-run)
@@ -71,19 +82,21 @@ Config / env
   ENRICHMENT_FALLBACK_MODEL — default: gemini-1.5-flash
   Per-agent model overrides: OCR_MODEL, DISCOVERY_MODEL, EXTRACTION_MODEL, ENRICHMENT_MODEL
 
-Current status (as of 2026-04-13)
-  - All 8 slices implemented and committed
+Current status (as of 2026-04-14)
+  - 9 slices implemented; Playwright fallback, batch enrichment, and observability added since first test run
   - Test run completed on pitchbook-screenshot-test.png (~37 companies)
   - Discovery yield: 23/37 (62%) careers pages found; 14 not found (small/early-stage companies likely have none)
   - 13 jobs extracted; enrichment blocked on free-tier quota — needs paid GEMINI_API_KEY
-  - Notion sync working: dynamic schema resolves properties correctly (false-positive warnings are cosmetic noise, not failures)
-  - Next run requires: paid Gemini key in .env.local
+  - Notion sync working: dynamic schema resolves properties correctly
+  - Scraper now routes by fingerprinter-detected ats_platform; Playwright fallback fires on 4xx / <5KB / non-HTML responses
+  - Observability: npm run reporter → run summary JSON; npm run review → LLM postmortem markdown
+  - Enricher: --batch-mode sends 5 jobs per LLM call; HTML stripped before truncation
 
 Next meaningful work
   1. Add paid GEMINI_API_KEY and run full pipeline end-to-end
-  2. Review QA output: enrichment error rate, climate relevance distribution
-  3. Check ATS fingerprinting yield: how many "custom" companies resolve to a known ATS
-  4. Add more Pitchbook screenshots → re-run OCR to grow companies.json
+  2. Run npm run reporter then npm run review after first enriched run
+  3. Add more Pitchbook screenshots → re-run OCR to grow companies.json
+  4. Check ATS fingerprinting yield: how many "custom" companies resolve to a known ATS
 
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
@@ -116,9 +129,11 @@ Resolved since postmortem:
   - Discovery LLM fallback: skips when no homepage HTML; tracks attempted vs. succeeded
 
 Still open (medium-term):
-  - Playwright fallback for CAPTCHA/JS-rendered pages (legal review first; nonprofit use is low-risk)
-  - Observability: metrics and alerts for scrape success rate, enrichment failure rate
   - End-to-end smoke tests and CI
+  - Prompt proposal generation: reviewer --propose flag writes prompts/proposed/ diffs for human review
+  - Fingerprinter: expand ATS coverage (Rippling, Jobvite, iCIMS, Smartrecruiters)
+  - Dynamic rate limiting in enricher (track req/min, throttle on 429 rather than fixed delay)
+  - Extraction: Ashby + Workday mappers (gap — artifacts produced but no mapper to extract jobs from them)
 
 Future: Streaming LLM output
 Currently all LLM calls are fire-and-wait — nothing visible until the call completes.

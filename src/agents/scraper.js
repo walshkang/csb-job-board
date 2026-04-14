@@ -16,6 +16,9 @@ const fsp = fs.promises;
 const path = require('path');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
+const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
+
+const SCRAPER_BLOCKER_PATTERNS = [/captcha/i, /please enable cookies/i, /access denied/i, /cookie consent/i, /you are being redirected/i];
 
 // Prefer global fetch, fallback to node-fetch if not available
 let fetchImpl = global.fetch;
@@ -272,12 +275,20 @@ async function handleCompany(company, index) {
   const ashbySlug = extractAshbySlug(careersUrl);
   const workdayInfo = extractWorkdayTenant(careersUrl); // { baseUrl, tenant } or null
 
-  // choose provider key (priority: greenhouse, lever, ashby, workday, html)
+  // choose provider key (priority: configured ats_platform, greenhouse, lever, ashby, workday, html)
   let providerKey = 'direct_html';
-  if (ghToken) providerKey = 'greenhouse_api';
-  else if (leverSlug) providerKey = 'lever_api';
-  else if (ashbySlug) providerKey = 'ashby_api';
-  else if (workdayInfo && workdayInfo.tenant) providerKey = 'workday_api';
+  if (company && company.ats_platform && company.ats_platform !== 'custom') {
+    const p = String(company.ats_platform).toLowerCase();
+    if (p === 'greenhouse') providerKey = 'greenhouse_api';
+    else if (p === 'lever') providerKey = 'lever_api';
+    else if (p === 'ashby') providerKey = 'ashby_api';
+    else if (p === 'workday') providerKey = 'workday_api';
+  } else {
+    if (ghToken) providerKey = 'greenhouse_api';
+    else if (leverSlug) providerKey = 'lever_api';
+    else if (ashbySlug) providerKey = 'ashby_api';
+    else if (workdayInfo && workdayInfo.tenant) providerKey = 'workday_api';
+  }
 
   await acquireProvider(providerKey);
   try {
@@ -359,11 +370,39 @@ async function handleCompany(company, index) {
     const res = await attemptFetchWithRetries(careersUrl, { headers: { 'User-Agent': ua, Accept: 'text/html' } });
     result.status_code = res.status;
     result.content_type = res.headers.get('content-type') || null;
-    const body = await res.text();
+    let body = await res.text();
     result.byte_length = Buffer.byteLength(body, 'utf8');
     if (result.byte_length < 1024) console.warn(`[warn] HTML response small for ${companyId} (${result.byte_length} bytes). Possible block or empty page.`);
     await saveArtifact(companyId, 'direct_html', body, false);
     result.success = res.ok;
+
+    // If response looks suspicious, try Playwright-rendered HTML fallback
+    const hasBlocker = SCRAPER_BLOCKER_PATTERNS.some(re => re.test(body));
+    const looksSuspicious = !hasBlocker && (
+      (result.status_code >= 400 && result.status_code < 500) ||
+      result.byte_length < 5120 ||
+      !((result.content_type || '').includes('text/html'))
+    );
+    if (looksSuspicious) {
+      try {
+        const rendered = await fetchRenderedHtml(careersUrl, TIMEOUT_MS);
+        if (rendered) {
+          await ensureDir(ARTIFACTS_DIR);
+          await fsp.writeFile(path.join(ARTIFACTS_DIR, `${companyId}.playwright.html`), rendered, 'utf8');
+          result.method = 'playwright_html';
+          result.content_type = 'text/html';
+          result.byte_length = Buffer.byteLength(rendered, 'utf8');
+          result.status_code = 200;
+          result.success = true;
+          result.status = 'success';
+          // overwrite body variable if further processing expects it
+          body = rendered;
+        }
+      } catch (e) {
+        console.warn(`[warn] Playwright fallback failed for ${companyId}: ${e && e.message}`);
+      }
+    }
+
     result.status = result.success ? 'success' : 'error';
     await appendScrapeRun(result);
     return result;
@@ -380,28 +419,37 @@ async function handleCompany(company, index) {
 
 async function run(companiesPath) {
   const run = startRun('scraper');
-  // load companies
-  let companies = [];
   try {
-    companies = await loadCompanies(companiesPath);
-  } catch (e) {
-    console.error(e.message);
-    process.exit(1);
+    // load companies
+    let companies = [];
+    try {
+      companies = await loadCompanies(companiesPath);
+    } catch (e) {
+      console.error(e.message);
+      process.exit(1);
+    }
+
+    console.log(`Found ${companies.length} companies with careers_page_reachable=true`);
+    const promises = companies.map((c, idx) => handleCompany(c, idx).catch(err => {
+      console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
+      return null;
+    }));
+
+    const results = await Promise.all(promises);
+    console.log('Scrape run complete');
+    const finalResults = results.filter(Boolean);
+    const processed = finalResults.length;
+    const errors = finalResults.filter(r => !r.success).length;
+    await endRun(run, { processed, errors });
+    return finalResults;
+  } finally {
+    // ensure Playwright browser is closed
+    try {
+      await closeBrowser();
+    } catch (e) {
+      // ignore
+    }
   }
-
-  console.log(`Found ${companies.length} companies with careers_page_reachable=true`);
-  const promises = companies.map((c, idx) => handleCompany(c, idx).catch(err => {
-    console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
-    return null;
-  }));
-
-  const results = await Promise.all(promises);
-  console.log('Scrape run complete');
-  const finalResults = results.filter(Boolean);
-  const processed = finalResults.length;
-  const errors = finalResults.filter(r => !r.success).length;
-  await endRun(run, { processed, errors });
-  return finalResults;
 }
 
 if (require.main === module) {
