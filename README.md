@@ -95,6 +95,8 @@ The AI classifies each job:
 - **Climate relevance** (confirmed true/false with a reason)
 - **2–3 sentence summary**
 
+Note: The climate‑tech taxonomy used for company categorization is intentionally maintained and must be reviewed by a human before making automated changes. The canonical taxonomy file is `data/climate-tech-map-industry-categories.json` — please review that file for any edits.
+
 For large job lists, use `--batch-mode` to send 5 jobs per AI call (5x faster, lower cost):
 ```bash
 npm run enrich -- --batch-mode
