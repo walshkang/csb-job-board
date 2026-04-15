@@ -292,6 +292,24 @@ async function callGeminiOCR(imagePath) {
   ];
 }
 
+async function callAnthropicOCR(imagePath) {
+  let Anthropic;
+  try { Anthropic = require('@anthropic-ai/sdk'); } catch {
+    throw new Error('Anthropic provider selected but @anthropic-ai/sdk is not installed. Run: npm install @anthropic-ai/sdk');
+  }
+  const client = new Anthropic({ apiKey: config.ocr.anthropicKey });
+  const imageData = fs.readFileSync(imagePath).toString('base64');
+  const ext = path.extname(imagePath).toLowerCase();
+  const mediaType = ext === '.png' ? 'image/png' : 'image/jpeg';
+  const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr.txt'), 'utf8');
+  const msg = await client.messages.create({
+    model: config.ocr.anthropicModel,
+    max_tokens: 16000,
+    messages: [{ role: 'user', content: [ { type: 'image', source: { type: 'base64', media_type: mediaType, data: imageData } }, { type: 'text', text: promptText }, ], }],
+  });
+  return parseJSONResponse(msg.content[0].text);
+}
+
 // Resolve company name from Pitchbook column headers.
 // Pitchbook exports the column as "Companies (N,NNN)" with the count embedded.
 function resolveCompanyName(row) {
@@ -494,7 +512,8 @@ async function main() {
     console.log(`Found ${images.length} image(s)`);
     for (const img of images) {
       try {
-        const rows = await callGeminiOCR(img);
+        const ocrFn = config.ocr.provider === 'anthropic' ? callAnthropicOCR : callGeminiOCR;
+        const rows = await ocrFn(img);
         const { warnings } = validatePitchbookRows(rows, img);
         for (const w of warnings) console.warn(w);
         extractedCompanies.push(...await rowsToCompanies(rows, img, failures));

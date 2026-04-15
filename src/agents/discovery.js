@@ -17,7 +17,7 @@ const { URL } = require('url');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
-const { callGeminiText, streamGeminiText, DailyQuotaError } = require('../gemini-text');
+const { streamLLM, DailyQuotaError } = require('../llm-client');
 const Progress = require('../utils/progress');
 
 const CONCURRENCY = 5;
@@ -318,16 +318,10 @@ async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright =
 }
 
 async function callGeminiLLM(prompt, domain) {
-  const apiKey = config.discovery.apiKey;
-  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  if (!config.discovery.geminiKey && !config.discovery.anthropicKey) throw new Error('No LLM API key configured');
   process.stderr.write('\n[discovery: ' + (domain || 'unknown') + ']\n');
-  return streamGeminiText({
-    apiKey,
-    model: config.discovery.model,
-    prompt,
-    maxOutputTokens: 256,
-    onToken: chunk => process.stderr.write(chunk)
-  });
+  const opts = config.resolveAgent('discovery');
+  return streamLLM({ ...opts, prompt, maxOutputTokens: 256, onToken: chunk => process.stderr.write(chunk) });
 }
 
 function normalizeDomain(domainRaw) {

@@ -4,21 +4,30 @@
 //
 // .env.local keys:
 //   GEMINI_API_KEY           — shared Gemini key (all LLM agents)
-//   ANTHROPIC_API_KEY        — Anthropic key (OCR PDF mode only, optional)
+//   ANTHROPIC_API_KEY        — Anthropic key (optional; enables Anthropic provider)
 //   NOTION_API_KEY           — Notion integration
 //   NOTION_COMPANIES_DB_ID   — Notion database id (companies sync)
 //   NOTION_JOBS_DB_ID        — Notion database id (jobs sync)
+//
+//   LLM_PROVIDER             — "gemini" | "anthropic" (auto-detects from available keys if omitted)
 //
 //   Per-agent model overrides (uncomment in .env.local to switch):
 //   OCR_MODEL                — default: gemini-2.5-flash-lite  (Gemini provider)
 //   OCR_ANTHROPIC_MODEL      — default: claude-haiku-4-5-20251001 (Anthropic provider)
 //   OCR_PROVIDER             — "gemini" (default) | "anthropic"; auto-detects from available keys
 //   DISCOVERY_MODEL          — default: gemini-2.5-flash
+//   DISCOVERY_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
 //   EXTRACTION_MODEL         — default: gemini-2.5-flash
+//   EXTRACTION_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
 //   ENRICHMENT_MODEL         — default: gemini-2.5-flash
+//   ENRICHMENT_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
+//   CATEGORIZER_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
+//   REVIEWER_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
 //
 //   Global fallback (all agents unless overridden above):
 //   GEMINI_MODEL             — overrides non-OCR defaults; OCR still prefers OCR_MODEL
+//
+//   Note: Anthropic (Claude Haiku) costs more per token than Gemini Flash-Lite.
 
 const fs = require('fs');
 const path = require('path');
@@ -46,6 +55,12 @@ try {
   }
 } catch { /* no .env.local, fine */ }
 
+// Global provider: explicit override → key-based detection → gemini default
+const LLM_PROVIDER = process.env.LLM_PROVIDER
+  || (process.env.GEMINI_API_KEY ? 'gemini'
+    : process.env.ANTHROPIC_API_KEY ? 'anthropic'
+    : 'gemini');
+
 const cfg = {
   ocr: {
     geminiKey: process.env.GEMINI_API_KEY || null,
@@ -58,23 +73,74 @@ const cfg = {
     get apiKey() { return this.geminiKey; },
   },
   discovery: {
-    apiKey: process.env.GEMINI_API_KEY || null,
+    provider: process.env.DISCOVERY_PROVIDER || LLM_PROVIDER,
+    geminiKey: process.env.GEMINI_API_KEY || null,
+    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
     model: process.env.DISCOVERY_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    anthropicModel: process.env.DISCOVERY_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    // legacy alias
+    get apiKey() { return this.geminiKey; },
   },
   extraction: {
-    apiKey: process.env.GEMINI_API_KEY || null,
+    provider: process.env.EXTRACTION_PROVIDER || LLM_PROVIDER,
+    geminiKey: process.env.GEMINI_API_KEY || null,
+    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
     model: process.env.EXTRACTION_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    anthropicModel: process.env.EXTRACTION_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    // legacy alias
+    get apiKey() { return this.geminiKey; },
   },
   enrichment: {
-    apiKey: process.env.GEMINI_API_KEY || null,
+    provider: process.env.ENRICHMENT_PROVIDER || LLM_PROVIDER,
+    geminiKey: process.env.GEMINI_API_KEY || null,
+    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
     model: process.env.ENRICHMENT_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    anthropicModel: process.env.ENRICHMENT_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
     fallbackModel: process.env.ENRICHMENT_FALLBACK_MODEL || 'gemini-1.5-flash',
+    // legacy alias
+    get apiKey() { return this.geminiKey; },
+  },
+  categorizer: {
+    provider: process.env.CATEGORIZER_PROVIDER || LLM_PROVIDER,
+    geminiKey: process.env.GEMINI_API_KEY || null,
+    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
+    // categorizer historically piggybacks enrichment model; keep that as default
+    model: process.env.CATEGORIZER_MODEL || process.env.ENRICHMENT_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    anthropicModel: process.env.CATEGORIZER_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    // legacy alias
+    get apiKey() { return this.geminiKey; },
+  },
+  reviewer: {
+    provider: process.env.REVIEWER_PROVIDER || LLM_PROVIDER,
+    geminiKey: process.env.GEMINI_API_KEY || null,
+    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
+    model: process.env.REVIEWER_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    anthropicModel: process.env.REVIEWER_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    // legacy alias
+    get apiKey() { return this.geminiKey; },
   },
   notion: {
     apiKey: process.env.NOTION_API_KEY || null,
     companiesDbId: process.env.NOTION_COMPANIES_DB_ID || null,
     jobsDbId: process.env.NOTION_JOBS_DB_ID || null,
   },
+};
+
+/**
+ * Returns { provider, apiKey, model } for a named agent block.
+ * Callers can pass this directly to callLLM / streamLLM.
+ * Also accepts an optional fallbackModel field for enricher.
+ */
+cfg.resolveAgent = function resolveAgent(agentName) {
+  const block = cfg[agentName];
+  if (!block) throw new Error(`Unknown agent config block: ${agentName}`);
+  const provider = block.provider || 'gemini';
+  return {
+    provider,
+    apiKey: provider === 'anthropic' ? block.anthropicKey : block.geminiKey,
+    model: provider === 'anthropic' ? block.anthropicModel : block.model,
+    ...(block.fallbackModel ? { fallbackModel: block.fallbackModel } : {}),
+  };
 };
 
 cfg.validateCompanies = function validateCompanies(companies) {

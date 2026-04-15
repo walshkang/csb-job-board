@@ -5,7 +5,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { callGeminiText, streamGeminiText, DailyQuotaError } = require('../gemini-text');
+const { streamLLM, DailyQuotaError } = require('../llm-client');
 const config = require('../config');
 
 function safeReadJSON(p) {
@@ -175,19 +175,16 @@ Write a concise postmortem in markdown. Include:
 Be specific. No generic advice. If data is missing or errors are zero, say so.
 `;
 
-  // Check GEMINI key
-  const apiKey = config.enrichment && config.enrichment.apiKey;
+  const { provider, apiKey, model, fallbackModel } = config.resolveAgent('reviewer');
   if (!apiKey) {
-    console.error('Missing GEMINI_API_KEY (config.enrichment.apiKey). Set GEMINI_API_KEY in .env.local or the environment.');
+    console.error('No LLM API key configured for reviewer. Set GEMINI_API_KEY or ANTHROPIC_API_KEY in .env.local.');
     process.exit(2);
   }
-
-  const model = (config.enrichment && config.enrichment.model) || 'gemini-2.5-flash';
 
   let postmortemText;
   try {
     process.stderr.write('\n[reviewer] generating postmortem...\n');
-    postmortemText = await streamGeminiText({ apiKey, model, prompt, maxOutputTokens: 2000, fallbackModel: config.enrichment && config.enrichment.fallbackModel, onToken: chunk => process.stderr.write(chunk) });
+    postmortemText = await streamLLM({ provider, apiKey, model, prompt, maxOutputTokens: 2000, fallbackModel: provider === 'anthropic' ? null : (fallbackModel || null), onToken: chunk => process.stderr.write(chunk) });
   } catch (err) {
     if (err && err.name === 'DailyQuotaError') {
       console.error(`Gemini quota error: ${err.message}`);

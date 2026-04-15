@@ -4,7 +4,7 @@ const { URL } = require('url');
 const enricher = require('./enricher');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
-const { callGeminiText, streamGeminiText } = require('../gemini-text');
+const { streamLLM } = require('../llm-client');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
@@ -16,15 +16,9 @@ function ensureDir(p) { if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true
 function writeJSONAtomic(p, obj) { const tmp = p + '.tmp'; ensureDir(path.dirname(p)); fs.writeFileSync(tmp, JSON.stringify(obj, null, 2), 'utf8'); fs.renameSync(tmp, p); }
 
 async function callGeminiExtraction(prompt) {
-  const apiKey = config.extraction.apiKey;
-  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-  return streamGeminiText({
-    apiKey,
-    model: config.extraction.model,
-    prompt,
-    maxOutputTokens: 8192,
-    onToken: chunk => process.stderr.write(chunk)
-  });
+  const opts = config.resolveAgent('extraction');
+  if (!opts.apiKey) throw new Error('No LLM API key configured for extraction');
+  return streamLLM({ ...opts, prompt, maxOutputTokens: 8192, onToken: chunk => process.stderr.write(chunk) });
 }
 
 function extractJSONFromText(text) {

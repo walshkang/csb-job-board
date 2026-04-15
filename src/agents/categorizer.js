@@ -7,7 +7,7 @@ const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categor
 const COMPANIES_PATH = path.join(REPO_ROOT, 'data', 'companies.json');
 
 const config = require('../config');
-const { callGeminiText } = require('../gemini-text');
+const { callLLM } = require('../llm-client');
 const { extractJSON } = require('./enricher');
 
 function readJSONSafe(p, fallback) {
@@ -59,7 +59,7 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
 }
 
 async function categorizeCompany(companyRecord, repJob, categoriesList, opts, samples) {
-  const { apiKey, model, dryRun } = opts;
+  const { provider, apiKey, model, dryRun } = opts;
   const companyId = companyRecord.id;
   const companyName = companyRecord.name || companyRecord.company || String(companyId);
   const jobTitle = repJob.job_title_normalized || repJob.job_title_raw || '';
@@ -100,7 +100,7 @@ Return ONLY a JSON object:
 {"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}`;
 
   try {
-    const raw = await callGeminiText({ apiKey, model, prompt, maxOutputTokens: 4096 });
+    const raw = await callLLM({ provider, apiKey, model, prompt, maxOutputTokens: 4096 });
     let parsed = null;
     try {
       parsed = extractJSON(raw);
@@ -170,8 +170,7 @@ async function main() {
     }
   }
 
-  const apiKey = config.enrichment.apiKey;
-  const model = config.enrichment.model;
+  const { provider, apiKey, model } = config.resolveAgent('categorizer');
   const pool = createRateLimitedPool(3, 1000);
 
   const tasks = [];
@@ -193,7 +192,7 @@ async function main() {
     }
 
     const samples = (samplesByCompany.get(company.id) || []);
-    tasks.push(async () => categorizeCompany(company, repJob, categoriesList, { apiKey, model, dryRun }, samples));
+    tasks.push(async () => categorizeCompany(company, repJob, categoriesList, { provider, apiKey, model, dryRun }, samples));
   }
 
   if (tasks.length === 0) {

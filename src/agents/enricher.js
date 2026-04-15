@@ -10,7 +10,7 @@ const ENRICHMENT_PROMPT_VERSION = '1.1.0';
 
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
-const { callGeminiText, streamGeminiText } = require('../gemini-text');
+const { callLLM, streamLLM } = require('../llm-client');
 const Progress = require('../utils/progress');
 
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
@@ -46,21 +46,22 @@ function renderPrompt(template, vars) {
 }
 
 async function callGeminiEnrichment(prompt, { stream = false, label = '' } = {}) {
-  const apiKey = config.enrichment.apiKey;
-  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  const { provider, apiKey, model, fallbackModel } = config.resolveAgent('enrichment');
+  if (!apiKey) throw new Error('No LLM API key configured for enrichment');
   const opts = {
+    provider,
     apiKey,
-    model: config.enrichment.model,
-    fallbackModel: config.enrichment.fallbackModel || null,
+    model,
+    fallbackModel: provider === 'anthropic' ? null : (fallbackModel || null),
     prompt,
     maxOutputTokens: 4096,
   };
   if (stream) {
     const prefix = label ? `\n[${label}] ` : '\n';
     process.stderr.write(prefix);
-    return streamGeminiText({ ...opts, onToken: chunk => process.stderr.write(chunk) });
+    return streamLLM({ ...opts, onToken: chunk => process.stderr.write(chunk) });
   }
-  return callGeminiText(opts);
+  return callLLM(opts);
 }
 
 function extractJSON(text) {
