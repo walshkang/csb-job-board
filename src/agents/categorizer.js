@@ -58,7 +58,7 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
   };
 }
 
-async function categorizeCompany(companyRecord, repJob, categoriesList, opts) {
+async function categorizeCompany(companyRecord, repJob, categoriesList, opts, samples) {
   const { apiKey, model, dryRun } = opts;
   const companyId = companyRecord.id;
   const companyName = companyRecord.name || companyRecord.company || String(companyId);
@@ -67,7 +67,10 @@ async function categorizeCompany(companyRecord, repJob, categoriesList, opts) {
   const climateReason = repJob.climate_relevance_reason || '';
   const descSummary = repJob.description_summary || '';
 
-  const prompt = `You are categorizing a climate-tech company for an MBA-focused job board.\n\nCompany: ${companyName}\nRepresentative job title: ${jobTitle}\nJob function: ${jobFunction}\nClimate relevance reason: ${climateReason}\nDescription summary: ${descSummary}\n\nClimate-tech categories (Tech Category Name | Related Opportunity Area | Primary Sector):\n${categoriesList}\n\nTask: Select the single best-matching Tech Category Name for this company. The category should reflect what the company does, not the specific job. If the company operates across multiple categories, pick the most specific one. If no category fits (e.g. generic SaaS, pure finance), return "None".\n\nReturn ONLY a JSON object:\n{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}`;
+  const companyProfile = (companyRecord.company_profile && companyRecord.company_profile.scraped_description) ? companyRecord.company_profile.scraped_description : null;
+  const samplesText = (!samples || samples.length === 0) ? 'None' : samples.map(s => `- ${s.title}: ${s.summary || ''}`).join('\n');
+
+  const prompt = `You are categorizing a climate-tech company for an MBA-focused job board.\n\nCompany: ${companyName}\nCompany profile (scraped): ${companyProfile || 'N/A'}\nSample roles (up to 5):\n${samplesText}\n\nRepresentative job title: ${jobTitle}\nJob function: ${jobFunction}\nDescription summary: ${descSummary}\n\nClimate-tech categories (Tech Category Name | Related Opportunity Area | Primary Sector):\n${categoriesList}\n\nTask: Select the single best-matching Tech Category Name for this company. Use the company profile and the sample roles to infer the company business area. If no category fits (e.g. generic SaaS, pure finance), return "None".\n\nReturn ONLY a JSON object:\n{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}`;
 
   try {
     const raw = await callGeminiText({ apiKey, model, prompt, maxOutputTokens: 4096 });
@@ -122,12 +125,19 @@ async function main() {
 
   // Build representative job map: company_id → best job (prefer enriched)
   const repJobByCompany = new Map();
+  // Also build a small samples map: company_id → up to 5 {title, summary}
+  const samplesByCompany = new Map();
   for (const job of jobs) {
     const cid = job.company_id;
     if (!cid) continue;
     const existing = repJobByCompany.get(cid);
     if (!existing || (job.last_enriched_at && !existing.last_enriched_at)) {
       repJobByCompany.set(cid, job);
+    }
+    const arr = samplesByCompany.get(cid) || [];
+    if (arr.length < 5) {
+      arr.push({ title: job.job_title_normalized || job.job_title_raw || '', summary: job.description_summary || '' });
+      samplesByCompany.set(cid, arr);
     }
   }
 
@@ -153,7 +163,8 @@ async function main() {
       };
     }
 
-    tasks.push(async () => categorizeCompany(company, repJob, categoriesList, { apiKey, model, dryRun }));
+    const samples = (samplesByCompany.get(company.id) || []);
+    tasks.push(async () => categorizeCompany(company, repJob, categoriesList, { apiKey, model, dryRun }, samples));
   }
 
   if (tasks.length === 0) {

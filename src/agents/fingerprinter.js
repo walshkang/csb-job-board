@@ -81,6 +81,30 @@ function extractSlugFromUrl(u) {
   }
 }
 
+// Lightweight meta description extractor (no new deps). Returns first non-empty of:
+// <meta name="description">, <meta property="og:description">, first <h1> + first <p>
+function extractScrapedDescription(html) {
+  if (!html) return null;
+  try {
+    // meta name="description"
+    let m = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']{1,2000})["']/i);
+    if (m && m[1]) return m[1].trim().slice(0, 500);
+    // og:description
+    m = html.match(/<meta\s+property=["']og:description["']\s+content=["']([^"']{1,2000})["']/i);
+    if (m && m[1]) return m[1].trim().slice(0, 500);
+    // fallback to first <h1>
+    m = html.match(/<h1[^>]*>([\s\S]*?)<\/?h1>/i);
+    const h1 = m && m[1] ? m[1].replace(/<[^>]+>/g, '').trim() : '';
+    // first <p>
+    m = html.match(/<p[^>]*>([\s\S]*?)<\/?p>/i);
+    const p = m && m[1] ? m[1].replace(/<[^>]+>/g, '').trim() : '';
+    const combined = (h1 && p) ? (h1 + '. ' + p) : (h1 || p || null);
+    return combined ? combined.slice(0, 500) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 async function ensureDir(p) {
   try { await fs.promises.mkdir(p, { recursive: true }); } catch (e) {}
 }
@@ -135,6 +159,17 @@ async function run() {
       }
     }
 
+    // Extract a lightweight scraped description from the homepage HTML (if any)
+    try {
+      const scraped = extractScrapedDescription(html);
+      if (!c.company_profile) c.company_profile = {};
+      c.company_profile.scraped_description = scraped || null;
+    } catch (e) {
+      // non-fatal
+      if (!c.company_profile) c.company_profile = {};
+      c.company_profile.scraped_description = c.company_profile.scraped_description || null;
+    }
+
     // detect from homepage
     let detected = detectFromHtml(html);
     const homepageUrl = c.domain ? `https://${c.domain.replace(/https?:\/\//, '')}/` : null;
@@ -171,6 +206,18 @@ async function run() {
               // ignore write errors
             }
           }
+        }
+
+        // If careers page provided a better scraped description, prefer it.
+        try {
+          const careersScraped = extractScrapedDescription(careersHtml);
+          if (!c.company_profile) c.company_profile = {};
+          // Prefer non-null careersScraped over existing homepage scraped_description
+          if (careersScraped) c.company_profile.scraped_description = careersScraped;
+          else c.company_profile.scraped_description = c.company_profile.scraped_description || null;
+        } catch (e) {
+          if (!c.company_profile) c.company_profile = {};
+          c.company_profile.scraped_description = c.company_profile.scraped_description || null;
         }
 
         const detectedFromCareers = detectFromHtml(careersHtml);
