@@ -55,6 +55,14 @@ function detectFromHtml(html) {
   if (low.includes('jobs.ashbyhq.com') || low.includes('ashby-job-posting')) return 'ashby';
   // Workday
   if (low.includes('myworkdayjobs.com')) return 'workday';
+  // Rippling
+  if (low.includes('app.rippling.com/jobs') || low.includes('rippling-ats')) return 'rippling';
+  // Jobvite
+  if (low.includes('jobs.jobvite.com') || low.includes('jobvite-widget')) return 'jobvite';
+  // iCIMS
+  if (low.includes('icims.com') || low.includes('careers.icims')) return 'icims';
+  // SmartRecruiters
+  if (low.includes('jobs.smartrecruiters.com') || low.includes('smartrecruiters-widget')) return 'smartrecruiters';
   return null;
 }
 
