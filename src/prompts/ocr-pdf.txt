@@ -1,0 +1,37 @@
+You are parsing tabular data extracted from a PitchBook company list PDF export.
+
+The text below comes from pdftotext -layout applied to a PitchBook "Companies & Deals Screener" PDF. Multiple pages are separated by "--- PAGE BREAK ---" markers — treat them as one continuous table and return all rows in a single array. It will have irregular spacing and may contain left-navigation sidebar text (e.g. "Search Tools", "Companies", "Deals", "Investors", "Funds", "Debts & Lenders", "Alerts & Subscriptions") — ignore those words entirely; they are not column values.
+
+Column headers in PitchBook PDFs are often truncated. Map them as follows:
+  "Financing D…"  → Last Financing Date
+  "Financing Size" → Last Financing Size
+  "Primary PitchBook Industry Cod" → Primary PitchBook Industry Code
+
+The columns, in the order they appear left-to-right in the data (not all may be present in every export):
+  #                              — row number; ignore, do not include in output
+  Company Name                   — required; the company's name (may include parenthetical descriptor)
+  Website                        — company domain (e.g. "www.example.com"), required
+  Employees                      — headcount integer
+  Last Financing Date            — date of most recent financing; may be prefixed "Expected" (e.g. "Expected 01-Oct-2026" or "13-Apr-2026")
+  Last Financing Deal Type       — e.g. "Seed Round", "Later Stage VC", "Merger/Acquisition"
+  Last Financing Size            — most recent round size in millions (numeric, e.g. "5.00"); OFTEN ABSENT — use null if the column is missing or the cell is blank
+  Total Raised                   — cumulative funding in millions (numeric, e.g. "1.90"); may also be absent
+  HQ Location                    — city/state or city/country
+  Primary PitchBook Industry Code — industry category string; may be truncated in the source text
+
+The columns that users most commonly omit from their export: "Last Financing Size", "Total Raised", "Keywords". Always default to null for absent or blank cells.
+
+If the page contains no company table rows (e.g. it is a header/filter/navigation page with no row data), return [].
+
+Return a JSON array where each element is one company row, using these exact key names:
+  "Company Name", "Website", "Employees", "Last Financing Date", "Last Financing Deal Type",
+  "Last Financing Size", "Total Raised", "HQ Location", "Primary PitchBook Industry Code"
+
+Rules:
+- One JSON object per company row. Do not merge, skip, or invent rows.
+- Use null for any cell that is empty, missing, or not applicable.
+- Preserve original formatting for dates (e.g., "Expected 01-Oct-2026", "13-Apr-2026") and numbers (e.g., "5.00").
+- Ignore the row number column (#).
+- Return ONLY the JSON array. No markdown fences, no explanation.
+
+--- EXTRACTED PDF TEXT ---

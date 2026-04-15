@@ -19,7 +19,10 @@ const path = require('path');
 const crypto = require('crypto');
 const config = require('../config');
 
-const USAGE = `Usage: node src/agents/ocr.js <images_dir> [--dry-run]`;
+const USAGE = `Usage:
+  node src/agents/ocr.js <images_dir> [--dry-run]          # screenshot/image mode
+  node src/agents/ocr.js <file.pdf>   [--dry-run]          # single PDF
+  node src/agents/ocr.js <pdfs_dir>   [--dry-run]          # directory of PDFs`;
 
 function slugify(str) {
   return str
@@ -42,9 +45,147 @@ function readArgs() {
     console.error(USAGE);
     process.exit(1);
   }
-  const imagesDir = argv[0];
+  const inputPath = argv[0];
   const dryRun = argv.includes('--dry-run');
-  return { imagesDir, dryRun };
+  return { inputPath, dryRun };
+}
+
+// --- PDF pipeline ---
+
+async function detectInputMode(inputPath) {
+  const stat = await fs.promises.stat(inputPath);
+  if (stat.isFile() && inputPath.toLowerCase().endsWith('.pdf')) return 'pdf';
+  if (stat.isDirectory()) {
+    const items = await fs.promises.readdir(inputPath);
+    const hasPdfs = items.some(f => f.toLowerCase().endsWith('.pdf'));
+    if (hasPdfs) return 'pdf-dir';
+  }
+  return 'images';
+}
+
+async function listPDFs(dir) {
+  const items = await fs.promises.readdir(dir);
+  return items
+    .filter(f => f.toLowerCase().endsWith('.pdf'))
+    .map(f => path.join(dir, f));
+}
+
+// Extract text per page from a PDF using pdftotext (poppler-utils).
+// Falls back to a single-chunk extraction if -f/-l flags are unavailable.
+async function extractPageTexts(pdfPath) {
+  const { execFile } = require('child_process');
+  const { promisify } = require('util');
+  const exec = promisify(execFile);
+
+  // Get page count first
+  let nPages = 1;
+  try {
+    const { stdout } = await exec('pdfinfo', [pdfPath]);
+    const m = stdout.match(/Pages:\s+(\d+)/);
+    if (m) nPages = parseInt(m[1], 10);
+  } catch { /* pdfinfo unavailable, fall back to single chunk */ }
+
+  if (nPages === 1) {
+    // Single extraction, split on form feed
+    const { stdout } = await exec('pdftotext', ['-layout', pdfPath, '-']);
+    return stdout.split('\f').map(p => p.trim()).filter(Boolean);
+  }
+
+  // Extract page by page so chunks stay manageable for the LLM
+  const pages = [];
+  for (let i = 1; i <= nPages; i++) {
+    try {
+      const { stdout } = await exec('pdftotext', ['-layout', '-f', String(i), '-l', String(i), pdfPath, '-']);
+      const text = stdout.trim();
+      if (text) pages.push(text);
+    } catch (err) {
+      console.warn(`  pdftotext failed on page ${i}: ${err.message}`);
+    }
+  }
+  return pages;
+}
+
+// Send extracted page text to the configured provider for JSON parsing.
+async function callTextModelOCR(pageText) {
+  const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr-pdf.txt'), 'utf8');
+  const fullPrompt = promptText + '\n' + pageText;
+
+  if (config.ocr.provider === 'anthropic' && config.ocr.anthropicKey) {
+    let Anthropic;
+    try { Anthropic = require('@anthropic-ai/sdk'); } catch {
+      throw new Error('Anthropic provider selected but @anthropic-ai/sdk is not installed. Run: npm install @anthropic-ai/sdk');
+    }
+    const client = new Anthropic({ apiKey: config.ocr.anthropicKey });
+    const msg = await client.messages.create({
+      model: config.ocr.anthropicModel,
+      max_tokens: 16000,
+      messages: [{ role: 'user', content: fullPrompt }],
+    });
+    return parseJSONResponse(msg.content[0].text);
+  }
+
+  // Default: Gemini — use responseSchema to enforce structured output and prevent truncation
+  const { GoogleGenerativeAI, SchemaType } = require('@google/generative-ai');
+  const genAI = new GoogleGenerativeAI(config.ocr.geminiKey);
+  const model = genAI.getGenerativeModel({ model: config.ocr.model });
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+    generationConfig: {
+      maxOutputTokens: 65536,
+      responseMimeType: 'application/json',
+      responseSchema: {
+        type: SchemaType.ARRAY,
+        items: {
+          type: SchemaType.OBJECT,
+          properties: {
+            'Company Name':                    { type: SchemaType.STRING, nullable: true },
+            'Website':                         { type: SchemaType.STRING, nullable: true },
+            'Employees':                       { type: SchemaType.STRING, nullable: true },
+            'Last Financing Date':             { type: SchemaType.STRING, nullable: true },
+            'Last Financing Deal Type':        { type: SchemaType.STRING, nullable: true },
+            'Last Financing Size':             { type: SchemaType.STRING, nullable: true },
+            'Total Raised':                    { type: SchemaType.STRING, nullable: true },
+            'HQ Location':                     { type: SchemaType.STRING, nullable: true },
+            'Primary PitchBook Industry Code': { type: SchemaType.STRING, nullable: true },
+          },
+        },
+      },
+    },
+  });
+  return parseJSONResponse(result.response.text().trim());
+}
+
+// Validate that PDF-parsed rows look like PitchBook data.
+function validatePDFRows(rows, label) {
+  const warnings = [];
+  if (!Array.isArray(rows) || rows.length === 0) return { warnings };
+  const keys = Object.keys(rows[0] || {}).map(k => k.toLowerCase());
+  if (!keys.some(k => k === 'company name' || k === 'name')) {
+    warnings.push(`[WARN] ${label}: no "Company Name" column — verify PDF format`);
+  }
+  if (!keys.some(k => k === 'website')) {
+    warnings.push(`[WARN] ${label}: no "Website" column — IDs will fall back to name-based hashes`);
+  }
+  return { warnings };
+}
+
+async function processPDF(pdfPath) {
+  const label = path.basename(pdfPath);
+  console.log(`Processing PDF: ${label}`);
+  const pages = await extractPageTexts(pdfPath);
+  console.log(`  ${pages.length} page(s) extracted — sending as one request`);
+
+  const combinedText = pages.join('\n\n--- PAGE BREAK ---\n\n');
+  try {
+    const allRows = await callTextModelOCR(combinedText);
+    const { warnings } = validatePDFRows(allRows, label);
+    for (const w of warnings) console.warn(w);
+    console.log(`  ${allRows.length} row(s) total`);
+    return { allRows, failures: [] };
+  } catch (err) {
+    console.warn(`  failed: ${err.message}`);
+    return { allRows: [], failures: [{ pdf: pdfPath, error: err.message }] };
+  }
 }
 
 async function listImages(dir) {
@@ -71,7 +212,8 @@ async function listImages(dir) {
 // Strips markdown fences, finds the outermost [ ] or { }, fixes trailing commas.
 function parseJSONResponse(text) {
   if (!text) throw new Error('Empty response from OCR model');
-  let s = text.replace(/```(?:json)?/g, '\n').trim();
+  // Strip any markdown code fence and optional language tag (```json, ```python, ``` etc.)
+  let s = text.replace(/```[a-z]*/gi, '\n').trim();
 
   // try array first
   const fa = s.indexOf('['), la = s.lastIndexOf(']');
@@ -79,7 +221,7 @@ function parseJSONResponse(text) {
     const c = s.slice(fa, la + 1);
     try { return JSON.parse(c); } catch (_) {
       const fixed = c.replace(/,\s*]/g, ']').replace(/,\s*}/g, '}');
-      try { return JSON.parse(fixed); } catch (_2) { /* fall through */ }
+      try { return JSON.parse(fixed); } catch (_2) { /* fall through to partial recovery */ }
     }
   }
 
@@ -93,7 +235,27 @@ function parseJSONResponse(text) {
     }
   }
 
-  throw new Error('No JSON found in OCR response. Raw (truncated): ' + text.slice(0, 300));
+  // Partial recovery: response was truncated mid-array — salvage complete objects.
+  // Collect every well-formed {...} block from the truncated text.
+  if (fa !== -1 && fo !== -1) {
+    const partial = [];
+    let depth = 0, start = -1;
+    for (let i = fa; i < s.length; i++) {
+      if (s[i] === '{') { if (depth++ === 0) start = i; }
+      else if (s[i] === '}') {
+        if (--depth === 0 && start !== -1) {
+          try { partial.push(JSON.parse(s.slice(start, i + 1))); } catch (_) {}
+          start = -1;
+        }
+      }
+    }
+    if (partial.length > 0) {
+      console.warn(`[WARN] OCR response was truncated — recovered ${partial.length} complete row(s). Consider splitting the PDF into smaller batches.`);
+      return partial;
+    }
+  }
+
+  throw new Error('No JSON found in OCR response. Raw (first 500 chars): ' + text.slice(0, 500));
 }
 
 async function callGeminiOCR(imagePath) {
@@ -200,6 +362,21 @@ async function mapRowToCompanySchema(row) {
   };
 }
 
+// Deduplicate funding signals by (deal_type, total_raised_mm).
+// When two signals share the same key, keep the one with more non-null fields.
+function dedupFundingSignals(signals) {
+  const best = new Map();
+  for (const s of signals) {
+    const key = `${(s.deal_type || '').toLowerCase()}|${String(s.size_mm ?? '')}`;
+    const prev = best.get(key);
+    if (!prev) { best.set(key, s); continue; }
+    // Prefer the entry with more non-null fields (e.g. has a date)
+    const score = v => Object.values(v).filter(x => x != null).length;
+    if (score(s) > score(prev)) best.set(key, s);
+  }
+  return [...best.values()];
+}
+
 function mergeCompanies(existing = [], extracted = []) {
   const byDomain = new Map();
   const byId = new Map();
@@ -221,7 +398,8 @@ function mergeCompanies(existing = [], extracted = []) {
       // shallow merge: prefer existing non-null fields
       target.name = target.name || c.name;
       target.domain = target.domain || c.domain;
-      target.funding_signals = (target.funding_signals || []).concat(c.funding_signals || []);
+      const combined = (target.funding_signals || []).concat(c.funding_signals || []);
+      target.funding_signals = dedupFundingSignals(combined);
       target.company_profile = Object.assign({}, c.company_profile || {}, target.company_profile || {});
       // keep careers_page_url and ats_platform from existing if present
     } else {
@@ -257,12 +435,6 @@ function validatePitchbookRows(rows, imagePath) {
     warnings.push(`[WARN] ${label}: no "Website" column detected — company IDs will fall back to name-based hashes`);
   }
 
-  // Warn (not error) if Keywords column is absent — it may not be in older exports
-  const hasKeywords = keys.some(k => k === 'keywords');
-  if (!hasKeywords) {
-    warnings.push(`[WARN] ${label}: no "Keywords" column detected — categorization quality will be lower; ensure screenshot uses the expected PitchBook column set`);
-  }
-
   // Sanity check: if rows look like non-tabular data (all nulls) flag it
   const nonNullCells = rows.slice(0, 5).reduce((acc, r) => acc + Object.values(r).filter(v => v != null).length, 0);
   if (nonNullCells === 0) {
@@ -275,7 +447,14 @@ function validatePitchbookRows(rows, imagePath) {
 async function loadExistingCompanies(filePath) {
   try {
     const raw = await fs.promises.readFile(filePath, 'utf8');
-    return JSON.parse(raw);
+    const companies = JSON.parse(raw);
+    // Heal any duplicate funding_signals accumulated from prior runs
+    for (const c of companies) {
+      if (Array.isArray(c.funding_signals) && c.funding_signals.length > 1) {
+        c.funding_signals = dedupFundingSignals(c.funding_signals);
+      }
+    }
+    return companies;
   } catch (err) {
     return [];
   }
@@ -287,34 +466,52 @@ async function saveCompanies(filePath, companies) {
   await fs.promises.writeFile(filePath, JSON.stringify(companies, null, 2), 'utf8');
 }
 
-async function main() {
-  const { imagesDir, dryRun } = readArgs();
-  const images = await listImages(imagesDir);
-  if (images.length === 0) {
-    console.log('No images found in', imagesDir);
-    return;
+async function rowsToCompanies(rows, label, failures) {
+  const companies = [];
+  for (const row of rows) {
+    try {
+      companies.push(await mapRowToCompanySchema(row));
+    } catch (err) {
+      failures.push({ source: label, row, error: err.message });
+      console.warn(`Failed to map row from ${label}:`, err.message);
+    }
   }
-  console.log(`Found ${images.length} image(s)`);
+  return companies;
+}
+
+async function main() {
+  const { inputPath, dryRun } = readArgs();
+  const mode = await detectInputMode(inputPath);
+  console.log(`Mode: ${mode} | Provider: ${config.ocr.provider} | Model: ${mode === 'images' ? config.ocr.model : (config.ocr.provider === 'anthropic' ? config.ocr.anthropicModel : config.ocr.model)}`);
 
   const extractedCompanies = [];
   const failures = [];
-  for (const img of images) {
-    try {
-      const rows = await callGeminiOCR(img);
-      const { warnings } = validatePitchbookRows(rows, img);
-      for (const w of warnings) console.warn(w);
-      for (const row of rows) {
-        try {
-          const company = await mapRowToCompanySchema(row);
-          extractedCompanies.push(company);
-        } catch (err) {
-          failures.push({ image: img, row, error: err.message });
-          console.warn('Failed to map row for image', img, err.message);
-        }
+
+  if (mode === 'images') {
+    // --- existing image / screenshot path ---
+    const images = await listImages(inputPath);
+    if (images.length === 0) { console.log('No images found in', inputPath); return; }
+    console.log(`Found ${images.length} image(s)`);
+    for (const img of images) {
+      try {
+        const rows = await callGeminiOCR(img);
+        const { warnings } = validatePitchbookRows(rows, img);
+        for (const w of warnings) console.warn(w);
+        extractedCompanies.push(...await rowsToCompanies(rows, img, failures));
+      } catch (err) {
+        failures.push({ image: img, error: err.message });
+        console.warn('OCR failed for image', img, err.message);
       }
-    } catch (err) {
-      failures.push({ image: img, error: err.message });
-      console.warn('OCR failed for image', img, err.message);
+    }
+  } else {
+    // --- PDF path ---
+    const pdfs = mode === 'pdf' ? [inputPath] : await listPDFs(inputPath);
+    if (pdfs.length === 0) { console.log('No PDFs found in', inputPath); return; }
+    console.log(`Found ${pdfs.length} PDF(s)`);
+    for (const pdf of pdfs) {
+      const { allRows, failures: pdfFailures } = await processPDF(pdf);
+      failures.push(...pdfFailures);
+      extractedCompanies.push(...await rowsToCompanies(allRows, path.basename(pdf), failures));
     }
   }
 
@@ -326,15 +523,14 @@ async function main() {
 
   if (dryRun) {
     console.log('Dry-run mode; not writing files. Sample output (up to 10):');
-    console.log(JSON.stringify(merged.slice(0,10), null, 2));
+    console.log(JSON.stringify(merged.slice(0, 10), null, 2));
   } else {
     await saveCompanies(outPath, merged);
     console.log(`Wrote ${merged.length} companies to ${outPath}`);
   }
 
-  // Print sample of 10 for manual spot-check
   console.log('\nSample companies (up to 10):');
-  console.log(JSON.stringify(merged.slice(0,10), null, 2));
+  console.log(JSON.stringify(merged.slice(0, 10), null, 2));
 }
 
 main().catch(err => {

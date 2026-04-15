@@ -4,12 +4,15 @@
 //
 // .env.local keys:
 //   GEMINI_API_KEY           — shared Gemini key (all LLM agents)
+//   ANTHROPIC_API_KEY        — Anthropic key (OCR PDF mode only, optional)
 //   NOTION_API_KEY           — Notion integration
 //   NOTION_COMPANIES_DB_ID   — Notion database id (companies sync)
 //   NOTION_JOBS_DB_ID        — Notion database id (jobs sync)
 //
 //   Per-agent model overrides (uncomment in .env.local to switch):
-//   OCR_MODEL                — default: gemini-2.5-flash-lite
+//   OCR_MODEL                — default: gemini-2.5-flash-lite  (Gemini provider)
+//   OCR_ANTHROPIC_MODEL      — default: claude-haiku-4-5-20251001 (Anthropic provider)
+//   OCR_PROVIDER             — "gemini" (default) | "anthropic"; auto-detects from available keys
 //   DISCOVERY_MODEL          — default: gemini-2.5-flash
 //   EXTRACTION_MODEL         — default: gemini-2.5-flash
 //   ENRICHMENT_MODEL         — default: gemini-2.5-flash
@@ -45,8 +48,14 @@ try {
 
 const cfg = {
   ocr: {
-    apiKey: process.env.GEMINI_API_KEY || null,
+    geminiKey: process.env.GEMINI_API_KEY || null,
+    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
+    // 'gemini' | 'anthropic' — auto-selects based on available keys if not explicit
+    provider: process.env.OCR_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : process.env.ANTHROPIC_API_KEY ? 'anthropic' : 'gemini'),
     model: process.env.OCR_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
+    anthropicModel: process.env.OCR_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    // keep legacy apiKey alias so existing image OCR path still works
+    get apiKey() { return this.geminiKey; },
   },
   discovery: {
     apiKey: process.env.GEMINI_API_KEY || null,
