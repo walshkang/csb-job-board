@@ -21,11 +21,24 @@
         "deal_type": "Seed Round",
         "size_mm": null,
         "total_raised_mm": 1.9
+      },
+      {
+        "date": "Expected 01-Oct-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 1.9
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 1.9
       }
     ],
     "company_profile": {
       "sector": null,
       "description": "AI-powered, non-invasive monitoring that detects electrical faults months in advance—without false alarms or operational disruption.",
+      "keywords": "artifical intellegence, data center infrastructure, infrastructure manageme...",
       "hq": "CA",
       "employees": 5
     },
@@ -64,11 +77,24 @@
         "deal_type": "Later Stage VC",
         "size_mm": null,
         "total_raised_mm": 9.5
+      },
+      {
+        "date": "Expected 01-Sep-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 9.5
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 9.5
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "computing services, computing tools, energy consumption, energy efficien...",
       "hq": "Bellevue, WA",
       "employees": 21
     },
@@ -107,11 +133,24 @@
         "deal_type": "Seed Round",
         "size_mm": 5,
         "total_raised_mm": 0.14
+      },
+      {
+        "date": "Expected 15-Jul-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 0.14
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 5,
+        "total_raised_mm": 0.14
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "3d concrete printer, 3d concrete structures, 3d printer, construction printi...",
       "hq": "Colorado Springs, CO",
       "employees": 6
     },
@@ -150,11 +189,24 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": 1
+      },
+      {
+        "date": "Expected 01-Jul-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 1
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 1
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "biochar technology, carbon dioxide removal, carbon removal technology, c...",
       "hq": "Woodstock, CT",
       "employees": 5
     },
@@ -193,11 +245,24 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": 25
+      },
+      {
+        "date": "Expected 30-Jun-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 25
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 25
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "customer safety, high reliability, outdoor adventures, portable power, port...",
       "hq": "American Fork, UT",
       "employees": 129
     },
@@ -236,11 +301,24 @@
         "deal_type": "Seed Round",
         "size_mm": 2,
         "total_raised_mm": 0.6
+      },
+      {
+        "date": "Expected 01-May-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 0.6
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 2,
+        "total_raised_mm": 0.6
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "biofilms control, biomass reduction, cooling tower efficiency, ecosystem re...",
       "hq": "Woodstock, IL",
       "employees": 3
     },
@@ -278,11 +356,18 @@
         "deal_type": "Grant",
         "size_mm": 5.2,
         "total_raised_mm": 174.35
+      },
+      {
+        "date": null,
+        "deal_type": "Grant",
+        "size_mm": 5.2,
+        "total_raised_mm": 174.35
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Tukwila, WA",
       "employees": 51
     },
@@ -321,11 +406,24 @@
         "deal_type": "Later Stage VC",
         "size_mm": 3.01,
         "total_raised_mm": 68.73
+      },
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 68.73
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 3.01,
+        "total_raised_mm": 68.73
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "autonomous vehicles, charging infrastructure, electric vehicle charging, ele...",
       "hq": "Atlanta, GA",
       "employees": 69
     },
@@ -364,11 +462,24 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": null
+      },
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "automation services, automation systems, data acquisition systems, energy...",
       "hq": "El Dorado Hills, CA",
       "employees": 73
     },
@@ -407,11 +518,24 @@
         "deal_type": "Early Stage VC",
         "size_mm": 4.55,
         "total_raised_mm": 4.55
+      },
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 5.35
+      },
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 4.55,
+        "total_raised_mm": 4.55
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "energy storage, energy trading, home battery systems, hybrid inverters, m...",
       "hq": "Davis, CA",
       "employees": 12
     },
@@ -450,11 +574,24 @@
         "deal_type": "Later Stage VC",
         "size_mm": 2.98,
         "total_raised_mm": 18.27
+      },
+      {
+        "date": "09-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 18.27
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 2.98,
+        "total_raised_mm": 18.27
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "clean energy power, energy technology, green energy, grid infrastructure, ...",
       "hq": "San Francisco, CA",
       "employees": 29
     },
@@ -494,11 +631,24 @@
         "deal_type": "Seed Round",
         "size_mm": 3,
         "total_raised_mm": 3
+      },
+      {
+        "date": "09-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 3
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 3,
+        "total_raised_mm": 3
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "anaerobic technology, biogas production, data analytics, feedstock manag...",
       "hq": "Boise, ID",
       "employees": 2
     },
@@ -572,11 +722,24 @@
         "deal_type": "PE Growth/Expansion",
         "size_mm": 500,
         "total_raised_mm": 500
+      },
+      {
+        "date": "09-Apr-2026",
+        "deal_type": "PE Growth/Expansion",
+        "size_mm": null,
+        "total_raised_mm": 500
+      },
+      {
+        "date": null,
+        "deal_type": "PE Growth/Expansion",
+        "size_mm": 500,
+        "total_raised_mm": 500
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "clean energy, energy technology development, environmental manageme...",
       "hq": "Sedro-Woolley, WA",
       "employees": 250
     },
@@ -614,11 +777,24 @@
         "deal_type": "Later Stage VC",
         "size_mm": 50.14,
         "total_raised_mm": 51.14
+      },
+      {
+        "date": "08-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 51.14
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 50.14,
+        "total_raised_mm": 51.14
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "moving storage, packing/unpacking services, portable storage service, stor...",
       "hq": "Miami, FL",
       "employees": 40
     },
@@ -658,11 +834,24 @@
         "deal_type": "Early Stage VC",
         "size_mm": 15.25,
         "total_raised_mm": 18.25
+      },
+      {
+        "date": "08-Apr-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 18.25
+      },
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 15.25,
+        "total_raised_mm": 18.25
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "battery energy storage, electricity unit, energy conversion services, industri...",
       "hq": "Ann Arbor, MI",
       "employees": 6
     },
@@ -701,11 +890,24 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": 2.2
+      },
+      {
+        "date": "08-Apr-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 2.2
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 2.2
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "drinkware items, glass, household appliances, plant-based materials, ...",
       "hq": "Cleveland, TN",
       "employees": 4
     },
@@ -743,11 +945,24 @@
         "deal_type": "Later Stage VC",
         "size_mm": 96.5,
         "total_raised_mm": 140.4
+      },
+      {
+        "date": "08-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 140.4
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 96.5,
+        "total_raised_mm": 140.4
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "battery product, battery storage, commercial batteries manufacturer, grid i...",
       "hq": "San Francisco, CA",
       "employees": 28
     },
@@ -786,11 +1001,24 @@
         "deal_type": "Seed Round",
         "size_mm": 0.4,
         "total_raised_mm": 1.25
+      },
+      {
+        "date": "07-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 1.25
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 0.4,
+        "total_raised_mm": 1.25
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "economy, coastal management, environmental data, environment...",
       "hq": "Greenland, NH",
       "employees": 4
     },
@@ -829,11 +1057,24 @@
         "deal_type": "Later Stage VC",
         "size_mm": 10,
         "total_raised_mm": 4.94
+      },
+      {
+        "date": "07-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 4.94
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 10,
+        "total_raised_mm": 4.94
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "agentic ai infrastrcuture, blockchain, carbon intelligence, data center, data ...",
       "hq": "New York, NY",
       "employees": 18
     },
@@ -871,11 +1112,24 @@
         "deal_type": "Accelerator/Incubator",
         "size_mm": null,
         "total_raised_mm": 0.01
+      },
+      {
+        "date": "06-Apr-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.01
+      },
+      {
+        "date": null,
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.01
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "agricultural ai, agtech platform, biochar industry, biochar technology, prod...",
       "hq": "Fishers, IN",
       "employees": 5
     },
@@ -913,11 +1167,18 @@
         "deal_type": "Equity Crowdfunding",
         "size_mm": null,
         "total_raised_mm": 9.8
+      },
+      {
+        "date": null,
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": 9.8
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "New York, NY",
       "employees": 12
     },
@@ -956,11 +1217,18 @@
         "deal_type": "Seed Round",
         "size_mm": 3.21,
         "total_raised_mm": 12.31
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 3.21,
+        "total_raised_mm": 12.31
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Williston, VT",
       "employees": 5
     },
@@ -999,11 +1267,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 46.3,
         "total_raised_mm": 86.2
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": 46.3,
+        "total_raised_mm": 86.2
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "San Leandro, CA",
       "employees": 49
     },
@@ -1079,11 +1354,18 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": 8
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 8
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Houston, TX",
       "employees": 126
     },
@@ -1121,11 +1403,18 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": null
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "North Logan, UT",
       "employees": 11
     },
@@ -1164,11 +1453,18 @@
         "deal_type": "Seed Round",
         "size_mm": 29.68,
         "total_raised_mm": 29.68
+      },
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 29.68,
+        "total_raised_mm": 29.68
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Philadelphia, PA",
       "employees": 32
     },
@@ -1207,11 +1503,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 430.72,
         "total_raised_mm": 504.63
+      },
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 430.72,
+        "total_raised_mm": 504.63
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Cambridge, MA",
       "employees": 30
     },
@@ -1251,11 +1554,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": null,
         "total_raised_mm": 1.35
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 1.35
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "New York, NY",
       "employees": 8
     },
@@ -1293,11 +1603,18 @@
         "deal_type": "Project Financing",
         "size_mm": null,
         "total_raised_mm": 1584.5
+      },
+      {
+        "date": null,
+        "deal_type": "Project Financing",
+        "size_mm": 415,
+        "total_raised_mm": 1584.5
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Atlanta, GA",
       "employees": 116
     },
@@ -1336,11 +1653,18 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": 675,
         "total_raised_mm": null
+      },
+      {
+        "date": null,
+        "deal_type": "Merger/Acquisition",
+        "size_mm": 675,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Pearland, TX",
       "employees": 45
     },
@@ -1378,11 +1702,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": null,
         "total_raised_mm": 0.1
+      },
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 0.1
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Stamford, CT",
       "employees": 3
     },
@@ -1420,11 +1751,18 @@
         "deal_type": "PE Growth/Expansion",
         "size_mm": null,
         "total_raised_mm": 10
+      },
+      {
+        "date": null,
+        "deal_type": "PE Growth/Expansion",
+        "size_mm": 10,
+        "total_raised_mm": 10
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Los Angeles, CA",
       "employees": 12
     },
@@ -1462,11 +1800,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": null,
         "total_raised_mm": 0.35
+      },
+      {
+        "date": null,
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 0.35
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "New York, NY",
       "employees": 8
     },
@@ -1504,11 +1849,18 @@
         "deal_type": "Debt - General",
         "size_mm": null,
         "total_raised_mm": null
+      },
+      {
+        "date": null,
+        "deal_type": "Debt - General",
+        "size_mm": null,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Princeton, NJ",
       "employees": 12
     },
@@ -1546,11 +1898,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 450,
         "total_raised_mm": 600.5
+      },
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 450,
+        "total_raised_mm": 600.5
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "El Segundo, CA",
       "employees": 50
     },
@@ -1577,11 +1936,18 @@
         "deal_type": "Accelerator/Incubator",
         "size_mm": 0.02,
         "total_raised_mm": 0.02
+      },
+      {
+        "date": "11-Feb-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.02
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Ann Arbor, MI",
       "employees": 2
     },
@@ -1605,11 +1971,18 @@
         "deal_type": "Debt Refinancing",
         "size_mm": 90,
         "total_raised_mm": 879.68
+      },
+      {
+        "date": "11-Feb-2026",
+        "deal_type": "Debt Refinancing",
+        "size_mm": 90,
+        "total_raised_mm": 879.68
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Englewood, CO",
       "employees": 151
     },
@@ -1633,11 +2006,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 450,
         "total_raised_mm": 450
+      },
+      {
+        "date": "11-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 450,
+        "total_raised_mm": 450
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "San Francisco, CA",
       "employees": 15
     },
@@ -1661,11 +2041,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 47,
         "total_raised_mm": 153.2
+      },
+      {
+        "date": "11-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 47,
+        "total_raised_mm": 153.2
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Deerfield, IL",
       "employees": 116
     },
@@ -1689,11 +2076,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 170,
         "total_raised_mm": 197.46
+      },
+      {
+        "date": "11-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 170,
+        "total_raised_mm": 197.46
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Redmond, WA",
       "employees": 30
     },
@@ -1717,11 +2111,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 100,
         "total_raised_mm": 183
+      },
+      {
+        "date": "11-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 100,
+        "total_raised_mm": 183
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Houston, TX",
       "employees": 92
     },
@@ -1745,11 +2146,18 @@
         "deal_type": "PIPE",
         "size_mm": 80,
         "total_raised_mm": 114
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "PIPE",
+        "size_mm": 80,
+        "total_raised_mm": 114
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Berkeley, CA",
       "employees": 28
     },
@@ -1773,11 +2181,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 0.46,
         "total_raised_mm": 0.46
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 0.46,
+        "total_raised_mm": 0.46
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Raleigh, NC",
       "employees": 5
     },
@@ -1801,11 +2216,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 2.44,
         "total_raised_mm": 2.74
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 2.44,
+        "total_raised_mm": 2.74
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "San Diego, CA",
       "employees": 10
     },
@@ -1829,11 +2251,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 16,
         "total_raised_mm": 26
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 16,
+        "total_raised_mm": 26
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "San Diego, CA",
       "employees": 47
     },
@@ -1857,11 +2286,18 @@
         "deal_type": "Equity Crowdfunding",
         "size_mm": 0.01,
         "total_raised_mm": 13.78
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": 0.01,
+        "total_raised_mm": 13.78
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Portland, OR",
       "employees": 27
     },
@@ -1885,11 +2321,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": null,
         "total_raised_mm": 6.34
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 6.34
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Fremont, CA",
       "employees": 6
     },
@@ -1913,11 +2356,18 @@
         "deal_type": "Seed Round",
         "size_mm": 4,
         "total_raised_mm": null
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 4,
+        "total_raised_mm": 4
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Albuquerque, NM",
       "employees": 6
     },
@@ -1941,11 +2391,18 @@
         "deal_type": "Equity Crowdfunding",
         "size_mm": null,
         "total_raised_mm": 9.56
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": 9.56
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Newark, NJ",
       "employees": 6
     },
@@ -1969,11 +2426,18 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": 0.7
+      },
+      {
+        "date": "10-Feb-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 0.7
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Berkeley, CA",
       "employees": 4
     },
@@ -1997,11 +2461,18 @@
         "deal_type": "Accelerator/Incubator",
         "size_mm": null,
         "total_raised_mm": 1
+      },
+      {
+        "date": "09-Feb-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 1
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Raleigh, NC",
       "employees": 11
     },
@@ -2025,11 +2496,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 5.4,
         "total_raised_mm": 22.22
+      },
+      {
+        "date": "09-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 5.4,
+        "total_raised_mm": 22.22
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Boston, MA",
       "employees": 33
     },
@@ -2053,11 +2531,18 @@
         "deal_type": "Project Financing",
         "size_mm": 431,
         "total_raised_mm": 1031.49
+      },
+      {
+        "date": "09-Feb-2026",
+        "deal_type": "Project Financing",
+        "size_mm": 431,
+        "total_raised_mm": 1031.49
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Brooklyn, NY",
       "employees": 90
     },
@@ -2081,11 +2566,18 @@
         "deal_type": "Angel (Individual)",
         "size_mm": 0.1,
         "total_raised_mm": 0.2
+      },
+      {
+        "date": "09-Feb-2026",
+        "deal_type": "Angel (Individual)",
+        "size_mm": 0.1,
+        "total_raised_mm": 0.2
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Rogers, AR",
       "employees": 5
     },
@@ -2109,11 +2601,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 0.48,
         "total_raised_mm": 1.33
+      },
+      {
+        "date": "06-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 0.48,
+        "total_raised_mm": 1.33
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Littleton, CO",
       "employees": 4
     },
@@ -2137,11 +2636,18 @@
         "deal_type": "Accelerator/Incubator",
         "size_mm": null,
         "total_raised_mm": 0.22
+      },
+      {
+        "date": "06-Feb-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.22
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Hurley, NY",
       "employees": 2
     },
@@ -2165,11 +2671,18 @@
         "deal_type": "Merger/Acquisition",
         "size_mm": null,
         "total_raised_mm": 16.06
+      },
+      {
+        "date": "06-Feb-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 16.06
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Princeton, NJ",
       "employees": 50
     },
@@ -2193,11 +2706,18 @@
         "deal_type": "Seed Round",
         "size_mm": 9.85,
         "total_raised_mm": 9.85
+      },
+      {
+        "date": "06-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 9.85,
+        "total_raised_mm": 9.85
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "New York, NY",
       "employees": 5
     },
@@ -2221,11 +2741,18 @@
         "deal_type": "Early Stage VC",
         "size_mm": 140,
         "total_raised_mm": 183.25
+      },
+      {
+        "date": "06-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 140,
+        "total_raised_mm": 183.25
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Scotts Valley, CA",
       "employees": 69
     },
@@ -2249,11 +2776,18 @@
         "deal_type": "Seed Round",
         "size_mm": 4,
         "total_raised_mm": 4
+      },
+      {
+        "date": "06-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 4,
+        "total_raised_mm": 4
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "San Francisco, CA",
       "employees": 21
     },
@@ -2277,11 +2811,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": null,
         "total_raised_mm": 15.97
+      },
+      {
+        "date": "05-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 15.97
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Grass Valley, CA",
       "employees": 49
     },
@@ -2305,11 +2846,18 @@
         "deal_type": "Seed Round",
         "size_mm": null,
         "total_raised_mm": 1.18
+      },
+      {
+        "date": "05-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 1.18,
+        "total_raised_mm": 1.18
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Baltimore, MD",
       "employees": 3
     },
@@ -2333,11 +2881,18 @@
         "deal_type": "Seed Round",
         "size_mm": 4,
         "total_raised_mm": 4
+      },
+      {
+        "date": "05-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 4,
+        "total_raised_mm": 4
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "Austin, TX",
       "employees": 9
     },
@@ -2361,11 +2916,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": 25,
         "total_raised_mm": 28.63
+      },
+      {
+        "date": "05-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 25,
+        "total_raised_mm": 28.63
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": null,
       "hq": "New York, NY",
       "employees": 39
     },
@@ -3341,11 +3903,24 @@
         "deal_type": "Early Stage VC",
         "size_mm": 3.81,
         "total_raised_mm": 4.31
+      },
+      {
+        "date": "09-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 3.89
+      },
+      {
+        "date": null,
+        "deal_type": "Early Stage VC",
+        "size_mm": 3.81,
+        "total_raised_mm": 4.31
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
+      "keywords": "air pollution tracker, air quality monitoring, climate analysis, climate data, ...",
       "hq": "San Francisco, CA",
       "employees": 3
     },
@@ -3386,5 +3961,396 @@
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
     "category_confidence": "low"
+  },
+  {
+    "id": "wwwactpowerservicesca",
+    "name": "ACT Power Services",
+    "domain": "www.actpowerservices.ca",
+    "funding_signals": [
+      {
+        "date": "14-Apr-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "drone inspection, energy facility, maintenance services, maintenance servi...",
+      "hq": "Morrisville, NC",
+      "employees": 110
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwcaturuscom",
+    "name": "Caturus",
+    "domain": "www.caturus.com",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Debt - Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 2150
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "energy production, energy seller, energy transition, natural gas producer, ...",
+      "hq": "Houston, TX",
+      "employees": 57
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwcriticalloopcom",
+    "name": "Critical Loop",
+    "domain": "www.criticalloop.com",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 29.83
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "energy monitoring, energy savings, mobile energy grid, off-grid power, po...",
+      "hq": "Long Beach, CA",
+      "employees": 37
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwforseeinccom",
+    "name": "Forsee (Environmental Services (B2B))",
+    "domain": "www.forseeinc.com",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "bio products, fiber development, fire retardant fabrics, green technology p...",
+      "hq": "Prattville, AL",
+      "employees": 4
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwlandoptioncom",
+    "name": "Landoption",
+    "domain": "www.landoption.com",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 0.83
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "agricultural services, farm data management, land management, property ...",
+      "hq": "Roca, NE",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwmatturcom",
+    "name": "Mattur",
+    "domain": "www.mattur.com",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 32.85
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean energy, clean energy services, electricity generation, energy delivery, ...",
+      "hq": "Scottsdale, AZ",
+      "employees": 15
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwslateauto",
+    "name": "Slate Auto",
+    "domain": "www.slate.auto",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 1461.03
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "car company, electric vehicle car, electric vehicle firm, ev technology, moto...",
+      "hq": "Troy, MI",
+      "employees": 444
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwterraformindustriescom",
+    "name": "Terraform Industries",
+    "domain": "www.terraformindustries.com",
+    "funding_signals": [
+      {
+        "date": "13-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 89.75
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean conventional fuel, clean fuel, environmental gas, natural gas product...",
+      "hq": "Burbank, CA",
+      "employees": 27
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwascendelementscom",
+    "name": "Ascend Elements",
+    "domain": "www.ascendelements.com",
+    "funding_signals": [
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Bankruptcy: Admin/Reorg",
+        "size_mm": null,
+        "total_raised_mm": 878.48
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "battery recycling, battery company, cathode materials, lithium ba...",
+      "hq": "Westborough, MA",
+      "employees": 166
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwdavygascom",
+    "name": "Davy Gas",
+    "domain": "www.davygas.com",
+    "funding_signals": [
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 2.46
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean fuel, energy production, green energy, hydrogen, hydrogen ecosyste...",
+      "hq": "Cincinnati, OH",
+      "employees": 7
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwevinitiativecom",
+    "name": "EV Initiative",
+    "domain": "www.evinitiative.com",
+    "funding_signals": [
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 2.16
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "charging infrastructure, charging station, cloud-based software, electric ve...",
+      "hq": "Sacramento, CA",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwflairco",
+    "name": "Flair (Household Appliances)",
+    "domain": "www.flair.co",
+    "funding_signals": [
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 19.15
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "building energy efficiency, climate control product, comfort equipments, c...",
+      "hq": "San Francisco, CA",
+      "employees": 18
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwgreengridinccom",
+    "name": "Green Grid",
+    "domain": "www.greengridinc.com",
+    "funding_signals": [
+      {
+        "date": "10-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 0.2
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean technology, climate focus, climate technology provider, decarbonizat...",
+      "hq": "San Ramon, CA",
+      "employees": 18
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwbarnaklcom",
+    "name": "Barnakl",
+    "domain": "www.barnakl.com",
+    "funding_signals": [
+      {
+        "date": "08-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 5.06
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "air purification system, air purifier, clean air systems, healthier lifestyle, ind...",
+      "hq": "Norfolk, VA",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwalcoveio",
+    "name": "Alcove (Business/Productivity Software)",
+    "domain": "www.alcove.io",
+    "funding_signals": [
+      {
+        "date": "06-Apr-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 9.97
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "carbon credit, carbon credit service, carbon management, carbon tech, de...",
+      "hq": "New York, NY",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwstandardcarbonio",
+    "name": "Standard Carbon",
+    "domain": "www.standardcarbon.io",
+    "funding_signals": [
+      {
+        "date": "06-Apr-2026",
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": 9.8
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "carbon footprint reduction, carbon fuel, carbon reduction system, clean en...",
+      "hq": "New York, NY",
+      "employees": 12
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwsolidseccom",
+    "name": "Solidsec",
+    "domain": "www.solidsec.com",
+    "funding_signals": [
+      {
+        "date": null,
+        "deal_type": "Seed Round",
+        "size_mm": 2.12,
+        "total_raised_mm": 2.47
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": null,
+      "hq": "Houston, TX",
+      "employees": 11
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
   }
 ]
