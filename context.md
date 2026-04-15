@@ -155,7 +155,7 @@ Approach:
   - Log streamed output to stderr; stdout stays clean for JSON artifacts
 
 Project todos (session DB):
-1. define-pitchbook-query — Define Pitchbook query: Decide and document exact Pitchbook filters that define "climate company" (NAICS, keywords, investor tags). Produce reproducible query and example export.
+1. define-pitchbook-query — Define Pitchbook query: Decide and document exact PitchBook filters that define "climate company" (NAICS, keywords, investor tags). Produce reproducible query and example export.
 2. careers-page-discovery — Implement careers page discovery: Add heuristics (standard paths), LLM-assisted discovery, and fallback rules. Save discovered URL and reachable flag; include manual review flow.
 3. ats-priority-adapters — Prioritize ATS adapters: Implement/improve adapters for Greenhouse, Lever, Ashby, Workday; prefer API ingestion over scraping; add concurrency limits.
 4. categorizer-dry-run-review — Run TF‑IDF + LLM dry-run, review /tmp/tfidf_proposed_categories.json, and mark taxonomy entries needing human edits.
@@ -165,3 +165,12 @@ Project todos (session DB):
 8. notion-sync-qa — Notion sync dry-run & QA: run node src/agents/notion-sync.js --dry-run after categorize/enrich and verify property mappings.
 9. analytics-metrics — Add analytics to compute days_live, funding_to_posting_lag, posting longevity buckets, and surface reporter metrics.
 10. user-facing-filters — Design user-facing filters and mock a Notion view for MBA users (function, location, remote, seniority, MBA score).
+
+Decision needed: company summary source
+- We currently lack reliable PitchBook-exported company descriptions in the screenshots. Need to decide the canonical source for company_profile.description (pick one):
+  1) PitchBook export/API (preferred if you have direct access — single definitive source)
+  2) Playwright crawl of company home/about pages (best for coverage but CPU/time intensive)
+  3) Google/SerpAPI knowledge snippets (requires API key and TOS compliance)
+  4) Third-party data (Crunchbase / LinkedIn licensed data)
+
+Action: record your preferred source and I will implement the prioritized retrieval path (caching, rate limits, and dry‑run before any writes).
