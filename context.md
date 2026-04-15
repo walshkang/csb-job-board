@@ -92,20 +92,23 @@ Config / env
 
 Current status (as of 2026-04-14)
   - 10 slices implemented and running end-to-end
-  - 37 companies from test screenshots; 19 reachable careers pages
+  - 102 companies in companies.json; 19 reachable careers pages; 65 have domains but haven't been through discovery yet
   - 15 companies blocked by CAPTCHA/JS rendering — no jobs extractable without browser fingerprint spoofing
   - Jobs extracted from API adapters (Greenhouse, Lever, Ashby, Workday) and direct HTML where accessible
   - Enrichment, categorization, and observability working with gemini-2.5-flash (paid tier)
   - Key bug fixed: gemini-2.5-flash thinking tokens consume maxOutputTokens budget — all agents now use 4096+
   - Extraction prompt hardened: no hallucination of URLs or descriptions not present in HTML
-  - Industry categorization: one LLM call per company, result applied to all jobs
-  - Notion sync working end-to-end with dynamic schema mapping
+  - Industry categorization (Slice 9): one LLM call per company, result applied to all jobs; scraped_description + job-samples now passed as context
+  - Slice 9 fields (climate_tech_category, primary_sector, opportunity_area, category_confidence) synced to Notion Companies DB
+  - Notion setup + sync alias tables updated for Slice 9 fields
+  - Fingerprinter (Slice 3): now fetches and caches careers page HTML in addition to homepage; extracts scraped_description from both
 
 Next meaningful work
-  1. Add more Pitchbook screenshots → re-run OCR to grow companies.json
-  2. Fingerprinter: scan careers page in addition to homepage (catches ATS embeds like Valar Atomics/Greenhouse)
-  3. Run npm run reporter + npm run review after each full pipeline run
-  4. Commit postmortem outputs to repo for training data
+  1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed
+  2. Expand ATS fingerprint patterns: Rippling, Jobvite, iCIMS, Smartrecruiters (in-progress in subagent)
+  3. Discovery LLM fallback: currently skipped when homepage is unreachable — relax gate to fire on name+domain alone (in-progress in subagent)
+  4. Add more Pitchbook screenshots → re-run OCR to grow companies.json
+  5. Run npm run reporter + npm run review after each full pipeline run
 
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
@@ -140,9 +143,9 @@ Resolved since postmortem:
 Still open (medium-term):
   - End-to-end smoke tests and CI
   - Prompt proposal generation: reviewer --propose flag writes prompts/proposed/ diffs for human review
-  - Fingerprinter: expand ATS coverage (Rippling, Jobvite, iCIMS, Smartrecruiters)
+  - Fingerprinter: expand ATS coverage (Rippling, Jobvite, iCIMS, Smartrecruiters) — in-progress in subagent
   - Dynamic rate limiting in enricher (track req/min, throttle on 429 rather than fixed delay)
-  - Extraction: Ashby + Workday mappers (gap — artifacts produced but no mapper to extract jobs from them)
+  - Extraction: Ashby + Workday mappers — DONE (mapAshby/mapWorkday exist in extraction.js:83-114 and are wired at lines 275/277)
 
 Future: Streaming LLM output
 Currently all LLM calls are fire-and-wait — nothing visible until the call completes.
