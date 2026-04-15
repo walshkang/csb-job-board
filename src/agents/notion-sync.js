@@ -216,6 +216,10 @@ async function main() {
       'ATS Platform': c.ats_platform ? { select: { name: String(c.ats_platform) } } : undefined,
       'Dormant': typeof c.dormant === 'boolean' ? { checkbox: c.dormant } : undefined,
       'Consecutive Empty Scrapes': typeof c.consecutive_empty_scrapes === 'number' ? { number: c.consecutive_empty_scrapes } : undefined,
+      'Climate Tech Category': c.climate_tech_category ? { select: { name: String(c.climate_tech_category) } } : undefined,
+      'Primary Sector': c.primary_sector ? { select: { name: String(c.primary_sector) } } : undefined,
+      'Opportunity Area': c.opportunity_area ? { select: { name: String(c.opportunity_area) } } : undefined,
+      'Category Confidence': c.category_confidence ? { select: { name: String(c.category_confidence) } } : undefined,
     };
     const props = {};
     for (const [canonical, val] of Object.entries(canonicalProps)) {
