@@ -26,6 +26,10 @@ const COMPANY_CANONICAL_ALIASES = {
   'ATS Platform': ['ATS Platform', 'ATS'],
   'Dormant': ['Dormant', 'Inactive'],
   'Consecutive Empty Scrapes': ['Consecutive Empty Scrapes', 'Empty Scrapes'],
+  'Climate Tech Category': ['Climate Tech Category', 'Climate Category', 'Category'],
+  'Primary Sector': ['Primary Sector', 'Sector Primary'],
+  'Opportunity Area': ['Opportunity Area', 'Opportunity'],
+  'Category Confidence': ['Category Confidence', 'Confidence'],
 };
 
 const JOB_CANONICAL_ALIASES = {

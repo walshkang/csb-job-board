@@ -29,6 +29,10 @@ const COMPANIES_PROPERTIES = [
   { name: 'ATS Platform',             type: 'select' },
   { name: 'Dormant',                  type: 'checkbox' },
   { name: 'Consecutive Empty Scrapes', type: 'number' },
+  { name: 'Climate Tech Category',    type: 'select' },
+  { name: 'Primary Sector',           type: 'select' },
+  { name: 'Opportunity Area',         type: 'select' },
+  { name: 'Category Confidence',      type: 'select' },
 ];
 
 const JOBS_PROPERTIES = [
