@@ -86,9 +86,13 @@ Notion integration
   Dynamic schema mapping: notion-sync fetches DB property names at runtime and resolves via alias table — tolerant of renamed properties
 
 Config / env
+  LLM_PROVIDER — "gemini" | "anthropic"; auto-detects from available keys if omitted (GEMINI_API_KEY → gemini, ANTHROPIC_API_KEY → anthropic)
   GEMINI_API_KEY — shared key for all LLM agents (paid tier required for full runs)
-  ENRICHMENT_FALLBACK_MODEL — default: gemini-1.5-flash
-  Per-agent model overrides: OCR_MODEL, DISCOVERY_MODEL, EXTRACTION_MODEL, ENRICHMENT_MODEL
+  ANTHROPIC_API_KEY — enables Anthropic provider; setting this without GEMINI_API_KEY routes all agents through Claude
+  ENRICHMENT_FALLBACK_MODEL — default: gemini-1.5-flash (Gemini only; ignored when provider is anthropic)
+  Per-agent model overrides (Gemini): OCR_MODEL, DISCOVERY_MODEL, EXTRACTION_MODEL, ENRICHMENT_MODEL
+  Per-agent model overrides (Anthropic, default claude-haiku-4-5-20251001): OCR_ANTHROPIC_MODEL, DISCOVERY_ANTHROPIC_MODEL, EXTRACTION_ANTHROPIC_MODEL, ENRICHMENT_ANTHROPIC_MODEL, CATEGORIZER_ANTHROPIC_MODEL, REVIEWER_ANTHROPIC_MODEL
+  Per-agent provider overrides: OCR_PROVIDER, DISCOVERY_PROVIDER, EXTRACTION_PROVIDER, ENRICHMENT_PROVIDER, CATEGORIZER_PROVIDER, REVIEWER_PROVIDER
 
 Current status (as of 2026-04-14)
   - 10 slices implemented and running end-to-end
@@ -145,15 +149,8 @@ Still open (medium-term):
   - Dynamic rate limiting in enricher (track req/min, throttle on 429 rather than fixed delay)
   - Extraction: Ashby + Workday mappers — DONE (mapAshby/mapWorkday exist in extraction.js:83-114 and are wired at lines 275/277)
 
-Future: Streaming LLM output
-Currently all LLM calls are fire-and-wait — nothing visible until the call completes.
-
-Goal: stream tokens in real time so progress is visible per-job in the terminal. Foundation for a future lightweight frontend (web UI or terminal dashboard) showing live pipeline progress.
-
-Approach:
-  - Provider-agnostic streamLLMText() wrapper: Gemini (generateContentStream), Anthropic (stream: true), others
-  - Agents opt in per-call; no full rewrite needed
-  - Log streamed output to stderr; stdout stays clean for JSON artifacts
+Multi-provider LLM support — DONE (2026-04-15)
+src/llm-client.js is the single dispatch layer for all text agents. callLLM/streamLLM route to Gemini or Anthropic based on provider config. All agents migrated; gemini-text.js deleted. Setting only ANTHROPIC_API_KEY runs the full pipeline on Claude Haiku.
 
 Project todos (session DB):
 1. define-pitchbook-query — Define Pitchbook query: Decide and document exact PitchBook filters that define "climate company" (NAICS, keywords, investor tags). Produce reproducible query and example export.
