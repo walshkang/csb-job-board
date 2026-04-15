@@ -387,16 +387,21 @@ async function processCompany(company, opts) {
     verboseLog(verbose, 'sitemap fetch failed for', domain, err.message);
   }
 
-  // 5) LLM fallback — uses cached homepage HTML if available
+  // 5) LLM fallback — attempt even if homepage HTML is not available (use company name/domain)
   if (!config.discovery.apiKey) return { found: false, method: 'not_found' };
   try {
-    // If homepage was previously fetched and found unreachable (or never fetched), skip calling LLM to avoid wasting quota.
-    if (!homepageCache.html) {
-      return { found: false, method: 'not_found' };
-    }
+    const homepageHtmlAvailable = !!homepageCache.html;
 
-    const homepageHtml = (homepageCache.html || '').slice(0, 10000);
-    const prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
+    // Build prompt: prefer homepage HTML when available, otherwise use company name/domain and derived slugs
+    let prompt;
+    if (homepageHtmlAvailable) {
+      const homepageHtml = (homepageCache.html || '').slice(0, 10000);
+      prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
+    } else {
+      const slugs = deriveAtsSlugs(company).join(', ');
+      verboseLog(verbose, `LLM fallback without HTML for ${domain} — using name+domain+slugs: ${slugs}`);
+      prompt = `Company: ${company.name || ''}\nDomain: ${domain}\nDerived slugs: ${slugs}\n\nBased on the company name and domain, what is the most likely careers page URL? Return just the URL or the string NOT_FOUND.`;
+    }
 
     // Call LLM and mark that it was attempted so callers can record metrics.
     const completion = await callGeminiLLM(prompt, domain); // DailyQuotaError bubbles up
@@ -412,7 +417,8 @@ async function processCompany(company, opts) {
     if (!/^https?:\/\//i.test(answer)) answer = `https://${answer}`;
 
     try {
-      const res = await tryHeadThenGet(answer, domain);
+      // Validate using the actual hostname from the proposed URL
+      const res = await tryHeadThenGet(answer, new URL(answer).hostname);
       if (res && res.status === 200) {
         return { found: true, url: res.url || answer, method: 'llm_fallback', llm_attempted: true };
       }
@@ -466,7 +472,9 @@ async function main() {
   companies.forEach((c, i) => {
     if (!c || !c.domain) return; // only process companies with known domain
     if (force) indices.push(i);
-    else if (!c.careers_page_url || c.careers_page_reachable === false) indices.push(i);
+    // Include any company that does NOT have careers_page_reachable === true
+    // This covers undefined, null, and false values so stale entries aren't skipped.
+    else if (!c.careers_page_url || c.careers_page_reachable !== true) indices.push(i);
   });
 
   if (indices.length === 0) {
@@ -525,11 +533,16 @@ async function main() {
           methodCounts[company.careers_page_discovery_method] = (methodCounts[company.careers_page_discovery_method] || 0) + 1;
         }
 
-        // Record if the LLM fallback was attempted (separate from successes)
+        // Persist LLM attempt flag to the company record so it appears in data/companies.json
         if (result && result.llm_attempted) {
+          company.llm_attempted = true;
           methodCounts.llm_fallback_attempted = (methodCounts.llm_fallback_attempted || 0) + 1;
         }
-        if (result && result.llm_error) llmErrorCount++;
+        // Persist any LLM error marker as well
+        if (result && result.llm_error) {
+          company.llm_error = true;
+          llmErrorCount++;
+        }
 
         // update progress
         try { progress.tick(totalProcessed, company.name || company.domain || ''); } catch(_) {}

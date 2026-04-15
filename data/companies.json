@@ -39,7 +39,8 @@
     "climate_tech_category": "None",
     "primary_sector": "None",
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "llm_attempted": true
   },
   {
     "id": "wwwvaireco",
@@ -81,7 +82,8 @@
     "climate_tech_category": "None",
     "primary_sector": null,
     "opportunity_area": null,
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "llm_attempted": true
   },
   {
     "id": "wwwstructurebotcom",
@@ -166,7 +168,8 @@
     "climate_tech_category": "Biomass Utilization and Storage",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "llm_attempted": true
   },
   {
     "id": "lionenergycom",

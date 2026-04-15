@@ -20,11 +20,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:54:58.557Z",
-    "climate_tech_category": "Advanced Battery Technologies",
-    "primary_sector": "Transportation",
-    "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:54:58.557Z"
   },
   {
     "id": "42bda13611707df7fa7cb0ddafd1fbae68b87ad2712abd0718b238682c210837",
@@ -47,11 +43,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:54:59.160Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:54:59.160Z"
   },
   {
     "id": "053c2773cb67dda6570d5f234aeca0dd9ab3e47bffd147938d303e7ca09c0b60",
@@ -74,11 +66,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:54:59.761Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:54:59.761Z"
   },
   {
     "id": "5cfa2360a1f93a4966e25468d5a35d9946e14bc3c913af2ab0ccf3981163ef75",
@@ -101,11 +89,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:00.363Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:00.363Z"
   },
   {
     "id": "131c8c89e3289ac6cefd9a47f698074939de103d06374ff571beedb4f9da990c",
@@ -128,11 +112,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:00.964Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:00.964Z"
   },
   {
     "id": "36fe634fc2af15b9487a62a4b4e863e8993f8174601bd199169e22f88ff29f8d",
@@ -155,11 +135,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:01.565Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:01.565Z"
   },
   {
     "id": "0a2b29130f998d04509906c54d8bc00fe01d67e30cb36e2c61b766a68baea3e7",
@@ -182,11 +158,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:02.167Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:02.167Z"
   },
   {
     "id": "04807c938f9b96f459b9c21b6958270a0d21703ef087c217b755996193c5c655",
@@ -209,11 +181,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:02.769Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:02.769Z"
   },
   {
     "id": "da0fd249f294e6065ab7c6c601aaf6461b8ff8098f26c35634b221201383970d",
@@ -236,11 +204,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:03.370Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:03.370Z"
   },
   {
     "id": "4334c281341f7638482c39f8015a89ffefe9dbbe56392485e38fe348a7a70858",
@@ -263,11 +227,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:03.972Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:03.972Z"
   },
   {
     "id": "8a2506146edfa2ad8ad5b611e4a6861880a70ce9e542b121a247d43eae1b4e2b",
@@ -290,11 +250,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:04.575Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:04.575Z"
   },
   {
     "id": "d83497208f79ec91ae8167b8042db098e78627f965276c925185ed3a41cf59a8",
@@ -317,11 +273,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:05.176Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:05.176Z"
   },
   {
     "id": "6f28479fef4e84d8d628307ae33ebc7bd1528d8e1fdfc540538e768da14f1a1b",
@@ -344,11 +296,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:05.778Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:05.778Z"
   },
   {
     "id": "ae888b4461a91a971a252fb6e516aeaeedd54f50bbf8e43f5febefd3c659f3f1",
@@ -372,11 +320,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-14T19:55:06.380Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:06.380Z"
   },
   {
     "id": "ef18970eebb512c75d4a8e0e52372a3bf972ed9f4bf1c7c60b4200d8f0a8f065",
@@ -400,11 +344,7 @@
     "climate_relevance_reason": "The company develops compact fusion devices for clean energy, which directly aligns with the 'Fusion' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "858ae79f93bfeb87f16c0b4a6a2f184ae07d01f2e0820cf11ae7f06988963809",
-    "last_enriched_at": "2026-04-14T19:55:10.026Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:10.026Z"
   },
   {
     "id": "247ba8f57c00c2990f5a47c98dae1f40763bdab30aa20f71ddb8349ba66fd639",
@@ -428,11 +368,7 @@
     "climate_relevance_reason": "The job listing is provided for a climate-tech job board, implying the company operates within the climate-tech sector, though specific categories are not detailed in the truncated description.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "cc01175265a4bee072e614d032cf818cf9fcf0d650ffe47751d69f60b6853dc5",
-    "last_enriched_at": "2026-04-14T19:55:12.030Z",
-    "climate_tech_category": "Geothermal",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "last_enriched_at": "2026-04-14T19:55:12.030Z"
   },
   {
     "id": "ba57e7c1a2ce3b9a9aaba2618a544d981ca009b5863dbc524004c47e76f3743c",
@@ -446,11 +382,7 @@
     "description_hash": "1fd2501525e7894ee65c50b256748f21592780f4ce478475ee529466139972f6",
     "first_seen_at": "2026-04-14T19:53:10.131Z",
     "last_seen_at": "2026-04-14T19:53:10.131Z",
-    "enrichment_error": "No JSON object found in LLM response",
-    "climate_tech_category": "Geothermal",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "enrichment_error": "No JSON object found in LLM response"
   },
   {
     "id": "67a85fb8dc915145227038ff0d528fe59ef2ee034ced3f465232eb1fbba8b66c",
@@ -474,11 +406,7 @@
     "climate_relevance_reason": "The job is listed on a climate-tech job board, indicating the company Vulcan Elements operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "25eefe8323777b5fe30d68efbc396d293b7bfeb291631f950604644a63e8fb15",
-    "last_enriched_at": "2026-04-14T19:55:13.958Z",
-    "climate_tech_category": "Geothermal",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "last_enriched_at": "2026-04-14T19:55:13.958Z"
   },
   {
     "id": "4c8a89fd0014a9a94ac7beb9b4b22b50ed854d419398868757c12dbf7dd75e71",
@@ -492,11 +420,7 @@
     "description_hash": "37c2a7d3c82f96a02255c28ad61e254a2d6a51daf720e8ed7632ffe093ab1587",
     "first_seen_at": "2026-04-14T19:53:10.131Z",
     "last_seen_at": "2026-04-14T19:53:10.131Z",
-    "enrichment_error": "No JSON object found in LLM response",
-    "climate_tech_category": "Geothermal",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "enrichment_error": "No JSON object found in LLM response"
   },
   {
     "id": "f2654af4fda6531038d5aaf2707c0a986a5ebb216a9f39c0b0510428aaa7c87f",
@@ -520,11 +444,7 @@
     "climate_relevance_reason": "The job is listed for a climate-tech job board, indicating the company operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "8bc46d6852d5644e2d56b40e3267d70df1cadedc1667ad567f72dd8fdc016ac7",
-    "last_enriched_at": "2026-04-14T19:55:14.215Z",
-    "climate_tech_category": "Geothermal",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "last_enriched_at": "2026-04-14T19:55:14.215Z"
   },
   {
     "id": "951d5c6aa0f11c49dd4faa33d5c93bf1d00ce1e0840541ee8d78b127b0f835f6",
@@ -548,11 +468,7 @@
     "climate_relevance_reason": "The job listing is provided in the context of a climate-tech job board, indicating Vulcan Elements operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "64bc6822e27db0416b96d95e42d8a266fbf668b5dda0cd4e99df9f6bf970076c",
-    "last_enriched_at": "2026-04-14T19:55:20.042Z",
-    "climate_tech_category": "Geothermal",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "last_enriched_at": "2026-04-14T19:55:20.042Z"
   },
   {
     "id": "9d79bb344817e0c7af330879b7f0bdea85dc4ce9274affd168e608fdd9c587eb",
@@ -576,11 +492,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear energy, which falls under climate-tech categories like Fission, Fusion, or Industrial Nuclear.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ddcb8584f8be924a469ec0a2f007adab436589d4f82f545f75fd523fbaad7068",
-    "last_enriched_at": "2026-04-14T19:55:19.473Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:19.473Z"
   },
   {
     "id": "ce29be5764edb8216ab0c8a6bdd83bd50d37c106ca34445549a23f155a3d697f",
@@ -604,11 +516,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' indicates a focus on nuclear technology, which aligns with the 'Industrial Nuclear' and 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "6f31f2073db064b2cb0a2b3939b0d7aebf89bae7477e11a6eb4b034106bb5ad9",
-    "last_enriched_at": "2026-04-14T19:55:20.069Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:20.069Z"
   },
   {
     "id": "ea169c01af076be1e771a2dfd435c3479b38f60297e2955b18325681c354b5ee",
@@ -632,11 +540,7 @@
     "climate_relevance_reason": "The role is for a Senior Nuclear Engineer at Valar Atomics, directly contributing to nuclear energy, which is a critical technology for decarbonization and falls under the 'Fission' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "35846c881f8aec5eb342ce4cd6331055ce03278991b217cb3f38fcc2cb87cb42",
-    "last_enriched_at": "2026-04-14T19:55:21.128Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:21.128Z"
   },
   {
     "id": "48300a10768754713d396bc1ae0f17b5a30243b8c8e9e26b871e512d5a91d13e",
@@ -660,11 +564,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' and the focus on 'advanced systems' strongly suggest a connection to nuclear energy, which falls under the 'Fission', 'Fusion', or 'Industrial Nuclear' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bc98e0bfaab2d55ae7583a769d36217966ee6c7e8aa6a1838f74d64d42f369b5",
-    "last_enriched_at": "2026-04-14T19:55:21.558Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:21.558Z"
   },
   {
     "id": "86226243eb7390801f9f89b428daf14b682b0903f43c1255c466e94f87791880",
@@ -688,11 +588,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' indicates a focus on atomic energy, which includes nuclear fission or fusion, both recognized climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "98a5655987bb167e765d62d1996cbc6257c6777e4963a727c754c3c66b648a30",
-    "last_enriched_at": "2026-04-14T19:55:22.910Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:22.910Z"
   },
   {
     "id": "1a65f39da86ff9afd06fad3c33da3d0e58d2d0a3785076e32be04a3985d48e1b",
@@ -716,11 +612,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear energy, which aligns with the 'Fission', 'Fusion', and 'Industrial Nuclear' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ce75e920fc715b37e39f5c50c2ce5f23097629747333e166057394b33d116371",
-    "last_enriched_at": "2026-04-14T19:55:22.414Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:22.414Z"
   },
   {
     "id": "108c0823d67a7c82b8b385d13983ef5ea055721288dfc64a30ea700c0d560c96",
@@ -744,11 +636,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' indicates a focus on nuclear technology, which falls under the 'Industrial Nuclear' and 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "fffb99ba7f9e637b3ba88448ee923752b8cf17602713017503a54d6ed1e779e9",
-    "last_enriched_at": "2026-04-14T19:55:24.175Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:24.175Z"
   },
   {
     "id": "2930dd5fbf3522d61201a32b646208f0a740b4b1667116fb9bf5bae46e45574b",
@@ -772,11 +660,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear technology, which is a recognized climate-tech category (e.g., Fission, Fusion, Industrial Nuclear).",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "9aefd081546425830c69aa8f18fbd3f5a6880dddc7e74082a199e9e0552a8ab7",
-    "last_enriched_at": "2026-04-14T19:55:25.751Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:25.751Z"
   },
   {
     "id": "ad88f522c81bd35e89db62007a9cb844a8a5654b1429efc378a16ffb5420b634",
@@ -800,11 +684,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests involvement in nuclear energy (fission or fusion), which is a recognized climate-tech category for low-carbon power generation.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f1fea408e8c5c12295c7d0e529408e9b56f4926df08b7f0b47f13c8fd4717ee7",
-    "last_enriched_at": "2026-04-14T19:55:24.901Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:24.901Z"
   },
   {
     "id": "cdb0723ade65d199362bd6f47b6805451b7e5bb562933e206616f25d9649a11b",
@@ -828,11 +708,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear technology, which aligns with the 'Industrial Nuclear', 'Fusion', or 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "9cea6b1d1889f79ff1e85b8b8a1ad869afb1f3bdfd15e409e05251e4306b1609",
-    "last_enriched_at": "2026-04-14T19:55:28.391Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:28.391Z"
   },
   {
     "id": "924258d88ccdc4a33e636eb4ab70a542844c3a811fc689540b20a4c405328781",
@@ -856,11 +732,7 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear energy, which falls under the 'Fission', 'Fusion', or 'Industrial Nuclear' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f1564b33aa0e45c106afde8b1071f5fce28fa92c6151d7cdd5f1316a4b395979",
-    "last_enriched_at": "2026-04-14T19:55:28.896Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:28.896Z"
   },
   {
     "id": "2803fc72997b72e604c0dd4dd02d06dafcaa54ed08545958763f02f636da971d",
@@ -884,11 +756,7 @@
     "climate_relevance_reason": "The company 'Valar Atomics' indicates a focus on nuclear technology, which falls under the 'Industrial Nuclear' and 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "756eeaef83b53024b1af12561dbd67ae9b83f96a0385ac9055f6d2abe215620a",
-    "last_enriched_at": "2026-04-14T19:55:30.993Z",
-    "climate_tech_category": "Fusion",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:30.993Z"
   },
   {
     "id": "035013ab0e8bcb80f9c41a3a29c6fd7cd7c0a50a426455ac9a5fef67dc5b9906",
@@ -912,10 +780,6 @@
     "climate_relevance_reason": "The role is focused on managing solar energy projects, which directly falls under the 'Solar' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bb0755cf65820a121bf28221ed6a266832b68e5c57c2f1a254b7f0e1e262899d",
-    "last_enriched_at": "2026-04-14T19:55:32.560Z",
-    "climate_tech_category": "Solar",
-    "primary_sector": "Electricity",
-    "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "last_enriched_at": "2026-04-14T19:55:32.560Z"
   }
 ]
