@@ -183,6 +183,7 @@ async function mapRowToCompanySchema(row) {
   const company_profile = {
     sector: cleanRow['Sector'] || null,
     description: cleanRow['Description'] || null,
+    keywords: cleanRow['Keywords'] || null,
     hq: cleanRow['HQ Location'] || cleanRow['HQ'] || null,
     employees: cleanRow['Employees'] ? parseInt(String(cleanRow['Employees']).replace(/[^0-9]/g, ''), 10) || null : null,
   };
@@ -232,6 +233,45 @@ function mergeCompanies(existing = [], extracted = []) {
   return merged;
 }
 
+// Validate that OCR rows look like a PitchBook company list.
+// Returns { ok, warnings } — warnings are printed but do not abort the run.
+function validatePitchbookRows(rows, imagePath) {
+  const warnings = [];
+  const label = path.basename(imagePath);
+
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return { ok: false, warnings: [`[WARN] ${label}: OCR returned 0 rows — image may not be a PitchBook company list`] };
+  }
+
+  const keys = Object.keys(rows[0] || {}).map(k => k.toLowerCase());
+
+  // Must have a company name column
+  const hasCompanyCol = keys.some(k => /^companies/.test(k) || k === 'company name' || k === 'name');
+  if (!hasCompanyCol) {
+    warnings.push(`[WARN] ${label}: no "Companies" column detected — verify this is a PitchBook company list export`);
+  }
+
+  // Must have a website column (required for domain/id derivation)
+  const hasWebsite = keys.some(k => k === 'website');
+  if (!hasWebsite) {
+    warnings.push(`[WARN] ${label}: no "Website" column detected — company IDs will fall back to name-based hashes`);
+  }
+
+  // Warn (not error) if Keywords column is absent — it may not be in older exports
+  const hasKeywords = keys.some(k => k === 'keywords');
+  if (!hasKeywords) {
+    warnings.push(`[WARN] ${label}: no "Keywords" column detected — categorization quality will be lower; ensure screenshot uses the expected PitchBook column set`);
+  }
+
+  // Sanity check: if rows look like non-tabular data (all nulls) flag it
+  const nonNullCells = rows.slice(0, 5).reduce((acc, r) => acc + Object.values(r).filter(v => v != null).length, 0);
+  if (nonNullCells === 0) {
+    warnings.push(`[WARN] ${label}: all sampled cells are null — image may be unreadable or not a data table`);
+  }
+
+  return { ok: warnings.length === 0, warnings };
+}
+
 async function loadExistingCompanies(filePath) {
   try {
     const raw = await fs.promises.readFile(filePath, 'utf8');
@@ -261,6 +301,8 @@ async function main() {
   for (const img of images) {
     try {
       const rows = await callGeminiOCR(img);
+      const { warnings } = validatePitchbookRows(rows, img);
+      for (const w of warnings) console.warn(w);
       for (const row of rows) {
         try {
           const company = await mapRowToCompanySchema(row);

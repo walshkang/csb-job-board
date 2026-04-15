@@ -1,5 +1,18 @@
 Extract all tabular data from this Pitchbook screenshot.
 
+Expected screenshot format: a PitchBook company list export with the following columns (order may vary):
+  - Companies (N,NNN)   — company name, required
+  - Keywords            — comma-separated PitchBook keyword tags; extract exactly as visible, including any trailing ellipsis if truncated; do not infer or complete truncated values
+  - Website             — company domain, required
+  - Employees           — headcount integer
+  - Last Financing ($)  — most recent round size
+  - Last Financing Date — date string as shown
+  - Last Financing Deal Type — e.g. "Series B", "Seed"
+  - Total Raised        — cumulative funding
+  - HQ Location         — city/state or city/country
+
+If this image does not appear to be a PitchBook company list (e.g. it is a chart, dashboard, non-tabular screenshot, or a different data product), return an empty JSON array [].
+
 Return a JSON array where each element represents one company row. Use the column headers visible in the image as JSON keys — reproduce them exactly as shown (e.g., "Companies (1,480)", "Last Financing Deal Type").
 
 Rules:
