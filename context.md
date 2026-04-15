@@ -14,13 +14,13 @@ Slice 1 — Pitchbook OCR → companies.json
 Slice 2 — Careers Page Discovery
   npm run discovery
   Input: data/companies.json
-  Step order: standard paths (/careers, /jobs) → ATS slug guesses → homepage link scan → sitemap → LLM fallback (last resort, only when homepage HTML is available)
+  Step order: standard paths (/careers, /jobs) → ATS slug guesses → homepage link scan → sitemap → LLM fallback (fires even without homepage HTML — uses company name + domain + derived slugs)
   Output: companies.json updated with careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform
 
 Slice 3 — ATS Fingerprinting
   npm run fingerprint
   Input: companies with careers_page_reachable === true
-  Scans homepage HTML for Greenhouse / Lever / Ashby / Workday fingerprints
+  Scans homepage + careers page HTML for Greenhouse / Lever / Ashby / Workday / Rippling / Jobvite / iCIMS / SmartRecruiters fingerprints
   Updates ats_platform and ats_slug on each company
   Output: companies.json updated with accurate ats_platform
   Note: scraper trusts ats_platform from this slice for provider routing; URL extraction is fallback only
@@ -104,15 +104,13 @@ Current status (as of 2026-04-14)
   - Fingerprinter (Slice 3): now fetches and caches careers page HTML in addition to homepage; extracts scraped_description from both
 
 Next meaningful work
-  1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed
-  2. Expand ATS fingerprint patterns: Rippling, Jobvite, iCIMS, Smartrecruiters (in-progress in subagent)
-  3. Discovery LLM fallback: currently skipped when homepage is unreachable — relax gate to fire on name+domain alone (in-progress in subagent)
-  4. Add more Pitchbook screenshots → re-run OCR to grow companies.json
-  5. Run npm run reporter + npm run review after each full pipeline run
+  1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed; target selection bug now fixed
+  2. Add more Pitchbook screenshots → re-run OCR to grow companies.json
+  3. Run npm run reporter + npm run review after each full pipeline run
 
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
-  - Discovery LLM fallback: how often does it fire vs. return NOT_FOUND (now tracked separately as llm_fallback_attempted)
+  - Discovery LLM fallback: how often does the no-HTML path fire vs. return NOT_FOUND? (llm_attempted now persisted to companies.json — check after next discovery run)
   - Enrichment quality at scale: spot-check mba_relevance_score and climate_relevance_confirmed on 20+ jobs once enrichment runs cleanly
 
 Postmortem — 2026-04-13
@@ -138,12 +136,12 @@ Resolved since postmortem:
   - Ashby + Workday adapters added; provider-keyed concurrency
   - ATS fingerprinting slice added (Slice 3)
   - QA spot-check slice added (Slice 7)
-  - Discovery LLM fallback: skips when no homepage HTML; tracks attempted vs. succeeded
+  - Discovery LLM fallback: now fires even without homepage HTML (name+domain+slugs); tracks attempted vs. succeeded; llm_attempted persisted to companies.json
 
 Still open (medium-term):
   - End-to-end smoke tests and CI
   - Prompt proposal generation: reviewer --propose flag writes prompts/proposed/ diffs for human review
-  - Fingerprinter: expand ATS coverage (Rippling, Jobvite, iCIMS, Smartrecruiters) — in-progress in subagent
+  - Fingerprinter: expanded ATS coverage — DONE (Rippling, Jobvite, iCIMS, SmartRecruiters added to detectFromHtml)
   - Dynamic rate limiting in enricher (track req/min, throttle on 429 rather than fixed delay)
   - Extraction: Ashby + Workday mappers — DONE (mapAshby/mapWorkday exist in extraction.js:83-114 and are wired at lines 275/277)
 
@@ -159,8 +157,8 @@ Approach:
 
 Project todos (session DB):
 1. define-pitchbook-query — Define Pitchbook query: Decide and document exact PitchBook filters that define "climate company" (NAICS, keywords, investor tags). Produce reproducible query and example export.
-2. careers-page-discovery — Implement careers page discovery: Add heuristics (standard paths), LLM-assisted discovery, and fallback rules. Save discovered URL and reachable flag; include manual review flow.
-3. ats-priority-adapters — Prioritize ATS adapters: Implement/improve adapters for Greenhouse, Lever, Ashby, Workday; prefer API ingestion over scraping; add concurrency limits.
+2. [DONE] careers-page-discovery — Slice 2 implemented with heuristics, ATS slug guesses, LLM fallback, and reachable flag.
+3. [DONE] ats-priority-adapters — Greenhouse, Lever, Ashby, Workday adapters implemented with provider-keyed concurrency.
 4. categorizer-dry-run-review — Run TF‑IDF + LLM dry-run, review /tmp/tfidf_proposed_categories.json, and mark taxonomy entries needing human edits.
 5. taxonomy-human-review — Coordinate human review of data/climate-tech-map-industry-categories.json; do not auto-apply changes until approved.
 6. mba-rubric — Define MBA relevance rubric: write explicit scoring rubric and sample labeled examples for LLM prompting.
