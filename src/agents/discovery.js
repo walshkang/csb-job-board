@@ -20,12 +20,13 @@ const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
 const { streamLLM, DailyQuotaError } = require('../llm-client');
 const Progress = require('../utils/progress');
 
-const CONCURRENCY = 5;
+const CONCURRENCY = 15;
 const BATCH_SAVE_SIZE = 10;
-const REQUEST_TIMEOUT_MS = 10000; // 10s
-const DOMAIN_MIN_INTERVAL_MS = 1000; // 1 request / second per domain
-const MAX_FETCH_RETRIES = 4;
-const RETRY_BASE_MS = 1000;
+const REQUEST_TIMEOUT_MS = 5000; // 5s
+const DOMAIN_MIN_INTERVAL_MS = 200; // 5 requests / second per domain
+const MAX_FETCH_RETRIES = 2;
+const RETRY_BASE_MS = 500;
+const LLM_CONCURRENCY = 3; // cap simultaneous LLM fallback calls
 
 const USER_AGENTS = [
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -45,28 +46,12 @@ let fetchCounter = 0;
 const STANDARD_PATHS = [
   '/careers',
   '/jobs',
-  '/careers/',
-  '/jobs/',
-  '/career',
   '/about/careers',
-  '/about/jobs',
   '/company/careers',
   '/join',
-  '/join-us',
-  '/join-the-team',
-  '/work-with-us',
-  '/work-here',
   '/openings',
-  '/positions',
   '/hiring',
-  '/work-at-us',
   '/opportunities',
-  '/team/careers',
-  '/team/jobs',
-  '/company/jobs',
-  '/about/join',
-  '/culture',
-  '/we-are-hiring',
 ];
 
 function usage() {
@@ -94,7 +79,18 @@ async function atomicSaveJson(filePath, data) {
   await fs.promises.rename(tmp, filePath);
 }
 
-// Per-domain queue to enforce >=1 request/sec
+// LLM concurrency semaphore — prevents quota bursts when many companies hit fallback simultaneously
+let _llmRunning = 0;
+const _llmWaiters = [];
+function acquireLlmSlot() {
+  if (_llmRunning < LLM_CONCURRENCY) { _llmRunning++; return Promise.resolve(); }
+  return new Promise(resolve => _llmWaiters.push(resolve));
+}
+function releaseLlmSlot() {
+  if (_llmWaiters.length > 0) { _llmWaiters.shift()(); } else { _llmRunning--; }
+}
+
+// Per-domain queue to enforce rate limit per domain
 const domainMap = new Map();
 function scheduleDomainTask(domain, fn) {
   let info = domainMap.get(domain);
@@ -343,17 +339,21 @@ async function processCompany(company, opts) {
   // Shared cache so homepage is only fetched once across steps 3 and 4.
   const homepageCache = {};
 
-  // 1) Standard paths
-  for (const p of STANDARD_PATHS) {
-    const candidate = `https://${domain}${p}`;
-    try {
-      const res = await tryHeadThenGet(candidate, domain);
-      if (res && res.status === 200) {
-        return { found: true, url: res.url || candidate, method: 'standard_pattern' };
-      }
-    } catch (err) {
-      verboseLog(verbose, `standard check failed for ${candidate}:`, err.message);
-    }
+  // 1) Standard paths — probe all in parallel, take first 200 OK
+  try {
+    const standardResult = await Promise.any(
+      STANDARD_PATHS.map(p => {
+        const candidate = `https://${domain}${p}`;
+        return tryHeadThenGet(candidate, domain).then(res => {
+          if (res && res.status === 200) return { found: true, url: res.url || candidate, method: 'standard_pattern' };
+          throw new Error(`non-200: ${res ? res.status : 'no-res'}`);
+        });
+      })
+    );
+    if (standardResult) return standardResult;
+  } catch (_) {
+    // AggregateError means all paths failed — fall through to next step
+    verboseLog(verbose, `all standard paths failed for ${domain}`);
   }
 
   // 2) ATS slug guessing (Greenhouse + Lever)
@@ -398,7 +398,13 @@ async function processCompany(company, opts) {
     }
 
     // Call LLM and mark that it was attempted so callers can record metrics.
-    const completion = await callGeminiLLM(prompt, domain); // DailyQuotaError bubbles up
+    await acquireLlmSlot();
+    let completion;
+    try {
+      completion = await callGeminiLLM(prompt, domain); // DailyQuotaError bubbles up
+    } finally {
+      releaseLlmSlot();
+    }
 
     if (!completion) return { found: false, method: 'not_found', llm_attempted: true };
     let answer = completion.trim().split('\n')[0].trim().replace(/^['"]?(.*?)['"]?$/, '$1');
