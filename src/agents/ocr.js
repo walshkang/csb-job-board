@@ -106,9 +106,26 @@ async function extractPageTexts(pdfPath) {
 }
 
 // Send extracted page text to the configured provider for JSON parsing.
+// Retries up to 4 times with exponential backoff on transient errors.
 async function callTextModelOCR(pageText) {
   const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr-pdf.txt'), 'utf8');
   const fullPrompt = promptText + '\n' + pageText;
+
+  const MAX_ATTEMPTS = 5;
+  const BASE_DELAY_MS = 2000;
+
+  function isRetryable(err) {
+    const msg = String(err && err.message ? err.message : err);
+    const status = err && err.status;
+    return (
+      /429|Too Many Requests/i.test(msg) ||
+      /503|SERVICE_UNAVAILABLE/i.test(msg) ||
+      /RESOURCE_EXHAUSTED/i.test(msg) ||
+      /overloaded_error/i.test(msg) ||
+      /rate_limit_error/i.test(msg) ||
+      status === 429 || status === 503 || status === 529
+    );
+  }
 
   if (config.ocr.provider === 'anthropic' && config.ocr.anthropicKey) {
     let Anthropic;
@@ -116,19 +133,31 @@ async function callTextModelOCR(pageText) {
       throw new Error('Anthropic provider selected but @anthropic-ai/sdk is not installed. Run: npm install @anthropic-ai/sdk');
     }
     const client = new Anthropic({ apiKey: config.ocr.anthropicKey });
-    const msg = await client.messages.create({
-      model: config.ocr.anthropicModel,
-      max_tokens: 16000,
-      messages: [{ role: 'user', content: fullPrompt }],
-    });
-    return parseJSONResponse(msg.content[0].text);
+    let lastErr;
+    for (let i = 0; i < MAX_ATTEMPTS; i++) {
+      try {
+        const msg = await client.messages.create({
+          model: config.ocr.anthropicModel,
+          max_tokens: 32000,
+          messages: [{ role: 'user', content: fullPrompt }],
+        });
+        return parseJSONResponse(msg.content[0].text);
+      } catch (err) {
+        lastErr = err;
+        if (!isRetryable(err) || i === MAX_ATTEMPTS - 1) throw err;
+        const waitMs = Math.min(120000, Math.ceil(BASE_DELAY_MS * Math.pow(2, i)));
+        console.warn(`  [callTextModelOCR] retrying after ${waitMs}ms (attempt ${i + 1}): ${err.message}`);
+        await new Promise(r => setTimeout(r, waitMs));
+      }
+    }
+    throw lastErr;
   }
 
   // Default: Gemini — use responseSchema to enforce structured output and prevent truncation
   const { GoogleGenerativeAI, SchemaType } = require('@google/generative-ai');
   const genAI = new GoogleGenerativeAI(config.ocr.geminiKey);
-  const model = genAI.getGenerativeModel({ model: config.ocr.model });
-  const result = await model.generateContent({
+  const geminiModel = genAI.getGenerativeModel({ model: config.ocr.model });
+  const geminiRequest = {
     contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
     generationConfig: {
       maxOutputTokens: 65536,
@@ -151,8 +180,21 @@ async function callTextModelOCR(pageText) {
         },
       },
     },
-  });
-  return parseJSONResponse(result.response.text().trim());
+  };
+  let lastErr;
+  for (let i = 0; i < MAX_ATTEMPTS; i++) {
+    try {
+      const result = await geminiModel.generateContent(geminiRequest);
+      return parseJSONResponse(result.response.text().trim());
+    } catch (err) {
+      lastErr = err;
+      if (!isRetryable(err) || i === MAX_ATTEMPTS - 1) throw err;
+      const waitMs = Math.min(120000, Math.ceil(BASE_DELAY_MS * Math.pow(2, i)));
+      console.warn(`  [callTextModelOCR] retrying after ${waitMs}ms (attempt ${i + 1}): ${err.message}`);
+      await new Promise(r => setTimeout(r, waitMs));
+    }
+  }
+  throw lastErr;
 }
 
 // Validate that PDF-parsed rows look like PitchBook data.
@@ -169,23 +211,41 @@ function validatePDFRows(rows, label) {
   return { warnings };
 }
 
+// Number of PDF pages to send per LLM call. Keeps prompts within token limits
+// for large PitchBook exports (500+ companies). Override with PDF_CHUNK_SIZE env var.
+const PDF_CHUNK_SIZE = parseInt(process.env.PDF_CHUNK_SIZE || '8', 10);
+
 async function processPDF(pdfPath) {
   const label = path.basename(pdfPath);
   console.log(`Processing PDF: ${label}`);
   const pages = await extractPageTexts(pdfPath);
-  console.log(`  ${pages.length} page(s) extracted — sending as one request`);
 
-  const combinedText = pages.join('\n\n--- PAGE BREAK ---\n\n');
-  try {
-    const allRows = await callTextModelOCR(combinedText);
-    const { warnings } = validatePDFRows(allRows, label);
-    for (const w of warnings) console.warn(w);
-    console.log(`  ${allRows.length} row(s) total`);
-    return { allRows, failures: [] };
-  } catch (err) {
-    console.warn(`  failed: ${err.message}`);
-    return { allRows: [], failures: [{ pdf: pdfPath, error: err.message }] };
+  // Split pages into chunks so each LLM call stays within output token limits.
+  const chunks = [];
+  for (let i = 0; i < pages.length; i += PDF_CHUNK_SIZE) {
+    chunks.push(pages.slice(i, i + PDF_CHUNK_SIZE));
   }
+  console.log(`  ${pages.length} page(s) extracted — processing in ${chunks.length} chunk(s) of up to ${PDF_CHUNK_SIZE} page(s) each`);
+
+  const allRows = [];
+  const failures = [];
+
+  for (let ci = 0; ci < chunks.length; ci++) {
+    const chunkText = chunks[ci].join('\n\n--- PAGE BREAK ---\n\n');
+    try {
+      const rows = await callTextModelOCR(chunkText);
+      const { warnings } = validatePDFRows(rows, `${label} chunk ${ci + 1}/${chunks.length}`);
+      for (const w of warnings) console.warn(w);
+      console.log(`  chunk ${ci + 1}/${chunks.length}: ${rows.length} row(s)`);
+      allRows.push(...rows);
+    } catch (err) {
+      console.warn(`  chunk ${ci + 1}/${chunks.length} failed: ${err.message}`);
+      failures.push({ pdf: pdfPath, chunk: ci + 1, pages: `${ci * PDF_CHUNK_SIZE + 1}-${Math.min((ci + 1) * PDF_CHUNK_SIZE, pages.length)}`, error: err.message });
+    }
+  }
+
+  console.log(`  ${allRows.length} row(s) total (${failures.length} chunk failure(s))`);
+  return { allRows, failures };
 }
 
 async function listImages(dir) {
