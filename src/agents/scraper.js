@@ -376,26 +376,33 @@ async function handleCompany(company, index) {
     await saveArtifact(companyId, 'direct_html', body, false);
     result.success = res.ok;
 
-    // If response looks suspicious, try Playwright-rendered HTML fallback
+    // If response looks suspicious, try Playwright-rendered HTML fallback.
+    // Link-density check catches JS-heavy SPAs that return 200 with a React shell
+    // (e.g. <div id="root"></div>) — these have few <a href> tags despite being large.
     const hasBlocker = SCRAPER_BLOCKER_PATTERNS.some(re => re.test(body));
+    const linkCount = (body.match(/<a\s[^>]*href/gi) || []).length;
+    const isSpаShell = result.byte_length > 5120 && linkCount < 4;
     const looksSuspicious = !hasBlocker && (
       (result.status_code >= 400 && result.status_code < 500) ||
       result.byte_length < 5120 ||
-      !((result.content_type || '').includes('text/html'))
+      !((result.content_type || '').includes('text/html')) ||
+      isSpаShell
     );
     if (looksSuspicious) {
       try {
         const rendered = await fetchRenderedHtml(careersUrl, TIMEOUT_MS);
         if (rendered) {
           await ensureDir(ARTIFACTS_DIR);
+          // Keep original HTML for debugging, but also overwrite the primary artifact
+          // so extraction.js (which reads {id}.html) gets the rendered content.
           await fsp.writeFile(path.join(ARTIFACTS_DIR, `${companyId}.playwright.html`), rendered, 'utf8');
+          await saveArtifact(companyId, 'playwright_html', rendered, false);
           result.method = 'playwright_html';
           result.content_type = 'text/html';
           result.byte_length = Buffer.byteLength(rendered, 'utf8');
           result.status_code = 200;
           result.success = true;
           result.status = 'success';
-          // overwrite body variable if further processing expects it
           body = rendered;
         }
       } catch (e) {
@@ -430,12 +437,24 @@ async function run(companiesPath) {
     }
 
     console.log(`Found ${companies.length} companies with careers_page_reachable=true`);
-    const promises = companies.map((c, idx) => handleCompany(c, idx).catch(err => {
-      console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
-      return null;
-    }));
 
-    const results = await Promise.all(promises);
+    // Worker pool — drains the queue CONCURRENCY companies at a time rather than
+    // firing all simultaneously. Semaphores still gate per-provider limits.
+    const CONCURRENCY = 10;
+    const results = [];
+    const queue = companies.map((c, idx) => ({ c, idx }));
+    async function worker() {
+      while (queue.length > 0) {
+        const { c, idx } = queue.shift();
+        try {
+          results.push(await handleCompany(c, idx));
+        } catch (err) {
+          console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
+          results.push(null);
+        }
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, companies.length) }, worker));
     console.log('Scrape run complete');
     const finalResults = results.filter(Boolean);
     const processed = finalResults.length;
