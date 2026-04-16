@@ -117,6 +117,143 @@ async function ensureDir(p) {
   try { await fs.promises.mkdir(p, { recursive: true }); } catch (e) {}
 }
 
+async function fingerprintCompany(c, opts = {}) {
+  const {
+    verbose = false,
+    artifactsDir,
+    alreadyKnownRef = null,
+    platformCounts = null,
+    processedRef = null,
+    updatedRef = null
+  } = opts;
+
+  const origPlatform = c.ats_platform;
+  if (origPlatform && origPlatform !== 'custom' && alreadyKnownRef) {
+    alreadyKnownRef.count += 1;
+  }
+
+  // attempt cached homepage
+  const homepagePath = path.join(artifactsDir, `${c.id}.homepage.html`);
+  let html = null;
+  try {
+    html = await fs.promises.readFile(homepagePath, 'utf8');
+  } catch (err) {
+    // not cached -> fetch
+    if (c.domain) {
+      const url = `https://${c.domain.replace(/https?:\/\//, '')}/`;
+      html = await fetchWithTimeout(url);
+      if (html) {
+        try {
+          await ensureDir(artifactsDir);
+          await fs.promises.writeFile(homepagePath, html, 'utf8');
+        } catch (e) {
+          // ignore write errors
+        }
+      }
+    }
+  }
+
+  if (verbose) console.log(`[${c.id}] homepage: ${html ? `${html.length}b fetched` : 'not available'}`);
+
+  // Extract a lightweight scraped description from the homepage HTML (if any)
+  try {
+    const scraped = extractScrapedDescription(html);
+    if (!c.company_profile) c.company_profile = {};
+    c.company_profile.scraped_description = scraped || null;
+  } catch (e) {
+    // non-fatal
+    if (!c.company_profile) c.company_profile = {};
+    c.company_profile.scraped_description = c.company_profile.scraped_description || null;
+  }
+
+  // detect from homepage
+  let detected = detectFromHtml(html);
+  if (verbose && detected) console.log(`[${c.id}] detected from homepage: ${detected}`);
+  const homepageUrl = c.domain ? `https://${c.domain.replace(/https?:\/\//, '')}/` : null;
+  const normalize = u => u ? u.replace(/\/+$/, '').toLowerCase() : null;
+  const slug = extractSlugFromUrl(c.careers_page_url);
+
+  let changed = false;
+  let detectedFromCareers = null;
+
+  if (detected) {
+    if (!origPlatform || origPlatform === 'custom') {
+      c.ats_platform = detected;
+      if (platformCounts) platformCounts[detected] = (platformCounts[detected] || 0) + 1;
+      changed = true;
+    } else if (platformCounts) {
+      platformCounts[origPlatform || detected] = (platformCounts[origPlatform || detected] || 0) + 1;
+    }
+    // mark where detection came from
+    c.ats_detection_source = 'homepage';
+  } else if (c.careers_page_url) {
+    // only fetch careers page if it's different from homepage URL
+    if (normalize(c.careers_page_url) !== normalize(homepageUrl)) {
+      const careersPath = path.join(artifactsDir, `${c.id}.careers.html`);
+      let careersHtml = null;
+      try {
+        careersHtml = await fs.promises.readFile(careersPath, 'utf8');
+      } catch (e) {
+        // not cached -> fetch
+        careersHtml = await fetchWithTimeout(c.careers_page_url);
+        if (careersHtml) {
+          try {
+            await ensureDir(artifactsDir);
+            await fs.promises.writeFile(careersPath, careersHtml, 'utf8');
+          } catch (e2) {
+            // ignore write errors
+          }
+        }
+      }
+
+      // If careers page provided a better scraped description, prefer it.
+      try {
+        const careersScraped = extractScrapedDescription(careersHtml);
+        if (!c.company_profile) c.company_profile = {};
+        // Prefer non-null careersScraped over existing homepage scraped_description
+        if (careersScraped) c.company_profile.scraped_description = careersScraped;
+        else c.company_profile.scraped_description = c.company_profile.scraped_description || null;
+      } catch (e) {
+        if (!c.company_profile) c.company_profile = {};
+        c.company_profile.scraped_description = c.company_profile.scraped_description || null;
+      }
+
+      detectedFromCareers = detectFromHtml(careersHtml);
+      if (verbose && detectedFromCareers) console.log(`[${c.id}] detected from careers page: ${detectedFromCareers}`);
+      if (detectedFromCareers) {
+        if (!origPlatform || origPlatform === 'custom') {
+          c.ats_platform = detectedFromCareers;
+          if (platformCounts) platformCounts[detectedFromCareers] = (platformCounts[detectedFromCareers] || 0) + 1;
+          changed = true;
+        } else if (platformCounts) {
+          platformCounts[origPlatform || detectedFromCareers] = (platformCounts[origPlatform || detectedFromCareers] || 0) + 1;
+        }
+        c.ats_detection_source = 'careers_page';
+        // re-run slug extraction against careers page URL
+        const careersSlug = extractSlugFromUrl(c.careers_page_url);
+        if (careersSlug && !c.ats_slug) {
+          c.ats_slug = careersSlug;
+          changed = true;
+        }
+      }
+    }
+  }
+
+  if (verbose && !detected && !detectedFromCareers) console.log(`[${c.id}] no ATS detected (platform remains: ${c.ats_platform || 'unknown'})`);
+
+  if (verbose && c.company_profile && c.company_profile.scraped_description) {
+    console.log(`[${c.id}] scraped_description: "${c.company_profile.scraped_description.slice(0, 80)}..."`);
+  }
+
+  if (slug && !c.ats_slug) {
+    c.ats_slug = slug;
+    changed = true;
+  }
+
+  if (changed && updatedRef) updatedRef.count += 1;
+  if (processedRef) processedRef.count += 1;
+}
+
 async function run() {
   const argv = process.argv.slice(2);
   const verbose = argv.includes('--verbose');
@@ -137,139 +274,20 @@ async function run() {
     process.exit(0);
   }
 
-  let alreadyKnown = 0;
+  const alreadyKnownRef = { count: 0 };
   const platformCounts = Object.create(null);
-  let processed = 0;
-  let updated = 0;
+  const processedRef = { count: 0 };
+  const updatedRef = { count: 0 };
 
   // Build tasks
-  const tasks = targets.map(c => async () => {
-    const origPlatform = c.ats_platform;
-    if (origPlatform && origPlatform !== 'custom') {
-      alreadyKnown += 1;
-    }
-
-    // attempt cached homepage
-    const homepagePath = path.join(artifactsDir, `${c.id}.homepage.html`);
-    let html = null;
-    try {
-      html = await fs.promises.readFile(homepagePath, 'utf8');
-    } catch (err) {
-      // not cached -> fetch
-      if (c.domain) {
-        const url = `https://${c.domain.replace(/https?:\/\//, '')}/`;
-        html = await fetchWithTimeout(url);
-        if (html) {
-          try {
-            await ensureDir(artifactsDir);
-            await fs.promises.writeFile(homepagePath, html, 'utf8');
-          } catch (e) {
-            // ignore write errors
-          }
-        }
-      }
-    }
-
-    if (verbose) console.log(`[${c.id}] homepage: ${html ? `${html.length}b fetched` : 'not available'}`);
-
-    // Extract a lightweight scraped description from the homepage HTML (if any)
-    try {
-      const scraped = extractScrapedDescription(html);
-      if (!c.company_profile) c.company_profile = {};
-      c.company_profile.scraped_description = scraped || null;
-    } catch (e) {
-      // non-fatal
-      if (!c.company_profile) c.company_profile = {};
-      c.company_profile.scraped_description = c.company_profile.scraped_description || null;
-    }
-
-    // detect from homepage
-    let detected = detectFromHtml(html);
-    if (verbose && detected) console.log(`[${c.id}] detected from homepage: ${detected}`);
-    const homepageUrl = c.domain ? `https://${c.domain.replace(/https?:\/\//, '')}/` : null;
-    const normalize = u => u ? u.replace(/\/+$/, '').toLowerCase() : null;
-    const slug = extractSlugFromUrl(c.careers_page_url);
-
-    let changed = false;
-    let detectedFromCareers = null;
-
-    if (detected) {
-      if (!origPlatform || origPlatform === 'custom') {
-        c.ats_platform = detected;
-        platformCounts[detected] = (platformCounts[detected] || 0) + 1;
-        changed = true;
-      } else {
-        platformCounts[origPlatform || detected] = (platformCounts[origPlatform || detected] || 0) + 1;
-      }
-      // mark where detection came from
-      c.ats_detection_source = 'homepage';
-    } else if (c.careers_page_url) {
-      // only fetch careers page if it's different from homepage URL
-      if (normalize(c.careers_page_url) !== normalize(homepageUrl)) {
-        const careersPath = path.join(artifactsDir, `${c.id}.careers.html`);
-        let careersHtml = null;
-        try {
-          careersHtml = await fs.promises.readFile(careersPath, 'utf8');
-        } catch (e) {
-          // not cached -> fetch
-          careersHtml = await fetchWithTimeout(c.careers_page_url);
-          if (careersHtml) {
-            try {
-              await ensureDir(artifactsDir);
-              await fs.promises.writeFile(careersPath, careersHtml, 'utf8');
-            } catch (e2) {
-              // ignore write errors
-            }
-          }
-        }
-
-        // If careers page provided a better scraped description, prefer it.
-        try {
-          const careersScraped = extractScrapedDescription(careersHtml);
-          if (!c.company_profile) c.company_profile = {};
-          // Prefer non-null careersScraped over existing homepage scraped_description
-          if (careersScraped) c.company_profile.scraped_description = careersScraped;
-          else c.company_profile.scraped_description = c.company_profile.scraped_description || null;
-        } catch (e) {
-          if (!c.company_profile) c.company_profile = {};
-          c.company_profile.scraped_description = c.company_profile.scraped_description || null;
-        }
-
-        detectedFromCareers = detectFromHtml(careersHtml);
-        if (verbose && detectedFromCareers) console.log(`[${c.id}] detected from careers page: ${detectedFromCareers}`);
-        if (detectedFromCareers) {
-          if (!origPlatform || origPlatform === 'custom') {
-            c.ats_platform = detectedFromCareers;
-            platformCounts[detectedFromCareers] = (platformCounts[detectedFromCareers] || 0) + 1;
-            changed = true;
-          } else {
-            platformCounts[origPlatform || detectedFromCareers] = (platformCounts[origPlatform || detectedFromCareers] || 0) + 1;
-          }
-          c.ats_detection_source = 'careers_page';
-          // re-run slug extraction against careers page URL
-          const careersSlug = extractSlugFromUrl(c.careers_page_url);
-          if (careersSlug && !c.ats_slug) {
-            c.ats_slug = careersSlug;
-            changed = true;
-          }
-        }
-      }
-    }
-
-    if (verbose && !detected && !detectedFromCareers) console.log(`[${c.id}] no ATS detected (platform remains: ${c.ats_platform || 'unknown'})`);
-
-    if (verbose && c.company_profile && c.company_profile.scraped_description) {
-      console.log(`[${c.id}] scraped_description: "${c.company_profile.scraped_description.slice(0, 80)}..."`);
-    }
-
-    if (slug && !c.ats_slug) {
-      c.ats_slug = slug;
-      changed = true;
-    }
-
-    if (changed) updated += 1;
-    processed += 1;
-  });
+  const tasks = targets.map(c => async () => fingerprintCompany(c, {
+    verbose,
+    artifactsDir,
+    alreadyKnownRef,
+    platformCounts,
+    processedRef,
+    updatedRef
+  }));
 
   // Run with concurrency
   const concurrency = Math.min(CONCURRENCY, tasks.length);
@@ -292,11 +310,18 @@ async function run() {
 
   // Summary
   console.log('\nFingerprinting complete');
-  console.log('Companies inspected:', processed);
-  console.log('Already had known ATS (not custom):', alreadyKnown);
-  console.log('Updated companies:', updated);
+  console.log('Companies inspected:', processedRef.count);
+  console.log('Already had known ATS (not custom):', alreadyKnownRef.count);
+  console.log('Updated companies:', updatedRef.count);
   console.log('Platform distribution:');
   for (const k of Object.keys(platformCounts)) console.log(`  ${k}: ${platformCounts[k]}`);
 }
 
-run().catch(err => { console.error('Fatal:', err && err.message ? err.message : err); process.exit(1); });
+module.exports = {
+  fingerprintCompany,
+  run
+};
+
+if (require.main === module) {
+  run().catch(err => { console.error('Fatal:', err && err.message ? err.message : err); process.exit(1); });
+}

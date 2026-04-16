@@ -768,7 +768,13 @@ async function main() {
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('Fatal error in discovery agent:', err);
-  process.exit(2);
-});
+module.exports = {
+  processCompany
+};
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error in discovery agent:', err);
+    process.exit(2);
+  });
+}

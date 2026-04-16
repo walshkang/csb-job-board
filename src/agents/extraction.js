@@ -243,6 +243,69 @@ function mergeJobs(existingJobs, newJobs) {
   return merged;
 }
 
+async function extractCompanyJobs(company, opts = {}) {
+  const {
+    verbose = false,
+    artifactsDir = ARTIFACTS_DIR,
+    promptPath = PROMPT_PATH,
+    callFn = callGeminiExtraction,
+    companyCategories = null
+  } = opts;
+
+  const htmlPath = path.join(artifactsDir, `${company.id}.html`);
+  const jsonPath = path.join(artifactsDir, `${company.id}.json`);
+  const extracted = [];
+  const errors = [];
+  let processed = false;
+
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const raw = readJsonSafe(jsonPath);
+      let items = [];
+      let mapperName = 'unknown';
+      if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) {
+        items = mapAshby(raw, company); mapperName = 'ashby';
+      } else if (raw && Array.isArray(raw.jobPostings)) {
+        items = mapWorkday(raw, company); mapperName = 'workday';
+      } else if (raw && Array.isArray(raw.jobs)) {
+        items = mapGreenhouse(raw, company); mapperName = 'greenhouse';
+      } else if (Array.isArray(raw)) {
+        items = mapLever(raw, company); mapperName = 'lever';
+      }
+      if (verbose) console.log(`[${company.id}] json/${mapperName} → ${items.length} job(s)`);
+      for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', companyCategories));
+      processed = true;
+    } catch (err) {
+      if (verbose) console.error(`[${company.id}] error: ${err}`);
+      errors.push({ company: company.id, err: String(err) });
+    }
+  }
+  if (!processed && fs.existsSync(htmlPath)) {
+    try {
+      const html = readFileSafe(htmlPath) || '';
+      const baseUrl = company.careers_page_url || company.domain || '';
+      const items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn, promptPath });
+      if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
+        errors.push({ company: company.id, err: items[0] });
+      } else {
+        if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
+        for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, baseUrl, companyCategories));
+      }
+      processed = true;
+    } catch (err) {
+      if (verbose) console.error(`[${company.id}] error: ${err}`);
+      errors.push({ company: company.id, err: String(err) });
+    }
+  }
+
+  return {
+    companyId: company.id,
+    processed,
+    jobs: extracted,
+    errors
+  };
+}
+
 async function batchExtract({ companyFilter = null, dryRun = false, verbose = false }) {
   const companiesRaw = readJsonSafe(path.join(REPO_ROOT, 'data', 'companies.json')) || [];
   let companies;
@@ -269,50 +332,16 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
 
   for (const company of companies) {
     if (companyFilter && company.id !== companyFilter) continue;
-    const htmlPath = path.join(ARTIFACTS_DIR, `${company.id}.html`);
-    const jsonPath = path.join(ARTIFACTS_DIR, `${company.id}.json`);
-    let processed = false;
-    if (fs.existsSync(jsonPath)) {
-      try {
-        const raw = readJsonSafe(jsonPath);
-        // try detect platform shape
-        let items = [];
-        let mapperName = 'unknown';
-        if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) {
-          items = mapAshby(raw, company); mapperName = 'ashby';
-        } else if (raw && Array.isArray(raw.jobPostings)) {
-          items = mapWorkday(raw, company); mapperName = 'workday';
-        } else if (raw && Array.isArray(raw.jobs)) {
-          items = mapGreenhouse(raw, company); mapperName = 'greenhouse';
-        } else if (Array.isArray(raw)) {
-          items = mapLever(raw, company); mapperName = 'lever';
-        }
-        if (verbose) console.log(`[${company.id}] json/${mapperName} → ${items.length} job(s)`);
-        for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', categoryByCompanyId.get(company.id) || null));
-        processed = true;
-      } catch (err) {
-        if (verbose) console.error(`[${company.id}] error: ${err}`);
-        errors.push({ company: company.id, err: String(err) });
-      }
-    }
-    if (!processed && fs.existsSync(htmlPath)) {
-      try {
-        const html = readFileSafe(htmlPath) || '';
-        const baseUrl = company.careers_page_url || company.domain || '';
-        const items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn: callGeminiExtraction, promptPath: PROMPT_PATH });
-        if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
-          errors.push({ company: company.id, err: items[0] });
-        } else {
-          if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
-          for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, baseUrl, categoryByCompanyId.get(company.id) || null));
-        }
-        processed = true;
-      } catch (err) {
-        if (verbose) console.error(`[${company.id}] error: ${err}`);
-        errors.push({ company: company.id, err: String(err) });
-      }
-    }
-    if (processed) companiesProcessed.push(company.id);
+    const result = await extractCompanyJobs(company, {
+      verbose,
+      artifactsDir: ARTIFACTS_DIR,
+      promptPath: PROMPT_PATH,
+      callFn: callGeminiExtraction,
+      companyCategories: categoryByCompanyId.get(company.id) || null
+    });
+    extracted.push(...result.jobs);
+    errors.push(...result.errors);
+    if (result.processed) companiesProcessed.push(company.id);
   }
 
   // Merge into single jobs.json
@@ -365,6 +394,7 @@ module.exports = {
   mapWorkday,
   normalizeExtractedItem,
   mergeJobs,
+  extractCompanyJobs,
   batchExtract
 };
 

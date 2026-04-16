@@ -6,6 +6,41 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 
 ---
 
+## Two ways to run
+
+**Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500.
+
+```bash
+npm run pipeline                  # full set
+npm run pipeline -- --limit 20    # first 20 companies
+```
+
+**Step-by-step (classic).** Run each stage as its own CLI — useful when you're iterating on one stage (e.g. tweaking discovery heuristics) or just want tight control.
+
+```bash
+npm run discovery
+npm run scrape
+npm run extract
+# ...
+```
+
+Both modes share the same data files; you can mix and match across runs.
+
+## Live monitoring
+
+While the pipeline runs (or any individual stage), watch what's happening:
+
+```bash
+node scripts/pipeline-status.js --watch   # stage counts across all companies
+node scripts/pipeline-report.js --watch   # live queue depths + event aggregates
+```
+
+Every stage attempt emits a structured event to `data/runs/pipeline-events-{run_id}.jsonl` (retention: last 30 runs). Each event carries `duration_ms`, a `failure_class` (timeout/dns/http_4xx/5xx/blocked/llm_parse_fail/llm_rate_limit/empty_result), and stage-specific extras. The report script aggregates these into per-stage p50/p95 latency, success/no_result/failure counts, top failure reasons, slowest 10 companies, and recent failures — works live or historically (`--all`, `--company=acme`).
+
+Details in [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator) below.
+
+---
+
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
@@ -24,12 +59,13 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
    - [Step 9 — Temporal: Track job status over time](#step-9--temporal-track-job-status-over-time)
    - [Step 10 — Notion Sync: Push to Notion](#step-10--notion-sync-push-to-notion)
    - [Observability: Reporter + Reviewer](#observability-reporter--reviewer)
-6. [Prompt Reference](#prompt-reference)
-7. [Re-running Patterns](#re-running-patterns)
-8. [Reading Results in Notion](#reading-results-in-notion)
-9. [Troubleshooting](#troubleshooting)
-10. [Data Files](#data-files)
-11. [Security](#security)
+6. [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
+7. [Prompt Reference](#prompt-reference)
+8. [Re-running Patterns](#re-running-patterns)
+9. [Reading Results in Notion](#reading-results-in-notion)
+10. [Troubleshooting](#troubleshooting)
+11. [Data Files](#data-files)
+12. [Security](#security)
 
 ---
 
@@ -618,9 +654,52 @@ PDF_CHUNK_SIZE=8
 
 ---
 
+## Streaming Pipeline (orchestrator)
+
+Instead of running each stage sequentially across all companies, you can run them concurrently per-company. Each company flows through discovery → fingerprint → scrape → extract → categorize independently; a slow company no longer blocks the other 500.
+
+```bash
+npm run pipeline                         # full set, all stages
+npm run pipeline -- --limit 20           # first 20 companies only
+npm run pipeline -- --stages=discovery,scrape
+npm run pipeline -- --company=Acme,Bar
+npm run pipeline -- --dry-run --verbose
+```
+
+Stages carry independent concurrency caps (discovery=15, fingerprint=5, scrape=8, extract=4, categorize=3) via `p-queue`. Crash-resume is automatic: on startup the orchestrator reads state from `companies.json` + `jobs.json` + artifacts and routes each company to its current stage.
+
+Each stage has three outcomes: **success** (data actually advanced), **no_result** (ran cleanly but produced nothing — e.g., careers page not found, LLM returned "None"), **failure** (exception). Only success advances the company; no_result stays on the stage for next run to retry.
+
+**Live dashboards:**
+
+```bash
+node scripts/pipeline-status.js --watch   # stage counts across companies.json
+node scripts/pipeline-report.js --watch   # live queue depths + event aggregates
+node scripts/pipeline-report.js --all     # historical across all retained runs
+node scripts/pipeline-report.js --company=acme
+```
+
+The orchestrator emits one JSONL event per stage attempt to `data/runs/pipeline-events-{run_id}.jsonl` (retention: last 30 runs). Events carry `duration_ms`, `failure_class` (timeout/dns/http_4xx/http_5xx/blocked/llm_parse_fail/llm_rate_limit/empty_result/unknown), and stage-specific extras. Live queue depths sit in `data/runs/orchestrator-snapshot.json` (removed on exit).
+
+Enrichment (`npm run enrich`) is still per-job, not per-company, and stays separate from the orchestrator for now.
+
+---
+
 ## Re-running Patterns
 
-**Add new companies from PitchBook exports** — drop new PDFs or screenshots into `data/images/`, then:
+**Add new companies from PitchBook exports** — drop new PDFs or screenshots into `data/images/`, then either:
+
+*One-shot streaming (preferred):*
+```bash
+npm run ocr -- data/images
+npm run pipeline
+npm run enrich -- --batch-mode
+node src/agents/temporal.js
+node src/agents/notion-sync.js
+npm run reporter && npm run review
+```
+
+*Or the classic step-by-step (each still works):*
 ```bash
 npm run ocr -- data/images
 npm run categorize

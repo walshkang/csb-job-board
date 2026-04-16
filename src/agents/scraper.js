@@ -246,7 +246,8 @@ async function saveArtifact(companyId, method, content, isJson = false) {
   return p;
 }
 
-async function handleCompany(company, index, verbose = false) {
+async function scrapeCompany(company, opts = {}) {
+  const { index = 0, verbose = false } = opts;
   const companyId = company.id || company.company_id || company.name || `company-${index}`;
   const careersUrl = company.careers_page_url || company.careers_url || company.url;
   const result = {
@@ -457,7 +458,7 @@ async function run(companiesPath) {
       while (queue.length > 0) {
         const { c, idx } = queue.shift();
         try {
-          results.push(await handleCompany(c, idx, verbose));
+          results.push(await scrapeCompany(c, { index: idx, verbose }));
         } catch (err) {
           console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
           results.push(null);
@@ -480,6 +481,11 @@ async function run(companiesPath) {
     }
   }
 }
+
+module.exports = {
+  scrapeCompany,
+  run
+};
 
 if (require.main === module) {
   const argv = process.argv.slice(2);

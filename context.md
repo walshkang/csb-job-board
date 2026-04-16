@@ -167,6 +167,57 @@ Project todos (session DB):
 9. analytics-metrics — Add analytics to compute days_live, funding_to_posting_lag, posting longevity buckets, and surface reporter metrics.
 10. user-facing-filters — Design user-facing filters and mock a Notion view for MBA users (function, location, remote, seniority, MBA score).
 
+Streaming orchestrator (concurrent pipeline)
+
+The linear per-stage CLIs above each iterate all 551 companies before the next CLI starts; one slow company blocks the rest. The orchestrator at src/orchestrator.js (npm run pipeline) instead runs all five stages (discovery → fingerprint → scrape → extract → categorize) concurrently with per-stage p-queue caps, so each company flows through independently and head-of-line blocking is gone. Enrichment stays separate (per-job, not per-company) for now.
+
+Per-stage concurrency caps: discovery=15, fingerprint=5, scrape=8, extract=4, categorize=3. The individual `npm run <stage>` scripts still work unchanged; the orchestrator just composes them.
+
+Stage state is derived, not stamped as a new field, so agents and orchestrator stay coherent. src/utils/pipeline-stages.js::getStage inspects the company record (careers_page_discovery_method, careers_page_reachable, ats_platform, fingerprint_attempted_at, last_scraped_at, last_extracted_at, climate_tech_category) and returns which stage should run next. Companies with careers_page_reachable === false skip straight to categorize. Crash-resume is automatic — startup calls getStage for every company and enqueues it into the matching queue.
+
+Three-state outcomes per stage (not binary):
+  success    — data advanced (e.g. careers_page_reachable flipped true; ats_platform detected; jobs.length > 0; climate_tech_category set and not "None")
+  no_result  — stage ran cleanly but produced nothing (discovery found nothing, LLM returned "None", extract got 0 jobs). Discovery and fingerprint still advance on no_result; scrape/extract/categorize stay put for the next run to retry.
+  failure    — exception thrown. Company does not advance.
+
+The orchestrator emits these as JSONL events with the classifier from src/utils/pipeline-events.js (classes: timeout, dns, http_4xx, http_5xx, blocked, llm_parse_fail, llm_rate_limit, empty_result, unknown) and writes live queue depths + throughput to data/runs/orchestrator-snapshot.json every 5s. Event files are at data/runs/pipeline-events-{run_id}.jsonl with retention=30.
+
+Observability surfaces:
+  scripts/pipeline-status.js         — stage counts across all companies in companies.json (file-derived, works without orchestrator running)
+  scripts/pipeline-report.js         — event aggregates: ok/no_result/fail/skip per stage, p50/p95, failure classes, no-result reasons, slowest 10, recent failures; --watch, --all, --company=
+  scripts/discovery-status.js        — discovery-specific view (pre-orchestrator; still works)
+  data/runs/orchestrator-snapshot.json — live queue depths, in-flight counts, throughput-per-min
+
+Planned improvements (tracked here, not yet implemented)
+
+Categorization quality
+  Problem: LLM frequently returns "None" / low confidence even when PitchBook keywords clearly signal a sector. Current smoke tests show >50% no_result rate on categorize.
+  Hypotheses:
+    a) Prompt underweights PitchBook keywords — taxonomy descriptions dominate the LLM's attention.
+    b) Taxonomy entries (~90 categories) are too granular → "None" is the safest answer under ambiguity.
+    c) Representative job is missing or weak for pre-scrape companies; the synthesized description (just company name) gives the LLM nothing to work with.
+  Sketch of improvements, ordered by appetite:
+    1. Instrument no_result rate per category and per input-quality bucket (has_jobs vs synthesized_only) to confirm hypothesis before changing prompts.
+    2. Shortlist candidate categories deterministically first (keyword/embedding match against taxonomy) — feed only top 5–10 to the LLM instead of all 90. Should cut "None" rate and token cost.
+    3. Add a two-stage prompt: stage 1 picks the primary_sector (coarse, ~10 options), stage 2 picks the climate_tech_category within that sector. Easier decisions per call.
+    4. Confidence-aware pipeline: record LLM confidence; below a threshold (e.g. "low") route to a human-review queue (new file data/review_queue/categories.jsonl) instead of silently accepting.
+    5. Fallback to TF-IDF over PitchBook keywords when LLM returns "None" with no synthesized job context — better than null.
+
+Scraping quality
+  Problem: scrape stage frequently no_results for direct HTML / Playwright fallback companies. ATS-API paths (Greenhouse, Lever, Ashby, Workday) are reliable; the long tail is where listings live in custom job boards, iframed boards, or JS-rendered pages not covered by our current Playwright configuration.
+  Hypotheses:
+    a) Playwright fallback waits are too short for heavy SPAs (Workday-clones, Workable, BambooHR).
+    b) We don't detect additional ATS platforms we already see in the wild (Workable, Recruitee, Teamtailor, Rippling, iCIMS beyond our current fingerprints).
+    c) Some pages need a click-through (view more, load more, iframe entry) we don't currently perform.
+    d) Careers URL found by discovery is a hub page linking out to the actual ATS — we scrape the hub, get nothing useful.
+  Sketch of improvements:
+    1. Failure-class histogram per scrape no_result (we now emit status_code, byte_length, error) — build it from pipeline-events to see which tail is largest before writing code.
+    2. Expand fingerprint detection: Workable (apply.workable.com), Recruitee (*.recruitee.com), Teamtailor (*.teamtailor.com), BambooHR (*.bamboohr.com/jobs), iCIMS. Each should route to a known-good scraper (API or HTML pattern).
+    3. Secondary discovery: if careers_page_url looks like a hub (no detectable ATS and <5 links below it), LLM-assisted follow-link step ("which of these links is the actual jobs list?").
+    4. Playwright tuning: longer networkidle wait for SPAs, explicit scroll-to-bottom for infinite-scroll boards, click-handling for "show more jobs".
+    5. Per-company scrape-method memory: once we successfully scrape a company one way, prefer that method on next run instead of re-detecting.
+    6. Structured "scrape_health" per company: last_method, last_success, consecutive_empty_scrapes (already on the record) — use consecutive_empty_scrapes >= N to demote into a slower cadence rather than re-scraping every run.
+
 Decision needed: company summary source
 - We currently lack reliable PitchBook-exported company descriptions in the screenshots. Need to decide the canonical source for company_profile.description (pick one):
   1) PitchBook export/API (preferred if you have direct access — single definitive source)
