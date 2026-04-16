@@ -456,9 +456,31 @@ async function processCompany(company, opts) {
     if (answer.startsWith('/')) answer = `https://${domain}${answer}`;
     if (!/^https?:\/\//i.test(answer)) answer = `https://${answer}`;
 
+    // Reject truncated URLs (no valid TLD after last dot, or ends with a dot/slash-only path)
+    let parsedAnswer;
+    try {
+      parsedAnswer = new URL(answer);
+    } catch (_) {
+      verboseLog(verbose, 'llm-proposed-url invalid (unparseable):', answer);
+      return { found: false, method: 'not_found', llm_attempted: true };
+    }
+
+    // Reject if LLM returned just the homepage (path is / or empty)
+    const answerPath = parsedAnswer.pathname.replace(/\/+$/, '');
+    if (!answerPath) {
+      verboseLog(verbose, 'llm-proposed-url rejected (homepage only):', answer);
+      return { found: false, method: 'not_found', llm_attempted: true };
+    }
+
+    // Reject if hostname looks truncated (no dot in TLD position, e.g. "www.alchemyco2.")
+    if (/\.$/.test(parsedAnswer.hostname)) {
+      verboseLog(verbose, 'llm-proposed-url rejected (truncated hostname):', answer);
+      return { found: false, method: 'not_found', llm_attempted: true };
+    }
+
     try {
       // Validate using the actual hostname from the proposed URL
-      const res = await tryHeadThenGet(answer, new URL(answer).hostname);
+      const res = await tryHeadThenGet(answer, parsedAnswer.hostname);
       if (res && res.status === 200) {
         return { found: true, url: res.url || answer, method: 'llm_fallback', llm_attempted: true };
       }

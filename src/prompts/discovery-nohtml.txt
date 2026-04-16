@@ -2,4 +2,9 @@ Company: {company_name}
 Domain: {domain}
 Derived slugs: {slugs}
 
-Based on the company name and domain, what is the most likely careers page URL? Return just the URL or the string NOT_FOUND.
+Based on the company name and domain, what is the most likely careers page URL?
+
+Rules:
+- Return a full URL with a specific path (e.g. https://example.com/careers) — never return just the homepage (https://example.com or https://example.com/).
+- If you are not confident a specific careers path exists, return NOT_FOUND.
+- Return just the URL or the string NOT_FOUND. No explanation.
