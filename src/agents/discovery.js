@@ -346,11 +346,11 @@ async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright =
   return null;
 }
 
-async function callGeminiLLM(prompt, domain) {
+async function callGeminiLLM(prompt, domain, silent = false) {
   if (!config.discovery.geminiKey && !config.discovery.anthropicKey) throw new Error('No LLM API key configured');
-  process.stderr.write('\n[discovery: ' + (domain || 'unknown') + ']\n');
+  if (!silent) process.stderr.write('\n[discovery: ' + (domain || 'unknown') + ']\n');
   const opts = config.resolveAgent('discovery');
-  return streamLLM({ ...opts, prompt, maxOutputTokens: 256, onToken: chunk => process.stderr.write(chunk) });
+  return streamLLM({ ...opts, prompt, maxOutputTokens: 256, onToken: silent ? null : chunk => process.stderr.write(chunk) });
 }
 
 function normalizeDomain(domainRaw) {
@@ -419,11 +419,10 @@ async function processCompany(company, opts) {
     if (hasDns) steps.push('standard_paths:dns_error');
     else if (hasTimeout) steps.push('standard_paths:timeout');
     else steps.push('standard_paths:all_miss');
-    verboseLog(verbose, `all standard paths failed for ${domain}`);
   }
 
   // 2) ATS slug guessing (Greenhouse + Lever)
-  const atsResult = await tryAtsSlugs(company, verbose);
+  const atsResult = await tryAtsSlugs(company, false);
   if (atsResult) {
     steps.push(`ats_slug:hit`);
     return done(atsResult);
@@ -431,7 +430,7 @@ async function processCompany(company, opts) {
   steps.push('ats_slug:miss');
 
   // 3) Homepage link scan — one fetch, regex over <a href> tags
-  const linkResult = await scanHomepageLinks(domain, homepageCache, verbose, usePlaywright);
+  const linkResult = await scanHomepageLinks(domain, homepageCache, false, usePlaywright);
   if (linkResult) {
     steps.push(`homepage_link_scan:hit`);
     return done(linkResult);
@@ -450,14 +449,11 @@ async function processCompany(company, opts) {
           sitemapHit = true;
           return done({ found: true, url: res.url || cand, method: 'sitemap' });
         }
-      } catch (err) {
-        verboseLog(verbose, 'sitemap candidate failed:', cand, err.message);
-      }
+      } catch (_) { /* step already recorded */ }
     }
     if (!sitemapHit) steps.push(candidates.length ? 'sitemap:miss' : 'sitemap:none');
-  } catch (err) {
+  } catch (_) {
     steps.push('sitemap:error');
-    verboseLog(verbose, 'sitemap fetch failed for', domain, err.message);
   }
 
   // 5) LLM fallback — attempt even if homepage HTML is not available (use company name/domain)
@@ -478,7 +474,6 @@ async function processCompany(company, opts) {
         .replace('{homepage_html}', homepageHtml);
     } else {
       const slugs = deriveAtsSlugs(company).join(', ');
-      verboseLog(verbose, `LLM fallback without HTML for ${domain} — using name+domain+slugs: ${slugs}`);
       const tmpl = fs.readFileSync(path.join(__dirname, '../prompts/discovery-nohtml.txt'), 'utf8');
       prompt = tmpl
         .replace('{company_name}', company.name || '')
@@ -490,7 +485,7 @@ async function processCompany(company, opts) {
     await acquireLlmSlot();
     let completion;
     try {
-      completion = await callGeminiLLM(prompt, domain); // DailyQuotaError bubbles up
+      completion = await callGeminiLLM(prompt, domain, verbose); // silent when verbose — output shown in summary
     } finally {
       releaseLlmSlot();
     }
@@ -519,7 +514,6 @@ async function processCompany(company, opts) {
       parsedAnswer = new URL(answer);
     } catch (_) {
       steps.push(`llm:truncated:${answer.slice(0, 60)}`);
-      verboseLog(verbose, 'llm-proposed-url invalid (unparseable):', answer);
       return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
@@ -527,14 +521,12 @@ async function processCompany(company, opts) {
     const answerPath = parsedAnswer.pathname.replace(/\/+$/, '');
     if (!answerPath) {
       steps.push(`llm:homepage:${answer.slice(0, 60)}`);
-      verboseLog(verbose, 'llm-proposed-url rejected (homepage only):', answer);
       return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
     // Reject if hostname looks truncated (e.g. "www.alchemyco2.")
     if (/\.$/.test(parsedAnswer.hostname)) {
       steps.push(`llm:truncated:${answer.slice(0, 60)}`);
-      verboseLog(verbose, 'llm-proposed-url rejected (truncated hostname):', answer);
       return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
@@ -547,7 +539,6 @@ async function processCompany(company, opts) {
       steps.push(`llm:validation_failed:${res ? res.status : 'no-res'}:${answer.slice(0, 60)}`);
     } catch (err) {
       steps.push(`llm:validation_failed:fetch_error:${answer.slice(0, 60)}`);
-      verboseLog(verbose, 'llm-proposed-url validation failed:', err.message);
     }
 
     return done({ found: false, method: 'not_found', llm_attempted: true });
@@ -632,8 +623,9 @@ async function main() {
     log(`--limit=${limit}: processing first ${indices.length} companies only`);
   }
 
-  const progress = new Progress(indices.length, 'discovery');
-  log(`Starting discovery: ${indices.length} companies to process (concurrency=${CONCURRENCY})`);
+  const indices_total = indices.length;
+  const progress = new Progress(indices_total, 'discovery');
+  log(`Starting discovery: ${indices_total} companies to process (concurrency=${CONCURRENCY})`);
 
   let processedSinceSave = 0;
   let totalProcessed = 0;
@@ -708,8 +700,25 @@ async function main() {
           });
         }
 
-        // update progress
-        try { progress.tick(totalProcessed, company.name || company.domain || ''); } catch(_) {}
+        // Output: verbose = one clean line per company; default = \r progress bar
+        if (verbose && !result.skipped) {
+          const icon = result.found ? '✓' : '✗';
+          const pct = Math.round(totalProcessed / indices_total * 100);
+          const name = (company.name || company.domain || '').slice(0, 30).padEnd(30);
+          const outcome = result.found
+            ? result.url || ''
+            : `not_found [${company.careers_page_failure_reason || 'all_miss'}]`;
+          const secs = ((result.duration_ms || 0) / 1000).toFixed(1);
+          process.stdout.write(`[discovery] ${icon} ${totalProcessed}/${indices_total} (${pct}%) ${name}  ${outcome}  (${secs}s)\n`);
+          if (result.steps && result.steps.length) {
+            process.stdout.write(`             steps: ${result.steps.join(' → ')}\n`);
+          }
+          if (companyOpts._llmRaw) {
+            process.stdout.write(`             llm: ${companyOpts._llmRaw.slice(0, 80)}\n`);
+          }
+        } else if (!verbose) {
+          try { progress.tick(totalProcessed, company.name || company.domain || ''); } catch(_) {}
+        }
       } catch (err) {
         if (err.name === 'DailyQuotaError') {
           warn('Daily quota exhausted — saving progress and stopping.');
