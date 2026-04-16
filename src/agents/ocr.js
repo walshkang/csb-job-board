@@ -20,9 +20,9 @@ const crypto = require('crypto');
 const config = require('../config');
 
 const USAGE = `Usage:
-  node src/agents/ocr.js <images_dir> [--dry-run]          # screenshot/image mode
-  node src/agents/ocr.js <file.pdf>   [--dry-run]          # single PDF
-  node src/agents/ocr.js <pdfs_dir>   [--dry-run]          # directory of PDFs`;
+  node src/agents/ocr.js <images_dir> [--dry-run] [--verbose]          # screenshot/image mode
+  node src/agents/ocr.js <file.pdf>   [--dry-run] [--verbose]          # single PDF
+  node src/agents/ocr.js <pdfs_dir>   [--dry-run] [--verbose]          # directory of PDFs`;
 
 function slugify(str) {
   return str
@@ -47,7 +47,8 @@ function readArgs() {
   }
   const inputPath = argv[0];
   const dryRun = argv.includes('--dry-run');
-  return { inputPath, dryRun };
+  const verbose = argv.includes('--verbose');
+  return { inputPath, dryRun, verbose };
 }
 
 // --- PDF pipeline ---
@@ -215,7 +216,7 @@ function validatePDFRows(rows, label) {
 // for large PitchBook exports (500+ companies). Override with PDF_CHUNK_SIZE env var.
 const PDF_CHUNK_SIZE = parseInt(process.env.PDF_CHUNK_SIZE || '8', 10);
 
-async function processPDF(pdfPath) {
+async function processPDF(pdfPath, verbose = false) {
   const label = path.basename(pdfPath);
   console.log(`Processing PDF: ${label}`);
   const pages = await extractPageTexts(pdfPath);
@@ -236,7 +237,12 @@ async function processPDF(pdfPath) {
       const rows = await callTextModelOCR(chunkText);
       const { warnings } = validatePDFRows(rows, `${label} chunk ${ci + 1}/${chunks.length}`);
       for (const w of warnings) console.warn(w);
-      console.log(`  chunk ${ci + 1}/${chunks.length}: ${rows.length} row(s)`);
+      if (verbose && rows.length > 0) {
+        const preview = rows.slice(0, 3).map(r => r['Company Name'] || r['name'] || '?').join(', ');
+        console.log(`  chunk ${ci + 1}/${chunks.length}: ${rows.length} row(s) — ${preview}${rows.length > 3 ? '...' : ''}`);
+      } else {
+        console.log(`  chunk ${ci + 1}/${chunks.length}: ${rows.length} row(s)`);
+      }
       allRows.push(...rows);
     } catch (err) {
       console.warn(`  chunk ${ci + 1}/${chunks.length} failed: ${err.message}`);
@@ -558,7 +564,7 @@ async function rowsToCompanies(rows, label, failures) {
 }
 
 async function main() {
-  const { inputPath, dryRun } = readArgs();
+  const { inputPath, dryRun, verbose } = readArgs();
   const mode = await detectInputMode(inputPath);
   console.log(`Mode: ${mode} | Provider: ${config.ocr.provider} | Model: ${mode === 'images' ? config.ocr.model : (config.ocr.provider === 'anthropic' ? config.ocr.anthropicModel : config.ocr.model)}`);
 
@@ -576,6 +582,10 @@ async function main() {
         const rows = await ocrFn(img);
         const { warnings } = validatePitchbookRows(rows, img);
         for (const w of warnings) console.warn(w);
+        if (verbose && rows.length > 0) {
+          const preview = rows.slice(0, 3).map(r => r['Company Name'] || r['name'] || '?').join(', ');
+          console.log(`  ${path.basename(img)}: ${rows.length} row(s) — ${preview}${rows.length > 3 ? '...' : ''}`);
+        }
         extractedCompanies.push(...await rowsToCompanies(rows, img, failures));
       } catch (err) {
         failures.push({ image: img, error: err.message });
@@ -588,7 +598,7 @@ async function main() {
     if (pdfs.length === 0) { console.log('No PDFs found in', inputPath); return; }
     console.log(`Found ${pdfs.length} PDF(s)`);
     for (const pdf of pdfs) {
-      const { allRows, failures: pdfFailures } = await processPDF(pdf);
+      const { allRows, failures: pdfFailures } = await processPDF(pdf, verbose);
       failures.push(...pdfFailures);
       extractedCompanies.push(...await rowsToCompanies(allRows, path.basename(pdf), failures));
     }

@@ -118,6 +118,9 @@ async function ensureDir(p) {
 }
 
 async function run() {
+  const argv = process.argv.slice(2);
+  const verbose = argv.includes('--verbose');
+
   const repoRoot = path.join(__dirname, '../../');
   const dataPath = path.join(repoRoot, 'data', 'companies.json');
   const artifactsDir = path.join(repoRoot, 'artifacts', 'html');
@@ -167,6 +170,8 @@ async function run() {
       }
     }
 
+    if (verbose) console.log(`[${c.id}] homepage: ${html ? `${html.length}b fetched` : 'not available'}`);
+
     // Extract a lightweight scraped description from the homepage HTML (if any)
     try {
       const scraped = extractScrapedDescription(html);
@@ -180,11 +185,13 @@ async function run() {
 
     // detect from homepage
     let detected = detectFromHtml(html);
+    if (verbose && detected) console.log(`[${c.id}] detected from homepage: ${detected}`);
     const homepageUrl = c.domain ? `https://${c.domain.replace(/https?:\/\//, '')}/` : null;
     const normalize = u => u ? u.replace(/\/+$/, '').toLowerCase() : null;
     const slug = extractSlugFromUrl(c.careers_page_url);
 
     let changed = false;
+    let detectedFromCareers = null;
 
     if (detected) {
       if (!origPlatform || origPlatform === 'custom') {
@@ -228,7 +235,8 @@ async function run() {
           c.company_profile.scraped_description = c.company_profile.scraped_description || null;
         }
 
-        const detectedFromCareers = detectFromHtml(careersHtml);
+        detectedFromCareers = detectFromHtml(careersHtml);
+        if (verbose && detectedFromCareers) console.log(`[${c.id}] detected from careers page: ${detectedFromCareers}`);
         if (detectedFromCareers) {
           if (!origPlatform || origPlatform === 'custom') {
             c.ats_platform = detectedFromCareers;
@@ -246,6 +254,12 @@ async function run() {
           }
         }
       }
+    }
+
+    if (verbose && !detected && !detectedFromCareers) console.log(`[${c.id}] no ATS detected (platform remains: ${c.ats_platform || 'unknown'})`);
+
+    if (verbose && c.company_profile && c.company_profile.scraped_description) {
+      console.log(`[${c.id}] scraped_description: "${c.company_profile.scraped_description.slice(0, 80)}..."`);
     }
 
     if (slug && !c.ats_slug) {

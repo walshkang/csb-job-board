@@ -298,6 +298,7 @@ async function main() {
   const run = startRun('enricher');
   const args = process.argv.slice(2);
   const force = args.includes('--force');
+  const verbose = args.includes('--verbose');
   const batchMode = args.includes('--batch-mode');
   const useStream = !args.includes('--no-stream') && !batchMode;
   const batchSizeArg = args.find(a => a.startsWith('--batch-size='));
@@ -362,6 +363,13 @@ async function main() {
         const enrichOptions = { stream: useStream, label: batch.map(j => j.id || j.job_title_raw || '').join(',') };
         try {
           await enrichJobBatch(batch, categories, promptTemplate, enrichOptions);
+          if (verbose) {
+            for (const job of batch) {
+              if (!job.enrichment_error) {
+                console.log(`  [${job.company_name || job.company_id}] "${job.job_title_normalized || job.job_title_raw}" | fn=${job.job_function} seniority=${job.seniority_level} mba=${job.mba_relevance_score} climate=${job.climate_relevance_confirmed}`);
+              }
+            }
+          }
           // update counters per job
           for (const job of batch) {
             if (!job.enrichment_error) {
@@ -392,6 +400,7 @@ async function main() {
         const enrichOptions = { stream: useStream, label: job.id || job.job_title_raw || '' };
         try {
           await enrichJob(job, categories, promptTemplate, enrichOptions);
+          if (verbose) console.log(`  [${job.company_name || job.company_id}] "${job.job_title_normalized || job.job_title_raw}" | fn=${job.job_function} seniority=${job.seniority_level} mba=${job.mba_relevance_score} climate=${job.climate_relevance_confirmed}`);
           enrichedCount += 1;
           const s = job.mba_relevance_score || 0;
           const idx = Math.min(4, Math.floor(s / 20));

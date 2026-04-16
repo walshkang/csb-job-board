@@ -277,20 +277,23 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
         const raw = readJsonSafe(jsonPath);
         // try detect platform shape
         let items = [];
+        let mapperName = 'unknown';
         if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) {
-          items = mapAshby(raw, company);
+          items = mapAshby(raw, company); mapperName = 'ashby';
         } else if (raw && Array.isArray(raw.jobPostings)) {
-          items = mapWorkday(raw, company);
+          items = mapWorkday(raw, company); mapperName = 'workday';
         } else if (raw && Array.isArray(raw.jobs)) {
-          items = mapGreenhouse(raw, company);
+          items = mapGreenhouse(raw, company); mapperName = 'greenhouse';
         } else if (Array.isArray(raw)) {
-          items = mapLever(raw, company);
-        } else {
-          items = [];
+          items = mapLever(raw, company); mapperName = 'lever';
         }
+        if (verbose) console.log(`[${company.id}] json/${mapperName} → ${items.length} job(s)`);
         for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', categoryByCompanyId.get(company.id) || null));
         processed = true;
-      } catch (err) { errors.push({ company: company.id, err: String(err) }); }
+      } catch (err) {
+        if (verbose) console.error(`[${company.id}] error: ${err}`);
+        errors.push({ company: company.id, err: String(err) });
+      }
     }
     if (!processed && fs.existsSync(htmlPath)) {
       try {
@@ -300,10 +303,14 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
         if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
           errors.push({ company: company.id, err: items[0] });
         } else {
+          if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
           for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, baseUrl, categoryByCompanyId.get(company.id) || null));
         }
         processed = true;
-      } catch (err) { errors.push({ company: company.id, err: String(err) }); }
+      } catch (err) {
+        if (verbose) console.error(`[${company.id}] error: ${err}`);
+        errors.push({ company: company.id, err: String(err) });
+      }
     }
     if (processed) companiesProcessed.push(company.id);
   }
@@ -313,6 +320,7 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
   const merged = mergeJobs(existing, extracted);
   if (!dryRun) writeJSONAtomic(OUT_JOBS, merged);
 
+  if (verbose) console.log(`Extraction done: ${companiesProcessed.length} companies, ${extracted.length} jobs, ${errors.length} errors`);
   return { companiesProcessed, extractedCount: extracted.length, written: dryRun ? 0 : merged.length, errors };
 }
 
@@ -322,6 +330,7 @@ async function main() {
   const input = argv.find(a => a.startsWith('--input=')) ? argv.find(a => a.startsWith('--input=')).split('=')[1] : null;
   const companyArg = argv.find(a => a.startsWith('--company=')) ? argv.find(a => a.startsWith('--company=')).split('=')[1] : null;
   const dryRun = argv.includes('--dry-run');
+  const verbose = argv.includes('--verbose');
 
   if (input) {
     // legacy single-file mode
@@ -336,7 +345,7 @@ async function main() {
     return;
   }
 
-  const res = await batchExtract({ companyFilter: companyArg || null, dryRun });
+  const res = await batchExtract({ companyFilter: companyArg || null, dryRun, verbose });
   console.log('Extraction summary:');
   console.log('  companies processed:', res.companiesProcessed.length);
   console.log('  extracted items:', res.extractedCount);

@@ -246,7 +246,7 @@ async function saveArtifact(companyId, method, content, isJson = false) {
   return p;
 }
 
-async function handleCompany(company, index) {
+async function handleCompany(company, index, verbose = false) {
   const companyId = company.id || company.company_id || company.name || `company-${index}`;
   const careersUrl = company.careers_page_url || company.careers_url || company.url;
   const result = {
@@ -289,6 +289,7 @@ async function handleCompany(company, index) {
     else if (ashbySlug) providerKey = 'ashby_api';
     else if (workdayInfo && workdayInfo.tenant) providerKey = 'workday_api';
   }
+  if (verbose) console.log(`[${companyId}] provider: ${providerKey} | url: ${careersUrl}`);
 
   await acquireProvider(providerKey);
   try {
@@ -306,6 +307,7 @@ async function handleCompany(company, index) {
       await saveArtifact(companyId, 'greenhouse_api', body, true);
       result.success = res.ok;
       result.status = result.success ? 'success' : 'error';
+      if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
       await appendScrapeRun(result);
       return result;
     }
@@ -322,6 +324,7 @@ async function handleCompany(company, index) {
       await saveArtifact(companyId, 'lever_api', body, true);
       result.success = res.ok;
       result.status = result.success ? 'success' : 'error';
+      if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
       await appendScrapeRun(result);
       return result;
     }
@@ -339,6 +342,7 @@ async function handleCompany(company, index) {
       await saveArtifact(companyId, 'ashby_api', body, true);
       result.success = res.ok;
       result.status = result.success ? 'success' : 'error';
+      if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
       await appendScrapeRun(result);
       return result;
     }
@@ -359,6 +363,7 @@ async function handleCompany(company, index) {
         await saveArtifact(companyId, 'workday_api', body, true);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
         await appendScrapeRun(result);
         return result;
       }
@@ -376,12 +381,13 @@ async function handleCompany(company, index) {
     await saveArtifact(companyId, 'direct_html', body, false);
     result.success = res.ok;
 
+    const isSpаShell = result.byte_length > 5120 && (body.match(/<a\s[^>]*href/gi) || []).length < 4;
+    if (verbose) console.log(`[${companyId}] direct_html → ${result.status_code} (${result.byte_length}b)${isSpаShell ? ' [SPA shell detected]' : ''}`);
+
     // If response looks suspicious, try Playwright-rendered HTML fallback.
     // Link-density check catches JS-heavy SPAs that return 200 with a React shell
     // (e.g. <div id="root"></div>) — these have few <a href> tags despite being large.
     const hasBlocker = SCRAPER_BLOCKER_PATTERNS.some(re => re.test(body));
-    const linkCount = (body.match(/<a\s[^>]*href/gi) || []).length;
-    const isSpаShell = result.byte_length > 5120 && linkCount < 4;
     const looksSuspicious = !hasBlocker && (
       (result.status_code >= 400 && result.status_code < 500) ||
       result.byte_length < 5120 ||
@@ -404,6 +410,7 @@ async function handleCompany(company, index) {
           result.success = true;
           result.status = 'success';
           body = rendered;
+          if (verbose) console.log(`[${companyId}] playwright fallback → ${result.byte_length}b`);
         }
       } catch (e) {
         console.warn(`[warn] Playwright fallback failed for ${companyId}: ${e && e.message}`);
@@ -417,6 +424,7 @@ async function handleCompany(company, index) {
     result.error = err.message || String(err);
     result.success = false;
     result.status = 'error';
+    if (verbose) console.log(`[${companyId}] error: ${err.message}`);
     await appendScrapeRun(result);
     return result;
   } finally {
@@ -436,6 +444,8 @@ async function run(companiesPath) {
       process.exit(1);
     }
 
+    const verbose = process.argv.includes('--verbose');
+
     console.log(`Found ${companies.length} companies with careers_page_reachable=true`);
 
     // Worker pool — drains the queue CONCURRENCY companies at a time rather than
@@ -447,7 +457,7 @@ async function run(companiesPath) {
       while (queue.length > 0) {
         const { c, idx } = queue.shift();
         try {
-          results.push(await handleCompany(c, idx));
+          results.push(await handleCompany(c, idx, verbose));
         } catch (err) {
           console.error(`Error handling company ${c && (c.id || c.name)}: ${err.message}`);
           results.push(null);
