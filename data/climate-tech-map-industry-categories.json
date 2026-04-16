@@ -166,7 +166,7 @@
   {
     "Tech Category Name": "Supply Chain",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "cold chain optimization",
       "food traceability",
@@ -222,7 +222,7 @@
   {
     "Tech Category Name": "Seed Editing & Breeding",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "crispr agriculture",
       "crop yield improvement",
@@ -276,7 +276,7 @@
   {
     "Tech Category Name": "Restoration & Conservation",
     "Related Opportunity Area": "Protecting Nature",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "biodiversity protection",
       "ecological restoration",
@@ -294,7 +294,7 @@
   {
     "Tech Category Name": "Response",
     "Related Opportunity Area": "Fire Mitigation",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "aerial firefighting",
       "fire management",
@@ -312,7 +312,7 @@
   {
     "Tech Category Name": "Regenerative Agriculture",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "carbon farming",
       "cover cropping",
@@ -547,7 +547,7 @@
   {
     "Tech Category Name": "Monitoring",
     "Related Opportunity Area": "Fire Mitigation",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "early warning systems",
       "satellite fire tracking",
@@ -691,7 +691,7 @@
   {
     "Tech Category Name": "Manure Management",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "anaerobic digesters",
       "biogas recovery",
@@ -762,7 +762,7 @@
   {
     "Tech Category Name": "Lifespan",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "edible coatings",
       "preservation tech",
@@ -780,7 +780,7 @@
   {
     "Tech Category Name": "Insect-Based",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "animal feed alternative",
       "black soldier fly",
@@ -942,7 +942,7 @@
   {
     "Tech Category Name": "Harvest",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "ag robotics",
       "automated harvesting",
@@ -1075,7 +1075,7 @@
   {
     "Tech Category Name": "Fertilizers & Nutrients",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "biofertilizers",
       "controlled-release fertilizers",
@@ -1093,7 +1093,7 @@
   {
     "Tech Category Name": "Fermented",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "alt-dairy",
       "biomass fermentation",
@@ -1201,7 +1201,7 @@
   {
     "Tech Category Name": "Ecosystem Monitoring",
     "Related Opportunity Area": "Protecting Nature",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "biodiversity tracking",
       "conservation tech",
@@ -1291,7 +1291,7 @@
   {
     "Tech Category Name": "Cultivated",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "cell-based meat",
       "cellular agriculture",
@@ -1345,7 +1345,7 @@
   {
     "Tech Category Name": "Circularity",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "biomass cascading",
       "circular food economy",
@@ -1434,8 +1434,8 @@
     ]
   },
   {
-    "Tech Category Name": "Carbon Capture, Utilization, & Storage",
-    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics, Cross-Cutting Solutions",
+    "Tech Category Name": "Carbon Capture / Utilization / Storage",
+    "Related Opportunity Area": "Low-Emissions Chemicals & Plastics / Cross-Cutting Solutions",
     "Primary Sector": "Manufacturing",
     "keywords": [
       "carbon utilization",
@@ -1454,7 +1454,7 @@
   {
     "Tech Category Name": "Burp Mitigation",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "bovine methane",
       "enteric fermentation",
@@ -1582,7 +1582,7 @@
   {
     "Tech Category Name": "Aquaculture & Fishing",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "bycatch reduction",
       "offshore farming",

@@ -204,6 +204,15 @@ async function main() {
     }
   }
 
+  function normalizeSelectName(name) {
+    if (!name) return name;
+    const s = String(name);
+    if (s === 'Food, Ag & Nature') return 'Food / Ag & Nature';
+    if (s === 'Carbon Capture, Utilization, & Storage') return 'Carbon Capture / Utilization / Storage';
+    if (s === 'Low-Emissions Chemicals & Plastics, Cross-Cutting Solutions') return 'Low-Emissions Chemicals & Plastics / Cross-Cutting Solutions';
+    return s;
+  }
+
   function companyToProps(c, resolvedNameMap, databaseId) {
     const canonicalProps = {
       'Name': { title: [{ text: { content: c.name || '' } }] },
@@ -213,17 +222,17 @@ async function main() {
       'Total Raised ($M)': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals[0]; return f && typeof f.total_raised_mm === 'number' ? { number: f.total_raised_mm } : undefined; })(),
       'Latest Round Size ($M)': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals[0]; return f && typeof f.size_mm === 'number' ? { number: f.size_mm } : undefined; })(),
       'Profile Description': c.company_profile && c.company_profile.description ? { rich_text: [{ text: { content: truncate(c.company_profile.description, 2000) } }] } : undefined,
-      'Sector': c.company_profile && c.company_profile.sector ? { select: { name: String(c.company_profile.sector) } } : undefined,
+      'Sector': c.company_profile && c.company_profile.sector ? { select: { name: normalizeSelectName(c.company_profile.sector) } } : undefined,
       'HQ': c.company_profile && c.company_profile.hq ? { rich_text: [{ text: { content: String(c.company_profile.hq) } }] } : undefined,
       'Employees': c.company_profile && typeof c.company_profile.employees === 'number' ? { number: c.company_profile.employees } : undefined,
       'Careers Page': c.careers_page_url ? { url: c.careers_page_url } : undefined,
-      'ATS Platform': c.ats_platform ? { select: { name: String(c.ats_platform) } } : undefined,
+      'ATS Platform': c.ats_platform ? { select: { name: normalizeSelectName(c.ats_platform) } } : undefined,
       'Dormant': typeof c.dormant === 'boolean' ? { checkbox: c.dormant } : undefined,
       'Consecutive Empty Scrapes': typeof c.consecutive_empty_scrapes === 'number' ? { number: c.consecutive_empty_scrapes } : undefined,
-      'Climate Tech Category': c.climate_tech_category ? { select: { name: String(c.climate_tech_category) } } : undefined,
-      'Primary Sector': c.primary_sector ? { select: { name: String(c.primary_sector) } } : undefined,
-      'Opportunity Area': c.opportunity_area ? { select: { name: String(c.opportunity_area) } } : undefined,
-      'Category Confidence': c.category_confidence ? { select: { name: String(c.category_confidence) } } : undefined,
+      'Climate Tech Category': c.climate_tech_category ? { select: { name: normalizeSelectName(c.climate_tech_category) } } : undefined,
+      'Primary Sector': c.primary_sector ? { select: { name: normalizeSelectName(c.primary_sector) } } : undefined,
+      'Opportunity Area': c.opportunity_area ? { select: { name: normalizeSelectName(c.opportunity_area) } } : undefined,
+      'Category Confidence': c.category_confidence ? { select: { name: normalizeSelectName(c.category_confidence) } } : undefined,
     };
     const props = {};
     for (const [canonical, val] of Object.entries(canonicalProps)) {
