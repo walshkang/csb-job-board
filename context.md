@@ -23,7 +23,7 @@ Slice 9 — Industry Categorization
 Slice 2 — Careers Page Discovery
   npm run discovery
   Input: data/companies.json
-  Step order: standard paths (/careers, /jobs) → ATS slug guesses → homepage link scan → sitemap → LLM fallback (fires even without homepage HTML — uses company name + domain + derived slugs)
+  Step order: standard paths (/careers, /jobs, 8 total, probed in parallel via Promise.any) → ATS slug guesses → homepage link scan → sitemap → LLM fallback (fires even without homepage HTML — uses company name + domain + derived slugs; capped at 3 concurrent)
   Output: companies.json updated with careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform
 
 Slice 3 — ATS Fingerprinting

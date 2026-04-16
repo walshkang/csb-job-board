@@ -323,7 +323,7 @@ npm run categorize -- --dry-run
 **Output:** `data/companies.json` updated with `careers_page_url`, `careers_page_reachable`, `careers_page_discovery_method`, `ats_platform`
 
 **Discovery order (per company):**
-1. Standard path probing (`/careers`, `/jobs`, `/about/careers`, `/join`, etc.)
+1. Standard path probing (`/careers`, `/jobs`, `/about/careers`, `/join`, etc.) — all paths probed in parallel; returns on first hit
 2. ATS slug guessing — checks `boards.greenhouse.io/{slug}`, `jobs.lever.co/{slug}`, `jobs.ashby.com/{slug}`
 3. Homepage `<a href>` link scan — fetches homepage, finds career-related links
 4. Sitemap scan — checks `/sitemap.xml`, `/sitemap_index.xml`
