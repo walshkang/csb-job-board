@@ -127,7 +127,9 @@ PitchBook's native export sometimes cuts off columns. The most reliable method:
 
 > If columns are still truncating, zoom out your browser (e.g. `Cmd + -`) before printing until all columns fit across the page width, then print to PDF.
 
-Save the file to `data/images/` with a descriptive name (e.g. `251-300 climatecompanies.pdf`). PitchBook paginates at 50 rows — export in batches and name files by row range.
+Save the file to `data/images/` with a descriptive name indicating the row range (e.g. `1-250 climatecompanies.pdf`, `251-500 climatecompanies.pdf`).
+
+**Pagination tip:** By default PitchBook shows 25 rows per page. Use the **Show** dropdown in the bottom-left of the table to set it to **250** — the maximum. This means each page (and each PDF export) covers up to 250 companies. Page through the results (Prev / 1 / 2 / 3 … / Next) and print each page to a separate PDF.
 
 ### Machine-readable export spec
 
@@ -164,7 +166,9 @@ Save the file to `data/images/` with a descriptive name (e.g. `251-300 climateco
     "margins": "minimum",
     "background_graphics": false,
     "output_dir": "data/images/",
-    "naming_convention": "{row_start}-{row_end} climatecompanies.pdf"
+    "naming_convention": "{row_start}-{row_end} climatecompanies.pdf",
+    "rows_per_page": 250,
+    "pagination_note": "Set Show dropdown (bottom-left) to 250 before exporting. Each page = one PDF."
   }
 }
 ```
