@@ -10,8 +10,9 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 
 1. [Prerequisites](#prerequisites)
 2. [Setup](#setup-one-time)
-3. [Pipeline Overview](#pipeline-overview)
-4. [Step-by-Step Reference](#step-by-step-reference)
+3. [Exporting from PitchBook](#exporting-from-pitchbook)
+4. [Pipeline Overview](#pipeline-overview)
+5. [Step-by-Step Reference](#step-by-step-reference)
    - [Step 1 — OCR: Import companies from PitchBook](#step-1--ocr-import-companies-from-pitchbook)
    - [Step 2 — Categorize: Tag companies by climate sector](#step-2--categorize-tag-companies-by-climate-sector)
    - [Step 3 — Discovery: Find careers pages](#step-3--discovery-find-careers-pages)
@@ -23,12 +24,12 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
    - [Step 9 — Temporal: Track job status over time](#step-9--temporal-track-job-status-over-time)
    - [Step 10 — Notion Sync: Push to Notion](#step-10--notion-sync-push-to-notion)
    - [Observability: Reporter + Reviewer](#observability-reporter--reviewer)
-5. [Prompt Reference](#prompt-reference)
-6. [Re-running Patterns](#re-running-patterns)
-7. [Reading Results in Notion](#reading-results-in-notion)
-8. [Troubleshooting](#troubleshooting)
-9. [Data Files](#data-files)
-10. [Security](#security)
+6. [Prompt Reference](#prompt-reference)
+7. [Re-running Patterns](#re-running-patterns)
+8. [Reading Results in Notion](#reading-results-in-notion)
+9. [Troubleshooting](#troubleshooting)
+10. [Data Files](#data-files)
+11. [Security](#security)
 
 ---
 
@@ -66,6 +67,107 @@ To get Notion credentials: create an internal integration at [notion.so/my-integ
 node src/agents/notion-setup.js
 ```
 Adds all required properties to your Notion databases. Safe to re-run.
+
+---
+
+## Exporting from PitchBook
+
+Before running the pipeline, you need a PitchBook company list exported as a PDF. Here's how to configure the list view and export it correctly so the OCR agent can parse it.
+
+### Step 1 — Apply screener filters
+
+Navigate to **Companies** → **Companies & Deals Screener** (or open a saved search). The filters used for this project:
+
+| Filter | Value |
+|---|---|
+| Deal Date | From: 01-Apr-2025 (adjust as needed) |
+| Ownership Status | Privately Held (backing), Privately Held (no backing), In IPO Registration |
+| Location | United States |
+| Verticals | Climate Tech, CleanTech |
+| Number of Employees | Max: 600 |
+
+Set these via the **Modify All Criteria** panel at the top of the screener. The current list has ~1,697 companies matching these filters.
+
+### Step 2 — Configure columns
+
+Click **Edit table** (top right of the results table) to open the column editor. Remove any default columns and add exactly these, in this order:
+
+1. Company Name
+2. Keywords
+3. Website
+4. Employees
+5. Last Financing Date
+6. Last Financing Deal Type
+7. Last Financing Size
+8. Total Raised
+9. HQ Location
+
+Click **Apply** to update the table view.
+
+### Step 3 — Adjust column widths
+
+PDF exports have a fixed page width — if columns are too wide, data gets truncated. Before exporting:
+
+- Give **Keywords** the most horizontal space — this is the highest-signal field for categorization and truncates easily
+- Shrink **Employees**, **Last Financing Size**, and **Total Raised** — these are short numeric values
+- **Last Financing Date** and **HQ Location** can be moderately narrow
+
+Drag column dividers in the header row to resize. The goal is to fit all 9 columns visible on a landscape page without truncation.
+
+### Step 4 — Export as PDF
+
+PitchBook's native export sometimes cuts off columns. The most reliable method:
+
+1. Press `Cmd + P` (Mac) or `Ctrl + P` (Windows) to open the browser print dialog
+2. Set **Layout** to **Landscape**
+3. Set **Margins** to **Minimum** (or None)
+4. Set **Destination** to **Save as PDF**
+5. Disable **Background graphics**
+6. Click **Save**
+
+> If columns are still truncating, zoom out your browser (e.g. `Cmd + -`) before printing until all columns fit across the page width, then print to PDF.
+
+Save the file to `data/images/` with a descriptive name (e.g. `251-300 climatecompanies.pdf`). PitchBook paginates at 50 rows — export in batches and name files by row range.
+
+### Machine-readable export spec
+
+```json
+{
+  "task": "pitchbook_pdf_export",
+  "screener_filters": {
+    "deal_date_from": "01-Apr-2025",
+    "ownership_status": ["Privately Held (backing)", "Privately Held (no backing)", "In IPO Registration"],
+    "location": "United States",
+    "verticals": ["Climate Tech", "CleanTech"],
+    "max_employees": 600
+  },
+  "columns": [
+    "Company Name",
+    "Keywords",
+    "Website",
+    "Employees",
+    "Last Financing Date",
+    "Last Financing Deal Type",
+    "Last Financing Size",
+    "Total Raised",
+    "HQ Location"
+  ],
+  "column_width_guidance": {
+    "Keywords": "maximize",
+    "Employees": "minimize",
+    "Last Financing Size": "minimize",
+    "Total Raised": "minimize"
+  },
+  "export": {
+    "method": "browser_print_to_pdf",
+    "layout": "landscape",
+    "margins": "minimum",
+    "background_graphics": false,
+    "output_dir": "data/images/",
+    "naming_convention": "{row_start}-{row_end} climatecompanies.pdf"
+  }
+}
+```
 
 ---
 
