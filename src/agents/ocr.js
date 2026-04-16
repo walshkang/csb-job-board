@@ -409,7 +409,13 @@ async function mapRowToCompanySchema(row) {
 
   const name = resolveCompanyName(cleanRow);
   const domainRaw = cleanRow['Website'] || cleanRow['website'] || null;
-  const domain = domainRaw ? domainRaw.replace(/^https?:\/\//, '').replace(/\/$/, '') : null;
+  const domain = domainRaw
+    ? domainRaw
+        .replace(/^https?:\/\//, '')  // strip protocol
+        .replace(/\/$/, '')            // strip trailing slash
+        .replace(/[",;\s]+$/, '')      // strip CSV artifacts: trailing quotes, commas, semicolons
+        .toLowerCase()
+    : null;
   const id = domain ? slugify(domain) : deterministicId(name);
 
   const funding_signals = [];
@@ -536,6 +542,10 @@ async function loadExistingCompanies(filePath) {
     for (const c of companies) {
       if (Array.isArray(c.funding_signals) && c.funding_signals.length > 1) {
         c.funding_signals = dedupFundingSignals(c.funding_signals);
+      }
+      // Heal domains with CSV artifacts from prior OCR runs
+      if (c.domain && /[",;\s]+$/.test(c.domain)) {
+        c.domain = c.domain.replace(/[",;\s]+$/, '');
       }
     }
     return companies;
