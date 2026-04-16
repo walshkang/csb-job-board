@@ -78,7 +78,10 @@ flowchart TD
     SRC["📄 PitchBook PDFs / Screenshots\ndata/images/"]
 
     SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ AI: ocr-pdf.txt / ocr.txt"]
-    S1 -->|"data/companies.json\n(id, name, domain, funding_signals)"| S2
+    S1 -->|"data/companies.json\n(id, name, domain, funding_signals)"| S9
+
+    S9["Step 9 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\n(can run on company data alone — PitchBook keywords & metadata sufficient)"]
+    S9 -->|"companies.json\n(+ category fields)"| S2
 
     S2["Step 2 — Discovery\nnpm run discovery\n⚙ AI: inline LLM fallback prompt"]
     S2 -->|"companies.json +\ncareers_page_url, ats_platform"| S3
@@ -96,10 +99,7 @@ flowchart TD
     S6 -->|"jobs.json +\nclassification fields"| S7
 
     S7["Step 7 — QA\nnpm run qa\n(read-only checks)"]
-    S7 --> S9
-
-    S9["Step 9 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt"]
-    S9 -->|"jobs.json + companies.json\n+ climate_tech_category"| S8T
+    S7 --> S8T
 
     S8T["Step 8a — Temporal\nnode src/agents/temporal.js\n(no AI)"]
     S8T -->|"jobs.json + companies.json\n+ last_seen_at, dormancy"| S8N
@@ -516,18 +516,21 @@ PDF_CHUNK_SIZE=8
 **Add new companies from PitchBook exports** — drop new PDFs or screenshots into `data/images/`, then:
 ```bash
 npm run ocr -- data/images
+npm run categorize
 npm run discovery
 npm run fingerprint
 npm run scrape
 npm run extract
 npm run enrich -- --batch-mode
 node src/agents/temporal.js
-npm run categorize
 node src/agents/notion-sync.js
 npm run reporter && npm run review
 ```
 
 **Refresh job listings only** — skip OCR and discovery, start from scrape:
+
+Categorize is not needed when refreshing job listings only — company categories are already set; only re-run categorize when adding new companies.
+
 ```bash
 npm run scrape
 npm run extract

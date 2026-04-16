@@ -137,8 +137,7 @@ async function main() {
   const force = args.includes('--force');
   const dryRun = args.includes('--dry-run');
 
-  const jobs = readJSONSafe(JOBS_PATH, null);
-  if (!jobs) { console.error('No data/jobs.json found'); process.exit(1); }
+  const jobs = readJSONSafe(JOBS_PATH, []);
   const companies = readJSONSafe(COMPANIES_PATH, null);
   if (!companies) { console.error('No data/companies.json found'); process.exit(1); }
   const taxonomy = readJSONSafe(TAX_PATH, []);

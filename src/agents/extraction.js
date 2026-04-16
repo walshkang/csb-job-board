@@ -134,7 +134,7 @@ async function runExtraction({ html, company, baseUrl, callFn = callGeminiExtrac
   }));
 }
 
-function normalizeExtractedItem(it, companyId, companyName, baseUrl) {
+function normalizeExtractedItem(it, companyId, companyName, baseUrl, companyCategories = null) {
   const job_title_raw = it.job_title || it.job_title_raw || it.title || null;
   const source_url = it.url ? resolveUrl(it.url, baseUrl) : null;
   const location_raw = it.location || it.location_raw || null;
@@ -154,7 +154,8 @@ function normalizeExtractedItem(it, companyId, companyName, baseUrl) {
     description_raw: description_raw || null,
     description_hash,
     first_seen_at: now,
-    last_seen_at: now
+    last_seen_at: now,
+    ...(companyCategories ? companyCategories : {})
   };
 }
 
@@ -251,6 +252,17 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
     console.error('Company validation failed:', err.message);
     process.exit(1);
   }
+  const categoryByCompanyId = new Map();
+  for (const c of companies) {
+    if (c.climate_tech_category) {
+      categoryByCompanyId.set(c.id, {
+        climate_tech_category: c.climate_tech_category || null,
+        primary_sector: c.primary_sector || null,
+        opportunity_area: c.opportunity_area || null,
+        category_confidence: c.category_confidence || null,
+      });
+    }
+  }
   const extracted = [];
   const errors = [];
   const companiesProcessed = [];
@@ -276,7 +288,7 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
         } else {
           items = [];
         }
-        for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || ''));
+        for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', categoryByCompanyId.get(company.id) || null));
         processed = true;
       } catch (err) { errors.push({ company: company.id, err: String(err) }); }
     }
@@ -288,7 +300,7 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
         if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
           errors.push({ company: company.id, err: items[0] });
         } else {
-          for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, baseUrl));
+          for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, baseUrl, categoryByCompanyId.get(company.id) || null));
         }
         processed = true;
       } catch (err) { errors.push({ company: company.id, err: String(err) }); }

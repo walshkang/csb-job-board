@@ -11,6 +11,15 @@ Slice 1 — Pitchbook OCR → companies.json
   Gemini 2.5 Flash-Lite does vision OCR → extracts rows → maps to Company schema
   Output: data/companies.json with identity + funding signals + company_profile
 
+Slice 9 — Industry Categorization
+  npm run categorize [--force] [--dry-run]
+  Input: data/companies.json (+ optional data/jobs.json) + data/climate-tech-map-industry-categories.json
+  One LLM call per unique company (not per job) — result applied to all jobs for that company
+  Writes: climate_tech_category, primary_sector, opportunity_area, category_confidence onto each company and its jobs
+  Can be run immediately after OCR — uses PitchBook keywords, HQ, and company metadata; jobs.json is optional
+  Skips companies already categorized unless --force; rate-limited pool (concurrency=3, delay=1000ms)
+  Note: requires maxOutputTokens >= 4096 when using gemini-2.5-flash (thinking tokens consume budget)
+
 Slice 2 — Careers Page Discovery
   npm run discovery
   Input: data/companies.json
@@ -57,13 +66,7 @@ Slice 8 — Temporal Tracking + Notion Sync
   node src/agents/temporal.js     # update last_seen_at, removed_at, days_live, dormancy
   node src/agents/notion-sync.js  # upsert companies + jobs to Notion (supports --dry-run, --companies-only, --jobs-only)
 
-Slice 9 — Industry Categorization
-  npm run categorize [--force] [--dry-run]
-  Input: data/jobs.json + data/companies.json + data/climate-tech-map-industry-categories.json
-  One LLM call per unique company (not per job) — result applied to all jobs for that company
-  Writes: climate_tech_category, primary_sector, opportunity_area, category_confidence onto each job
-  Skips companies already categorized unless --force; rate-limited pool (concurrency=3, delay=1000ms)
-  Note: requires maxOutputTokens >= 4096 when using gemini-2.5-flash (thinking tokens consume budget)
+
 
 Slice 10 — Observability
   npm run reporter   # aggregates scrape_runs.json + companies.json + jobs.json → data/runs/YYYY-MM-DD-HH.json + data/runs/latest.json
@@ -109,7 +112,7 @@ Current status (as of 2026-04-14)
 
 Next meaningful work
   1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed; target selection bug now fixed
-  2. Add more Pitchbook screenshots → re-run OCR to grow companies.json
+  2. Add more Pitchbook PDFs → re-run OCR → re-run categorize → run discovery through sync.
   3. Run npm run reporter + npm run review after each full pipeline run
 
 Open questions
