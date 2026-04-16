@@ -88,7 +88,7 @@ const STANDARD_PATHS = [
 ];
 
 function usage() {
-  console.log('Usage: node src/agents/discovery.js [--force] [--verbose] [--limit=N]');
+  console.log('Usage: node src/agents/discovery.js [--force] [--verbose] [--debug] [--limit=N]');
 }
 
 function parseLimitArg(argv) {
@@ -358,16 +358,40 @@ function normalizeDomain(domainRaw) {
   return domainRaw.replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
 }
 
+function classifyFailureReason(steps) {
+  for (let i = steps.length - 1; i >= 0; i--) {
+    const s = steps[i];
+    if (s === 'llm:no_key') return 'no_careers_page';
+    if (s.startsWith('llm:truncated')) return 'llm_truncated';
+    if (s.startsWith('llm:homepage')) return 'llm_homepage';
+    if (s.startsWith('llm:validation_failed')) return 'llm_validation_failed';
+    if (s === 'llm:not_found') return 'llm_not_found';
+    if (s === 'llm:empty') return 'llm_not_found';
+    if (s.startsWith('llm:error')) return 'llm_error';
+  }
+  // Check if early steps suggest network-level failures
+  const hasTimeout = steps.some(s => s.includes('timeout'));
+  if (hasTimeout) return 'timeout';
+  const hasDns = steps.some(s => s.includes('dns'));
+  if (hasDns) return 'dns_error';
+  return 'all_miss';
+}
+
 async function processCompany(company, opts) {
   const { force, verbose, usePlaywright } = opts;
-  if (!company || !company.domain) return { skipped: true, reason: 'no-domain' };
+  const steps = [];
+  const t0 = Date.now();
+
+  if (!company || !company.domain) return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
 
   if (!force && company.careers_page_url && company.careers_page_reachable) {
-    return { skipped: true, reason: 'already-reachable' };
+    return { skipped: true, reason: 'already-reachable', steps, duration_ms: 0 };
   }
 
   const domain = normalizeDomain(company.domain);
-  if (!domain) return { skipped: true, reason: 'no-domain' };
+  if (!domain) return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
+
+  const done = (result) => ({ ...result, steps, duration_ms: Date.now() - t0 });
 
   // Shared cache so homepage is only fetched once across steps 3 and 4.
   const homepageCache = {};
@@ -383,39 +407,64 @@ async function processCompany(company, opts) {
         });
       })
     );
-    if (standardResult) return standardResult;
-  } catch (_) {
-    // AggregateError means all paths failed — fall through to next step
+    if (standardResult) {
+      steps.push(`standard_paths:hit:${new URL(standardResult.url).pathname}`);
+      return done(standardResult);
+    }
+  } catch (aggErr) {
+    // Classify the aggregate error — check if any sub-error was a timeout or DNS failure
+    const errs = aggErr.errors || [];
+    const hasTimeout = errs.some(e => e && e.name === 'AbortError');
+    const hasDns = errs.some(e => e && e.message && /ENOTFOUND|getaddrinfo/i.test(e.message));
+    if (hasDns) steps.push('standard_paths:dns_error');
+    else if (hasTimeout) steps.push('standard_paths:timeout');
+    else steps.push('standard_paths:all_miss');
     verboseLog(verbose, `all standard paths failed for ${domain}`);
   }
 
   // 2) ATS slug guessing (Greenhouse + Lever)
   const atsResult = await tryAtsSlugs(company, verbose);
-  if (atsResult) return atsResult;
+  if (atsResult) {
+    steps.push(`ats_slug:hit`);
+    return done(atsResult);
+  }
+  steps.push('ats_slug:miss');
 
   // 3) Homepage link scan — one fetch, regex over <a href> tags
   const linkResult = await scanHomepageLinks(domain, homepageCache, verbose, usePlaywright);
-  if (linkResult) return linkResult;
+  if (linkResult) {
+    steps.push(`homepage_link_scan:hit`);
+    return done(linkResult);
+  }
+  steps.push(homepageCache.html ? 'homepage_link_scan:miss' : 'homepage_fetch:null');
 
   // 4) Sitemap
   try {
     const candidates = await findSitemapCandidates(domain);
+    let sitemapHit = false;
     for (const cand of candidates) {
       try {
         const res = await tryHeadThenGet(cand, domain);
         if (res && res.status === 200) {
-          return { found: true, url: res.url || cand, method: 'sitemap' };
+          steps.push('sitemap:hit');
+          sitemapHit = true;
+          return done({ found: true, url: res.url || cand, method: 'sitemap' });
         }
       } catch (err) {
         verboseLog(verbose, 'sitemap candidate failed:', cand, err.message);
       }
     }
+    if (!sitemapHit) steps.push(candidates.length ? 'sitemap:miss' : 'sitemap:none');
   } catch (err) {
+    steps.push('sitemap:error');
     verboseLog(verbose, 'sitemap fetch failed for', domain, err.message);
   }
 
   // 5) LLM fallback — attempt even if homepage HTML is not available (use company name/domain)
-  if (!config.discovery.apiKey) return { found: false, method: 'not_found' };
+  if (!config.discovery.apiKey) {
+    steps.push('llm:no_key');
+    return done({ found: false, method: 'not_found' });
+  }
   try {
     const homepageHtmlAvailable = !!homepageCache.html;
 
@@ -446,53 +495,67 @@ async function processCompany(company, opts) {
       releaseLlmSlot();
     }
 
-    if (!completion) return { found: false, method: 'not_found', llm_attempted: true };
+    if (!completion) {
+      steps.push('llm:empty');
+      return done({ found: false, method: 'not_found', llm_attempted: true });
+    }
+
+    // Log raw completion for debug tracing
+    opts._llmRaw = completion.trim().slice(0, 200);
+
     let answer = completion.trim().split('\n')[0].trim().replace(/^['"]?(.*?)['"]?$/, '$1');
 
     if (!answer || /^NOT[_ -]?FOUND$/i.test(answer)) {
-      return { found: false, method: 'not_found', llm_attempted: true };
+      steps.push('llm:not_found');
+      return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
     if (answer.startsWith('/')) answer = `https://${domain}${answer}`;
     if (!/^https?:\/\//i.test(answer)) answer = `https://${answer}`;
 
-    // Reject truncated URLs (no valid TLD after last dot, or ends with a dot/slash-only path)
+    // Reject truncated URLs
     let parsedAnswer;
     try {
       parsedAnswer = new URL(answer);
     } catch (_) {
+      steps.push(`llm:truncated:${answer.slice(0, 60)}`);
       verboseLog(verbose, 'llm-proposed-url invalid (unparseable):', answer);
-      return { found: false, method: 'not_found', llm_attempted: true };
+      return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
     // Reject if LLM returned just the homepage (path is / or empty)
     const answerPath = parsedAnswer.pathname.replace(/\/+$/, '');
     if (!answerPath) {
+      steps.push(`llm:homepage:${answer.slice(0, 60)}`);
       verboseLog(verbose, 'llm-proposed-url rejected (homepage only):', answer);
-      return { found: false, method: 'not_found', llm_attempted: true };
+      return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
-    // Reject if hostname looks truncated (no dot in TLD position, e.g. "www.alchemyco2.")
+    // Reject if hostname looks truncated (e.g. "www.alchemyco2.")
     if (/\.$/.test(parsedAnswer.hostname)) {
+      steps.push(`llm:truncated:${answer.slice(0, 60)}`);
       verboseLog(verbose, 'llm-proposed-url rejected (truncated hostname):', answer);
-      return { found: false, method: 'not_found', llm_attempted: true };
+      return done({ found: false, method: 'not_found', llm_attempted: true });
     }
 
     try {
-      // Validate using the actual hostname from the proposed URL
       const res = await tryHeadThenGet(answer, parsedAnswer.hostname);
       if (res && res.status === 200) {
-        return { found: true, url: res.url || answer, method: 'llm_fallback', llm_attempted: true };
+        steps.push(`llm:hit:${answerPath}`);
+        return done({ found: true, url: res.url || answer, method: 'llm_fallback', llm_attempted: true });
       }
+      steps.push(`llm:validation_failed:${res ? res.status : 'no-res'}:${answer.slice(0, 60)}`);
     } catch (err) {
+      steps.push(`llm:validation_failed:fetch_error:${answer.slice(0, 60)}`);
       verboseLog(verbose, 'llm-proposed-url validation failed:', err.message);
     }
 
-    return { found: false, method: 'not_found', llm_attempted: true };
+    return done({ found: false, method: 'not_found', llm_attempted: true });
   } catch (err) {
     if (err.name === 'DailyQuotaError') throw err; // let it abort the run
+    steps.push(`llm:error:${err.message.slice(0, 60)}`);
     warn(`LLM fallback failed for ${company.name || domain}:`, err.message);
-    return { found: false, method: 'not_found', llm_attempted: true, llm_error: true };
+    return done({ found: false, method: 'not_found', llm_attempted: true, llm_error: true });
   }
 }
 
@@ -502,8 +565,28 @@ async function main() {
   if (argv.includes('--help') || argv.includes('-h')) { usage(); process.exit(0); }
   const force = argv.includes('--force');
   const verbose = argv.includes('--verbose');
+  const debug = argv.includes('--debug');
   const usePlaywright = argv.includes('--playwright');
   const limit = parseLimitArg(argv);
+
+  // Debug log setup — written as JSONL so it can be tailed while running
+  let debugLogPath = null;
+  let debugWriteQueue = Promise.resolve();
+  if (debug) {
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const runsDir = path.join(process.cwd(), 'data', 'runs');
+    await fs.promises.mkdir(runsDir, { recursive: true });
+    debugLogPath = path.join(runsDir, `discovery-debug-${dateStr}.jsonl`);
+    log(`Debug log: ${debugLogPath}`);
+  }
+
+  function appendDebugEntry(entry) {
+    if (!debugLogPath) return;
+    const line = JSON.stringify(entry) + '\n';
+    debugWriteQueue = debugWriteQueue
+      .then(() => fs.promises.appendFile(debugLogPath, line, 'utf8'))
+      .catch(() => {});
+  }
 
   const dataPath = path.join(process.cwd(), 'data', 'companies.json');
   if (!fs.existsSync(dataPath)) {
@@ -574,8 +657,9 @@ async function main() {
       const idx = indices.shift();
       if (idx === undefined) break;
       const company = companies[idx];
+      const companyOpts = { force, verbose, usePlaywright };
       try {
-        const result = await processCompany(company, { force, verbose, usePlaywright });
+        const result = await processCompany(company, companyOpts);
         totalProcessed++;
         if (result.skipped) {
           // no change
@@ -584,6 +668,7 @@ async function main() {
           company.careers_page_reachable = true;
           company.careers_page_discovery_method = result.method;
           company.ats_platform = detectAtsPlatform(result.url);
+          delete company.careers_page_failure_reason;
           foundCount++;
           methodCounts[result.method] = (methodCounts[result.method] || 0) + 1;
         } else {
@@ -591,6 +676,7 @@ async function main() {
           company.careers_page_reachable = false;
           company.careers_page_discovery_method = result.method || 'not_found';
           company.ats_platform = null;
+          company.careers_page_failure_reason = classifyFailureReason(result.steps || []);
           notFoundCount++;
           methodCounts[company.careers_page_discovery_method] = (methodCounts[company.careers_page_discovery_method] || 0) + 1;
         }
@@ -604,6 +690,22 @@ async function main() {
         if (result && result.llm_error) {
           company.llm_error = true;
           llmErrorCount++;
+        }
+
+        // Write debug entry
+        if (debug && !result.skipped) {
+          appendDebugEntry({
+            ts: new Date().toISOString(),
+            company: company.name || '',
+            domain: company.domain || '',
+            found: !!result.found,
+            method: result.method || null,
+            url: result.url || null,
+            failure_reason: company.careers_page_failure_reason || null,
+            steps: result.steps || [],
+            duration_ms: result.duration_ms || 0,
+            llm_raw: companyOpts._llmRaw || null,
+          });
         }
 
         // update progress
