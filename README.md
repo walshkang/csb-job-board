@@ -13,14 +13,14 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 3. [Pipeline Overview](#pipeline-overview)
 4. [Step-by-Step Reference](#step-by-step-reference)
    - [Step 1 — OCR: Import companies from PitchBook](#step-1--ocr-import-companies-from-pitchbook)
-   - [Step 2 — Discovery: Find careers pages](#step-2--discovery-find-careers-pages)
-   - [Step 3 — Fingerprint: Identify job platforms](#step-3--fingerprint-identify-job-platforms)
-   - [Step 4 — Scrape: Fetch job listings](#step-4--scrape-fetch-job-listings)
-   - [Step 5 — Extract: Parse jobs into structured records](#step-5--extract-parse-jobs-into-structured-records)
-   - [Step 6 — Enrich: Classify jobs with AI](#step-6--enrich-classify-jobs-with-ai)
-   - [Step 7 — QA: Spot-check before syncing](#step-7--qa-spot-check-before-syncing)
-   - [Step 8 — Temporal: Track job status over time](#step-8--temporal-track-job-status-over-time)
-   - [Step 9 — Categorize: Tag companies by climate sector](#step-9--categorize-tag-companies-by-climate-sector)
+   - [Step 2 — Categorize: Tag companies by climate sector](#step-2--categorize-tag-companies-by-climate-sector)
+   - [Step 3 — Discovery: Find careers pages](#step-3--discovery-find-careers-pages)
+   - [Step 4 — Fingerprint: Identify job platforms](#step-4--fingerprint-identify-job-platforms)
+   - [Step 5 — Scrape: Fetch job listings](#step-5--scrape-fetch-job-listings)
+   - [Step 6 — Extract: Parse jobs into structured records](#step-6--extract-parse-jobs-into-structured-records)
+   - [Step 7 — Enrich: Classify jobs with AI](#step-7--enrich-classify-jobs-with-ai)
+   - [Step 8 — QA: Spot-check before syncing](#step-8--qa-spot-check-before-syncing)
+   - [Step 9 — Temporal: Track job status over time](#step-9--temporal-track-job-status-over-time)
    - [Step 10 — Notion Sync: Push to Notion](#step-10--notion-sync-push-to-notion)
    - [Observability: Reporter + Reviewer](#observability-reporter--reviewer)
 5. [Prompt Reference](#prompt-reference)
@@ -177,7 +177,38 @@ company_profile     — { sector, hq, employees, keywords }
 
 ---
 
-### Step 2 — Discovery: Find careers pages
+### Step 2 — Categorize: Tag companies by climate sector
+
+**What it does:** Assigns each company a climate-tech industry category from `data/climate-tech-map-industry-categories.json`. Makes one LLM call per unique company — PitchBook keywords, HQ, and company metadata are sufficient input. `data/jobs.json` is optional; run this immediately after OCR so category fields are available throughout the rest of the pipeline.
+
+**Prompt injected:** Built inline — taxonomy categories + company name + sector + PitchBook keywords + scraped description
+
+**Input:** `data/companies.json` + `data/climate-tech-map-industry-categories.json` (jobs.json optional)
+
+**Output:** `data/companies.json` updated with:
+```
+climate_tech_category   — e.g. "Solar Energy", "Grid Infrastructure"
+primary_sector          — e.g. "Clean Power"
+opportunity_area        — e.g. "Generation"
+category_confidence     — high | medium | low
+```
+Category fields are also stamped onto jobs at extraction time (Step 6).
+
+```bash
+npm run categorize
+
+# Re-categorize all (including already-tagged)
+npm run categorize -- --force
+
+# Preview without writing
+npm run categorize -- --dry-run
+```
+
+> **Taxonomy note:** `data/climate-tech-map-industry-categories.json` is the canonical taxonomy file. Do not auto-apply changes to it — any edits require human review.
+
+---
+
+### Step 3 — Discovery: Find careers pages
 
 **What it does:** For each company in `companies.json`, attempts to discover its careers page URL. Skips companies already marked `careers_page_reachable: true` (use `--force` to re-run all).
 
@@ -207,7 +238,7 @@ npm run discovery -- --verbose
 
 ---
 
-### Step 3 — Fingerprint: Identify job platforms
+### Step 4 — Fingerprint: Identify job platforms
 
 **What it does:** Fetches each company's homepage and careers page and scans HTML for ATS fingerprints (script tags, API calls, CSS classes). Updates `ats_platform` and `ats_slug` so the scraper can route to the right API adapter.
 
@@ -227,7 +258,7 @@ npm run fingerprint
 
 ---
 
-### Step 4 — Scrape: Fetch job listings
+### Step 5 — Scrape: Fetch job listings
 
 **What it does:** Fetches raw job data from each company's careers page. Routes by `ats_platform` — uses official APIs when available, falls back to direct HTML, and uses headless Chromium (Playwright) as a last resort for JS-rendered pages.
 
@@ -258,7 +289,7 @@ npm run scrape
 
 ---
 
-### Step 5 — Extract: Parse jobs into structured records
+### Step 6 — Extract: Parse jobs into structured records
 
 **What it does:** Converts raw artifacts into structured job records in `data/jobs.json`. For ATS API responses (JSON), uses direct field mappers — no LLM. For HTML artifacts, calls the LLM with `extraction.txt`.
 
@@ -297,7 +328,7 @@ last_seen_at        — ISO timestamp of most recent extraction
 
 ---
 
-### Step 6 — Enrich: Classify jobs with AI
+### Step 7 — Enrich: Classify jobs with AI
 
 **What it does:** Classifies each job using the LLM. Skips jobs already enriched at the current prompt version unless `--force` is passed.
 
@@ -342,7 +373,7 @@ npm run enrich -- --concurrency=5 --delay=1000
 
 ---
 
-### Step 7 — QA: Spot-check before syncing
+### Step 8 — QA: Spot-check before syncing
 
 **What it does:** Read-only checks on `data/jobs.json`. Prints `[WARN]` lines for anything suspicious. Run this before Notion sync.
 
@@ -360,7 +391,7 @@ npm run qa
 
 ---
 
-### Step 8 — Temporal: Track job status over time
+### Step 9 — Temporal: Track job status over time
 
 **What it does:** Compares the current job list against prior scrape runs to mark which jobs are still active, when they were removed, and how long they've been live. Also flags dormant companies (≥3 consecutive scrape runs with no jobs).
 
@@ -381,36 +412,6 @@ node src/agents/temporal.js --dry-run
 # Verbose output
 node src/agents/temporal.js --verbose
 ```
-
----
-
-### Step 9 — Categorize: Tag companies by climate sector
-
-**What it does:** Assigns each company (and all its jobs) a climate-tech industry category from `data/climate-tech-map-industry-categories.json`. Makes one LLM call per unique company — not per job — and applies the result to all that company's jobs.
-
-**Prompt injected:** Built inline — taxonomy categories + company name + sector + scraped description + job title samples
-
-**Input:** `data/jobs.json`, `data/companies.json`, `data/climate-tech-map-industry-categories.json`
-
-**Output:** `data/jobs.json` and `data/companies.json` updated with:
-```
-climate_tech_category   — e.g. "Solar Energy", "Grid Infrastructure"
-primary_sector          — e.g. "Clean Power"
-opportunity_area        — e.g. "Generation"
-category_confidence     — high | medium | low
-```
-
-```bash
-npm run categorize
-
-# Re-categorize all (including already-tagged)
-npm run categorize -- --force
-
-# Preview without writing
-npm run categorize -- --dry-run
-```
-
-> **Taxonomy note:** `data/climate-tech-map-industry-categories.json` is the canonical taxonomy file. Do not auto-apply changes to it — any edits require human review.
 
 ---
 
