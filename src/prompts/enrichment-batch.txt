@@ -1,0 +1,12 @@
+Classify these {n} job listings for a climate-tech job board aimed at MBA candidates.
+
+Return a JSON array of exactly {n} objects in the same order. Each object must have the same keys as the single-job format.
+
+Climate-tech categories for reference: {category_names}
+
+## Jobs
+{jobs}
+
+{field_rules}
+
+Return a JSON array only. No markdown fences.

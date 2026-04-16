@@ -1,0 +1,24 @@
+You are reviewing a pipeline run for a climate tech job board scraper.
+
+Run summary:
+{run_summary}
+
+Sample scrape errors (up to 10):
+{scrape_errors}
+
+Sample enrichment errors (up to 5, job titles + error messages only):
+{enrichment_errors}
+
+Current extraction prompt (truncated to 500 chars):
+{extraction_prompt_excerpt}
+
+Current enrichment prompt (truncated to 500 chars):
+{enrichment_prompt_excerpt}
+
+Write a concise postmortem in markdown. Include:
+1. What went well (based on success rates)
+2. What failed and likely why (pattern-match on errors)
+3. Which pipeline stage had the worst yield and what to investigate
+4. One concrete suggestion for improving the extraction or enrichment prompt based on the errors seen
+
+Be specific. No generic advice. If data is missing or errors are zero, say so.

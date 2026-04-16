@@ -182,7 +182,13 @@ async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {
   const frIdx = promptTemplate.indexOf('## Field rules');
   if (frIdx !== -1) fieldRules = promptTemplate.slice(frIdx);
 
-  const prompt = `Classify these ${N} job listings for a climate-tech job board aimed at MBA candidates.\n\nReturn a JSON array of exactly ${N} objects in the same order. Each object must have the same keys as the single-job format.\n\nClimate-tech categories for reference: ${categories.join(', ')}\n\n## Jobs\n${jobsRendered}\n\n${fieldRules}\n\nReturn a JSON array only. No markdown fences.`;
+  const batchTemplate = fs.readFileSync(path.join(__dirname, '../prompts/enrichment-batch.txt'), 'utf8');
+  const prompt = batchTemplate
+    .replace('{n}', String(N))
+    .replace('{n}', String(N)) // second occurrence in "exactly {n} objects"
+    .replace('{category_names}', categories.join(', '))
+    .replace('{jobs}', jobsRendered)
+    .replace('{field_rules}', fieldRules);
 
   const raw = await callGeminiEnrichment(prompt, options);
 

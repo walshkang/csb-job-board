@@ -149,31 +149,13 @@ async function main() {
   const scrapeErrorsJson = scrapeErrors.length ? JSON.stringify(scrapeErrors, null, 2) : '[]';
   const enrichmentErrorsJson = enrichmentErrors.length ? JSON.stringify(enrichmentErrors, null, 2) : '[]';
 
-  const prompt = `You are reviewing a pipeline run for a climate tech job board scraper.
-
-Run summary:
-${runSummaryJson}
-
-Sample scrape errors (up to 10):
-${scrapeErrorsJson}
-
-Sample enrichment errors (up to 5, job titles + error messages only):
-${enrichmentErrorsJson}
-
-Current extraction prompt (truncated to 500 chars):
-${extractionPromptExcerpt}
-
-Current enrichment prompt (truncated to 500 chars):
-${enrichmentPromptExcerpt}
-
-Write a concise postmortem in markdown. Include:
-1. What went well (based on success rates)
-2. What failed and likely why (pattern-match on errors)
-3. Which pipeline stage had the worst yield and what to investigate
-4. One concrete suggestion for improving the extraction or enrichment prompt based on the errors seen
-
-Be specific. No generic advice. If data is missing or errors are zero, say so.
-`;
+  const promptTemplate = fs.readFileSync(path.join(__dirname, '../prompts/reviewer.txt'), 'utf8');
+  const prompt = promptTemplate
+    .replace('{run_summary}', runSummaryJson)
+    .replace('{scrape_errors}', scrapeErrorsJson)
+    .replace('{enrichment_errors}', enrichmentErrorsJson)
+    .replace('{extraction_prompt_excerpt}', extractionPromptExcerpt)
+    .replace('{enrichment_prompt_excerpt}', enrichmentPromptExcerpt);
 
   const { provider, apiKey, model, fallbackModel } = config.resolveAgent('reviewer');
   if (!apiKey) {

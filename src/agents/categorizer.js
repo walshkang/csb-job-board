@@ -71,33 +71,16 @@ async function categorizeCompany(companyRecord, repJob, categoriesList, opts, sa
   const pitchbookKeywords = (companyRecord.company_profile && companyRecord.company_profile.keywords) ? companyRecord.company_profile.keywords : null;
   const samplesText = (!samples || samples.length === 0) ? 'None' : samples.map(s => `- ${s.title}: ${s.summary || ''}`).join('\n');
 
-  const prompt = `You are categorizing a climate-tech company for an MBA-focused job board.
-
-Company: ${companyName}
-Company profile (scraped): ${companyProfile || 'N/A'}
-PitchBook keywords: ${pitchbookKeywords || 'N/A'}
-Sample roles (up to 5):
-${samplesText}
-
-Representative job title: ${jobTitle}
-Job function: ${jobFunction}
-Description summary: ${descSummary}
-
-Climate-tech categories (Tech Category Name | Related Opportunity Area | Primary Sector | Description | Example Keywords):
-${categoriesList}
-
-Task: Select the single best-matching Tech Category Name for this company.
-
-Matching priority (highest to lowest):
-1. PitchBook keywords — if any keyword directly or closely matches a category's example keywords, prefer that category and set confidence "high". Treat truncated keywords (ending in "...") as partial but valid signal.
-2. Company profile / description — use scraped description or description summary to confirm or break ties.
-3. Job titles / functions — use as a secondary signal only.
-4. Company name — use last; do not infer category from name alone.
-
-If no category fits well (e.g. generic B2B SaaS, pure finance, professional services with no climate angle), return "None". Do not default to a vaguely related category — a wrong category is worse than "None".
-
-Return ONLY a JSON object:
-{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}`;
+  const promptTemplate = fs.readFileSync(path.join(__dirname, '../prompts/categorizer.txt'), 'utf8');
+  const prompt = promptTemplate
+    .replace('{company_name}', companyName)
+    .replace('{company_profile}', companyProfile || 'N/A')
+    .replace('{pitchbook_keywords}', pitchbookKeywords || 'N/A')
+    .replace('{sample_roles}', samplesText)
+    .replace('{job_title}', jobTitle)
+    .replace('{job_function}', jobFunction)
+    .replace('{description_summary}', descSummary)
+    .replace('{categories_list}', categoriesList);
 
   try {
     const raw = await callLLM({ provider, apiKey, model, prompt, maxOutputTokens: 4096 });

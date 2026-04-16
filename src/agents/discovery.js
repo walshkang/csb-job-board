@@ -44,6 +44,7 @@ function chooseUserAgent(i) {
 let fetchCounter = 0;
 
 const STANDARD_PATHS = [
+  // Core
   '/careers',
   '/jobs',
   '/about/careers',
@@ -52,6 +53,38 @@ const STANDARD_PATHS = [
   '/openings',
   '/hiring',
   '/opportunities',
+
+  // Singular forms
+  '/career',
+  '/job',
+
+  // Action-oriented & team
+  '/join-us',
+  '/work-with-us',
+  '/work-here',
+  '/join-our-team',
+  '/join-the-team',
+  '/our-team',
+
+  // Regional & search variants
+  '/vacancies',
+  '/job-openings',
+  '/current-openings',
+  '/search-jobs',
+  '/job-search',
+  '/roles',
+
+  // Nested corporate variants
+  '/about/jobs',
+  '/about-us/careers',
+  '/about-us/jobs',
+  '/company/jobs',
+  '/corporate/careers',
+
+  // Culture / employer branding
+  '/life',
+  '/culture',
+  '/people',
 ];
 
 function usage() {
@@ -390,11 +423,18 @@ async function processCompany(company, opts) {
     let prompt;
     if (homepageHtmlAvailable) {
       const homepageHtml = (homepageCache.html || '').slice(0, 10000);
-      prompt = `Given this homepage HTML for ${company.name || domain}, what is the careers page URL? Return just the URL or the string NOT_FOUND.\n\nHTML:\n${homepageHtml}`;
+      const tmpl = fs.readFileSync(path.join(__dirname, '../prompts/discovery-html.txt'), 'utf8');
+      prompt = tmpl
+        .replace('{company_name}', company.name || domain)
+        .replace('{homepage_html}', homepageHtml);
     } else {
       const slugs = deriveAtsSlugs(company).join(', ');
       verboseLog(verbose, `LLM fallback without HTML for ${domain} — using name+domain+slugs: ${slugs}`);
-      prompt = `Company: ${company.name || ''}\nDomain: ${domain}\nDerived slugs: ${slugs}\n\nBased on the company name and domain, what is the most likely careers page URL? Return just the URL or the string NOT_FOUND.`;
+      const tmpl = fs.readFileSync(path.join(__dirname, '../prompts/discovery-nohtml.txt'), 'utf8');
+      prompt = tmpl
+        .replace('{company_name}', company.name || '')
+        .replace('{domain}', domain)
+        .replace('{slugs}', slugs);
     }
 
     // Call LLM and mark that it was attempted so callers can record metrics.

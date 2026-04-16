@@ -1,0 +1,5 @@
+Company: {company_name}
+Domain: {domain}
+Derived slugs: {slugs}
+
+Based on the company name and domain, what is the most likely careers page URL? Return just the URL or the string NOT_FOUND.
