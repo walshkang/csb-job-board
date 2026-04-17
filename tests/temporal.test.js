@@ -1,31 +1,29 @@
 const { getSeenUrlsFromRun, getRunJobCount, updateJobsForLastRun, updateCompaniesDormancy } = require('../src/agents/temporal');
 
 describe('Temporal agent helpers', () => {
-  test('days_live calculation updates correctly when last_seen_at changes', () => {
+  test('days_live calculation updates correctly', () => {
     const now = new Date('2026-01-04T12:00:00.000Z').toISOString();
     const jobs = [
-      { id: 'j1', company_id: 'c1', source_url: 'u1', first_seen_at: '2026-01-01T00:00:00.000Z', last_seen_at: '2026-01-02T00:00:00.000Z' }
+      { id: 'j1', company_id: 'c1', source_url: 'u1', first_seen_at: '2026-01-01T00:00:00.000Z', last_seen_at: '2026-01-04T12:00:00.000Z' }
     ];
 
-    const lastRun = { company_id: 'c1', seen_urls: ['u1'] };
+    const lastRun = { company_id: 'c1', status: 'success', scraped_at: now };
     const stats = updateJobsForLastRun(jobs, lastRun, now);
-    expect(stats.updated).toBe(1);
-    expect(jobs[0].last_seen_at).toBe(now);
+    expect(stats.removed).toBe(0);
     // days from 2026-01-01 to 2026-01-04T12:00 -> 3.5 days -> floor -> 3
     expect(jobs[0].days_live).toBe(3);
   });
 
-  test('removed_at detection sets removed_at when job not present in run', () => {
+  test('removed_at detection sets removed_at when job last_seen_at is older than run', () => {
     const now = new Date('2026-02-01T00:00:00.000Z').toISOString();
     const jobs = [
-      { id: 'j1', company_id: 'c1', source_url: 'a', first_seen_at: '2026-01-01T00:00:00.000Z' },
-      { id: 'j2', company_id: 'c1', source_url: 'b', first_seen_at: '2026-01-15T00:00:00.000Z' }
+      { id: 'j1', company_id: 'c1', source_url: 'a', first_seen_at: '2026-01-01T00:00:00.000Z', last_seen_at: '2026-01-15T00:00:00.000Z' },
+      { id: 'j2', company_id: 'c1', source_url: 'b', first_seen_at: '2026-01-15T00:00:00.000Z', last_seen_at: now }
     ];
 
-    const lastRun = { company_id: 'c1', seen_urls: ['b'] };
+    const lastRun = { company_id: 'c1', status: 'success', scraped_at: now };
     const stats = updateJobsForLastRun(jobs, lastRun, now);
-    expect(stats.updated).toBe(1); // 'b' updated
-    expect(stats.removed).toBe(1); // 'a' marked removed
+    expect(stats.removed).toBe(1); // 'a' marked removed because 01-15 is older than 02-01
     expect(jobs.find(j => j.source_url === 'a').removed_at).toBe(now);
     expect(jobs.find(j => j.source_url === 'b').removed_at).toBeUndefined();
   });

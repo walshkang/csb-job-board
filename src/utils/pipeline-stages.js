@@ -22,7 +22,7 @@ function getStage(company) {
     return 'done';
   }
 
-  if (isBlank(c.ats_platform) && isBlank(c.fingerprint_attempted_at)) {
+  if (isBlank(c.fingerprint_attempted_at)) {
     return 'fingerprint';
   }
 

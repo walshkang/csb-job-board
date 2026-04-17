@@ -20,307 +20,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:39.239Z"
-  },
-  {
-    "id": "42bda13611707df7fa7cb0ddafd1fbae68b87ad2712abd0718b238682c210837",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Director, Project Finance",
-    "source_url": "https://www.dimension-energy.com/careers/director-project-finance",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Director, Project Finance",
-    "job_function": "finance",
-    "seniority_level": "director",
-    "location_type": "unknown",
-    "mba_relevance_score": 90,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:40.741Z"
-  },
-  {
-    "id": "053c2773cb67dda6570d5f234aeca0dd9ab3e47bffd147938d303e7ca09c0b60",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Director, Project Development",
-    "source_url": "https://www.dimension-energy.com/careers/director-project-development",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Director, Project Development",
-    "job_function": "operations",
-    "seniority_level": "director",
-    "location_type": "unknown",
-    "mba_relevance_score": 85,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:42.242Z"
-  },
-  {
-    "id": "5cfa2360a1f93a4966e25468d5a35d9946e14bc3c913af2ab0ccf3981163ef75",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Project Manager, Construction",
-    "source_url": "https://www.dimension-energy.com/careers/project-manager-construction",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Project Manager, Construction",
-    "job_function": "operations",
-    "seniority_level": "mid",
-    "location_type": "unknown",
-    "mba_relevance_score": 65,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:43.743Z"
-  },
-  {
-    "id": "131c8c89e3289ac6cefd9a47f698074939de103d06374ff571beedb4f9da990c",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Project Manager, Development",
-    "source_url": "https://www.dimension-energy.com/careers/project-manager-development",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Project Manager, Development",
-    "job_function": "operations",
-    "seniority_level": "senior",
-    "location_type": "unknown",
-    "mba_relevance_score": 45,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:45.244Z"
-  },
-  {
-    "id": "36fe634fc2af15b9487a62a4b4e863e8993f8174601bd199169e22f88ff29f8d",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Associate, Project Finance",
-    "source_url": "https://www.dimension-energy.com/careers/associate-project-finance",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Associate, Project Finance",
-    "job_function": "finance",
-    "seniority_level": "entry",
-    "location_type": "unknown",
-    "mba_relevance_score": 90,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:46.746Z"
-  },
-  {
-    "id": "0a2b29130f998d04509906c54d8bc00fe01d67e30cb36e2c61b766a68baea3e7",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Associate, Project Development",
-    "source_url": "https://www.dimension-energy.com/careers/associate-project-development",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Associate, Project Development",
-    "job_function": "sales",
-    "seniority_level": "entry",
-    "location_type": "unknown",
-    "mba_relevance_score": 90,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:48.247Z"
-  },
-  {
-    "id": "04807c938f9b96f459b9c21b6958270a0d21703ef087c217b755996193c5c655",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Analyst, Project Finance",
-    "source_url": "https://www.dimension-energy.com/careers/analyst-project-finance",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Analyst, Project Finance",
-    "job_function": "finance",
-    "seniority_level": "entry",
-    "location_type": "unknown",
-    "mba_relevance_score": 85,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:49.748Z"
-  },
-  {
-    "id": "da0fd249f294e6065ab7c6c601aaf6461b8ff8098f26c35634b221201383970d",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Analyst, Project Development",
-    "source_url": "https://www.dimension-energy.com/careers/analyst-project-development",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Analyst, Project Development",
-    "job_function": "sales",
-    "seniority_level": "entry",
-    "location_type": "unknown",
-    "mba_relevance_score": 80,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:51.249Z"
-  },
-  {
-    "id": "4334c281341f7638482c39f8015a89ffefe9dbbe56392485e38fe348a7a70858",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Analyst, Construction",
-    "source_url": "https://www.dimension-energy.com/careers/analyst-construction",
-    "location_raw": null,
-    "employment_type": null,
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Analyst, Construction",
-    "job_function": "operations",
-    "seniority_level": "entry",
-    "location_type": "unknown",
-    "mba_relevance_score": 30,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:52.751Z"
-  },
-  {
-    "id": "8a2506146edfa2ad8ad5b611e4a6861880a70ce9e542b121a247d43eae1b4e2b",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Intern, Project Finance",
-    "source_url": "https://www.dimension-energy.com/careers/intern-project-finance",
-    "location_raw": null,
-    "employment_type": "intern",
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.619Z",
-    "last_seen_at": "2026-04-13T19:13:39.619Z",
-    "job_title_normalized": "Intern, Project Finance",
-    "job_function": "finance",
-    "seniority_level": "intern",
-    "location_type": "unknown",
-    "mba_relevance_score": 90,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:54.257Z"
-  },
-  {
-    "id": "d83497208f79ec91ae8167b8042db098e78627f965276c925185ed3a41cf59a8",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Intern, Project Development",
-    "source_url": "https://www.dimension-energy.com/careers/intern-project-development",
-    "location_raw": null,
-    "employment_type": "intern",
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.620Z",
-    "last_seen_at": "2026-04-13T19:13:39.620Z",
-    "job_title_normalized": "Project Development Intern",
-    "job_function": "strategy",
-    "seniority_level": "intern",
-    "location_type": "unknown",
-    "mba_relevance_score": 85,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:55.759Z"
-  },
-  {
-    "id": "6f28479fef4e84d8d628307ae33ebc7bd1528d8e1fdfc540538e768da14f1a1b",
-    "company_id": "wwwdimension-energycom",
-    "job_title_raw": "Intern, Construction",
-    "source_url": "https://www.dimension-energy.com/careers/intern-construction",
-    "location_raw": null,
-    "employment_type": "intern",
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-13T19:13:39.620Z",
-    "last_seen_at": "2026-04-13T19:13:39.620Z",
-    "job_title_normalized": "Construction Intern",
-    "job_function": "operations",
-    "seniority_level": "intern",
-    "location_type": "unknown",
-    "mba_relevance_score": 10,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:57.260Z"
-  },
-  {
-    "id": "ae888b4461a91a971a252fb6e516aeaeedd54f50bbf8e43f5febefd3c659f3f1",
-    "company_id": "wwwdimension-energycom",
-    "company_name": "Dimension Renewable Energy",
-    "job_title_raw": "Associate, Project Finance",
-    "source_url": "https://dimensionenergy.applytojob.com/apply/y021111111/Associate-Project-Finance",
-    "location_raw": "New York, NY",
-    "employment_type": "full_time",
-    "description_raw": null,
-    "description_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "first_seen_at": "2026-04-14T19:41:07.308Z",
-    "last_seen_at": "2026-04-14T19:41:07.308Z",
-    "job_title_normalized": "Associate, Project Finance",
-    "job_function": "other",
-    "seniority_level": null,
-    "location_type": "unknown",
-    "mba_relevance_score": 0,
-    "description_summary": null,
-    "climate_relevance_confirmed": false,
-    "climate_relevance_reason": null,
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:56:58.762Z"
+    "last_enriched_at": "2026-04-17T02:56:39.239Z",
+    "days_live": 0
   },
   {
     "id": "ef18970eebb512c75d4a8e0e52372a3bf972ed9f4bf1c7c60b4200d8f0a8f065",
@@ -344,7 +45,8 @@
     "climate_relevance_reason": "The company develops compact fusion devices for clean energy, which directly aligns with the 'Fusion' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "858ae79f93bfeb87f16c0b4a6a2f184ae07d01f2e0820cf11ae7f06988963809",
-    "last_enriched_at": "2026-04-14T19:55:10.026Z"
+    "last_enriched_at": "2026-04-14T19:55:10.026Z",
+    "days_live": 0
   },
   {
     "id": "247ba8f57c00c2990f5a47c98dae1f40763bdab30aa20f71ddb8349ba66fd639",
@@ -368,7 +70,8 @@
     "climate_relevance_reason": "The job listing is provided for a climate-tech job board, implying the company operates within the climate-tech sector, though specific categories are not detailed in the truncated description.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "cc01175265a4bee072e614d032cf818cf9fcf0d650ffe47751d69f60b6853dc5",
-    "last_enriched_at": "2026-04-14T19:55:12.030Z"
+    "last_enriched_at": "2026-04-14T19:55:12.030Z",
+    "days_live": 0
   },
   {
     "id": "ba57e7c1a2ce3b9a9aaba2618a544d981ca009b5863dbc524004c47e76f3743c",
@@ -392,7 +95,8 @@
     "climate_relevance_reason": "The job listing is intended for a climate-tech job board, indicating the company operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "1fd2501525e7894ee65c50b256748f21592780f4ce478475ee529466139972f6",
-    "last_enriched_at": "2026-04-17T02:54:22.194Z"
+    "last_enriched_at": "2026-04-17T02:54:22.194Z",
+    "days_live": 0
   },
   {
     "id": "67a85fb8dc915145227038ff0d528fe59ef2ee034ced3f465232eb1fbba8b66c",
@@ -416,7 +120,8 @@
     "climate_relevance_reason": "The job is listed on a climate-tech job board, indicating the company Vulcan Elements operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "25eefe8323777b5fe30d68efbc396d293b7bfeb291631f950604644a63e8fb15",
-    "last_enriched_at": "2026-04-14T19:55:13.958Z"
+    "last_enriched_at": "2026-04-14T19:55:13.958Z",
+    "days_live": 0
   },
   {
     "id": "4c8a89fd0014a9a94ac7beb9b4b22b50ed854d419398868757c12dbf7dd75e71",
@@ -440,7 +145,8 @@
     "climate_relevance_reason": "The job description and company name do not explicitly reference climate, energy transition, sustainability, or any specific climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "37c2a7d3c82f96a02255c28ad61e254a2d6a51daf720e8ed7632ffe093ab1587",
-    "last_enriched_at": "2026-04-17T02:54:22.588Z"
+    "last_enriched_at": "2026-04-17T02:54:22.588Z",
+    "days_live": 0
   },
   {
     "id": "f2654af4fda6531038d5aaf2707c0a986a5ebb216a9f39c0b0510428aaa7c87f",
@@ -464,7 +170,8 @@
     "climate_relevance_reason": "The job is listed for a climate-tech job board, indicating the company operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "8bc46d6852d5644e2d56b40e3267d70df1cadedc1667ad567f72dd8fdc016ac7",
-    "last_enriched_at": "2026-04-14T19:55:14.215Z"
+    "last_enriched_at": "2026-04-14T19:55:14.215Z",
+    "days_live": 0
   },
   {
     "id": "951d5c6aa0f11c49dd4faa33d5c93bf1d00ce1e0840541ee8d78b127b0f835f6",
@@ -488,7 +195,8 @@
     "climate_relevance_reason": "The job listing is provided in the context of a climate-tech job board, indicating Vulcan Elements operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "64bc6822e27db0416b96d95e42d8a266fbf668b5dda0cd4e99df9f6bf970076c",
-    "last_enriched_at": "2026-04-14T19:55:20.042Z"
+    "last_enriched_at": "2026-04-14T19:55:20.042Z",
+    "days_live": 0
   },
   {
     "id": "9d79bb344817e0c7af330879b7f0bdea85dc4ce9274affd168e608fdd9c587eb",
@@ -512,7 +220,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear energy, which falls under climate-tech categories like Fission, Fusion, or Industrial Nuclear.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ddcb8584f8be924a469ec0a2f007adab436589d4f82f545f75fd523fbaad7068",
-    "last_enriched_at": "2026-04-14T19:55:19.473Z"
+    "last_enriched_at": "2026-04-14T19:55:19.473Z",
+    "days_live": 1
   },
   {
     "id": "ce29be5764edb8216ab0c8a6bdd83bd50d37c106ca34445549a23f155a3d697f",
@@ -536,7 +245,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' indicates a focus on nuclear technology, which aligns with the 'Industrial Nuclear' and 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "6f31f2073db064b2cb0a2b3939b0d7aebf89bae7477e11a6eb4b034106bb5ad9",
-    "last_enriched_at": "2026-04-14T19:55:20.069Z"
+    "last_enriched_at": "2026-04-14T19:55:20.069Z",
+    "days_live": 1
   },
   {
     "id": "ea169c01af076be1e771a2dfd435c3479b38f60297e2955b18325681c354b5ee",
@@ -560,7 +270,8 @@
     "climate_relevance_reason": "The role is for a Senior Nuclear Engineer at Valar Atomics, directly contributing to nuclear energy, which is a critical technology for decarbonization and falls under the 'Fission' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "35846c881f8aec5eb342ce4cd6331055ce03278991b217cb3f38fcc2cb87cb42",
-    "last_enriched_at": "2026-04-14T19:55:21.128Z"
+    "last_enriched_at": "2026-04-14T19:55:21.128Z",
+    "days_live": 1
   },
   {
     "id": "48300a10768754713d396bc1ae0f17b5a30243b8c8e9e26b871e512d5a91d13e",
@@ -584,7 +295,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' and the focus on 'advanced systems' strongly suggest a connection to nuclear energy, which falls under the 'Fission', 'Fusion', or 'Industrial Nuclear' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bc98e0bfaab2d55ae7583a769d36217966ee6c7e8aa6a1838f74d64d42f369b5",
-    "last_enriched_at": "2026-04-14T19:55:21.558Z"
+    "last_enriched_at": "2026-04-14T19:55:21.558Z",
+    "days_live": 1
   },
   {
     "id": "86226243eb7390801f9f89b428daf14b682b0903f43c1255c466e94f87791880",
@@ -608,7 +320,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' indicates a focus on atomic energy, which includes nuclear fission or fusion, both recognized climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "98a5655987bb167e765d62d1996cbc6257c6777e4963a727c754c3c66b648a30",
-    "last_enriched_at": "2026-04-14T19:55:22.910Z"
+    "last_enriched_at": "2026-04-14T19:55:22.910Z",
+    "days_live": 1
   },
   {
     "id": "1a65f39da86ff9afd06fad3c33da3d0e58d2d0a3785076e32be04a3985d48e1b",
@@ -632,7 +345,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear energy, which aligns with the 'Fission', 'Fusion', and 'Industrial Nuclear' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ce75e920fc715b37e39f5c50c2ce5f23097629747333e166057394b33d116371",
-    "last_enriched_at": "2026-04-14T19:55:22.414Z"
+    "last_enriched_at": "2026-04-14T19:55:22.414Z",
+    "days_live": 1
   },
   {
     "id": "108c0823d67a7c82b8b385d13983ef5ea055721288dfc64a30ea700c0d560c96",
@@ -656,7 +370,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' indicates a focus on nuclear technology, which falls under the 'Industrial Nuclear' and 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "fffb99ba7f9e637b3ba88448ee923752b8cf17602713017503a54d6ed1e779e9",
-    "last_enriched_at": "2026-04-14T19:55:24.175Z"
+    "last_enriched_at": "2026-04-14T19:55:24.175Z",
+    "days_live": 1
   },
   {
     "id": "2930dd5fbf3522d61201a32b646208f0a740b4b1667116fb9bf5bae46e45574b",
@@ -680,7 +395,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear technology, which is a recognized climate-tech category (e.g., Fission, Fusion, Industrial Nuclear).",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "9aefd081546425830c69aa8f18fbd3f5a6880dddc7e74082a199e9e0552a8ab7",
-    "last_enriched_at": "2026-04-14T19:55:25.751Z"
+    "last_enriched_at": "2026-04-14T19:55:25.751Z",
+    "days_live": 1
   },
   {
     "id": "ad88f522c81bd35e89db62007a9cb844a8a5654b1429efc378a16ffb5420b634",
@@ -704,7 +420,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests involvement in nuclear energy (fission or fusion), which is a recognized climate-tech category for low-carbon power generation.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f1fea408e8c5c12295c7d0e529408e9b56f4926df08b7f0b47f13c8fd4717ee7",
-    "last_enriched_at": "2026-04-14T19:55:24.901Z"
+    "last_enriched_at": "2026-04-14T19:55:24.901Z",
+    "days_live": 1
   },
   {
     "id": "cdb0723ade65d199362bd6f47b6805451b7e5bb562933e206616f25d9649a11b",
@@ -728,7 +445,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear technology, which aligns with the 'Industrial Nuclear', 'Fusion', or 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "9cea6b1d1889f79ff1e85b8b8a1ad869afb1f3bdfd15e409e05251e4306b1609",
-    "last_enriched_at": "2026-04-14T19:55:28.391Z"
+    "last_enriched_at": "2026-04-14T19:55:28.391Z",
+    "days_live": 1
   },
   {
     "id": "924258d88ccdc4a33e636eb4ab70a542844c3a811fc689540b20a4c405328781",
@@ -752,7 +470,8 @@
     "climate_relevance_reason": "The company name 'Valar Atomics' strongly suggests a focus on nuclear energy, which falls under the 'Fission', 'Fusion', or 'Industrial Nuclear' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f1564b33aa0e45c106afde8b1071f5fce28fa92c6151d7cdd5f1316a4b395979",
-    "last_enriched_at": "2026-04-14T19:55:28.896Z"
+    "last_enriched_at": "2026-04-14T19:55:28.896Z",
+    "days_live": 1
   },
   {
     "id": "2803fc72997b72e604c0dd4dd02d06dafcaa54ed08545958763f02f636da971d",
@@ -776,7 +495,8 @@
     "climate_relevance_reason": "The company 'Valar Atomics' indicates a focus on nuclear technology, which falls under the 'Industrial Nuclear' and 'Fission' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "756eeaef83b53024b1af12561dbd67ae9b83f96a0385ac9055f6d2abe215620a",
-    "last_enriched_at": "2026-04-14T19:55:30.993Z"
+    "last_enriched_at": "2026-04-14T19:55:30.993Z",
+    "days_live": 1
   },
   {
     "id": "d4523f777257ae45212917a7b12348b7a34c65d92668e203c49ced48b9181776",
@@ -800,7 +520,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:00.263Z"
+    "last_enriched_at": "2026-04-17T02:57:00.263Z",
+    "days_live": 0
   },
   {
     "id": "16982a9b8b4beee278d4ba1d39ad37d27a02856d461d07541364d189846ccf26",
@@ -824,7 +545,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:01.765Z"
+    "last_enriched_at": "2026-04-17T02:57:01.765Z",
+    "days_live": 0
   },
   {
     "id": "b9da345829d1c2a6b130de25db8fcf864e16bccf454db69f294c687d0c31c9d9",
@@ -848,7 +570,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:03.267Z"
+    "last_enriched_at": "2026-04-17T02:57:03.267Z",
+    "days_live": 0
   },
   {
     "id": "c6d0a194c114fc0c51836c1b1dea93e5ed9037dc70b10d01096c7b4185e779f9",
@@ -872,7 +595,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:04.769Z"
+    "last_enriched_at": "2026-04-17T02:57:04.769Z",
+    "days_live": 0
   },
   {
     "id": "549f0364071273194c60aa9505de14145bf247fb93f845fd0eca90c648be5a3b",
@@ -896,7 +620,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:06.271Z"
+    "last_enriched_at": "2026-04-17T02:57:06.271Z",
+    "days_live": 0
   },
   {
     "id": "adf02ac729eeded4099f7d2b58b0aa9c8bb82f4f5ccc5c9768dbe8aa05c95a73",
@@ -920,7 +645,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:07.772Z"
+    "last_enriched_at": "2026-04-17T02:57:07.772Z",
+    "days_live": 0
   },
   {
     "id": "0144edef4ef7262e0775f53595f311b08d5a6b6df46934db7f0957b75106bc5a",
@@ -944,7 +670,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:09.279Z"
+    "last_enriched_at": "2026-04-17T02:57:09.279Z",
+    "days_live": 0
   },
   {
     "id": "1be45084f1c747960306a61b685274ecdb40c87aaacb67bd430cb4ed17626e06",
@@ -968,7 +695,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:10.780Z"
+    "last_enriched_at": "2026-04-17T02:57:10.780Z",
+    "days_live": 0
   },
   {
     "id": "5cd3095aa65385f4b25c4987551e4b0f2f9db0786c9f919992c1f806d1253fb3",
@@ -992,7 +720,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:12.281Z"
+    "last_enriched_at": "2026-04-17T02:57:12.281Z",
+    "days_live": 0
   },
   {
     "id": "08a86a395c0afcdc18357a8a33a644d42b36960fd18932e342feb2950c675adf",
@@ -1016,7 +745,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:13.782Z"
+    "last_enriched_at": "2026-04-17T02:57:13.782Z",
+    "days_live": 0
   },
   {
     "id": "f802025d5692c7ebac187b11db68f2392523371e81d63f8589a178df9fca6271",
@@ -1040,7 +770,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:15.284Z"
+    "last_enriched_at": "2026-04-17T02:57:15.284Z",
+    "days_live": 0
   },
   {
     "id": "653e3c81a38ccf6a80752b1f001b2d4146905eccb32dee8741fdb385d2d2c784",
@@ -1064,7 +795,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:16.785Z"
+    "last_enriched_at": "2026-04-17T02:57:16.785Z",
+    "days_live": 0
   },
   {
     "id": "db7dcd81a7c6c17fe58d8a09a89da69c60666bef2d50a925df7e22b9180ec6f9",
@@ -1088,7 +820,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:18.286Z"
+    "last_enriched_at": "2026-04-17T02:57:18.286Z",
+    "days_live": 0
   },
   {
     "id": "bc9d230fd5bc80590e2a38fa9fca4b00a5c23448283cd9c0d63c1df7f9c57fd5",
@@ -1112,7 +845,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:19.787Z"
+    "last_enriched_at": "2026-04-17T02:57:19.787Z",
+    "days_live": 0
   },
   {
     "id": "ecaaabaff71982bb73e159b8b0badd0f95e536ad760bc523da2a4ecd4153cce8",
@@ -1136,7 +870,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:21.289Z"
+    "last_enriched_at": "2026-04-17T02:57:21.289Z",
+    "days_live": 0
   },
   {
     "id": "44437100a6b9b11055d035a28d2446760297efa45a96a63e6cec72efd3f9293f",
@@ -1160,7 +895,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:22.791Z"
+    "last_enriched_at": "2026-04-17T02:57:22.791Z",
+    "days_live": 0
   },
   {
     "id": "60f05b4d5313e97a9bb263c5df75c44334d5d2c6363b99d89ab4e905096dbf6b",
@@ -1184,7 +920,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:24.297Z"
+    "last_enriched_at": "2026-04-17T02:57:24.297Z",
+    "days_live": 0
   },
   {
     "id": "cd9dc5054a7b75864a17d340df2e48ff2a42c8d9f8ab86bb7caf7fecb10b7310",
@@ -1208,7 +945,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:25.798Z"
+    "last_enriched_at": "2026-04-17T02:57:25.798Z",
+    "days_live": 0
   },
   {
     "id": "bdc564b7f38ac378fb686e3e687e56ad4852853b26dceb5a85e489fecef0d76d",
@@ -1232,7 +970,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:27.298Z"
+    "last_enriched_at": "2026-04-17T02:57:27.298Z",
+    "days_live": 0
   },
   {
     "id": "f649dbe314c850b8c49e440391c7c05f182d7500b69d14ab71aed814f0b9fee3",
@@ -1256,7 +995,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:28.799Z"
+    "last_enriched_at": "2026-04-17T02:57:28.799Z",
+    "days_live": 0
   },
   {
     "id": "291169e7294a8c4da828315de33f0b8d499b15f6287eac5f642890e0512898e3",
@@ -1280,7 +1020,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:30.301Z"
+    "last_enriched_at": "2026-04-17T02:57:30.301Z",
+    "days_live": 0
   },
   {
     "id": "241ed5960e2d83d50ed60f955ee3acc2b63837bc6872fcd9e569fcb56afb0ad2",
@@ -1304,7 +1045,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:31.802Z"
+    "last_enriched_at": "2026-04-17T02:57:31.802Z",
+    "days_live": 0
   },
   {
     "id": "cc412e1ec61ae06942ef0d0371a7b03cba968fefcbbeae36a6efbf6219fb4323",
@@ -1328,7 +1070,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:33.303Z"
+    "last_enriched_at": "2026-04-17T02:57:33.303Z",
+    "days_live": 0
   },
   {
     "id": "93aa77ac713eab8526aab09d26bf1070bdabf381135c1e16b9639790ddff71f3",
@@ -1352,7 +1095,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:34.805Z"
+    "last_enriched_at": "2026-04-17T02:57:34.805Z",
+    "days_live": 0
   },
   {
     "id": "b38847e31a5b1b1a8de889902398f29852c7124488a6a599e188252c14cea6a0",
@@ -1376,7 +1120,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:36.306Z"
+    "last_enriched_at": "2026-04-17T02:57:36.306Z",
+    "days_live": 0
   },
   {
     "id": "31482d97db1f0202a35f2a3538667d6faf9e1f03d2947b4684df91b02e4be794",
@@ -1400,7 +1145,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:37.808Z"
+    "last_enriched_at": "2026-04-17T02:57:37.808Z",
+    "days_live": 0
   },
   {
     "id": "5e64ed3fb76e3b7481856d1f01080457b9e63aed2a9ce34d960f562601d5f06c",
@@ -1424,7 +1170,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:39.314Z"
+    "last_enriched_at": "2026-04-17T02:57:39.314Z",
+    "days_live": 0
   },
   {
     "id": "f29039a12aec6bcebae314dd211c2791f4dda5ea0fda4742ffa176fb228deaf7",
@@ -1448,7 +1195,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:40.815Z"
+    "last_enriched_at": "2026-04-17T02:57:40.815Z",
+    "days_live": 0
   },
   {
     "id": "a39e6c6e7710451b58d28c6f77aacd9b65148a3708afe81c6e7ae330144997dc",
@@ -1472,7 +1220,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:42.317Z"
+    "last_enriched_at": "2026-04-17T02:57:42.317Z",
+    "days_live": 0
   },
   {
     "id": "5122cf03e1041e97ffa555309aab337735f550eaae42d5b5ea6470d3673d383a",
@@ -1496,7 +1245,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:43.818Z"
+    "last_enriched_at": "2026-04-17T02:57:43.818Z",
+    "days_live": 0
   },
   {
     "id": "5ab498813bd60cb9171e57029d0756e932bd054ec48dbb430c08aa0a8c4959e4",
@@ -1520,7 +1270,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:45.319Z"
+    "last_enriched_at": "2026-04-17T02:57:45.319Z",
+    "days_live": 0
   },
   {
     "id": "f054e259230f2dd8516fde4c367dc32361111d850e9e299cea7e059386c8ef1c",
@@ -1544,7 +1295,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:46.821Z"
+    "last_enriched_at": "2026-04-17T02:57:46.821Z",
+    "days_live": 0
   },
   {
     "id": "391b4694eac6ba348166e96037f44227c6e24d1f8776cff85f98ad4ff38e57df",
@@ -1568,7 +1320,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:48.322Z"
+    "last_enriched_at": "2026-04-17T02:57:48.322Z",
+    "days_live": 0
   },
   {
     "id": "ca1566147b75b64b5b489bef7e43bee4b45b9beabe721ef799435334ce280daa",
@@ -1592,7 +1345,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:49.824Z"
+    "last_enriched_at": "2026-04-17T02:57:49.824Z",
+    "days_live": 0
   },
   {
     "id": "256f8bb65c5a0d035cb0a1275fde29137353d918c0faf6013f7473278f0a6011",
@@ -1616,7 +1370,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:51.325Z"
+    "last_enriched_at": "2026-04-17T02:57:51.325Z",
+    "days_live": 0
   },
   {
     "id": "6888d5ef74f54c53c1c837bd467f687826c086e4442d2206c8d76b57086d1745",
@@ -1640,7 +1395,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:52.826Z"
+    "last_enriched_at": "2026-04-17T02:57:52.826Z",
+    "days_live": 0
   },
   {
     "id": "f8fd62e19bdeffdb3c29e5a1b4e2a70213cc5bc4f902f6ad49f08b76513658ee",
@@ -1664,7 +1420,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:54.332Z"
+    "last_enriched_at": "2026-04-17T02:57:54.332Z",
+    "days_live": 0
   },
   {
     "id": "bb2bff41b80f492d3af5e51c4e31f9e1bdd69742bc5ff814fcad8a9013912496",
@@ -1688,7 +1445,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:55.833Z"
+    "last_enriched_at": "2026-04-17T02:57:55.833Z",
+    "days_live": 0
   },
   {
     "id": "3c789b23b3e0429d4939bad8939853d03213be9ad4e99389711916b41fa3af4c",
@@ -1712,7 +1470,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:57.335Z"
+    "last_enriched_at": "2026-04-17T02:57:57.335Z",
+    "days_live": 0
   },
   {
     "id": "0ecf6a82529783c2b0205f7015bfb5a31ca7ea0b322c302af0c1390084222c04",
@@ -1736,7 +1495,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:57:58.836Z"
+    "last_enriched_at": "2026-04-17T02:57:58.836Z",
+    "days_live": 0
   },
   {
     "id": "f1f5883a74ab1718a2e0b2b80fcac84ca4132a8d68f2c8a2ba03ff3318fc2680",
@@ -1760,7 +1520,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:00.337Z"
+    "last_enriched_at": "2026-04-17T02:58:00.337Z",
+    "days_live": 0
   },
   {
     "id": "0104a4348af2a7fb0673edc840cb4cc8280373ecdd2aa8c8fef4775d55a24b3c",
@@ -1784,7 +1545,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:01.838Z"
+    "last_enriched_at": "2026-04-17T02:58:01.838Z",
+    "days_live": 0
   },
   {
     "id": "bf44c5e7c935e3ea25b1a0294e268138c86f70b5ed9e6c6f008d8d6d5dde3cd6",
@@ -1808,7 +1570,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:03.339Z"
+    "last_enriched_at": "2026-04-17T02:58:03.339Z",
+    "days_live": 0
   },
   {
     "id": "e1cd150bf322d1c270311612bb704257a1c98e7978437256f0cec5c2c03f65e4",
@@ -1832,7 +1595,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:04.839Z"
+    "last_enriched_at": "2026-04-17T02:58:04.839Z",
+    "days_live": 0
   },
   {
     "id": "c527f31bb1053db94d520f387f109014f36758a20d52c988a474c636de900a74",
@@ -1856,7 +1620,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:06.341Z"
+    "last_enriched_at": "2026-04-17T02:58:06.341Z",
+    "days_live": 0
   },
   {
     "id": "75600ad301dead1c50fb94faae388f091e0e788b89cf2c78641ae897aeeee09a",
@@ -1880,7 +1645,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:07.843Z"
+    "last_enriched_at": "2026-04-17T02:58:07.843Z",
+    "days_live": 0
   },
   {
     "id": "33c8c5e3fe40fbbeccd4bd5a610d4e2b8c13df5e4a86a91c154453423c0987c1",
@@ -1904,7 +1670,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:09.350Z"
+    "last_enriched_at": "2026-04-17T02:58:09.350Z",
+    "days_live": 0
   },
   {
     "id": "395bd861678d684eb85c8ed36eeebb4a1b2c2b5c63c218da878d6360985d65b3",
@@ -1928,7 +1695,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:10.851Z"
+    "last_enriched_at": "2026-04-17T02:58:10.851Z",
+    "days_live": 0
   },
   {
     "id": "1c951fe4743a545e2d5ebcc5ca34bd0610ddc98ffcfdf6124e148da91ab931c0",
@@ -1952,7 +1720,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:12.352Z"
+    "last_enriched_at": "2026-04-17T02:58:12.352Z",
+    "days_live": 0
   },
   {
     "id": "363810147387e2046de567f606b0513d8690cbf1f295e22a96a374049ac53a1f",
@@ -1976,7 +1745,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:13.854Z"
+    "last_enriched_at": "2026-04-17T02:58:13.854Z",
+    "days_live": 0
   },
   {
     "id": "a692e11528ffd7aedd7e30b7c6a3cf3d8c30def04c7d7a3e57920a249c253201",
@@ -2000,7 +1770,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:15.355Z"
+    "last_enriched_at": "2026-04-17T02:58:15.355Z",
+    "days_live": 0
   },
   {
     "id": "055cbf45edd18887345dd148040b9e0ce397b3ab1320b3fb52a0bfa41e2351be",
@@ -2024,7 +1795,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:16.856Z"
+    "last_enriched_at": "2026-04-17T02:58:16.856Z",
+    "days_live": 0
   },
   {
     "id": "fac38f32ef1c151ab483ebe6d2519d4cbc7bab2f4c830a5dd780ead1a1cefc1c",
@@ -2048,7 +1820,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:18.358Z"
+    "last_enriched_at": "2026-04-17T02:58:18.358Z",
+    "days_live": 0
   },
   {
     "id": "06863d3a8ed757e16fbb8a58000ec614d810cee169fcb5e229465afea2ba59ae",
@@ -2072,7 +1845,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:19.859Z"
+    "last_enriched_at": "2026-04-17T02:58:19.859Z",
+    "days_live": 0
   },
   {
     "id": "ac3623b699d1e1cce35d1de248688e26e0cc867ed23b28bb7efc32a0640ee787",
@@ -2096,7 +1870,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:21.360Z"
+    "last_enriched_at": "2026-04-17T02:58:21.360Z",
+    "days_live": 0
   },
   {
     "id": "b13ee290f340bbc984e3542bb3c7af10a04d08368f71dc1506a6b63bd7ef6342",
@@ -2120,7 +1895,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:22.861Z"
+    "last_enriched_at": "2026-04-17T02:58:22.861Z",
+    "days_live": 0
   },
   {
     "id": "41d6399c4fc2b4d9de35d6f98a6762b02e9f1330f2b53812c5b702838efa5660",
@@ -2144,7 +1920,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:24.368Z"
+    "last_enriched_at": "2026-04-17T02:58:24.368Z",
+    "days_live": 0
   },
   {
     "id": "841ce4d6411fed285587d5e0d11c29cd73adb98a67230f611dd878dea2b3f340",
@@ -2168,7 +1945,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:25.869Z"
+    "last_enriched_at": "2026-04-17T02:58:25.869Z",
+    "days_live": 0
   },
   {
     "id": "01726319cc7585fee8022a5cd55ba9c4585eae95b2a56c2f0370445ba96a92dd",
@@ -2192,7 +1970,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:27.371Z"
+    "last_enriched_at": "2026-04-17T02:58:27.371Z",
+    "days_live": 0
   },
   {
     "id": "ead61a934ea1fc2d5e03063bfc56827d99019b0fbc0ab82837a63f83fb0c36d6",
@@ -2216,7 +1995,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:28.872Z"
+    "last_enriched_at": "2026-04-17T02:58:28.872Z",
+    "days_live": 0
   },
   {
     "id": "de5f9cf21beb88ea4e12271f115ba1fc0b85ac13ada5becc907b33955c91baf9",
@@ -2240,7 +2020,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:30.373Z"
+    "last_enriched_at": "2026-04-17T02:58:30.373Z",
+    "days_live": 0
   },
   {
     "id": "80b882abbc873dac5dcf6b6705741da615b4c8facf4319474183acef10960c0e",
@@ -2264,7 +2045,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:31.874Z"
+    "last_enriched_at": "2026-04-17T02:58:31.874Z",
+    "days_live": 0
   },
   {
     "id": "a9520754c0c93bde4ca16dfb71d6073b140b98fe75780ba22f7dd65f9fdc5e55",
@@ -2288,7 +2070,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:33.375Z"
+    "last_enriched_at": "2026-04-17T02:58:33.375Z",
+    "days_live": 0
   },
   {
     "id": "d911dd54357e91adb2adb6c099670451d81b983652dd289a10b74fbb0124fcee",
@@ -2312,7 +2095,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:34.876Z"
+    "last_enriched_at": "2026-04-17T02:58:34.876Z",
+    "days_live": 0
   },
   {
     "id": "833b7189d50cd9224e33310f6190dae343ac4065edb85519c0456fe91da03bc9",
@@ -2336,7 +2120,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:36.377Z"
+    "last_enriched_at": "2026-04-17T02:58:36.377Z",
+    "days_live": 0
   },
   {
     "id": "3b8214d4a20979a2d0b434bfd97bf3a9ef66c7201d2d4d17a64d3df1e09fe5f8",
@@ -2360,7 +2145,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:37.878Z"
+    "last_enriched_at": "2026-04-17T02:58:37.878Z",
+    "days_live": 0
   },
   {
     "id": "7ab56e327cff0e227437f4689808e21e511fece0f1aa435e9e4cb32e4f00a039",
@@ -2384,7 +2170,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:39.385Z"
+    "last_enriched_at": "2026-04-17T02:58:39.385Z",
+    "days_live": 0
   },
   {
     "id": "2d0cfd37256ad8a5fbc8be1ef8c134b6780d6ec1154c8ead69b5531d276c2b23",
@@ -2408,7 +2195,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:40.886Z"
+    "last_enriched_at": "2026-04-17T02:58:40.886Z",
+    "days_live": 0
   },
   {
     "id": "511c6e3725bc08af8a1e13fbd3c39cab6873835ddc487f411bea49bf93aa7503",
@@ -2432,7 +2220,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:42.387Z"
+    "last_enriched_at": "2026-04-17T02:58:42.387Z",
+    "days_live": 0
   },
   {
     "id": "960fce3474add9bb8476d5965839cf86b5e6c40aea839792479f87a038c0c1f3",
@@ -2456,7 +2245,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:43.889Z"
+    "last_enriched_at": "2026-04-17T02:58:43.889Z",
+    "days_live": 0
   },
   {
     "id": "4fcb3ae72af31c923bae3ce12dd1aa49e14cf480afa9a498339b0948f5ed56c0",
@@ -2480,7 +2270,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:45.390Z"
+    "last_enriched_at": "2026-04-17T02:58:45.390Z",
+    "days_live": 0
   },
   {
     "id": "063a6942adb475392f95c31747f751376a9d345846f9c4c1b7cc6259be93d47b",
@@ -2504,7 +2295,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:46.891Z"
+    "last_enriched_at": "2026-04-17T02:58:46.891Z",
+    "days_live": 0
   },
   {
     "id": "c96a0a9240fea0417560295cea1c6454c507a9a544c74135b1381af57b0a6efd",
@@ -2528,7 +2320,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:48.392Z"
+    "last_enriched_at": "2026-04-17T02:58:48.392Z",
+    "days_live": 0
   },
   {
     "id": "93fcae10ba48f2c7797e28970dcfe5f17bc7bec753af07d722cc006dbeaead9e",
@@ -2552,7 +2345,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:49.894Z"
+    "last_enriched_at": "2026-04-17T02:58:49.894Z",
+    "days_live": 0
   },
   {
     "id": "24df2f3337e0afeeae562593abb97bd4f0ccebfd6420f6b0b449feae6791c335",
@@ -2576,7 +2370,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:51.395Z"
+    "last_enriched_at": "2026-04-17T02:58:51.395Z",
+    "days_live": 0
   },
   {
     "id": "e92aef67477c3ee236273aa1e32cc1409ef6d761a3312268eb750b7cb6016d56",
@@ -2600,7 +2395,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:58:52.896Z"
+    "last_enriched_at": "2026-04-17T02:58:52.896Z",
+    "days_live": 0
   },
   {
     "id": "b1ef01fe40ecfa41dbbc264a841bbbf6073b2b9e45d9326484879e8e8dc63557",
@@ -2624,31 +2420,8 @@
     "climate_relevance_reason": "The company develops compact fusion reactors, which falls under the 'Fusion' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "8dcea98ae3e7d3facbf834989b70219a7420bec2f881bb43cb63efef1c71c996",
-    "last_enriched_at": "2026-04-17T02:58:58.541Z"
-  },
-  {
-    "id": "2d8e10d2316db085b3f89f26aa9665f279af16829bcc03373baee78a2f247dd8",
-    "company_id": "wwwdimension-energycom",
-    "company_name": "Dimension Renewable Energy",
-    "job_title_raw": "Associate Project Manager",
-    "source_url": "https://dimensionenergy.applytojob.com/apply/2024-0001/Associate-Project-Manager",
-    "location_raw": "Austin, TX",
-    "employment_type": "full_time",
-    "description_raw": "Dimension Energy is seeking an Associate Project Manager to join our team in Austin, TX. The Associate Project Manager will be responsible for supporting the project management team in the development and execution of renewable energy projects. This role will involve assisting with project planning, scheduling, budgeting, and risk management, as well as coordinating with various internal and external stakeholders. The ideal candidate will have a strong interest in renewable energy, excellent organizational skills, and the ability to work effectively in a fast-paced environment.",
-    "description_hash": "d1aeb245f67cc2bb9da59222871a921b04c04fba0034258bee6337bcb697632f",
-    "first_seen_at": "2026-04-16T18:26:10.417Z",
-    "last_seen_at": "2026-04-16T18:26:10.417Z",
-    "job_title_normalized": "Associate Project Manager",
-    "job_function": "operations",
-    "seniority_level": "entry",
-    "location_type": "on_site",
-    "mba_relevance_score": 35,
-    "description_summary": "The Associate Project Manager at Dimension Energy will support the project management team in developing and executing renewable energy projects. Responsibilities include assisting with planning, scheduling, budgeting, and risk management, and coordinating with internal and external stakeholders.",
-    "climate_relevance_confirmed": true,
-    "climate_relevance_reason": "The company, Dimension Renewable Energy, is explicitly focused on renewable energy projects, which directly contributes to climate change mitigation.",
-    "enrichment_prompt_version": "1.1.0",
-    "description_raw_hash": "d1aeb245f67cc2bb9da59222871a921b04c04fba0034258bee6337bcb697632f",
-    "last_enriched_at": "2026-04-17T02:59:00.936Z"
+    "last_enriched_at": "2026-04-17T02:58:58.541Z",
+    "days_live": 0
   },
   {
     "id": "cc10230647b0791f4b7eb51414e85a99638e3911e17ce4f9d2891a598586b3df",
@@ -2672,7 +2445,8 @@
     "climate_relevance_reason": "The company 'Clear Solar' and the role 'Solar Sales Representative' are directly involved in providing solar energy solutions, which falls under the 'Solar' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "18043150d9181ae1e32e13efa36ecb960e36a9c0364c4330cd06e3854fbbfe65",
-    "last_enriched_at": "2026-04-17T02:59:02.842Z"
+    "last_enriched_at": "2026-04-17T02:59:02.842Z",
+    "days_live": 0
   },
   {
     "id": "81c0d77af08b682981fd1a167df4b21327a8621b59d7ecee0ddaafae24d40c7f",
@@ -2696,7 +2470,8 @@
     "climate_relevance_reason": "The company develops, owns, and operates EV charging solutions, which directly falls under the 'Charging Infrastructure' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "3db525130e179f977fdd39e11c6e78348b49c827159a9fc2b83dff624387f6f1",
-    "last_enriched_at": "2026-04-17T02:59:03.553Z"
+    "last_enriched_at": "2026-04-17T02:59:03.553Z",
+    "days_live": 0
   },
   {
     "id": "84a62d8e6e505c9681ef5b40c8aef4f5d50543ccdaf50a6d3e3745aeaa2c4d25",
@@ -2720,7 +2495,8 @@
     "climate_relevance_reason": "The company focuses on 'fleet management,' which directly relates to climate-tech categories like 'Route & Logistics Optimization' and 'Low-Emission Powertrain Vehicles' by improving efficiency and enabling decarbonization in transportation.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "fba4a81b355dbae7759661b44163e096d39a98ac6c4d9c313b641ec711f7fe34",
-    "last_enriched_at": "2026-04-17T02:59:03.822Z"
+    "last_enriched_at": "2026-04-17T02:59:03.822Z",
+    "days_live": 0
   },
   {
     "id": "90b1167abe31a54c83421bf4934bab10a2a3e168155667d35d95cd0cfe588fd4",
@@ -2744,7 +2520,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:02.842Z"
+    "last_enriched_at": "2026-04-17T02:59:02.842Z",
+    "days_live": 0
   },
   {
     "id": "a69174132ffb5e426e095df4ca7bb5a6ed58aa9875cb112ceb301f3c6406a9cf",
@@ -2768,7 +2545,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:04.343Z"
+    "last_enriched_at": "2026-04-17T02:59:04.343Z",
+    "days_live": 0
   },
   {
     "id": "36350e2a4e73a57bfdf57fcd94d94032ed6e7eddac4dee91abac247e84467f3a",
@@ -2792,7 +2570,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:05.844Z"
+    "last_enriched_at": "2026-04-17T02:59:05.844Z",
+    "days_live": 0
   },
   {
     "id": "93050a074ba6a3ee9896cef87685bde68d872247586d4d2d0d73b6c92e45e6f0",
@@ -2816,7 +2595,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:07.346Z"
+    "last_enriched_at": "2026-04-17T02:59:07.346Z",
+    "days_live": 0
   },
   {
     "id": "c58aa47d6260fb7a546c67215d44aca5c9d3d6408b32ac2728df3049b4e5db81",
@@ -2840,7 +2620,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:08.847Z"
+    "last_enriched_at": "2026-04-17T02:59:08.847Z",
+    "days_live": 0
   },
   {
     "id": "5b21c4148e884f0023f4b13bb4b15ff3231f452903891fcfc2183ee5105c71c7",
@@ -2864,7 +2645,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:10.354Z"
+    "last_enriched_at": "2026-04-17T02:59:10.354Z",
+    "days_live": 0
   },
   {
     "id": "70dc38c9f6a344316b21a51fa13f5f55716ae94f0a93213de0285fdb8e1a3a63",
@@ -2888,7 +2670,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:11.855Z"
+    "last_enriched_at": "2026-04-17T02:59:11.855Z",
+    "days_live": 0
   },
   {
     "id": "91d5de63f638df474815d578fc39c25741cd52ec255c4e7a5ddab60cac669a65",
@@ -2912,7 +2695,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:13.357Z"
+    "last_enriched_at": "2026-04-17T02:59:13.357Z",
+    "days_live": 0
   },
   {
     "id": "fc0626b48cf86051fa1b6850fc7e33443f4e33edb4c7a17c531fc0753c42146d",
@@ -2936,7 +2720,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:14.858Z"
+    "last_enriched_at": "2026-04-17T02:59:14.858Z",
+    "days_live": 0
   },
   {
     "id": "24dbd7c707464ce88d7af03b87e7456dce33f0be12d13522d598b088974adabe",
@@ -2960,7 +2745,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:16.359Z"
+    "last_enriched_at": "2026-04-17T02:59:16.359Z",
+    "days_live": 0
   },
   {
     "id": "b0141b3579310cbbfae004fde21bd60fea81badabb8269abcf03f3b2731763e8",
@@ -2984,7 +2770,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:17.860Z"
+    "last_enriched_at": "2026-04-17T02:59:17.860Z",
+    "days_live": 0
   },
   {
     "id": "66eef361b8a445bb40fdfec4c86f6cc89d4210c9bf9c909f4456f8653486699e",
@@ -3008,7 +2795,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:19.362Z"
+    "last_enriched_at": "2026-04-17T02:59:19.362Z",
+    "days_live": 0
   },
   {
     "id": "140ac17ae18a962bc1788902a06543997f5654586f7907a0eed3ad6696d94381",
@@ -3032,7 +2820,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:20.863Z"
+    "last_enriched_at": "2026-04-17T02:59:20.863Z",
+    "days_live": 0
   },
   {
     "id": "131ff2c2bdc1aa06ee1f23cfb68b288782ff114f0c4d658215ae41473e1cedc6",
@@ -3056,7 +2845,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:22.364Z"
+    "last_enriched_at": "2026-04-17T02:59:22.364Z",
+    "days_live": 0
   },
   {
     "id": "c719ba2cf04a5552444a06e12219b1af45007de9bed935e79a854219914612ff",
@@ -3080,7 +2870,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:23.866Z"
+    "last_enriched_at": "2026-04-17T02:59:23.866Z",
+    "days_live": 0
   },
   {
     "id": "5e48b589cc84928bc1e9ef401664a2de9a8ef67f506e441d0793dd3d6bb62cae",
@@ -3104,7 +2895,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:25.373Z"
+    "last_enriched_at": "2026-04-17T02:59:25.373Z",
+    "days_live": 0
   },
   {
     "id": "583b96d114cd30f13c0cb42040fe86dd0011a34de94ff196b0068a7f9c1be19e",
@@ -3128,7 +2920,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:26.874Z"
+    "last_enriched_at": "2026-04-17T02:59:26.874Z",
+    "days_live": 0
   },
   {
     "id": "0aaf192f9e86096fb9d7f8a969f300256f55366837c3ef792de0736e8c530a8a",
@@ -3152,7 +2945,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:28.376Z"
+    "last_enriched_at": "2026-04-17T02:59:28.376Z",
+    "days_live": 0
   },
   {
     "id": "603feec95082bcb219a6c73c756a2f839fc724e07e5594186bc40316ce928478",
@@ -3176,7 +2970,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:29.876Z"
+    "last_enriched_at": "2026-04-17T02:59:29.876Z",
+    "days_live": 0
   },
   {
     "id": "c228f86ddb11eed8d70762a5c555508d13b35c72eb31c1ddce874b29d1fed267",
@@ -3200,7 +2995,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:31.378Z"
+    "last_enriched_at": "2026-04-17T02:59:31.378Z",
+    "days_live": 0
   },
   {
     "id": "6c476448050b385b007da392b8320c74b022f1671dfe4814d0ded46497c7ac58",
@@ -3224,7 +3020,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:32.880Z"
+    "last_enriched_at": "2026-04-17T02:59:32.880Z",
+    "days_live": 0
   },
   {
     "id": "914cde8b5b7fe8839ea94544cf88314831bbab88669568b4ac4c643c76cb03cb",
@@ -3248,7 +3045,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:34.381Z"
+    "last_enriched_at": "2026-04-17T02:59:34.381Z",
+    "days_live": 0
   },
   {
     "id": "373127f39ce269587b8f335a717f772af60caa5377f8c3a7f93ae825275ac0de",
@@ -3272,7 +3070,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:35.882Z"
+    "last_enriched_at": "2026-04-17T02:59:35.882Z",
+    "days_live": 0
   },
   {
     "id": "80a8ac4012edc467121aa8b750b5dae10ec24055e0e379eb04de8adb26a1aa72",
@@ -3296,7 +3095,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:37.382Z"
+    "last_enriched_at": "2026-04-17T02:59:37.382Z",
+    "days_live": 0
   },
   {
     "id": "7f2d424a4a4c9254e23421a2bc4858c4077fae1cd56d924e57f8cb8ebd58cba8",
@@ -3320,7 +3120,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:38.882Z"
+    "last_enriched_at": "2026-04-17T02:59:38.882Z",
+    "days_live": 0
   },
   {
     "id": "530802fd0892181bf87d6cb013a1170d7847080c2b854fbf56d4a117638df94f",
@@ -3344,7 +3145,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:40.390Z"
+    "last_enriched_at": "2026-04-17T02:59:40.390Z",
+    "days_live": 0
   },
   {
     "id": "3a975815c2276cae1934b17384fbc6a67aee77634b89b147eb3950ccc9292b9e",
@@ -3368,7 +3170,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:41.891Z"
+    "last_enriched_at": "2026-04-17T02:59:41.891Z",
+    "days_live": 0
   },
   {
     "id": "b6138abe8b2df635dcbb04c2f0e03acbf77926efae9008912d2afc4194e367c3",
@@ -3392,7 +3195,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:43.392Z"
+    "last_enriched_at": "2026-04-17T02:59:43.392Z",
+    "days_live": 0
   },
   {
     "id": "058ee89b9ee485a2bd687a044b37600e359eb738112be6adc5bb9151767e59f9",
@@ -3416,7 +3220,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:44.892Z"
+    "last_enriched_at": "2026-04-17T02:59:44.892Z",
+    "days_live": 0
   },
   {
     "id": "49c55894d919c487a9307f6624a854f5123d46bc6c34f32cd3c66cdfd784742e",
@@ -3440,7 +3245,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:46.392Z"
+    "last_enriched_at": "2026-04-17T02:59:46.392Z",
+    "days_live": 0
   },
   {
     "id": "4ff3182f9f2937802d41928082692282d90f82553122fd7105859e9333abba73",
@@ -3464,7 +3270,8 @@
     "climate_relevance_reason": "The job description explicitly states applications in 'renewable energy' and 'electric vehicles', which are direct climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "a444f31c4a3638fe69b11900b1fbe478680787cdfdb35e64028d3fc14d64ff80",
-    "last_enriched_at": "2026-04-17T02:59:53.098Z"
+    "last_enriched_at": "2026-04-17T02:59:53.098Z",
+    "days_live": 0
   },
   {
     "id": "70496605f337a0984b83d2dea4520e61318e730b314f848bbb9d12a62612846d",
@@ -3488,7 +3295,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:49.396Z"
+    "last_enriched_at": "2026-04-17T02:59:49.396Z",
+    "days_live": 0
   },
   {
     "id": "0bf9c8c6cbaf9cb4470c047a08a1a76ec0a1531defa516149a10e6a9f7c2f881",
@@ -3512,7 +3320,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:50.896Z"
+    "last_enriched_at": "2026-04-17T02:59:50.896Z",
+    "days_live": 0
   },
   {
     "id": "19542e7a8959373fc18bf4f4e5c60ce61132ad4b15b03233accba38100f7a771",
@@ -3536,7 +3345,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:52.397Z"
+    "last_enriched_at": "2026-04-17T02:59:52.397Z",
+    "days_live": 0
   },
   {
     "id": "d3d750c29472250b0743b86b95098dbad620fbf24dae447ce7cc720a8adc5688",
@@ -3560,7 +3370,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:53.899Z"
+    "last_enriched_at": "2026-04-17T02:59:53.899Z",
+    "days_live": 0
   },
   {
     "id": "b636f452041666e4288571f6322c3c797fd4fa4f3e27cea55e021f6e19d44d0f",
@@ -3584,7 +3395,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:55.406Z"
+    "last_enriched_at": "2026-04-17T02:59:55.406Z",
+    "days_live": 0
   },
   {
     "id": "a6e5a9b54311794660c872b2ba9562d57a056c29138139fa79b6151e635c756b",
@@ -3608,7 +3420,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:56.907Z"
+    "last_enriched_at": "2026-04-17T02:59:56.907Z",
+    "days_live": 0
   },
   {
     "id": "65bfd211d85a9941cf45483e624cb335c518378b9692eb503d78c6610a25f6fc",
@@ -3632,7 +3445,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:58.409Z"
+    "last_enriched_at": "2026-04-17T02:59:58.409Z",
+    "days_live": 0
   },
   {
     "id": "2e1a1e9f0df740ea0e6b008cb4f9b9ea1b91f2398f1d1e596889dd916028ed47",
@@ -3656,7 +3470,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T02:59:59.910Z"
+    "last_enriched_at": "2026-04-17T02:59:59.910Z",
+    "days_live": 0
   },
   {
     "id": "5c82e0daa0685a9904af9f8e02e7f94d21a6a6ed19128d92f9cf7cf67764972a",
@@ -3680,7 +3495,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:01.411Z"
+    "last_enriched_at": "2026-04-17T03:00:01.411Z",
+    "days_live": 0
   },
   {
     "id": "9228dccfa4028ec5eb836cef67a9fac48c782fd0626deb583e0b4a10fc63326a",
@@ -3704,7 +3520,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:02.913Z"
+    "last_enriched_at": "2026-04-17T03:00:02.913Z",
+    "days_live": 0
   },
   {
     "id": "ffe07c06e7befd7f1246491937322aca86926ca415db113ff7fdf1111dd9bd6d",
@@ -3728,7 +3545,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:04.414Z"
+    "last_enriched_at": "2026-04-17T03:00:04.414Z",
+    "days_live": 0
   },
   {
     "id": "2458db60673a21669483bfa7ad09e444bb6f2183f4b6e995594a36fc221450f0",
@@ -3752,7 +3570,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:05.915Z"
+    "last_enriched_at": "2026-04-17T03:00:05.915Z",
+    "days_live": 0
   },
   {
     "id": "e48ed5302956e96ca33ea9aab250b99fe119de89e0218901d90be5a0c5906682",
@@ -3776,7 +3595,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:07.417Z"
+    "last_enriched_at": "2026-04-17T03:00:07.417Z",
+    "days_live": 0
   },
   {
     "id": "2948a653b5cc61aa7b8c09502428801f8f812834db66fc7af4c4046c3a41ff6a",
@@ -3800,7 +3620,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:08.919Z"
+    "last_enriched_at": "2026-04-17T03:00:08.919Z",
+    "days_live": 0
   },
   {
     "id": "d493d569f434191e017192420b1ac5761340ca2de274e486eb2e3bed71e880f1",
@@ -3824,7 +3645,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:10.425Z"
+    "last_enriched_at": "2026-04-17T03:00:10.425Z",
+    "days_live": 0
   },
   {
     "id": "bf99c2c6af421013739cd1527a7f1794d8a50849c40802697b119bde660d6b11",
@@ -3848,7 +3670,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:11.927Z"
+    "last_enriched_at": "2026-04-17T03:00:11.927Z",
+    "days_live": 0
   },
   {
     "id": "3db81d81111d51847a03bf90dca205a2e127baf131a9a61f9191fd55cf1ebf27",
@@ -3872,7 +3695,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:13.428Z"
+    "last_enriched_at": "2026-04-17T03:00:13.428Z",
+    "days_live": 0
   },
   {
     "id": "20ae4974c86f0031cbd0eb0dbdf47941cb01f8ee97596e0dff05e3e8ba1b5afb",
@@ -3896,7 +3720,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:14.929Z"
+    "last_enriched_at": "2026-04-17T03:00:14.929Z",
+    "days_live": 0
   },
   {
     "id": "5c6bf86ba7c3b1d457f9944ae12c30140fbdfe90ba6e806795978d3cf9ea6d52",
@@ -3920,7 +3745,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:16.430Z"
+    "last_enriched_at": "2026-04-17T03:00:16.430Z",
+    "days_live": 0
   },
   {
     "id": "78a28c6b9524ded9250128da01a92fda7b67c6fe51f079e3e96b6cae77df4b2a",
@@ -3944,7 +3770,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:17.931Z"
+    "last_enriched_at": "2026-04-17T03:00:17.931Z",
+    "days_live": 0
   },
   {
     "id": "5958f9b435b2a93e6977e007c7eb5625f58190b50c66fce0bbcc9ca2dbc563ff",
@@ -3968,7 +3795,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:19.432Z"
+    "last_enriched_at": "2026-04-17T03:00:19.432Z",
+    "days_live": 0
   },
   {
     "id": "0fd183f888c094f1aad5951e000c0e25e7323d99ddee1514f4c579eec304de36",
@@ -3992,7 +3820,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:20.932Z"
+    "last_enriched_at": "2026-04-17T03:00:20.932Z",
+    "days_live": 0
   },
   {
     "id": "5b0104f294e8802742ff2147cbb6664c586fec993a48d5d900e2295dc0d01c88",
@@ -4016,7 +3845,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:22.432Z"
+    "last_enriched_at": "2026-04-17T03:00:22.432Z",
+    "days_live": 0
   },
   {
     "id": "edaf221ec354df5b3f35eb4bc1d9c8329091429e5bf30fa80667f2c0d0824829",
@@ -4040,7 +3870,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:23.932Z"
+    "last_enriched_at": "2026-04-17T03:00:23.932Z",
+    "days_live": 0
   },
   {
     "id": "0c863bb22edf48d5a8d0030cd7c9412ec6cd015a6c301a2f4175f252956d5d0a",
@@ -4064,7 +3895,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:25.439Z"
+    "last_enriched_at": "2026-04-17T03:00:25.439Z",
+    "days_live": 0
   },
   {
     "id": "edca416032206f9483fc9be1be8d11ea51a96cd132861c9aa5e1a2f654f40087",
@@ -4088,7 +3920,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:26.939Z"
+    "last_enriched_at": "2026-04-17T03:00:26.939Z",
+    "days_live": 0
   },
   {
     "id": "a95c4886ba0128c26787c5b35d8d6eb9a45c476c03d28763ec9e314baaa7f75a",
@@ -4112,7 +3945,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:28.441Z"
+    "last_enriched_at": "2026-04-17T03:00:28.441Z",
+    "days_live": 0
   },
   {
     "id": "bac919e9db5dca237b2dabd0bcd41f1e5a5bc25da5094ef73e42c2960ca9d85c",
@@ -4136,7 +3970,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:29.943Z"
+    "last_enriched_at": "2026-04-17T03:00:29.943Z",
+    "days_live": 0
   },
   {
     "id": "299158e8d135dcf577958d21031ca7a9dfd11515703905e14d0131092baef1f5",
@@ -4160,7 +3995,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:31.444Z"
+    "last_enriched_at": "2026-04-17T03:00:31.444Z",
+    "days_live": 0
   },
   {
     "id": "3e2f80ebb40efd5401f0dc5aeee1f7e9839fcc80dd072757565a48978ccf0892",
@@ -4184,7 +4020,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:32.945Z"
+    "last_enriched_at": "2026-04-17T03:00:32.945Z",
+    "days_live": 0
   },
   {
     "id": "01528fcd59cbdd462f2c2f7946db4e8ef27c118e36d3a4b4561ae68a59624394",
@@ -4208,7 +4045,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:34.446Z"
+    "last_enriched_at": "2026-04-17T03:00:34.446Z",
+    "days_live": 0
   },
   {
     "id": "26bebda67d8d6879cb3d9d0ace11b46ad5a360284be2a1de18260dbde74f1f31",
@@ -4232,7 +4070,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:35.947Z"
+    "last_enriched_at": "2026-04-17T03:00:35.947Z",
+    "days_live": 0
   },
   {
     "id": "2fe19a4a8dc9a5ed56c336ad14641572b15fdd3699c7a2f14a59e92812d6ab74",
@@ -4256,7 +4095,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:37.448Z"
+    "last_enriched_at": "2026-04-17T03:00:37.448Z",
+    "days_live": 0
   },
   {
     "id": "0f7a0093d6a828240370770972ae0ab406a405e5b9bf2bba42bf47ce179f8ada",
@@ -4280,7 +4120,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:38.948Z"
+    "last_enriched_at": "2026-04-17T03:00:38.948Z",
+    "days_live": 0
   },
   {
     "id": "9b7b9ab287fd6aa52b4c276a381990fa0eef40622a3164d9a177de4e2c99025d",
@@ -4304,7 +4145,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:40.455Z"
+    "last_enriched_at": "2026-04-17T03:00:40.455Z",
+    "days_live": 0
   },
   {
     "id": "26c328b5cfa4d5a6ddca3287d1cb0f91a3b1202cebc8b83e9279631c84ee12a1",
@@ -4328,7 +4170,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:41.956Z"
+    "last_enriched_at": "2026-04-17T03:00:41.956Z",
+    "days_live": 0
   },
   {
     "id": "bae457a6fa5d7c6f64b317b229ac48cce5518f8ac1571963264c80bd7618b71e",
@@ -4352,7 +4195,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:43.457Z"
+    "last_enriched_at": "2026-04-17T03:00:43.457Z",
+    "days_live": 0
   },
   {
     "id": "3dfd5ed3341d27c12f3df1db820917b4d19ef4e204706a57b1ea033efcdf1468",
@@ -4376,7 +4220,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:44.959Z"
+    "last_enriched_at": "2026-04-17T03:00:44.959Z",
+    "days_live": 0
   },
   {
     "id": "7d3997cd8190ade75d6ec7e592b7af58b51431e04897acbf32e86da904b6255f",
@@ -4400,7 +4245,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:46.460Z"
+    "last_enriched_at": "2026-04-17T03:00:46.460Z",
+    "days_live": 0
   },
   {
     "id": "780581df72d62b60d4e12a0defc796d5668bea800f7e7878e329a26fb31084d2",
@@ -4424,7 +4270,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:47.961Z"
+    "last_enriched_at": "2026-04-17T03:00:47.961Z",
+    "days_live": 0
   },
   {
     "id": "666f65f2ed58ec6676df663f69d56d9d6e1ff56ac5a815251d93bb3f4d079302",
@@ -4448,7 +4295,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:49.462Z"
+    "last_enriched_at": "2026-04-17T03:00:49.462Z",
+    "days_live": 0
   },
   {
     "id": "0f2c9de211d5706a466d5213f06c1b1ff98cb1dc115e34557d3a8922d4e24b0d",
@@ -4472,7 +4320,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:50.964Z"
+    "last_enriched_at": "2026-04-17T03:00:50.964Z",
+    "days_live": 0
   },
   {
     "id": "7a5ad64cf75b40c4754434bf6d8b511242ca556c0229bba72258f42265b5af95",
@@ -4496,7 +4345,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:52.465Z"
+    "last_enriched_at": "2026-04-17T03:00:52.465Z",
+    "days_live": 0
   },
   {
     "id": "e4d628b35a91570db668f60c7a8b089985cb0220a2e38aa49ee1723df4f75828",
@@ -4520,7 +4370,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:53.965Z"
+    "last_enriched_at": "2026-04-17T03:00:53.965Z",
+    "days_live": 0
   },
   {
     "id": "7ad74b3f9c748c4ea9394c0da1b291e02fc5abb7f5483422a19c8d6febccdfe1",
@@ -4544,7 +4395,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:55.471Z"
+    "last_enriched_at": "2026-04-17T03:00:55.471Z",
+    "days_live": 0
   },
   {
     "id": "be15acd23cb712e429cbc3f0d5e8dc4512f9b87b0bb19a9f22c83495a708e177",
@@ -4568,7 +4420,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:56.972Z"
+    "last_enriched_at": "2026-04-17T03:00:56.972Z",
+    "days_live": 0
   },
   {
     "id": "000095582f4d219ce0768954fa995eeb323bb61806660d66caeed29a83fec597",
@@ -4592,7 +4445,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:58.474Z"
+    "last_enriched_at": "2026-04-17T03:00:58.474Z",
+    "days_live": 0
   },
   {
     "id": "5000d52037932d02be9b063d4e27a8354af7390fff5d0a2ea47a6bbce15b236e",
@@ -4616,7 +4470,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:00:59.975Z"
+    "last_enriched_at": "2026-04-17T03:00:59.975Z",
+    "days_live": 0
   },
   {
     "id": "c34405a79ddb3af80b04c225bc0554b32efd9719e2fb5ecca9006a8f6d0f3c80",
@@ -4640,7 +4495,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:01.476Z"
+    "last_enriched_at": "2026-04-17T03:01:01.476Z",
+    "days_live": 0
   },
   {
     "id": "be9fb039cb5c25fe4f857816bee424d04e5e5b85e73888f23a58eae0cc3a4f5b",
@@ -4664,7 +4520,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:02.978Z"
+    "last_enriched_at": "2026-04-17T03:01:02.978Z",
+    "days_live": 0
   },
   {
     "id": "f601c69f76467f2004e430781a76f29da4b8bb2b4686e20a31c7edbd11415bc5",
@@ -4688,7 +4545,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:04.479Z"
+    "last_enriched_at": "2026-04-17T03:01:04.479Z",
+    "days_live": 0
   },
   {
     "id": "ec0c9da6bda10b03b10c2454c1113cdbd742de98556f84c41bf058c23f6fafe9",
@@ -4712,7 +4570,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:05.980Z"
+    "last_enriched_at": "2026-04-17T03:01:05.980Z",
+    "days_live": 0
   },
   {
     "id": "a92725da80ace16da90196b86238084c1c4212e6b95a72f063acca7043abd63f",
@@ -4736,7 +4595,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:07.481Z"
+    "last_enriched_at": "2026-04-17T03:01:07.481Z",
+    "days_live": 0
   },
   {
     "id": "d6493cf2d6210ecd879680aad84b0965f3d40cf13af7b54f36b3014882a8b922",
@@ -4760,7 +4620,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:08.982Z"
+    "last_enriched_at": "2026-04-17T03:01:08.982Z",
+    "days_live": 0
   },
   {
     "id": "142f63f6c41e75351513eb04f463651a2b122e66c833420483eb2f67752d9caf",
@@ -4784,7 +4645,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:10.488Z"
+    "last_enriched_at": "2026-04-17T03:01:10.488Z",
+    "days_live": 0
   },
   {
     "id": "839ebb4c28017c93818122d917a2d4905dae0d200d6f84dd459c800b58ae0847",
@@ -4808,7 +4670,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:11.990Z"
+    "last_enriched_at": "2026-04-17T03:01:11.990Z",
+    "days_live": 0
   },
   {
     "id": "47c5c0d4385bc74d84f879618ae6dcb1f34dcf83ef459eed6a04c609d31a2c52",
@@ -4832,7 +4695,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:13.491Z"
+    "last_enriched_at": "2026-04-17T03:01:13.491Z",
+    "days_live": 0
   },
   {
     "id": "bbe046bd3faa370a4a32cb05a3c3396cee64b2b47f61d3f6b0a56c72b9e4ce63",
@@ -4856,7 +4720,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:14.992Z"
+    "last_enriched_at": "2026-04-17T03:01:14.992Z",
+    "days_live": 0
   },
   {
     "id": "5a9dec6a7e3ad231f709270766f2559d9b9c3e8b1e4965aed95ba30573c9b288",
@@ -4880,7 +4745,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:01:16.493Z"
+    "last_enriched_at": "2026-04-17T03:01:16.493Z",
+    "days_live": 0
   },
   {
     "id": "acd2e6f6cb693086e96e5087bb32fc40d42fdf31e4f97ced31f149ff9e4b8d00",
@@ -4904,7 +4770,8 @@
     "climate_relevance_reason": "The company builds a platform to manage and optimize carbon removal portfolios, directly supporting climate action through system monitoring and optimization.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e25c7630b69d0d9a3bf3ae1ad2e7f2796b0c628ae818154b30926c2b6a8a69e9",
-    "last_enriched_at": "2026-04-17T03:01:24.686Z"
+    "last_enriched_at": "2026-04-17T03:01:24.686Z",
+    "days_live": 0
   },
   {
     "id": "33e0451b97f1b63dc17dc867a2efd17defd54afdf94edeccc61cc2b7a87eaef9",
@@ -4928,7 +4795,8 @@
     "climate_relevance_reason": "Electric Era operates in the climate-tech sector, likely focusing on electrification or charging infrastructure, which aligns with categories like 'Charging Infrastructure' and 'Electrification'.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5e1b7439e299dd380da79afe2cd0b5d2997ed9bacb917478be89b3027efab7a0",
-    "last_enriched_at": "2026-04-17T03:01:26.015Z"
+    "last_enriched_at": "2026-04-17T03:01:26.015Z",
+    "days_live": 0
   },
   {
     "id": "5692411186354cf27223892b183f6a67eef404fe3e704cfe1ccab4c3b54e2f5e",
@@ -4952,7 +4820,8 @@
     "climate_relevance_reason": "The role is centered on building EV fast charging infrastructure, directly contributing to electrification and supporting Battery Electric Vehicles, falling under 'Charging Infrastructure'.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "dad9fed63b821f0522a8528fdd1bdb299d36f9533ebe672ea48df72c344a3bdd",
-    "last_enriched_at": "2026-04-17T03:01:26.904Z"
+    "last_enriched_at": "2026-04-17T03:01:26.904Z",
+    "days_live": 0
   },
   {
     "id": "f13bd2521131987dbfd2a248fb2d8ebdc98732db15583c013121cdd11ebb1140",
@@ -4976,7 +4845,8 @@
     "climate_relevance_reason": "The company name 'Electric Era' and the job description's focus on 'Site Host Origination and Project Investment' strongly suggest involvement in electrification and energy infrastructure development, aligning with climate tech categories like Charging Infrastructure or Electrification.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "0957963d7cbdf77bb7123b430acf26ad4e0b1bceddfbcb3dc9f0e2d829bee239",
-    "last_enriched_at": "2026-04-17T03:01:29.150Z"
+    "last_enriched_at": "2026-04-17T03:01:29.150Z",
+    "days_live": 0
   },
   {
     "id": "091aafdf9db7aa7e55e0d606bdc3f8190dd362003caf60ddf7381b262290ddcc",
@@ -5000,7 +4870,8 @@
     "climate_relevance_reason": "The job directly involves EV charging site implementation, which falls under the 'Charging Infrastructure' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "069ac4668df3a4d6c88e8c483a5a25e17bea927d0a87de5fb35670865bb7b9c3",
-    "last_enriched_at": "2026-04-17T03:01:30.164Z"
+    "last_enriched_at": "2026-04-17T03:01:30.164Z",
+    "days_live": 0
   },
   {
     "id": "b609c18b3f6e37c619d9c49040d8cc88be9604b7017e2e105c3228ed98fb0ea6",
@@ -5024,7 +4895,8 @@
     "climate_relevance_reason": "The company, Electric Era, operates in the climate-tech sector, and this role directly supports its business interests.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "7e7307d5b36ab3486c74b6bdaa2d82ce5f3cc0259e92c0287f2f4b314483f794",
-    "last_enriched_at": "2026-04-17T03:01:41.105Z"
+    "last_enriched_at": "2026-04-17T03:01:41.105Z",
+    "days_live": 0
   },
   {
     "id": "2ed52e810f4df502f5c75ed457f9608673a75f1570037cb1c5f66201e935e37b",
@@ -5048,7 +4920,8 @@
     "climate_relevance_reason": "The company develops and deploys EV charging stations, directly contributing to electrification and low-emission transportation infrastructure, aligning with the 'Charging Infrastructure' category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "503f1125698f825feeded8de13f4899d9a2c2ad2cdef3ed3c534b14619e0950e",
-    "last_enriched_at": "2026-04-17T03:01:37.141Z"
+    "last_enriched_at": "2026-04-17T03:01:37.141Z",
+    "days_live": 0
   },
   {
     "id": "c2500fc1e5824f4a2beb1729b28df261a1eeec013275f6e35c34d64a6bf7355a",
@@ -5072,7 +4945,8 @@
     "climate_relevance_reason": "The company deploys fast-charging infrastructure, which is a direct climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "a65e8f47ccd4f86d9536580cdcd79f4183aee4e386e55dac1eddbee8c8d81cd1",
-    "last_enriched_at": "2026-04-17T03:01:38.451Z"
+    "last_enriched_at": "2026-04-17T03:01:38.451Z",
+    "days_live": 0
   },
   {
     "id": "1aa11c738a48d8e5f61ff9b37ba8f139c0ad148e42ad3d624ed7805186a4d0e1",
@@ -5096,7 +4970,8 @@
     "climate_relevance_reason": "The company name 'Electric Era' and the Electrical Engineer role strongly suggest a focus on electrification and advanced battery technologies, which are key climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "d893af474c16908c83e1f634ed33ffd0901b6d9938baa3b07a40e05ad1c6191e",
-    "last_enriched_at": "2026-04-17T03:01:43.097Z"
+    "last_enriched_at": "2026-04-17T03:01:43.097Z",
+    "days_live": 0
   },
   {
     "id": "14b3172ef2f556d8f5435fc2b3acdb7ba7373153e3bdce7d6027d730c6ec82b3",
@@ -5120,7 +4995,8 @@
     "climate_relevance_reason": "Electric Era develops charging solutions for electric vehicle fleets, which falls under the 'Charging Infrastructure' and 'Electrification' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "d029b5b5fb93c8e04586509064519261f44f026f8483d75b57fe4a76de451c42",
-    "last_enriched_at": "2026-04-17T03:01:41.463Z"
+    "last_enriched_at": "2026-04-17T03:01:41.463Z",
+    "days_live": 0
   },
   {
     "id": "a445dc547fc4538559335e018c59011fbb23d7b260aec5dd34cc800e19c68ecd",
@@ -5144,7 +5020,8 @@
     "climate_relevance_reason": "Electric Era develops fast-charging solutions for electric vehicles, directly contributing to electrification and charging infrastructure.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "85f933e4031b41b39d38468df6c1b4dd49d17537f2f2ca4676fc5b73450e8ef3",
-    "last_enriched_at": "2026-04-17T03:01:44.967Z"
+    "last_enriched_at": "2026-04-17T03:01:44.967Z",
+    "days_live": 0
   },
   {
     "id": "ddc51b239bb34545f2af33040b858edfd81d501cef03fedcd528f46bbb266804",
@@ -5168,7 +5045,8 @@
     "climate_relevance_reason": "The job is listed for a climate-tech job board, indicating the company operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e12b06c897195ef7bd928fb1a15b633b75504f6c91a6d5fc26611d38d979e54e",
-    "last_enriched_at": "2026-04-17T03:01:47.260Z"
+    "last_enriched_at": "2026-04-17T03:01:47.260Z",
+    "days_live": 0
   },
   {
     "id": "7ef8cc3b554a7291dac274a6a2ea38f550b7ad323a53e29b76ae72b4e7af9919",
@@ -5192,7 +5070,8 @@
     "climate_relevance_reason": "The job description explicitly states the role involves designing components for carbon capture systems, which is a direct climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "4f977bbe34aa16faef27c031a32ddfcb8618462f584d7750a0fcb53e189d54c6",
-    "last_enriched_at": "2026-04-17T03:01:49.330Z"
+    "last_enriched_at": "2026-04-17T03:01:49.330Z",
+    "days_live": 0
   },
   {
     "id": "011e754021cbe75144d1dcd8ebfa5dbdb3ac55a3e83a40692b34c3c573c181d9",
@@ -5216,7 +5095,8 @@
     "climate_relevance_reason": "The job description explicitly mentions optimizing processes for efficient carbon capture, which is a core climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5eee6981efcc5fc9977753702795d78f71d193697dd5a43835a16b28fb1189c9",
-    "last_enriched_at": "2026-04-17T03:01:52.323Z"
+    "last_enriched_at": "2026-04-17T03:01:52.323Z",
+    "days_live": 0
   },
   {
     "id": "64e9eec06a387f020bfcf2c6eeb2dd72cf4b28c8b769fd5d072387dc2e2919a9",
@@ -5240,7 +5120,8 @@
     "climate_relevance_reason": "The job description explicitly states the role involves designing electrical systems for carbon capture units, which falls under the 'Carbon Capture / Utilization / Storage' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "a7df44cb756cec7c2a6b23b6439e238b0d7c9fa5d68e92a3cc6200e876c769d6",
-    "last_enriched_at": "2026-04-17T03:01:52.571Z"
+    "last_enriched_at": "2026-04-17T03:01:52.571Z",
+    "days_live": 0
   },
   {
     "id": "e73e9d57a6dca795216e9e0ff8bcfa8bf790afe4aa0d1435b4c92c5ee62689eb",
@@ -5264,7 +5145,8 @@
     "climate_relevance_reason": "The job description explicitly mentions novel carbon capture technologies, which falls under the 'Carbon Capture / Utilization / Storage' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "24d8a34672e959299bf9f3d322651345a8d1bf68bb0f1c411e965f3d6bdac1ca",
-    "last_enriched_at": "2026-04-17T03:01:57.985Z"
+    "last_enriched_at": "2026-04-17T03:01:57.985Z",
+    "days_live": 0
   },
   {
     "id": "7a7da9435cbd654c2a63de9e3f8f795d448f602f656b007748cf2557d01438f6",
@@ -5288,7 +5170,8 @@
     "climate_relevance_reason": "The role directly involves leading the design and optimization of industrial-scale carbon capture processes, which falls under the 'Carbon Capture / Utilization / Storage' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5a3457a8421f5b5a14caffc39afb1ef295127da85ecdc297538a70819de01081",
-    "last_enriched_at": "2026-04-17T03:01:58.112Z"
+    "last_enriched_at": "2026-04-17T03:01:58.112Z",
+    "days_live": 0
   },
   {
     "id": "89cb0de4a126f7ae4430fe9956d82088c6cf1aca3cf904702665e7c8ead7af58",
@@ -5312,7 +5195,8 @@
     "climate_relevance_reason": "The role directly involves analyzing data from carbon capture systems, which is a key climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f822d6b8a3fe4a23ed7bb4bef61aa53af2363f79561a4a5133d3fb1406f9f8d7",
-    "last_enriched_at": "2026-04-17T03:02:01.799Z"
+    "last_enriched_at": "2026-04-17T03:02:01.799Z",
+    "days_live": 0
   },
   {
     "id": "947f0dc4f54d01c0b1e94bad183d9f7e4c45f081b3791d020996b2a81c945669",
@@ -5336,7 +5220,8 @@
     "climate_relevance_reason": "The job description explicitly states the role involves overseeing carbon capture projects, which is a direct climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "c9749a8f26c956ca746ef83e7e1acf03759e41132851c8c374568d5e14338a80",
-    "last_enriched_at": "2026-04-17T03:02:04.324Z"
+    "last_enriched_at": "2026-04-17T03:02:04.324Z",
+    "days_live": 0
   },
   {
     "id": "038a34e30170891682583500395ea3a22f276159c9ebd2b8f4d832f27fe83c4a",
@@ -5360,7 +5245,8 @@
     "climate_relevance_reason": "The role involves operating and maintaining carbon capture equipment, which falls under the 'Carbon Capture / Utilization / Storage' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ea429e6a3b0e5bc236d1ca7c72e80cdaf7e481b9406b7f42635397a3c4932776",
-    "last_enriched_at": "2026-04-17T03:02:05.095Z"
+    "last_enriched_at": "2026-04-17T03:02:05.095Z",
+    "days_live": 0
   },
   {
     "id": "32c085cbd3af5f3ebcf22280f99a86edb2ed1e005d180e561c2c495b56140111",
@@ -5384,7 +5270,8 @@
     "climate_relevance_reason": "The provided information about SpiralWave and the job description does not contain explicit keywords or company context to confirm climate relevance.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f69eccd71654d0c218f816e778e29f0c759c6a05bfb8f4fc993ff0f68a03b742",
-    "last_enriched_at": "2026-04-17T03:02:06.699Z"
+    "last_enriched_at": "2026-04-17T03:02:06.699Z",
+    "days_live": 0
   },
   {
     "id": "2202ad937c6c809f247668d943acf4a391a03ad36dd01ef567a9569aa57af99a",
@@ -5408,7 +5295,8 @@
     "climate_relevance_reason": "The company develops wireless EV charging technology, which directly contributes to 'Charging Infrastructure' and 'Electrification' for 'Battery Electric Vehicles'.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "550b4700c3af54956f6478daa56262f6c3c439ca2fd8c46cb7a43c1a8b7e84d0",
-    "last_enriched_at": "2026-04-17T03:02:08.919Z"
+    "last_enriched_at": "2026-04-17T03:02:08.919Z",
+    "days_live": 0
   },
   {
     "id": "ec13608b291c8c6d669ee8d9bd8146c97c94727e2adf4afa703b670d761d7925",
@@ -5432,7 +5320,8 @@
     "climate_relevance_reason": "The job is listed on a climate-tech job board, indicating the company operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "24fa0e43b84df7f0fddc1419514d77455dc105655304d779ab1cb5bc295040af",
-    "last_enriched_at": "2026-04-17T03:02:14.214Z"
+    "last_enriched_at": "2026-04-17T03:02:14.214Z",
+    "days_live": 0
   },
   {
     "id": "39122e3f2721b3fc1689d7c4b0d421a96622efe33360dffc7a84512cfc41506e",
@@ -5456,7 +5345,8 @@
     "climate_relevance_reason": "The company is assumed to be a climate-tech company as the listing is intended for a climate-tech job board.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "11451c9697da5e35ca61bebaf64f3c135627aec42730dee3d45c7cd55b94a1e9",
-    "last_enriched_at": "2026-04-17T03:02:19.906Z"
+    "last_enriched_at": "2026-04-17T03:02:19.906Z",
+    "days_live": 0
   },
   {
     "id": "f00ea78bd90c3849fe0c1f5804e78566cacf4219f52814702396a88698a75375",
@@ -5480,7 +5370,8 @@
     "climate_relevance_reason": "The job listing is provided for a climate-tech job board, indicating Zanskar operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "3ea6becdc8e36c11491817e2eab8a315e06ebc1736bdc9fad7ed7d84aca2ece4",
-    "last_enriched_at": "2026-04-17T03:02:13.105Z"
+    "last_enriched_at": "2026-04-17T03:02:13.105Z",
+    "days_live": 0
   },
   {
     "id": "be82fd594893482aadf82a8ac73763d75199d1c4912c6b66c911e55f5565eb45",
@@ -5504,7 +5395,8 @@
     "climate_relevance_reason": "The job listing is provided for a climate-tech job board, indicating Zanskar operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bfad53568b626d6103a830fb94439eaa2d5bc5c6401fc95b9ab261f7c3b687f7",
-    "last_enriched_at": "2026-04-17T03:02:23.876Z"
+    "last_enriched_at": "2026-04-17T03:02:23.876Z",
+    "days_live": 0
   },
   {
     "id": "8a7b3494422c5f3b19b52f2a669a6a5e272099218f11e1643dc568dbbb54031f",
@@ -5528,7 +5420,8 @@
     "climate_relevance_reason": "The job is listed on a climate-tech job board, indicating the company operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "0cf5b10daaf8eb93fe5795cbd69fe17e908abf8ff9b118e1a78b5bc7097874fe",
-    "last_enriched_at": "2026-04-17T03:02:28.339Z"
+    "last_enriched_at": "2026-04-17T03:02:28.339Z",
+    "days_live": 0
   },
   {
     "id": "af0776a5b90da233dbf44a711440e853a3bda3d5b49ab595fcbfeb2a76eae656",
@@ -5552,7 +5445,8 @@
     "climate_relevance_reason": "The job listing is provided for a climate-tech job board, indicating the company Zanskar operates in the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "4aea1a486cba79a4e7398ba88e753b413b00e892b0f83869bab55eb159d85a43",
-    "last_enriched_at": "2026-04-17T03:02:27.518Z"
+    "last_enriched_at": "2026-04-17T03:02:27.518Z",
+    "days_live": 0
   },
   {
     "id": "1483fab2f80b32773eb6c3e35167cc60a267a9d58622f3c48cd94b41654be0d5",
@@ -5576,7 +5470,8 @@
     "climate_relevance_reason": "The company operates in the climate-tech sector, as implied by the job board context.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "2b4c391ff7031ad88d67b929343f7652f458b437c33efb6db3c7a8420b2d9317",
-    "last_enriched_at": "2026-04-17T03:02:32.636Z"
+    "last_enriched_at": "2026-04-17T03:02:32.636Z",
+    "days_live": 0
   },
   {
     "id": "b84b2381bfe0af58c6c2e6927eb7e6344adc4cf7db5872167257cdaa0d2e4efe",
@@ -5600,7 +5495,8 @@
     "climate_relevance_reason": "The job listing is provided for a climate-tech job board, implying the company Zanskar operates within the climate-tech sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5cbfd19eca8bfc87e21e88f91bbc301f6c5d4740cce8e3c48916446d3309195e",
-    "last_enriched_at": "2026-04-17T03:02:31.410Z"
+    "last_enriched_at": "2026-04-17T03:02:31.410Z",
+    "days_live": 0
   },
   {
     "id": "99d919eae271938ca6e4c22ef43106f940809b5b5f6ae022b44e8e35ff635b7b",
@@ -5624,7 +5520,8 @@
     "climate_relevance_reason": "The company, Sage Geosystems, focuses on innovative geothermal projects, which is a direct climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f42535aa95b38701caf4c7f09a0db10b926841b55b94f6c3e5382066853488cb",
-    "last_enriched_at": "2026-04-17T03:02:32.015Z"
+    "last_enriched_at": "2026-04-17T03:02:32.015Z",
+    "days_live": 0
   },
   {
     "id": "0a520f1b91d4b0e176cb34fcfc997e75761ea196c674635052141070a486fefc",
@@ -5648,7 +5545,8 @@
     "climate_relevance_reason": "The job is explicitly for a Geothermal Drilling Engineer, directly aligning with the 'Geothermal' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "3420a81aeb5e2d6783251f4d44058217345e487fef91327170bd70bbf12df2f7",
-    "last_enriched_at": "2026-04-17T03:02:35.647Z"
+    "last_enriched_at": "2026-04-17T03:02:35.647Z",
+    "days_live": 0
   },
   {
     "id": "2691d208328b293109da6c2cb178ec7aba8163c63e7202c5b7b563d8786fdf4c",
@@ -5672,7 +5570,8 @@
     "climate_relevance_reason": "The role focuses on optimizing geothermal reservoirs for energy extraction, which directly aligns with the 'Geothermal' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "f65aa51a284a3ad940bd0ea0e3304c03ffc546f095c69e87df12a2f3c3b5d99e",
-    "last_enriched_at": "2026-04-17T03:02:36.190Z"
+    "last_enriched_at": "2026-04-17T03:02:36.190Z",
+    "days_live": 0
   },
   {
     "id": "c19e64fbe4d15694148dc328f11b6e91deb4c916bc99dd85a2651092b57c7ca5",
@@ -5696,7 +5595,8 @@
     "climate_relevance_reason": "The company, Sage Geosystems, develops geothermal power plants and energy storage solutions, which directly align with the 'Geothermal' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5297a721ad45f40bdd67c8a36b4d8dfd4203511f0f723723bcc96452023d0e5c",
-    "last_enriched_at": "2026-04-17T03:02:38.958Z"
+    "last_enriched_at": "2026-04-17T03:02:38.958Z",
+    "days_live": 0
   },
   {
     "id": "c30cdfa41b5c3fc7ca1a800b01697da9e7f27735a8f40419def150429cfdb9ab",
@@ -5720,7 +5620,8 @@
     "climate_relevance_reason": "The company focuses on geothermal energy projects, which is a direct climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "7b3004f34f0f8dc62ead11db3226abcadac31bb0424a5b3658c9ac9afb9f7a49",
-    "last_enriched_at": "2026-04-17T03:02:41.582Z"
+    "last_enriched_at": "2026-04-17T03:02:41.582Z",
+    "days_live": 0
   },
   {
     "id": "bd8be7eb86617e4608fc156d55ef1fcb71f95c96fa286d3e55d2519e88d1bb20",
@@ -5744,7 +5645,8 @@
     "climate_relevance_reason": "The company operates in geothermal energy, which is a direct climate-tech category focused on renewable energy generation.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "30cb6e966a58dc28ee3be7605b222e3558d0a124f7ba7f5c42f74fc8a8c96e01",
-    "last_enriched_at": "2026-04-17T03:02:45.778Z"
+    "last_enriched_at": "2026-04-17T03:02:45.778Z",
+    "days_live": 0
   },
   {
     "id": "9e3ccd00027a2408e94860f1a3d7f92c2f1b327e8f720aa0a84db17ecb7a0820",
@@ -5768,7 +5670,8 @@
     "climate_relevance_reason": "The company operates in the Geothermal climate-tech category, focusing on optimizing geothermal energy production.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "6481be0b9b7146174e1a362ecd7b1c054c30e4666493923230335c52ea4a6321",
-    "last_enriched_at": "2026-04-17T03:02:48.614Z"
+    "last_enriched_at": "2026-04-17T03:02:48.614Z",
+    "days_live": 0
   },
   {
     "id": "f970dff051dbadf0375ee8e8d5984b6078a783f6931163901c8f5333ef23cbe5",
@@ -5792,7 +5695,8 @@
     "climate_relevance_reason": "The company, Sage Geosystems, focuses on geothermal energy projects, which is a recognized climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "36de3d22f52e185b0be6d6d123e3a4d1919725fef4904f26316e81c5a1a8d973",
-    "last_enriched_at": "2026-04-17T03:02:48.895Z"
+    "last_enriched_at": "2026-04-17T03:02:48.895Z",
+    "days_live": 0
   },
   {
     "id": "a19fea95c4ad9b9460cc83914f280b4ccfe3612e3ff4253509ec54c1b242aa01",
@@ -5816,7 +5720,8 @@
     "climate_relevance_reason": "The company, Sage Geosystems, operates in the geothermal energy sector, which is a direct climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "2e30d2e07454c52c605cfb36a2cb416a6297ebf3a0ccc00d0b98d383653c5fce",
-    "last_enriched_at": "2026-04-17T03:02:49.328Z"
+    "last_enriched_at": "2026-04-17T03:02:49.328Z",
+    "days_live": 0
   },
   {
     "id": "1f34b64c7ee0e01df32943d44a750775a42d24e758a37d05d04404039c996be9",
@@ -5840,7 +5745,8 @@
     "climate_relevance_reason": "The company, Sage Geosystems, operates in the climate-tech sector (implied by the job board context), and the role explicitly focuses on environmental protection and compliance within industrial/energy sectors.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "cc8d25cf78314eddc8ae8a647fcf834f00df2f6f0aaedbc2901f5fe2bc221333",
-    "last_enriched_at": "2026-04-17T03:02:54.240Z"
+    "last_enriched_at": "2026-04-17T03:02:54.240Z",
+    "days_live": 0
   },
   {
     "id": "f781212f2bad95d31363a8c8d6630c269b81220a8ca89efe141e2a7b479a08f1",
@@ -5864,7 +5770,8 @@
     "climate_relevance_reason": "The job description and company name do not provide explicit information linking Karman Industries or this role to climate tech categories or sustainability initiatives.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "9ffcef288885e357fe07e1edb042798eac506d88463433b6796f9b3c5725c210",
-    "last_enriched_at": "2026-04-17T03:02:53.737Z"
+    "last_enriched_at": "2026-04-17T03:02:53.737Z",
+    "days_live": 0
   },
   {
     "id": "9b0d6ecb15817bcf70d63b61ccfdce6ca5fd3cc5c3a7423cbba42ae425cd7ce5",
@@ -5888,7 +5795,8 @@
     "climate_relevance_reason": "The company and role are explicitly focused on community solar programs, which directly contribute to clean energy and fall under the 'Solar' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "9392d8b0fb3a399814cf1f5542d44b251bb1929d363c664fc3d9f620f7e4cbf1",
-    "last_enriched_at": "2026-04-17T03:02:55.042Z"
+    "last_enriched_at": "2026-04-17T03:02:55.042Z",
+    "days_live": 0
   },
   {
     "id": "7ee6b021aa69c26f00e13a5f6771b8fc7887811f21270892d11c6f547a22fe35",
@@ -5912,7 +5820,8 @@
     "climate_relevance_reason": "The company and role are explicitly focused on 'Community Solar' and 'clean energy,' directly aligning with the 'Solar' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5681303c937e1518c51f9f95d5839a6e81d7c061a2605ad66269be1cdde7c5b3",
-    "last_enriched_at": "2026-04-17T03:02:56.799Z"
+    "last_enriched_at": "2026-04-17T03:02:56.799Z",
+    "days_live": 0
   },
   {
     "id": "d2a0da6ec7589a652b773fd8ecb2a627688c3464ab2f70c1d5fd4a5d8e16dcf0",
@@ -5936,7 +5845,8 @@
     "climate_relevance_reason": "The role is focused on community solar, which directly falls under the 'Solar' climate-tech category and aims to expand access to clean energy.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "25624231d2b7784f7cd0826ac2f3f41ab908730ebfcd216838d9630c76d71b14",
-    "last_enriched_at": "2026-04-17T03:03:00.118Z"
+    "last_enriched_at": "2026-04-17T03:03:00.118Z",
+    "days_live": 0
   },
   {
     "id": "a9c9f6cf4ff0ff9075ff0381d2bc8a7eb3bad877bb616eb0850f950c327f7aba",
@@ -5960,7 +5870,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:02:56.743Z"
+    "last_enriched_at": "2026-04-17T03:02:56.743Z",
+    "days_live": 0
   },
   {
     "id": "0bdab9eb27813acdd3f1aa39b60013d0ee7f4b4e8a8dbaea2737ebe55e00f8f7",
@@ -5984,7 +5895,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:00.124Z"
+    "last_enriched_at": "2026-04-17T03:03:00.124Z",
+    "days_live": 0
   },
   {
     "id": "bb9e5d3b88a9594552b7e7a108c2c270f7eaa33d1be4f522becf5716700fcb88",
@@ -6008,7 +5920,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:01.626Z"
+    "last_enriched_at": "2026-04-17T03:03:01.626Z",
+    "days_live": 0
   },
   {
     "id": "3bd9ac3dd9310b5d8aeeb5848e9a853ba5e5f03d851e78d04595621a80f638e6",
@@ -6032,7 +5945,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:03.129Z"
+    "last_enriched_at": "2026-04-17T03:03:03.129Z",
+    "days_live": 0
   },
   {
     "id": "a83d521497888100e0424673d1941bf46fac3e61a22e5e681b5af6a072d79f63",
@@ -6056,7 +5970,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:04.631Z"
+    "last_enriched_at": "2026-04-17T03:03:04.631Z",
+    "days_live": 0
   },
   {
     "id": "2f9e605a912b460954ee1fdebd7d51d7947d3e0ecb95e2372db42cd1d7144cc6",
@@ -6080,7 +5995,8 @@
     "climate_relevance_reason": "The company develops electric and hybrid-electric propulsion systems for commercial vessels, directly contributing to decarbonization in the marine sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "dd900e4564bfec4b81872c41057215e6b9bca7c8912cd31e3a789f3afcd9e311",
-    "last_enriched_at": "2026-04-17T03:03:15.540Z"
+    "last_enriched_at": "2026-04-17T03:03:15.540Z",
+    "days_live": 0
   },
   {
     "id": "1c02738000c0ec8c2fc4c7e6219b05143ad56dcc27d541d6066cb15f64c777f1",
@@ -6104,7 +6020,8 @@
     "climate_relevance_reason": "The role focuses on developing electrical systems for autonomous, electric, and hybrid vessels, directly contributing to low-emission powertrain vehicles and electrification in the marine sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "440871d8e051f9f797e8c6645ddfb775459b3cd3bfaf5b6f258d108086875525",
-    "last_enriched_at": "2026-04-17T03:03:11.446Z"
+    "last_enriched_at": "2026-04-17T03:03:11.446Z",
+    "days_live": 0
   },
   {
     "id": "3fa6d56e644844bba7f499b634cac5560433e586029d24044ce3c80f05749d31",
@@ -6128,7 +6045,8 @@
     "climate_relevance_reason": "The company develops electrical systems for autonomous, electric, and hybrid maritime vessels, directly contributing to electrification and low-emission powertrains in the marine sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ea91ff61e54f0a34ce5c7f1323d6a1a8c56c558e7c5e80c7473cf3928c46a674",
-    "last_enriched_at": "2026-04-17T03:03:16.192Z"
+    "last_enriched_at": "2026-04-17T03:03:16.192Z",
+    "days_live": 0
   },
   {
     "id": "c83e51c75f7e57056d5a32064b9e00a815ce73d84b4fd8123ce896b4d9add002",
@@ -6152,7 +6070,8 @@
     "climate_relevance_reason": "The company develops electric and hybrid-electric propulsion systems for commercial vessels, aligning with the 'Electrification' and 'Hybrids' climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "5852f6b051f1baed0ca68bd49df7b265d7eb554a47e3bde1931e64c7fde0aa41",
-    "last_enriched_at": "2026-04-17T03:03:17.489Z"
+    "last_enriched_at": "2026-04-17T03:03:17.489Z",
+    "days_live": 0
   },
   {
     "id": "b63af766072c1d379810ae3830297067b04b787b29c15b43f23a1e064656fd97",
@@ -6176,7 +6095,8 @@
     "climate_relevance_reason": "Fleetzero is building the future of maritime technology, which directly aligns with the 'Marine' climate-tech category, focusing on decarbonization and efficiency in the shipping industry.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "b30f7a56165a64f063f3f9b9c64d4c6a831c8c7ca0248857bc7c4c3c67dd0166",
-    "last_enriched_at": "2026-04-17T03:03:20.207Z"
+    "last_enriched_at": "2026-04-17T03:03:20.207Z",
+    "days_live": 0
   },
   {
     "id": "fa4edb8327ae3a9da2ca25a2df12497568cbca807d90c7dbd0b26ab41cb9b38b",
@@ -6200,7 +6120,8 @@
     "climate_relevance_reason": "The role focuses on developing electric and hybrid vessels, which directly contributes to decarbonizing marine transport and reducing emissions.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "dcdb2fe36044090745f496e41bf7e474dd512ebd99915c9141f383b2274d37d9",
-    "last_enriched_at": "2026-04-17T03:03:22.649Z"
+    "last_enriched_at": "2026-04-17T03:03:22.649Z",
+    "days_live": 0
   },
   {
     "id": "ada8a691c59f5f1322a99e6149079ede995b45bcfd064c035413325fedb7e7f6",
@@ -6224,7 +6145,8 @@
     "climate_relevance_reason": "The job is presented as a listing for a climate-tech job board, indicating the company operates within the climate sector.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "8c59f87e667e10e629f2639f46991711f710ad2f951eaa117e3fb2717af97338",
-    "last_enriched_at": "2026-04-17T03:03:26.969Z"
+    "last_enriched_at": "2026-04-17T03:03:26.969Z",
+    "days_live": 0
   },
   {
     "id": "b8cadd8ae169400d6e8c6d8710e4e5ef6b83e1efed56f2f447afd2909d945adf",
@@ -6248,7 +6170,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:24.163Z"
+    "last_enriched_at": "2026-04-17T03:03:24.163Z",
+    "days_live": 0
   },
   {
     "id": "61e7f46ade4e1a156ac90b93d6a342f9a4a6cadd945044fe7680328faa48aa32",
@@ -6272,7 +6195,8 @@
     "climate_relevance_reason": "The job description for TRIO Electric, a general electrical contractor, does not explicitly mention climate, sustainability, or specific climate-tech projects like solar, wind, or EV charging infrastructure.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "0562fc4ddebc8995132d54b2646430f16b92d96da9f8fc5dec6e6053f64f41f8",
-    "last_enriched_at": "2026-04-17T03:03:31.028Z"
+    "last_enriched_at": "2026-04-17T03:03:31.028Z",
+    "days_live": 0
   },
   {
     "id": "bb9cd4ef33705548c30edb681ce8f9dc2ebb7421f1ee16b11e1751af4a4fb70b",
@@ -6296,7 +6220,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:27.169Z"
+    "last_enriched_at": "2026-04-17T03:03:27.169Z",
+    "days_live": 0
   },
   {
     "id": "7dc3f92aa0ad4cb98417a8fb1fe9c71257d913797ea377c59a76e98db1d1f273",
@@ -6320,7 +6245,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:28.670Z"
+    "last_enriched_at": "2026-04-17T03:03:28.670Z",
+    "days_live": 0
   },
   {
     "id": "1eb3c76779dafeeadf43158d3ce2a896bee2f30a110185326af1d40276b7baf9",
@@ -6344,7 +6270,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:30.172Z"
+    "last_enriched_at": "2026-04-17T03:03:30.172Z",
+    "days_live": 0
   },
   {
     "id": "04cee90ebd85d83a053e24c23f39b31cdc470f34b39fb7f558ecea2396fc8a3c",
@@ -6368,7 +6295,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:31.675Z"
+    "last_enriched_at": "2026-04-17T03:03:31.675Z",
+    "days_live": 0
   },
   {
     "id": "a8cb33a36196989d74773443bcd44f6d349fa8844c25e23c3b994ecb711503a7",
@@ -6392,7 +6320,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:33.176Z"
+    "last_enriched_at": "2026-04-17T03:03:33.176Z",
+    "days_live": 0
   },
   {
     "id": "b62c8a0fe93157eb808ac094a852f60bea1e267d9a0ed6d66a9e67f92e94d422",
@@ -6416,7 +6345,8 @@
     "climate_relevance_reason": "The job description and company name do not explicitly mention climate, energy transition, sustainability, or any climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "d32d92759ea6bff6f67416acd3838cea4098e059d17212b8b1bb113243f068ee",
-    "last_enriched_at": "2026-04-17T03:03:38.513Z"
+    "last_enriched_at": "2026-04-17T03:03:38.513Z",
+    "days_live": 0
   },
   {
     "id": "a8cff09c083c411a8817ec9c5c2794607ae1d55f24f4c2622c668d1dd338a4fc",
@@ -6440,7 +6370,8 @@
     "climate_relevance_reason": "The job is listed for a climate-tech job board, indicating the company invests in climate technology.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "1c515cf1409d7a15ea5a66222adc31a040ae40f9b8249e8bd4d66f324d019f80",
-    "last_enriched_at": "2026-04-17T03:03:40.870Z"
+    "last_enriched_at": "2026-04-17T03:03:40.870Z",
+    "days_live": 0
   },
   {
     "id": "9ac46861931b2da478f40ad4b20aedf3884112491d15e081a43e8f44b5dd7553",
@@ -6464,7 +6395,8 @@
     "climate_relevance_reason": "The job description and company name do not explicitly mention climate, energy transition, sustainability, or any specific climate-tech categories. The data type mentioned is too broad to confirm climate relevance.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "05a8ebf6d78d92c3e226e88c9df143d027ad27085d32bed2475417d3826f822c",
-    "last_enriched_at": "2026-04-17T03:03:49.194Z"
+    "last_enriched_at": "2026-04-17T03:03:49.194Z",
+    "days_live": 0
   },
   {
     "id": "62561ee9168f1401624970f221d23e14ccc138760f23553d3330bfffee2706f7",
@@ -6488,7 +6420,8 @@
     "climate_relevance_reason": "The role focuses on AI for scientific discovery in materials science, which is foundational for developing advanced materials critical to various climate technologies such as lightweight materials, advanced battery technologies, and green materials.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bff308829e19593611f63170718d2982c10cf4ba70746d2953ac8a1051396fee",
-    "last_enriched_at": "2026-04-17T03:03:46.958Z"
+    "last_enriched_at": "2026-04-17T03:03:46.958Z",
+    "days_live": 0
   },
   {
     "id": "ae5d17d5ffd036178bd191225393a8ba6825a85594699c1bce4beb67006dce01",
@@ -6512,7 +6445,8 @@
     "climate_relevance_reason": "The job is listed for a climate-tech job board, implying the company AIMATX operates within the climate-tech sector, and the role's focus on integrating diverse scientific data for AI is foundational for many climate solutions.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bd50bc02efda2636e70306523bc12caa50ac3039b4f628bef6a235d989c09b7d",
-    "last_enriched_at": "2026-04-17T03:03:49.816Z"
+    "last_enriched_at": "2026-04-17T03:03:49.816Z",
+    "days_live": 0
   },
   {
     "id": "88e78d121fbc5e45237d3730ac25f0be30ce4a859987b5c5d4500127c0ba7ad5",
@@ -6536,7 +6470,8 @@
     "climate_relevance_reason": "The company develops underwater robotic capabilities, which are often applied in marine environments for monitoring, conservation, or infrastructure related to climate solutions, aligning with the 'Marine' or 'Monitoring' categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "d656a4ed183e9096f2f3c1001673b5e912a4827a8679ccda332da96c9f3f98d3",
-    "last_enriched_at": "2026-04-17T03:03:53.739Z"
+    "last_enriched_at": "2026-04-17T03:03:53.739Z",
+    "days_live": 0
   },
   {
     "id": "1949d8f412c1cc5e8a31481bae78ae0263085fcb2ea0fb4262b362968bc82f3f",
@@ -6560,7 +6495,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:49.194Z"
+    "last_enriched_at": "2026-04-17T03:03:49.194Z",
+    "days_live": 0
   },
   {
     "id": "069c86d9caf50e744d3d55243c978bd97fd10fed88f22d3231818e75110f6288",
@@ -6584,7 +6520,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:50.697Z"
+    "last_enriched_at": "2026-04-17T03:03:50.697Z",
+    "days_live": 0
   },
   {
     "id": "707fb57d23d5e144c1b7fdf9f2e984471d82706056d7ff7d96ad56bd77c1a49c",
@@ -6608,7 +6545,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:52.198Z"
+    "last_enriched_at": "2026-04-17T03:03:52.198Z",
+    "days_live": 0
   },
   {
     "id": "7d58b0f03f8571f5430a592b037decd306ecef297432b8c1d5860a3ae821759c",
@@ -6632,7 +6570,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:53.700Z"
+    "last_enriched_at": "2026-04-17T03:03:53.700Z",
+    "days_live": 0
   },
   {
     "id": "2029b52b90af6c4c00aae1c19eab141807e54b6ae2c157751fa2bc827c0665ad",
@@ -6656,7 +6595,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:55.202Z"
+    "last_enriched_at": "2026-04-17T03:03:55.202Z",
+    "days_live": 0
   },
   {
     "id": "29e055e8e2a5f716d63b208d068439053c941dd82d575ecd246b55a212420bc7",
@@ -6680,7 +6620,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:56.705Z"
+    "last_enriched_at": "2026-04-17T03:03:56.705Z",
+    "days_live": 0
   },
   {
     "id": "64a560a2bd16422c36b83cd809c2cb564e6500e0e40866735b6e6411c7f15408",
@@ -6704,7 +6645,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:58.215Z"
+    "last_enriched_at": "2026-04-17T03:03:58.215Z",
+    "days_live": 0
   },
   {
     "id": "56d70e6f18f763d2c0da63e7ab3d2645c115b3dcb1f665841797a8c4259cdb85",
@@ -6728,7 +6670,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:03:59.717Z"
+    "last_enriched_at": "2026-04-17T03:03:59.717Z",
+    "days_live": 0
   },
   {
     "id": "2754714310f81d3fc573efafbb6edc48c6141ef3738bb9df1479d25083f95da7",
@@ -6752,7 +6695,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:01.219Z"
+    "last_enriched_at": "2026-04-17T03:04:01.219Z",
+    "days_live": 0
   },
   {
     "id": "3ab9ff99e3493cbd5367e497b0b9de8fc8bc1136471fdb095ef49e723119c5ea",
@@ -6776,7 +6720,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:02.722Z"
+    "last_enriched_at": "2026-04-17T03:04:02.722Z",
+    "days_live": 0
   },
   {
     "id": "aed5a953e8bc9c8ce1930640878a8eb5586072c1d678cf78b91312807c7d454f",
@@ -6800,7 +6745,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:04.224Z"
+    "last_enriched_at": "2026-04-17T03:04:04.224Z",
+    "days_live": 0
   },
   {
     "id": "b5b581c58c6ecb833a2e9b17d44c13579cb03c83ecd794379e97de954ccb94b3",
@@ -6824,7 +6770,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:05.725Z"
+    "last_enriched_at": "2026-04-17T03:04:05.725Z",
+    "days_live": 0
   },
   {
     "id": "f1acb3445580b9f82967a344aa5fa4775d155cd65545560a368a7e9d9cfefbaf",
@@ -6848,7 +6795,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:07.227Z"
+    "last_enriched_at": "2026-04-17T03:04:07.227Z",
+    "days_live": 0
   },
   {
     "id": "160d2d81e8ffadfe25482acae8cb573627abe7aaceedb955d5aa36988357372a",
@@ -6872,7 +6820,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:08.727Z"
+    "last_enriched_at": "2026-04-17T03:04:08.727Z",
+    "days_live": 0
   },
   {
     "id": "c1881db9ee1c6818a8dc3780b1086191d4cd1f11f60a40d3fe3e91aeee016693",
@@ -6896,7 +6845,8 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:10.228Z"
+    "last_enriched_at": "2026-04-17T03:04:10.228Z",
+    "days_live": 0
   },
   {
     "id": "f68b8822f4953c70f5eeadde887f2b07d07679b6f5fa03c499ced7908ada06d0",
@@ -6970,7 +6920,8 @@
     "climate_relevance_reason": "LuxWall develops transparent insulation for buildings, contributing to energy efficiency and smart building solutions, fitting categories like Smart Buildings and Energy Efficiency.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "b1a8d457319987bfdb9f4765611554be5fb012840c4cf952cd438b9b757fab8c",
-    "last_enriched_at": "2026-04-17T03:04:25.601Z"
+    "last_enriched_at": "2026-04-17T03:04:25.601Z",
+    "days_live": 0
   },
   {
     "id": "72c7461f59dbc5f8b4c0978d0cc10f61c6026ec89901fdc2a19774eaa19b5ef8",
@@ -6994,7 +6945,8 @@
     "climate_relevance_reason": "LuxWall specializes in transparent insulation and energy-efficient windows, which aligns with climate-tech categories such as Smart Buildings and Energy Efficiency & Process Optimization.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "59c92ecd76356454ea4f9bca953b12e00cdf8bf50f52338619db3debbd2a4eb0",
-    "last_enriched_at": "2026-04-17T03:04:28.650Z"
+    "last_enriched_at": "2026-04-17T03:04:28.650Z",
+    "days_live": 0
   },
   {
     "id": "426b3a950a53ffe0b9119834c4d0d06919c7c1a595bee7555a9b3b4c98c2d909",
@@ -7018,7 +6970,8 @@
     "climate_relevance_reason": "LuxWall manufactures vacuum insulated glass for buildings, which significantly improves energy efficiency and aligns with 'Energy Efficiency & Process Optimization' and 'Thermal' categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "06879ed85a14b1c1550b87198b080f5177651835a67cc5d750c4d1d19087ac11",
-    "last_enriched_at": "2026-04-17T03:04:34.286Z"
+    "last_enriched_at": "2026-04-17T03:04:34.286Z",
+    "days_live": 0
   },
   {
     "id": "adc558e5b51f06e22c932f7a2b6f16bb48c892d9605f59a4c0f14092576965fa",
@@ -7042,7 +6995,8 @@
     "climate_relevance_reason": "LuxWall produces vacuum insulated glass (VIG) for buildings, which falls under 'Energy Efficiency & Process Optimization', 'Smart Buildings', and 'Green Materials' categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "ffbaeac0c15b78ffd86ac935d17af9ad3ea6ff12a0129c4ca6f6ffb0f632e94f",
-    "last_enriched_at": "2026-04-17T03:04:29.725Z"
+    "last_enriched_at": "2026-04-17T03:04:29.725Z",
+    "days_live": 0
   },
   {
     "id": "cdb111524512f1f7c4aebfa10c3fa47c60b46513332df8624ddcd8faa9a90403",
@@ -7066,7 +7020,8 @@
     "climate_relevance_reason": "LuxWall manufactures high-performance transparent insulation for buildings, directly contributing to energy efficiency and reduced emissions in the built environment.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "88f2123d8e44e59863db2a887f4fc8967f0510f239090810e00d9660aaee73f8",
-    "last_enriched_at": "2026-04-17T03:04:34.149Z"
+    "last_enriched_at": "2026-04-17T03:04:34.149Z",
+    "days_live": 0
   },
   {
     "id": "91b6a4c7c7150d81951285025a17f239b3eab877177171577445c9842d9d68f9",
@@ -7094,7 +7049,8 @@
     "climate_relevance_reason": "The company develops advanced atomic energy solutions and nuclear reactor operations, which falls under the 'Fission' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "b2d7abeb8f093ee3c8fefcd94237feefd11b50ed707f0b8cd0da687753e873af",
-    "last_enriched_at": "2026-04-17T03:04:34.021Z"
+    "last_enriched_at": "2026-04-17T03:04:34.021Z",
+    "days_live": 0
   },
   {
     "id": "035013ab0e8bcb80f9c41a3a29c6fd7cd7c0a50a426455ac9a5fef67dc5b9906",
@@ -7118,7 +7074,8 @@
     "climate_relevance_reason": "The role is focused on managing solar energy projects, which directly falls under the 'Solar' climate-tech category.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "bb0755cf65820a121bf28221ed6a266832b68e5c57c2f1a254b7f0e1e262899d",
-    "last_enriched_at": "2026-04-14T19:55:32.560Z"
+    "last_enriched_at": "2026-04-14T19:55:32.560Z",
+    "days_live": 0
   },
   {
     "id": "d66d4b5b6562cce3f877d700cd4960d0ae29b98b8bf52959be3947172dbe79cb",
@@ -7142,7 +7099,8 @@
     "climate_relevance_reason": "The company develops advanced small modular nuclear reactors (ARC-100) for carbon-free power, aligning with the Fission and Industrial Nuclear climate-tech categories.",
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "465389135a7121e7469a51435f9585d026e3ba5392bd72835ff598496437211d",
-    "last_enriched_at": "2026-04-17T03:04:38.058Z"
+    "last_enriched_at": "2026-04-17T03:04:38.058Z",
+    "days_live": 0
   },
   {
     "id": "cbe5cfdf7c2118a9c3d78ef1d684f3afa089201352886449a06a6511cfef74a7",
@@ -7166,6 +7124,7 @@
     "climate_relevance_reason": null,
     "enrichment_prompt_version": "1.1.0",
     "description_raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "last_enriched_at": "2026-04-17T03:04:35.523Z"
+    "last_enriched_at": "2026-04-17T03:04:35.523Z",
+    "days_live": 0
   }
 ]

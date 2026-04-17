@@ -7577,5 +7577,104 @@
     "success": false,
     "error": "fetch failed",
     "status": "error"
+  },
+  {
+    "company_id": "wwwpivotenergynet",
+    "scraped_at": "2026-04-17T13:46:08.065Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 268995,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwterawatt-technologycom",
+    "scraped_at": "2026-04-17T13:47:39.276Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 203991,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwflairco",
+    "scraped_at": "2026-04-17T13:47:45.664Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 294526,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwpivotenergynet",
+    "scraped_at": "2026-04-17T13:49:32.452Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 268995,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwterawatt-technologycom",
+    "scraped_at": "2026-04-17T13:51:03.936Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 203991,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwflairco",
+    "scraped_at": "2026-04-17T13:51:10.485Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 294526,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwpivotenergynet",
+    "scraped_at": "2026-04-17T13:57:11.859Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 268995,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwterawatt-technologycom",
+    "scraped_at": "2026-04-17T13:58:42.615Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "byte_length": 203991,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
+  },
+  {
+    "company_id": "wwwflairco",
+    "scraped_at": "2026-04-17T13:58:49.381Z",
+    "status_code": 200,
+    "content_type": "text/html; charset=utf-8",
+    "byte_length": 294526,
+    "method": "direct_html",
+    "success": true,
+    "error": null,
+    "status": "success"
   }
 ]

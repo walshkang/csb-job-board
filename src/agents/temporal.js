@@ -71,27 +71,31 @@ function getRunJobCount(run) {
   return 0;
 }
 
-// Update jobs based on lastRunSeenUrls map: { company_id -> Set(urls) }
+// Update jobs based on last_seen_at vs lastRun scraped_at
 function updateJobsForLastRun(jobs, lastRun, nowIso) {
   const stats = { updated: 0, removed: 0 };
   if (!Array.isArray(jobs)) return stats;
   if (!lastRun || !lastRun.company_id) return stats;
+  
   const companyId = lastRun.company_id;
-  const seen = new Set(getSeenUrlsFromRun(lastRun).map(String));
+  const runWasSuccessful = lastRun.status === 'success' || lastRun.success === true;
+  
+  // Scraper timestamp or current time
+  const runTime = Date.parse(lastRun.scraped_at || nowIso);
 
   for (const job of jobs) {
     if (job.company_id !== companyId) continue;
-    // Seen in this run -> update last_seen_at
-    if (seen.size && job.source_url && seen.has(String(job.source_url))) {
-      job.last_seen_at = nowIso;
-      stats.updated++;
-    } else if (seen.size) {
-      // Company scraped but job's source_url not present in this run
-      if (!job.removed_at) {
+    
+    // If the run was successful, any job not seen during or after this run is considered removed
+    if (runWasSuccessful && !job.removed_at) {
+      const lastSeen = Date.parse(job.last_seen_at || job.first_seen_at || 0);
+      // Add a 5 minute buffer to account for extraction processing time differences
+      if (lastSeen < runTime - 300000) {
         job.removed_at = nowIso;
         stats.removed++;
       }
     }
+    
     // Recompute days_live if dates available
     try {
       const first = job.first_seen_at ? Date.parse(job.first_seen_at) : NaN;
@@ -177,12 +181,25 @@ async function main() {
     process.exit(1);
   }
 
-  const lastRun = runs[runs.length - 1];
   const nowIso = new Date().toISOString();
+  // Build a map of the latest run per company
+  const latestRunByCompany = new Map();
+  for (let i = runs.length - 1; i >= 0; i--) {
+    const r = runs[i];
+    if (r && r.company_id && !latestRunByCompany.has(r.company_id)) {
+      latestRunByCompany.set(r.company_id, r);
+    }
+  }
 
-  verboseLog(verbose, 'Processing last run:', lastRun && lastRun.company_id, 'scraped_at', lastRun && lastRun.scraped_at);
+  verboseLog(verbose, `Processing latest runs for ${latestRunByCompany.size} companies.`);
 
-  const jobStats = updateJobsForLastRun(jobs, lastRun, nowIso);
+  const jobStats = { updated: 0, removed: 0 };
+  for (const lastRun of latestRunByCompany.values()) {
+    const stats = updateJobsForLastRun(jobs, lastRun, nowIso);
+    jobStats.updated += stats.updated;
+    jobStats.removed += stats.removed;
+  }
+
   const companyStats = updateCompaniesDormancy(companies, runs, verbose);
 
   // Write back

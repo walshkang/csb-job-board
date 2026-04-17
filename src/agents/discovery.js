@@ -289,7 +289,7 @@ async function tryAtsSlugs(company, verbose) {
 // Fetch homepage once and scan <a href> tags for career-related links.
 // Returns the homepage HTML as a side-effect in homepageCache so the LLM
 // fallback doesn't have to fetch it again.
-const CAREER_LINK_RE = /(career|careers|job|jobs|join|openings|positions|hiring|work-with-us|work_with_us)/i;
+const CAREER_LINK_RE = /\b(career|careers|job|jobs|join|join-?us|openings|positions|hiring|work-with-us|work_with_us)\b/i;
 
 async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright = false) {
   let html = homepageCache.html;
@@ -391,7 +391,26 @@ async function processCompany(company, opts) {
   const domain = normalizeDomain(company.domain);
   if (!domain) return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
 
-  const done = (result) => ({ ...result, steps, duration_ms: Date.now() - t0 });
+  const done = (result) => {
+    if (!result.skipped) {
+      if (result.found) {
+        company.careers_page_url = result.url;
+        company.careers_page_reachable = true;
+        company.careers_page_discovery_method = result.method;
+        company.ats_platform = detectAtsPlatform(result.url);
+        delete company.careers_page_failure_reason;
+      } else {
+        company.careers_page_url = null;
+        company.careers_page_reachable = false;
+        company.careers_page_discovery_method = result.method || 'not_found';
+        company.ats_platform = null;
+        company.careers_page_failure_reason = classifyFailureReason(steps);
+      }
+      if (result.llm_attempted) company.llm_attempted = true;
+      if (result.llm_error) company.llm_error = true;
+    }
+    return { ...result, steps, duration_ms: Date.now() - t0 };
+  };
 
   // Shared cache so homepage is only fetched once across steps 3 and 4.
   const homepageCache = {};
@@ -656,31 +675,17 @@ async function main() {
         if (result.skipped) {
           // no change
         } else if (result.found) {
-          company.careers_page_url = result.url;
-          company.careers_page_reachable = true;
-          company.careers_page_discovery_method = result.method;
-          company.ats_platform = detectAtsPlatform(result.url);
-          delete company.careers_page_failure_reason;
           foundCount++;
           methodCounts[result.method] = (methodCounts[result.method] || 0) + 1;
         } else {
-          company.careers_page_url = null;
-          company.careers_page_reachable = false;
-          company.careers_page_discovery_method = result.method || 'not_found';
-          company.ats_platform = null;
-          company.careers_page_failure_reason = classifyFailureReason(result.steps || []);
           notFoundCount++;
           methodCounts[company.careers_page_discovery_method] = (methodCounts[company.careers_page_discovery_method] || 0) + 1;
         }
 
-        // Persist LLM attempt flag to the company record so it appears in data/companies.json
         if (result && result.llm_attempted) {
-          company.llm_attempted = true;
           methodCounts.llm_fallback_attempted = (methodCounts.llm_fallback_attempted || 0) + 1;
         }
-        // Persist any LLM error marker as well
         if (result && result.llm_error) {
-          company.llm_error = true;
           llmErrorCount++;
         }
 
