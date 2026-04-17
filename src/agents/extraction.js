@@ -48,7 +48,15 @@ function extractJSONFromText(text) {
 }
 
 function resolveUrl(urlStr, base) { if (!urlStr) return null; try { return new URL(urlStr, base).toString(); } catch (e) { return null; } }
-function normalizeEmploymentType(v) { if (!v) return null; const s = String(v).toLowerCase().trim().replace(/[-\s]+/g, '_'); const allowed = new Set(['full_time','part_time','contract','intern']); return allowed.has(s) ? s : null; }
+function normalizeEmploymentType(v) { if (!v) return null; const s = String(v).toLowerCase().trim().replace(/[-\s]+/g, '_'); const allowed = new Set(['full_time', 'part_time', 'contract', 'intern']); return allowed.has(s) ? s : null; }
+
+function isPlaceholder(job) {
+  const title = (job.job_title_raw || '').toLowerCase();
+  const desc = (job.description_raw || '').toLowerCase();
+  if (title.includes('example') || title.includes('test job') || title.includes('sample job')) return true;
+  if (desc.includes('this is a sample description') || desc.includes('truncate it at 500 characters')) return true;
+  return false;
+}
 
 // Map ATS JSON artifacts
 function mapGreenhouse(json, company) {
@@ -273,7 +281,11 @@ async function extractCompanyJobs(company, opts = {}) {
         items = mapLever(raw, company); mapperName = 'lever';
       }
       if (verbose) console.log(`[${company.id}] json/${mapperName} → ${items.length} job(s)`);
-      for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', companyCategories));
+      for (const it of items) {
+        const normalized = normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', companyCategories);
+        if (isPlaceholder(normalized)) continue;
+        extracted.push(normalized);
+      }
       processed = true;
     } catch (err) {
       if (verbose) console.error(`[${company.id}] error: ${err}`);
@@ -289,7 +301,11 @@ async function extractCompanyJobs(company, opts = {}) {
         errors.push({ company: company.id, err: items[0] });
       } else {
         if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
-        for (const it of items) extracted.push(normalizeExtractedItem(it, company.id, company.name, baseUrl, companyCategories));
+        for (const it of items) {
+          const normalized = normalizeExtractedItem(it, company.id, company.name, baseUrl, companyCategories);
+          if (isPlaceholder(normalized)) continue;
+          extracted.push(normalized);
+        }
       }
       processed = true;
     } catch (err) {

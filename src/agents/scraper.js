@@ -297,7 +297,7 @@ async function scrapeCompany(company, opts = {}) {
     const ua = chooseUserAgent(index);
 
     if (providerKey === 'greenhouse_api') {
-      const apiUrl = `https://boards-api.greenhouse.io/v1/boards/${ghToken}/jobs`;
+      const apiUrl = `https://boards-api.greenhouse.io/v1/boards/${ghToken}/jobs?content=true`;
       result.method = 'greenhouse_api';
       const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
       result.status_code = res.status;
@@ -433,7 +433,7 @@ async function scrapeCompany(company, opts = {}) {
   }
 }
 
-async function run(companiesPath) {
+async function run(companiesPath, companyFilter = null) {
   const run = startRun('scraper');
   try {
     // load companies
@@ -453,7 +453,9 @@ async function run(companiesPath) {
     // firing all simultaneously. Semaphores still gate per-provider limits.
     const CONCURRENCY = 10;
     const results = [];
-    const queue = companies.map((c, idx) => ({ c, idx }));
+    const queue = companies
+      .filter(c => !companyFilter || c.id === companyFilter)
+      .map((c, idx) => ({ c, idx }));
     async function worker() {
       while (queue.length > 0) {
         const { c, idx } = queue.shift();
@@ -490,15 +492,17 @@ module.exports = {
 if (require.main === module) {
   const argv = process.argv.slice(2);
   let companiesPath = DEFAULT_COMPANIES_PATH;
+  let companyFilter = null;
   argv.forEach(arg => {
     if (arg.startsWith('--companies=')) companiesPath = path.resolve(process.cwd(), arg.split('=')[1]);
+    if (arg.startsWith('--company=')) companyFilter = arg.split('=')[1];
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node src/agents/scraper.js [--companies=path/to/companies.json]');
+      console.log('Usage: node src/agents/scraper.js [--companies=path/to/companies.json] [--company=id]');
       process.exit(0);
     }
   });
 
-  run(companiesPath).catch(err => {
+  run(companiesPath, companyFilter).catch(err => {
     console.error('Fatal error during scrape:', err);
     process.exit(1);
   });

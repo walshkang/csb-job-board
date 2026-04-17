@@ -89,8 +89,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Construction",
     "primary_sector": "Buildings",
@@ -155,8 +155,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "pages",
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
@@ -227,8 +227,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Fusion",
     "primary_sector": "Electricity",
@@ -261,8 +261,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
-    "consecutive_empty_scrapes": 1,
-    "dormant": false,
+    "consecutive_empty_scrapes": 3,
+    "dormant": true,
     "ats_slug": "who-we-are",
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -295,8 +295,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -335,8 +335,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
-    "consecutive_empty_scrapes": 1,
-    "dormant": false,
+    "consecutive_empty_scrapes": 3,
+    "dormant": true,
     "ats_slug": "pages",
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -369,8 +369,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_detection_source": "careers_page",
     "ats_slug": "careers",
     "climate_tech_category": "Solar",
@@ -499,8 +499,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 5,
+    "dormant": true,
     "ats_detection_source": "careers_page",
     "ats_slug": "flex",
     "climate_tech_category": "Alternative Flexibility Solutions",
@@ -534,8 +534,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Waste Heat Recovery",
     "primary_sector": "Manufacturing",
@@ -600,8 +600,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
-    "consecutive_empty_scrapes": 1,
-    "dormant": false,
+    "consecutive_empty_scrapes": 3,
+    "dormant": true,
     "ats_slug": "news-releases",
     "climate_tech_category": "Alternative Flexibility Solutions",
     "primary_sector": "Electricity",
@@ -634,8 +634,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Ecosystem Monitoring",
     "primary_sector": "Food / Ag & Nature",
@@ -732,7 +732,7 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Plant MRV",
     "primary_sector": "GHG Removal",
@@ -767,8 +767,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
@@ -801,8 +801,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Advanced Battery Technologies",
     "primary_sector": "Transportation",
@@ -834,8 +834,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -868,8 +868,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
@@ -902,8 +902,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "about",
     "climate_tech_category": "Thermal",
     "primary_sector": "Electricity",
@@ -936,8 +936,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -970,8 +970,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_detection_source": "homepage",
     "ats_slug": "careers",
     "climate_tech_category": null,
@@ -1037,8 +1037,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -1071,8 +1071,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 2,
-    "dormant": false,
+    "consecutive_empty_scrapes": 4,
+    "dormant": true,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
@@ -1233,8 +1233,8 @@
     "ocr_uncertain": false,
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
-    "consecutive_empty_scrapes": 1,
-    "dormant": false,
+    "consecutive_empty_scrapes": 3,
+    "dormant": true,
     "ats_slug": "careers",
     "climate_tech_category": "Fission",
     "primary_sector": "Electricity",
@@ -1297,7 +1297,7 @@
     "careers_page_url": "https://gevo.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Biofuels",
     "primary_sector": "Transportation",
@@ -1330,7 +1330,7 @@
     "careers_page_url": "https://inertia.com/jobs/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -1363,7 +1363,7 @@
     "careers_page_url": "https://www.lanzajet.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Biofuels",
     "primary_sector": "Transportation",
@@ -1396,7 +1396,7 @@
     "careers_page_url": "https://job-boards.greenhouse.io/starcloud",
     "ats_platform": "greenhouse",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -1429,7 +1429,7 @@
     "careers_page_url": "https://utilityglobal.com/join-utility-global-at-h2meet-2024/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -1462,7 +1462,7 @@
     "careers_page_url": "https://www.deepfission.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Fission",
     "primary_sector": "Electricity",
@@ -1495,7 +1495,7 @@
     "careers_page_url": "https://www.elysiabio.com/company/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
@@ -1528,7 +1528,7 @@
     "careers_page_url": "https://www.greenbutts.com/about/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
@@ -1561,7 +1561,7 @@
     "careers_page_url": "https://www.haulerhero.com/jobs",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Route & Logistics Optimization",
     "primary_sector": "Transportation",
@@ -1594,7 +1594,7 @@
     "careers_page_url": "https://www.litmotors.com/about/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Battery Electric Vehicles",
     "primary_sector": "Transportation",
@@ -1659,7 +1659,7 @@
     "careers_page_url": "https://www.neosansystems.com/about/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -1692,7 +1692,7 @@
     "careers_page_url": "https://www.qnetic.energy/company/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Mechanical",
     "primary_sector": "Electricity",
@@ -1789,7 +1789,7 @@
     "careers_page_url": "https://found-industries.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -1822,7 +1822,7 @@
     "careers_page_url": "https://nine.energy/about/work-with-us",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
@@ -1855,7 +1855,7 @@
     "careers_page_url": "https://www.upkept.io/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -1920,7 +1920,7 @@
     "careers_page_url": "https://www.clearsolarco.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -1953,7 +1953,7 @@
     "careers_page_url": "https://eioncarbon.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Carbon Mineralization",
     "primary_sector": "GHG Removal",
@@ -1986,7 +1986,7 @@
     "careers_page_url": "https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdocs.google.com%2Fdocument%2F&dsh=S-1609988461%3A1776361350622906&followup=https%3A%2F%2Fdocs.google.com%2Fdocument%2F&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&ifkv=AT1y2_VK8B8z9p6tafmnaBuC481GLT_bsuzS6FjYKZ_SPCsumemjxVu6GmdpXBszJ3c1OH2nvsbGDg",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -2020,7 +2020,7 @@
     "careers_page_url": "https://heronpower.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Hydro",
     "primary_sector": "Electricity",
@@ -2085,7 +2085,7 @@
     "careers_page_url": "https://boxpower.io/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -2150,7 +2150,7 @@
     "careers_page_url": "https://phathom.tech/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Alkalinity Enhancement",
     "primary_sector": "GHG Removal",
@@ -2183,7 +2183,7 @@
     "careers_page_url": "https://xkcorp.com/about/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Smart Buildings",
     "primary_sector": "Buildings",
@@ -2216,7 +2216,7 @@
     "careers_page_url": "https://www.arkeabio.com/our-team/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
@@ -2281,7 +2281,7 @@
     "careers_page_url": "https://stratusauto.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -2346,7 +2346,7 @@
     "careers_page_url": "https://drivepowerline.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -2411,7 +2411,7 @@
     "careers_page_url": "https://www.tersussolutions.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Carbon Capture / Utilization / & Storage",
     "primary_sector": "Manufacturing",
@@ -2444,7 +2444,7 @@
     "careers_page_url": "https://www.agriwater.tech/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Precision Agriculture",
     "primary_sector": "Food / Ag & Nature",
@@ -2509,7 +2509,7 @@
     "careers_page_url": "https://www.polyjohn.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Waste-Based Production",
     "primary_sector": "Manufacturing",
@@ -2542,7 +2542,7 @@
     "careers_page_url": "https://factorialenergy.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -2575,7 +2575,7 @@
     "careers_page_url": "https://www.integrativecharging.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Charging Infrastructure",
     "primary_sector": "Transportation",
@@ -2608,7 +2608,7 @@
     "careers_page_url": "https://www.popwheels.club/our-team",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -2642,7 +2642,7 @@
     "careers_page_url": "https://tae.com/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -2707,7 +2707,7 @@
     "careers_page_url": "https://www.maia-analytics.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
@@ -2772,7 +2772,7 @@
     "careers_page_url": "https://www.pivotenergy.net/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -2837,7 +2837,7 @@
     "careers_page_url": "https://www.soltage.com/about/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -2902,7 +2902,7 @@
     "careers_page_url": "https://www.weathermatic.com/company/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Precision Agriculture",
     "primary_sector": "Food / Ag & Nature",
@@ -2935,7 +2935,7 @@
     "careers_page_url": "https://www.arc-cleantech.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Fission",
     "primary_sector": "Electricity",
@@ -2968,7 +2968,7 @@
     "careers_page_url": "https://collide.io/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": null,
     "primary_sector": null,
@@ -3001,7 +3001,7 @@
     "careers_page_url": "https://www.culturebiosciences.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Cultivated",
     "primary_sector": "Food / Ag & Nature",
@@ -3034,7 +3034,7 @@
     "careers_page_url": "https://www.enderamotors.com/endera-careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Battery Electric Vehicles",
     "primary_sector": "Transportation",
@@ -3099,7 +3099,7 @@
     "careers_page_url": "https://p6technologies.com/job-postings/join-our-eco-revolution/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -3132,7 +3132,7 @@
     "careers_page_url": "https://symbrosia.co/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Burp Mitigation",
     "primary_sector": "Food / Ag & Nature",
@@ -3165,7 +3165,7 @@
     "careers_page_url": "https://amatiscontrols.com/job-position-sitemap.xml",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Smart Buildings",
     "primary_sector": "Buildings",
@@ -3198,7 +3198,7 @@
     "careers_page_url": "https://www.emeren.com/index/lists?catname=careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -3231,7 +3231,7 @@
     "careers_page_url": "https://ekoa.design/careers/",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
@@ -3264,7 +3264,7 @@
     "careers_page_url": "https://www.paladinpower.com/careers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
@@ -3335,7 +3335,7 @@
     "careers_page_url": "https://www.plumefinder.com/login?from=%2Fcareers",
     "ats_platform": "custom",
     "ocr_uncertain": false,
-    "consecutive_empty_scrapes": 0,
+    "consecutive_empty_scrapes": 2,
     "dormant": false,
     "climate_tech_category": "Methane & Fugitive Emissions Mitigation",
     "primary_sector": "Manufacturing",
@@ -3406,7 +3406,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:25:40.064Z",
-    "last_extracted_at": "2026-04-16T18:27:37.736Z"
+    "last_extracted_at": "2026-04-16T18:27:37.736Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcaturuscom",
@@ -3437,7 +3439,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:52.202Z",
-    "last_extracted_at": "2026-04-16T18:28:32.641Z"
+    "last_extracted_at": "2026-04-16T18:28:32.641Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcriticalloopcom",
@@ -3468,7 +3472,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:52.255Z",
-    "last_extracted_at": "2026-04-16T18:28:43.796Z"
+    "last_extracted_at": "2026-04-16T18:28:43.796Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwforseeinccom",
@@ -3498,7 +3504,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlandoptioncom",
@@ -3529,7 +3537,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:55.164Z",
-    "last_extracted_at": "2026-04-16T18:28:12.391Z"
+    "last_extracted_at": "2026-04-16T18:28:12.391Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmatturcom",
@@ -3559,7 +3569,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwslateauto",
@@ -3590,7 +3602,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:52.667Z",
-    "last_extracted_at": "2026-04-16T18:28:10.160Z"
+    "last_extracted_at": "2026-04-16T18:28:10.160Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwterraformindustriescom",
@@ -3620,7 +3634,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwascendelementscom",
@@ -3652,7 +3668,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:25:52.878Z",
-    "last_extracted_at": "2026-04-16T18:28:10.162Z"
+    "last_extracted_at": "2026-04-16T18:28:10.162Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwdavygascom",
@@ -3682,7 +3700,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwevinitiativecom",
@@ -3712,7 +3732,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwflairco",
@@ -3743,7 +3765,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:25:53.253Z",
-    "last_extracted_at": "2026-04-16T18:28:10.165Z"
+    "last_extracted_at": "2026-04-16T18:28:10.165Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwgreengridinccom",
@@ -3774,7 +3798,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:56.671Z",
-    "last_extracted_at": "2026-04-16T18:28:55.038Z"
+    "last_extracted_at": "2026-04-16T18:28:55.038Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwbarnaklcom",
@@ -3804,7 +3830,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwalcoveio",
@@ -3834,7 +3862,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstandardcarbonio",
@@ -3865,7 +3895,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:55.839Z",
-    "last_extracted_at": "2026-04-16T18:28:16.347Z"
+    "last_extracted_at": "2026-04-16T18:28:16.347Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsolidseccom",
@@ -3895,7 +3927,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhummingevcom",
@@ -3926,7 +3960,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:55.657Z",
-    "last_extracted_at": "2026-04-16T18:28:15.005Z"
+    "last_extracted_at": "2026-04-16T18:28:15.005Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpolygonesystemscom",
@@ -3957,7 +3993,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:55.795Z",
-    "last_extracted_at": "2026-04-16T18:28:15.008Z"
+    "last_extracted_at": "2026-04-16T18:28:15.008Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwamericanprimeco",
@@ -3987,7 +4025,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwapeironlabscom",
@@ -4018,7 +4058,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:55.867Z",
-    "last_extracted_at": "2026-04-16T18:28:16.350Z"
+    "last_extracted_at": "2026-04-16T18:28:16.350Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwbellatunnocom",
@@ -4048,7 +4090,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwdugusystemscom",
@@ -4079,7 +4123,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:58.920Z",
-    "last_extracted_at": "2026-04-16T18:29:31.881Z"
+    "last_extracted_at": "2026-04-16T18:29:31.881Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwgenflatcom",
@@ -4109,7 +4155,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgreensteelenvironmentalcom",
@@ -4139,7 +4187,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwholofootwearinccom",
@@ -4170,7 +4220,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:55.913Z",
-    "last_extracted_at": "2026-04-16T18:28:25.483Z"
+    "last_extracted_at": "2026-04-16T18:28:25.483Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwlunarenergycom",
@@ -4201,7 +4253,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:56.006Z",
-    "last_extracted_at": "2026-04-16T18:28:19.212Z"
+    "last_extracted_at": "2026-04-16T18:28:19.212Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmarel-powercom",
@@ -4232,7 +4286,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:56.673Z",
-    "last_extracted_at": "2026-04-16T18:28:58.951Z"
+    "last_extracted_at": "2026-04-16T18:28:58.951Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpanhwarjetcom",
@@ -4264,7 +4320,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:25:56.861Z",
-    "last_extracted_at": "2026-04-16T18:28:32.644Z"
+    "last_extracted_at": "2026-04-16T18:28:32.644Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwresynergicom",
@@ -4295,7 +4353,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:56.802Z",
-    "last_extracted_at": "2026-04-16T18:28:32.643Z"
+    "last_extracted_at": "2026-04-16T18:28:32.643Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwalchemyco2com",
@@ -4325,7 +4385,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcobaltpowercom",
@@ -4357,7 +4419,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:25:57.367Z",
-    "last_extracted_at": "2026-04-16T18:29:06.968Z"
+    "last_extracted_at": "2026-04-16T18:29:06.968Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwderapicom",
@@ -4387,7 +4451,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwecovia-biocom",
@@ -4418,7 +4484,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:57.017Z",
-    "last_extracted_at": "2026-04-16T18:28:32.644Z"
+    "last_extracted_at": "2026-04-16T18:28:32.644Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmitra-evcom",
@@ -4448,7 +4516,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtomorrowio",
@@ -4479,7 +4549,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.281Z",
-    "last_extracted_at": "2026-04-16T18:33:17.908Z"
+    "last_extracted_at": "2026-04-16T18:33:17.908Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwa3ccom",
@@ -4509,7 +4581,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcaravelbio",
@@ -4540,7 +4614,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:25:57.444Z",
-    "last_extracted_at": "2026-04-16T18:28:43.800Z"
+    "last_extracted_at": "2026-04-16T18:28:43.800Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmetallightio",
@@ -4570,7 +4646,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnokrecommercecom",
@@ -4600,7 +4678,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwworionlightingcom",
@@ -4631,7 +4711,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:57.588Z",
-    "last_extracted_at": "2026-04-16T18:29:08.852Z"
+    "last_extracted_at": "2026-04-16T18:29:08.852Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpwrjoulecom",
@@ -4663,7 +4745,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:25:57.735Z",
-    "last_extracted_at": "2026-04-16T18:28:55.042Z"
+    "last_extracted_at": "2026-04-16T18:28:55.042Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwspiralwaveio",
@@ -4694,7 +4778,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.650Z",
-    "last_extracted_at": "2026-04-16T18:30:00.710Z"
+    "last_extracted_at": "2026-04-16T18:30:00.710Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwusmagnesiumcom",
@@ -4725,7 +4811,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:25:59.890Z",
-    "last_extracted_at": "2026-04-16T18:29:36.283Z"
+    "last_extracted_at": "2026-04-16T18:29:36.283Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwvectoresearth",
@@ -4757,7 +4845,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:00.002Z",
-    "last_extracted_at": "2026-04-16T18:29:06.973Z"
+    "last_extracted_at": "2026-04-16T18:29:06.973Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwaquaporocom",
@@ -4787,7 +4877,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcarbon-directcom",
@@ -4818,7 +4910,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.082Z",
-    "last_extracted_at": "2026-04-16T18:29:41.467Z"
+    "last_extracted_at": "2026-04-16T18:29:41.467Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwhidorothycom",
@@ -4848,7 +4942,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgetpressocom",
@@ -4879,7 +4975,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.159Z",
-    "last_extracted_at": "2026-04-16T18:29:08.856Z"
+    "last_extracted_at": "2026-04-16T18:29:08.856Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpurfreshcom",
@@ -4909,7 +5007,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfertilizercom",
@@ -4939,7 +5039,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwretrofixai",
@@ -4969,7 +5071,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwspirituscom",
@@ -5000,7 +5104,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.379Z",
-    "last_extracted_at": "2026-04-16T18:29:43.395Z"
+    "last_extracted_at": "2026-04-16T18:29:43.395Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwusstrategicmetalscom",
@@ -5031,7 +5137,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.441Z",
-    "last_extracted_at": "2026-04-16T18:29:31.883Z"
+    "last_extracted_at": "2026-04-16T18:29:31.883Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwvartegacom",
@@ -5062,7 +5170,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.517Z",
-    "last_extracted_at": "2026-04-16T18:29:31.885Z"
+    "last_extracted_at": "2026-04-16T18:29:31.885Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwwildmicrobescom",
@@ -5092,7 +5202,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwzilabioworkscom",
@@ -5122,7 +5234,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbkvenergycom",
@@ -5152,7 +5266,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcomstockinc",
@@ -5183,7 +5299,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:00.103Z",
-    "last_extracted_at": "2026-04-16T18:29:08.854Z"
+    "last_extracted_at": "2026-04-16T18:29:08.854Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwelectriceratech",
@@ -5214,7 +5332,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.618Z",
-    "last_extracted_at": "2026-04-16T18:29:52.478Z"
+    "last_extracted_at": "2026-04-16T18:29:52.478Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmycoworkscom",
@@ -5244,7 +5364,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnalamembranescom",
@@ -5275,7 +5397,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.727Z",
-    "last_extracted_at": "2026-04-16T18:29:41.472Z"
+    "last_extracted_at": "2026-04-16T18:29:41.472Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnaturecoatingsinccom",
@@ -5306,7 +5430,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.701Z",
-    "last_extracted_at": "2026-04-16T18:29:41.469Z"
+    "last_extracted_at": "2026-04-16T18:29:41.469Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwphasicai",
@@ -5337,7 +5463,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:00.865Z",
-    "last_extracted_at": "2026-04-16T18:29:44.455Z"
+    "last_extracted_at": "2026-04-16T18:29:44.455Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwstandardnuclearcom",
@@ -5368,7 +5496,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:01.140Z",
-    "last_extracted_at": "2026-04-16T18:29:45.974Z"
+    "last_extracted_at": "2026-04-16T18:29:45.974Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwalt5sigmacom",
@@ -5398,7 +5528,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwblaze-barriercom",
@@ -5429,7 +5561,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:01.044Z",
-    "last_extracted_at": "2026-04-16T18:29:43.397Z"
+    "last_extracted_at": "2026-04-16T18:29:43.397Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwdaivintech",
@@ -5459,7 +5593,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwensafecom",
@@ -5490,7 +5626,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:01.165Z",
-    "last_extracted_at": "2026-04-16T18:30:20.016Z"
+    "last_extracted_at": "2026-04-16T18:30:20.016Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwessinccom",
@@ -5521,7 +5659,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:06.839Z",
-    "last_extracted_at": "2026-04-16T18:31:11.217Z"
+    "last_extracted_at": "2026-04-16T18:31:11.217Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnfwearth",
@@ -5552,7 +5692,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:02.711Z",
-    "last_extracted_at": "2026-04-16T18:29:47.893Z"
+    "last_extracted_at": "2026-04-16T18:29:47.893Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwphotonectcorpcom",
@@ -5583,7 +5725,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:02.820Z",
-    "last_extracted_at": "2026-04-16T18:29:47.898Z"
+    "last_extracted_at": "2026-04-16T18:29:47.898Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwterraenergyio",
@@ -5614,7 +5758,9 @@
     "climate_tech_category": "Waste-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwvolektracom",
@@ -5644,7 +5790,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwemobiai",
@@ -5674,7 +5822,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhelicityspacecom",
@@ -5704,7 +5854,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwinsightmcom",
@@ -5735,7 +5887,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:03.488Z",
-    "last_extracted_at": "2026-04-16T18:30:23.254Z"
+    "last_extracted_at": "2026-04-16T18:30:23.254Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsolidpowerbatterycom",
@@ -5765,7 +5919,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvalorinfrastructurepartnerscom",
@@ -5796,7 +5952,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:03.756Z",
-    "last_extracted_at": "2026-04-16T18:29:52.481Z"
+    "last_extracted_at": "2026-04-16T18:29:52.481Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwvardacom",
@@ -5827,7 +5985,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:03.856Z",
-    "last_extracted_at": "2026-04-16T18:30:22.373Z"
+    "last_extracted_at": "2026-04-16T18:30:22.373Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwalphanurcom",
@@ -5859,7 +6019,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:04.040Z",
-    "last_extracted_at": "2026-04-16T18:30:36.497Z"
+    "last_extracted_at": "2026-04-16T18:30:36.497Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwascentsolarcom",
@@ -5890,7 +6052,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:04.256Z",
-    "last_extracted_at": "2026-04-16T18:30:23.059Z"
+    "last_extracted_at": "2026-04-16T18:30:23.059Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnanodyexcom",
@@ -5921,7 +6085,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:04.369Z",
-    "last_extracted_at": "2026-04-16T18:30:22.378Z"
+    "last_extracted_at": "2026-04-16T18:30:22.378Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnarrotruckscom",
@@ -5951,7 +6117,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnautilusdtcom",
@@ -5982,7 +6150,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:05.378Z",
-    "last_extracted_at": "2026-04-16T18:30:22.384Z"
+    "last_extracted_at": "2026-04-16T18:30:22.384Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwresolvrebatescom",
@@ -6012,7 +6182,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwscoutdiscoveriescom",
@@ -6043,7 +6215,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:05.431Z",
-    "last_extracted_at": "2026-04-16T18:30:22.386Z"
+    "last_extracted_at": "2026-04-16T18:30:22.386Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsyncriscom",
@@ -6075,7 +6249,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:05.598Z",
-    "last_extracted_at": "2026-04-16T18:30:57.792Z"
+    "last_extracted_at": "2026-04-16T18:30:57.792Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwtradewaterco",
@@ -6106,7 +6282,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:05.712Z",
-    "last_extracted_at": "2026-04-16T18:30:58.568Z"
+    "last_extracted_at": "2026-04-16T18:30:58.568Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwvero3com",
@@ -6136,7 +6314,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwzeromotorcyclescom",
@@ -6166,7 +6346,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwapteraus",
@@ -6197,7 +6379,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:05.755Z",
-    "last_extracted_at": "2026-04-16T18:30:23.257Z"
+    "last_extracted_at": "2026-04-16T18:30:23.257Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcvectorcom",
@@ -6227,7 +6411,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgigablueco",
@@ -6257,7 +6443,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwglasspointcom",
@@ -6288,7 +6476,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "sitemap",
     "last_scraped_at": "2026-04-16T18:26:05.866Z",
-    "last_extracted_at": "2026-04-16T18:30:23.260Z"
+    "last_extracted_at": "2026-04-16T18:30:23.260Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmerlinsolarcom",
@@ -6319,7 +6509,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:05.985Z",
-    "last_extracted_at": "2026-04-16T18:30:23.265Z"
+    "last_extracted_at": "2026-04-16T18:30:23.265Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwradpowerbikescom",
@@ -6350,7 +6542,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:06.490Z",
-    "last_extracted_at": "2026-04-16T18:30:23.268Z"
+    "last_extracted_at": "2026-04-16T18:30:23.268Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "ten-ninetechcom",
@@ -6380,7 +6574,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgigawattinccom",
@@ -6410,7 +6606,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmothershipmaterialscom",
@@ -6440,7 +6638,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrestorationclimatecom",
@@ -6471,7 +6671,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:06.658Z",
-    "last_extracted_at": "2026-04-16T18:30:23.271Z"
+    "last_extracted_at": "2026-04-16T18:30:23.271Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "shepherdinsurancecom",
@@ -6502,7 +6704,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:06.771Z",
-    "last_extracted_at": "2026-04-16T18:31:00.616Z"
+    "last_extracted_at": "2026-04-16T18:31:00.616Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwshellyxudesign",
@@ -6532,7 +6736,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwverde-technologiescom",
@@ -6562,7 +6768,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "www4thstateenergiescom",
@@ -6592,7 +6800,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfervoenergycom",
@@ -6622,7 +6832,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhecateenergycom",
@@ -6652,7 +6864,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvaulteddeepcom",
@@ -6683,7 +6897,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:06.841Z",
-    "last_extracted_at": "2026-04-16T18:31:37.269Z"
+    "last_extracted_at": "2026-04-16T18:31:37.269Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwvoltumotorcom",
@@ -6714,7 +6930,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:06.966Z",
-    "last_extracted_at": "2026-04-16T18:31:02.720Z"
+    "last_extracted_at": "2026-04-16T18:31:02.720Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwxbuild",
@@ -6745,7 +6963,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:07.688Z",
-    "last_extracted_at": "2026-04-16T18:31:05.271Z"
+    "last_extracted_at": "2026-04-16T18:31:05.271Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwzanskarcom",
@@ -6776,7 +6996,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:07.168Z",
-    "last_extracted_at": "2026-04-16T18:31:26.101Z"
+    "last_extracted_at": "2026-04-16T18:31:26.101Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwappliedimpactroboticscom",
@@ -6807,7 +7029,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:07.283Z",
-    "last_extracted_at": "2026-04-16T18:31:02.726Z"
+    "last_extracted_at": "2026-04-16T18:31:02.726Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcellmoinccom",
@@ -6837,7 +7061,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcpvcom",
@@ -6868,7 +7094,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:07.991Z",
-    "last_extracted_at": "2026-04-16T18:31:07.319Z"
+    "last_extracted_at": "2026-04-16T18:31:07.319Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwluxaeternacom",
@@ -6899,7 +7127,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:07.836Z",
-    "last_extracted_at": "2026-04-16T18:31:05.276Z"
+    "last_extracted_at": "2026-04-16T18:31:05.276Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwworendapowercom",
@@ -6930,7 +7160,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:07.993Z",
-    "last_extracted_at": "2026-04-16T18:31:07.322Z"
+    "last_extracted_at": "2026-04-16T18:31:07.322Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwripelockercom",
@@ -6960,7 +7192,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsagegeosystemscom",
@@ -6991,7 +7225,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.095Z",
-    "last_extracted_at": "2026-04-16T18:31:30.750Z"
+    "last_extracted_at": "2026-04-16T18:31:30.750Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwdivertinccom",
@@ -7022,7 +7258,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.092Z",
-    "last_extracted_at": "2026-04-16T18:31:07.324Z"
+    "last_extracted_at": "2026-04-16T18:31:07.324Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwreservoirpowercom",
@@ -7052,7 +7290,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsealionenergycom",
@@ -7084,7 +7324,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:08.261Z",
-    "last_extracted_at": "2026-04-16T18:31:11.221Z"
+    "last_extracted_at": "2026-04-16T18:31:11.221Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwthefreshfactoryco",
@@ -7114,7 +7356,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbybugio",
@@ -7144,7 +7388,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfleetzerocom",
@@ -7175,7 +7421,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:11.429Z",
-    "last_extracted_at": "2026-04-16T18:32:39.493Z"
+    "last_extracted_at": "2026-04-16T18:32:39.493Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwhevocom",
@@ -7206,7 +7454,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:08.221Z",
-    "last_extracted_at": "2026-04-16T18:31:11.219Z"
+    "last_extracted_at": "2026-04-16T18:31:11.219Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwoxbyelcom",
@@ -7236,7 +7486,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwairjouletechcom",
@@ -7267,7 +7519,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.512Z",
-    "last_extracted_at": "2026-04-16T18:31:49.311Z"
+    "last_extracted_at": "2026-04-16T18:31:49.311Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwapexcleanenergycom",
@@ -7298,7 +7552,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.385Z",
-    "last_extracted_at": "2026-04-16T18:31:11.224Z"
+    "last_extracted_at": "2026-04-16T18:31:11.224Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwhydrosatcom",
@@ -7329,7 +7585,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.870Z",
-    "last_extracted_at": "2026-04-16T18:32:03.479Z"
+    "last_extracted_at": "2026-04-16T18:32:03.479Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwkarmanindustriescom",
@@ -7360,7 +7618,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.576Z",
-    "last_extracted_at": "2026-04-16T18:32:01.511Z"
+    "last_extracted_at": "2026-04-16T18:32:01.511Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmarsmaterialstech",
@@ -7390,7 +7650,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmobiusenergy",
@@ -7421,7 +7683,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:08.632Z",
-    "last_extracted_at": "2026-04-16T18:31:30.752Z"
+    "last_extracted_at": "2026-04-16T18:31:30.752Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwoberonfuelscom",
@@ -7452,7 +7716,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:08.832Z",
-    "last_extracted_at": "2026-04-16T18:31:30.755Z"
+    "last_extracted_at": "2026-04-16T18:31:30.755Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwrinconconsultantscom",
@@ -7482,7 +7748,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwzitaracom",
@@ -7513,7 +7781,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:08.991Z",
-    "last_extracted_at": "2026-04-16T18:32:11.132Z"
+    "last_extracted_at": "2026-04-16T18:32:11.132Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcleancapitalcom",
@@ -7543,7 +7813,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwneighborhoodsunsolar",
@@ -7574,7 +7846,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:09.015Z",
-    "last_extracted_at": "2026-04-16T18:32:05.362Z"
+    "last_extracted_at": "2026-04-16T18:32:05.362Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnoveonco",
@@ -7605,7 +7879,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:09.068Z",
-    "last_extracted_at": "2026-04-16T18:32:01.517Z"
+    "last_extracted_at": "2026-04-16T18:32:01.517Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnxtcleancom",
@@ -7636,7 +7912,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:09.065Z",
-    "last_extracted_at": "2026-04-16T18:32:01.514Z"
+    "last_extracted_at": "2026-04-16T18:32:01.514Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpvcompletecom",
@@ -7666,7 +7944,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwapsustainabilitycom",
@@ -7697,7 +7977,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:09.444Z",
-    "last_extracted_at": "2026-04-16T18:32:35.907Z"
+    "last_extracted_at": "2026-04-16T18:32:35.907Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwaspenpowercom",
@@ -7728,7 +8010,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:09.453Z",
-    "last_extracted_at": "2026-04-16T18:32:03.481Z"
+    "last_extracted_at": "2026-04-16T18:32:03.481Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcharbonecom",
@@ -7758,7 +8042,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwencoordcom",
@@ -7789,7 +8075,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:09.523Z",
-    "last_extracted_at": "2026-04-16T18:32:35.082Z"
+    "last_extracted_at": "2026-04-16T18:32:35.082Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "onedsinanodecom",
@@ -7820,7 +8108,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:09.554Z",
-    "last_extracted_at": "2026-04-16T18:32:39.490Z"
+    "last_extracted_at": "2026-04-16T18:32:39.490Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwonesixenergycom",
@@ -7850,7 +8140,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwregimentllccom",
@@ -7881,7 +8173,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.065Z",
-    "last_extracted_at": "2026-04-16T18:32:46.025Z"
+    "last_extracted_at": "2026-04-16T18:32:46.025Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwrenewpropcom",
@@ -7912,7 +8206,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:09.614Z",
-    "last_extracted_at": "2026-04-16T18:32:11.135Z"
+    "last_extracted_at": "2026-04-16T18:32:11.135Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwearthsaverscom",
@@ -7944,7 +8240,9 @@
     "careers_page_discovery_method": "standard_pattern",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:09.683Z",
-    "last_extracted_at": "2026-04-16T18:32:11.137Z"
+    "last_extracted_at": "2026-04-16T18:32:11.137Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwgreenficom",
@@ -7975,7 +8273,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.100Z",
-    "last_extracted_at": "2026-04-16T18:32:35.086Z"
+    "last_extracted_at": "2026-04-16T18:32:35.086Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwgrowoysterreefscom",
@@ -8005,7 +8305,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwterragiacom",
@@ -8036,7 +8338,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.121Z",
-    "last_extracted_at": "2026-04-16T18:32:35.087Z"
+    "last_extracted_at": "2026-04-16T18:32:35.087Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwventuregoldminingcom",
@@ -8067,7 +8371,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.213Z",
-    "last_extracted_at": "2026-04-16T18:32:35.090Z"
+    "last_extracted_at": "2026-04-16T18:32:35.090Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "investorclearwayenergycom",
@@ -8098,7 +8404,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:10.340Z",
-    "last_extracted_at": "2026-04-16T18:33:07.790Z"
+    "last_extracted_at": "2026-04-16T18:33:07.790Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsbenergycom",
@@ -8129,7 +8437,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:10.586Z",
-    "last_extracted_at": "2026-04-16T18:32:35.917Z"
+    "last_extracted_at": "2026-04-16T18:32:35.917Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "solarserviceprofessionalscom",
@@ -8159,7 +8469,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgetnetaai",
@@ -8189,7 +8501,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwpermacoldcom",
@@ -8220,7 +8534,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.465Z",
-    "last_extracted_at": "2026-04-16T18:32:35.912Z"
+    "last_extracted_at": "2026-04-16T18:32:35.912Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsiroccoenergycom",
@@ -8250,7 +8566,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgsmecom",
@@ -8281,7 +8599,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.580Z",
-    "last_extracted_at": "2026-04-16T18:32:35.916Z"
+    "last_extracted_at": "2026-04-16T18:32:35.916Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwlydianlabscom",
@@ -8312,7 +8632,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:10.656Z",
-    "last_extracted_at": "2026-04-16T18:33:09.375Z"
+    "last_extracted_at": "2026-04-16T18:33:09.375Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwnomadixco",
@@ -8342,7 +8664,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwatershedcom",
@@ -8373,7 +8697,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:11.531Z",
-    "last_extracted_at": "2026-04-16T18:33:15.372Z"
+    "last_extracted_at": "2026-04-16T18:33:15.372Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcarbonxtcom",
@@ -8403,7 +8729,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmoltenindustriescom",
@@ -8434,7 +8762,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:26.756Z",
-    "last_extracted_at": "2026-04-16T18:35:41.556Z"
+    "last_extracted_at": "2026-04-16T18:35:41.556Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwshowerstreamnet",
@@ -8464,7 +8794,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtrioltdcom",
@@ -8495,7 +8827,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:11.879Z",
-    "last_extracted_at": "2026-04-16T18:33:25.459Z"
+    "last_extracted_at": "2026-04-16T18:33:25.459Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwefcgasescom",
@@ -8526,7 +8860,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:11.703Z",
-    "last_extracted_at": "2026-04-16T18:32:46.027Z"
+    "last_extracted_at": "2026-04-16T18:32:46.027Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwkoboldmetalscom",
@@ -8557,7 +8893,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:11.760Z",
-    "last_extracted_at": "2026-04-16T18:32:50.128Z"
+    "last_extracted_at": "2026-04-16T18:32:50.128Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwocochemcom",
@@ -8587,7 +8925,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwpcchydrogencom",
@@ -8617,7 +8957,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "www3d-architechcom",
@@ -8648,7 +8990,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:11.928Z",
-    "last_extracted_at": "2026-04-16T18:33:41.935Z"
+    "last_extracted_at": "2026-04-16T18:33:41.935Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "www5secevcom",
@@ -8678,7 +9022,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwairloomenergy",
@@ -8709,7 +9055,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:12.211Z",
-    "last_extracted_at": "2026-04-16T18:33:49.951Z"
+    "last_extracted_at": "2026-04-16T18:33:49.951Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwbwr-innovationscom",
@@ -8740,7 +9088,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.095Z",
-    "last_extracted_at": "2026-04-16T18:33:09.377Z"
+    "last_extracted_at": "2026-04-16T18:33:09.377Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwc16biocom",
@@ -8771,7 +9121,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.177Z",
-    "last_extracted_at": "2026-04-16T18:33:16.311Z"
+    "last_extracted_at": "2026-04-16T18:33:16.311Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcadootzcom",
@@ -8801,7 +9153,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcentinelrecom",
@@ -8832,7 +9186,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.259Z",
-    "last_extracted_at": "2026-04-16T18:33:16.315Z"
+    "last_extracted_at": "2026-04-16T18:33:16.315Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwchargeroboticscom",
@@ -8863,7 +9219,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.414Z",
-    "last_extracted_at": "2026-04-16T18:33:51.144Z"
+    "last_extracted_at": "2026-04-16T18:33:51.144Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwchecksammycom",
@@ -8894,7 +9252,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.436Z",
-    "last_extracted_at": "2026-04-16T18:34:01.866Z"
+    "last_extracted_at": "2026-04-16T18:34:01.866Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwcondorenergy",
@@ -8924,7 +9284,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwearthgridio",
@@ -8954,7 +9316,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwecoatexcom",
@@ -8985,7 +9349,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.483Z",
-    "last_extracted_at": "2026-04-16T18:33:41.940Z"
+    "last_extracted_at": "2026-04-16T18:33:41.940Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwweelitech",
@@ -9016,7 +9382,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.534Z",
-    "last_extracted_at": "2026-04-16T18:33:41.945Z"
+    "last_extracted_at": "2026-04-16T18:33:41.945Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwfirmapowercom",
@@ -9047,7 +9415,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.634Z",
-    "last_extracted_at": "2026-04-16T18:33:41.952Z"
+    "last_extracted_at": "2026-04-16T18:33:41.952Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwfutureprooftechio",
@@ -9078,7 +9448,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.588Z",
-    "last_extracted_at": "2026-04-16T18:33:41.951Z"
+    "last_extracted_at": "2026-04-16T18:33:41.951Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwhydrondesalcom",
@@ -9108,7 +9480,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhywattscom",
@@ -9138,7 +9512,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkelvin",
@@ -9168,7 +9544,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlppfusioncom",
@@ -9199,7 +9577,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.727Z",
-    "last_extracted_at": "2026-04-16T18:34:46.589Z"
+    "last_extracted_at": "2026-04-16T18:34:46.589Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmaren-gocom",
@@ -9229,7 +9609,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "nectarclimatecom",
@@ -9260,7 +9642,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:12.488Z",
-    "last_extracted_at": "2026-04-16T18:33:41.942Z"
+    "last_extracted_at": "2026-04-16T18:33:41.942Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpanamintcapitalcom",
@@ -9291,7 +9675,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:12.941Z",
-    "last_extracted_at": "2026-04-16T18:33:55.038Z"
+    "last_extracted_at": "2026-04-16T18:33:55.038Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpetrapowercom",
@@ -9322,7 +9708,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:13.684Z",
-    "last_extracted_at": "2026-04-16T18:34:26.387Z"
+    "last_extracted_at": "2026-04-16T18:34:26.387Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "piersicacom",
@@ -9353,7 +9741,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:13.626Z",
-    "last_extracted_at": "2026-04-16T18:34:24.100Z"
+    "last_extracted_at": "2026-04-16T18:34:24.100Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpliantenergycom",
@@ -9383,7 +9773,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrecycletekco",
@@ -9414,7 +9806,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:14.891Z",
-    "last_extracted_at": "2026-04-16T18:34:58.274Z"
+    "last_extracted_at": "2026-04-16T18:34:58.274Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwrsenrgcom",
@@ -9444,7 +9838,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwreformcompositescom",
@@ -9474,7 +9870,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwreliabilityenginecom",
@@ -9504,7 +9902,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsovereignmaterialscom",
@@ -9534,7 +9934,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsunfishinccom",
@@ -9565,7 +9967,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:13.744Z",
-    "last_extracted_at": "2026-04-16T18:34:29.691Z"
+    "last_extracted_at": "2026-04-16T18:34:29.691Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwtandempvcom",
@@ -9596,7 +10000,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:13.852Z",
-    "last_extracted_at": "2026-04-16T18:34:01.872Z"
+    "last_extracted_at": "2026-04-16T18:34:01.872Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwzabbleinccom",
@@ -9627,7 +10033,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:14.020Z",
-    "last_extracted_at": "2026-04-16T18:34:01.875Z"
+    "last_extracted_at": "2026-04-16T18:34:01.875Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwaimatxai",
@@ -9658,7 +10066,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:14.099Z",
-    "last_extracted_at": "2026-04-16T18:34:07.637Z"
+    "last_extracted_at": "2026-04-16T18:34:07.637Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwbasestudio",
@@ -9688,7 +10098,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbiatechcom",
@@ -9718,7 +10130,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcemcyclecom",
@@ -9748,7 +10162,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfracsuncom",
@@ -9778,7 +10194,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgoinfinitumcom",
@@ -9809,7 +10227,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:14.301Z",
-    "last_extracted_at": "2026-04-16T18:34:40.148Z"
+    "last_extracted_at": "2026-04-16T18:34:40.148Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwl-chargenet",
@@ -9840,7 +10260,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.044Z",
-    "last_extracted_at": "2026-04-16T18:34:26.391Z"
+    "last_extracted_at": "2026-04-16T18:34:26.391Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmiftifusioncom",
@@ -9870,7 +10292,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwproof-energycom",
@@ -9901,7 +10325,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:15.064Z",
-    "last_extracted_at": "2026-04-16T18:35:01.921Z"
+    "last_extracted_at": "2026-04-16T18:35:01.921Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwredleafinccom",
@@ -9932,7 +10358,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.439Z",
-    "last_extracted_at": "2026-04-16T18:34:43.462Z"
+    "last_extracted_at": "2026-04-16T18:34:43.462Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwscenichillsolarcom",
@@ -9963,7 +10391,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.255Z",
-    "last_extracted_at": "2026-04-16T18:35:04.945Z"
+    "last_extracted_at": "2026-04-16T18:35:04.945Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsolvaniccom",
@@ -9994,7 +10424,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.344Z",
-    "last_extracted_at": "2026-04-16T18:34:40.152Z"
+    "last_extracted_at": "2026-04-16T18:34:40.152Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsophiaspace",
@@ -10025,7 +10457,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:16.615Z",
-    "last_extracted_at": "2026-04-16T18:35:35.620Z"
+    "last_extracted_at": "2026-04-16T18:35:35.620Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwthevirtualcommonwealthcom",
@@ -10055,7 +10489,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwildnoteappcom",
@@ -10085,7 +10521,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhomeostasisearth",
@@ -10116,7 +10554,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.624Z",
-    "last_extracted_at": "2026-04-16T18:34:43.466Z"
+    "last_extracted_at": "2026-04-16T18:34:43.466Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwmaltainccom",
@@ -10146,7 +10586,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnuvvecom",
@@ -10177,7 +10619,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:15.929Z",
-    "last_extracted_at": "2026-04-16T18:35:20.699Z"
+    "last_extracted_at": "2026-04-16T18:35:20.699Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwpointofdataai",
@@ -10208,7 +10652,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:16.735Z",
-    "last_extracted_at": "2026-04-16T18:35:01.934Z"
+    "last_extracted_at": "2026-04-16T18:35:01.934Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwrworldreusecom",
@@ -10239,7 +10685,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:16.099Z",
-    "last_extracted_at": "2026-04-16T18:35:01.933Z"
+    "last_extracted_at": "2026-04-16T18:35:01.933Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsolubagusacom",
@@ -10269,7 +10717,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwdisausacom",
@@ -10300,7 +10750,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:16.215Z",
-    "last_extracted_at": "2026-04-16T18:35:01.926Z"
+    "last_extracted_at": "2026-04-16T18:35:01.926Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwfundusolcom",
@@ -10331,7 +10783,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:17.328Z",
-    "last_extracted_at": "2026-04-16T18:35:10.235Z"
+    "last_extracted_at": "2026-04-16T18:35:10.235Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "monaireai",
@@ -10362,7 +10816,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:21.758Z",
-    "last_extracted_at": "2026-04-16T18:36:16.220Z"
+    "last_extracted_at": "2026-04-16T18:36:16.220Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwsysotechnologiescom",
@@ -10392,7 +10848,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwamazonpaintcom",
@@ -10422,7 +10880,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmanabatteryus",
@@ -10452,7 +10912,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtobeenergy",
@@ -10482,7 +10944,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstar-catchercom",
@@ -10513,7 +10977,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:16.821Z",
-    "last_extracted_at": "2026-04-16T18:35:37.653Z"
+    "last_extracted_at": "2026-04-16T18:35:37.653Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwbb3dio",
@@ -10544,7 +11010,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "homepage_link_scan",
     "last_scraped_at": "2026-04-16T18:26:17.162Z",
-    "last_extracted_at": "2026-04-16T18:35:07.911Z"
+    "last_extracted_at": "2026-04-16T18:35:07.911Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwluxwallcom",
@@ -10575,7 +11043,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:17.843Z",
-    "last_extracted_at": "2026-04-16T18:35:50.088Z"
+    "last_extracted_at": "2026-04-16T18:35:50.088Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwphiniteag",
@@ -10606,7 +11076,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:17.707Z",
-    "last_extracted_at": "2026-04-16T18:35:44.394Z"
+    "last_extracted_at": "2026-04-16T18:35:44.394Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwterrajoulecorpcom",
@@ -10637,7 +11109,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "standard_pattern",
     "last_scraped_at": "2026-04-16T18:26:19.269Z",
-    "last_extracted_at": "2026-04-16T18:35:39.462Z"
+    "last_extracted_at": "2026-04-16T18:35:39.462Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwweclipseenergyco",
@@ -10668,7 +11142,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:16.876Z",
-    "last_extracted_at": "2026-04-16T18:35:04.947Z"
+    "last_extracted_at": "2026-04-16T18:35:04.947Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "unknown-50d8b4a941",
@@ -10688,7 +11164,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwevercarscom",
@@ -10719,7 +11197,9 @@
     "careers_page_reachable": true,
     "careers_page_discovery_method": "ats_slug",
     "last_scraped_at": "2026-04-16T18:26:16.914Z",
-    "last_extracted_at": "2026-04-16T18:35:04.949Z"
+    "last_extracted_at": "2026-04-16T18:35:04.949Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwliftaircraftcom",
@@ -10749,7 +11229,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrepurposecom",
@@ -10779,7 +11261,9 @@
     "category_confidence": "medium",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvisiontransportus",
@@ -10809,7 +11293,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvitalenergycom",
@@ -10839,7 +11325,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvybeenergycom",
@@ -10869,7 +11357,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwblinkchargingcom",
@@ -10899,7 +11389,9 @@
     "category_confidence": "high",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcarbicecom",
@@ -10929,7 +11421,9 @@
     "category_confidence": "low",
     "careers_page_reachable": false,
     "careers_page_discovery_method": "not_found",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwecoatmcom",
@@ -10961,7 +11455,9 @@
     "careers_page_discovery_method": "llm_fallback",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:18.191Z",
-    "last_extracted_at": "2026-04-16T18:35:35.624Z"
+    "last_extracted_at": "2026-04-16T18:35:35.624Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwecodrivecommunity",
@@ -10993,7 +11489,9 @@
     "careers_page_discovery_method": "llm_fallback",
     "llm_attempted": true,
     "last_scraped_at": "2026-04-16T18:26:20.012Z",
-    "last_extracted_at": "2026-04-16T18:35:41.553Z"
+    "last_extracted_at": "2026-04-16T18:35:41.553Z",
+    "consecutive_empty_scrapes": 2,
+    "dormant": false
   },
   {
     "id": "wwwkoreinfrastructurecom",
@@ -11020,7 +11518,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmobiusmaterialscom",
@@ -11047,7 +11547,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwws2amodularcom",
@@ -11074,7 +11576,9 @@
     "climate_tech_category": "Construction",
     "primary_sector": "Buildings",
     "opportunity_area": "Sustainable Construction & Design",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstandardbiocarboncom",
@@ -11101,7 +11605,9 @@
     "climate_tech_category": "Biomass Utilization and Storage",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwzenopowercom",
@@ -11128,7 +11634,9 @@
     "climate_tech_category": "Fission",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwairboundcom",
@@ -11155,7 +11663,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "enterpriseenergycom",
@@ -11182,7 +11692,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwpathpointenergycom",
@@ -11209,7 +11721,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwpienergycom",
@@ -11236,7 +11750,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "sperracom",
@@ -11263,7 +11779,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfiromarcom",
@@ -11283,7 +11801,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlocusfscom",
@@ -11303,7 +11823,9 @@
     "climate_tech_category": "Fermented",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Alternative Proteins & Fats",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwluminitcocom",
@@ -11323,7 +11845,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnanoramiccom",
@@ -11343,7 +11867,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwworbitalbiocarboncom",
@@ -11363,7 +11889,9 @@
     "climate_tech_category": "Biomass Utilization and Storage",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwridwellcom",
@@ -11383,7 +11911,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwshepherdpowercom",
@@ -11403,7 +11933,9 @@
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
     "opportunity_area": "Enhanced Transmission & Distribution",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsupercircleworld",
@@ -11423,7 +11955,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwapolloswatercom",
@@ -11443,7 +11977,9 @@
     "climate_tech_category": "Hydro",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhavenenergycom",
@@ -11463,7 +11999,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "liberationbio",
@@ -11483,7 +12021,9 @@
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsouth8com",
@@ -11503,7 +12043,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "N/A",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "blazonheaterscom",
@@ -11523,7 +12065,9 @@
     "climate_tech_category": "Direct Electrification",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Industrial Heat",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbluesondecom",
@@ -11543,7 +12087,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcellamineralstoragecom",
@@ -11563,7 +12109,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhexascom",
@@ -11583,7 +12131,9 @@
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlightshiprvcom",
@@ -11603,7 +12153,9 @@
     "climate_tech_category": "Battery Electric Vehicles",
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsneakario",
@@ -11623,7 +12175,9 @@
     "climate_tech_category": "Textile Circularity",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Fashion & Textiles",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstartcoralcom",
@@ -11643,7 +12197,9 @@
     "climate_tech_category": "Teleworking & Digital Solutions",
     "primary_sector": "Transportation",
     "opportunity_area": "Efficiency & Reduced Demand",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgeofundio",
@@ -11663,7 +12219,9 @@
     "climate_tech_category": "Geothermal",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnfdynamicscom",
@@ -11683,7 +12241,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfanuclearcom",
@@ -11703,7 +12263,9 @@
     "climate_tech_category": "Industrial Nuclear",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Industrial Heat",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhungryplanetfoodscom",
@@ -11723,7 +12285,9 @@
     "climate_tech_category": "Plant-Based",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Alternative Proteins & Fats",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlynkwellcom",
@@ -11743,7 +12307,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnumucheesecom",
@@ -11763,7 +12329,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwzincfivecom",
@@ -11783,7 +12351,9 @@
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
     "opportunity_area": "Energy Storage & Demand Flexibility",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcarbacom",
@@ -11803,7 +12373,9 @@
     "climate_tech_category": "Carbon Capture / Utilization / & Storage",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwchileancobaltcorpcom",
@@ -11823,7 +12395,9 @@
     "climate_tech_category": "Extraction",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Mining",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "deusxmachinadev",
@@ -11843,7 +12417,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwensurgecom",
@@ -11863,7 +12439,9 @@
     "climate_tech_category": "Advanced Battery Technologies",
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfencelineai",
@@ -11883,7 +12461,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmenengroupcom",
@@ -11903,7 +12483,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsagintcom",
@@ -11923,7 +12505,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtreadstone-technologiescom",
@@ -11943,7 +12527,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwintai",
@@ -11963,7 +12549,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "www639solarcom",
@@ -11983,7 +12571,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwantaresindustriescom",
@@ -12003,7 +12593,9 @@
     "climate_tech_category": "Fission",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwheirloomcarboncom",
@@ -12023,7 +12615,9 @@
     "climate_tech_category": "Direct Air Capture (DAC)",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Engineered Carbon Removal",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwterra-gencom",
@@ -12043,7 +12637,9 @@
     "climate_tech_category": "Geothermal",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "xlbatteriescom",
@@ -12063,7 +12659,9 @@
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
     "opportunity_area": "Energy Storage & Demand Flexibility",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "www247solarcom",
@@ -12090,7 +12688,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwanningio",
@@ -12117,7 +12717,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": null,
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwatlasfusionco",
@@ -12144,7 +12746,9 @@
     "climate_tech_category": "Fusion",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbomaterialscom",
@@ -12171,7 +12775,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwecolectrocom",
@@ -12198,7 +12804,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfilcocartingcom",
@@ -12225,7 +12833,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgoodearthlightingcom",
@@ -12252,7 +12862,9 @@
     "climate_tech_category": "Smart Buildings",
     "primary_sector": "Buildings",
     "opportunity_area": "Operational Efficiency",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhagoenergeticscom",
@@ -12279,7 +12891,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwionstoragesystemscom",
@@ -12306,7 +12920,9 @@
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
     "opportunity_area": "Energy Storage & Demand Flexibility",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkatericarboncom",
@@ -12333,7 +12949,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnoharmtech",
@@ -12360,7 +12978,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwredishcom",
@@ -12387,7 +13007,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrtvearth",
@@ -12414,7 +13036,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrheasfactorycom",
@@ -12441,7 +13065,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrubiearth",
@@ -12468,7 +13094,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsnaptrudecom",
@@ -12495,7 +13123,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "N/A",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtheaenergy",
@@ -12522,7 +13152,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwupcyclextech",
@@ -12549,7 +13181,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwverrusdatacom",
@@ -12576,7 +13210,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfrontierascom",
@@ -12603,7 +13239,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwaccel1com",
@@ -12630,7 +13268,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsolarislatecom",
@@ -12657,7 +13297,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcleancroptechcom",
@@ -12684,7 +13326,9 @@
     "climate_tech_category": "Seed Editing & Breeding",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Sustainable Crops",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwweagleharbortechcom",
@@ -12711,7 +13355,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwweqorenet",
@@ -12738,7 +13384,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhighlandfleetscom",
@@ -12765,7 +13413,9 @@
     "climate_tech_category": "Battery Electric Vehicles",
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwperegrineturbinecom",
@@ -12792,7 +13442,9 @@
     "climate_tech_category": "Alternative Fuels",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrechargedcom",
@@ -12819,7 +13471,9 @@
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
     "opportunity_area": "Energy Storage & Demand Flexibility",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwunspentcocom",
@@ -12846,7 +13500,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvmagritechcom",
@@ -12873,7 +13529,9 @@
     "climate_tech_category": "Precision Agriculture",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Sustainable Crops",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcheckerspotcom",
@@ -12900,7 +13558,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlytencom",
@@ -12927,7 +13587,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmimicsystems",
@@ -12954,7 +13616,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrenewellenergycom",
@@ -12981,7 +13645,9 @@
     "climate_tech_category": "Geothermal",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtransitionmetalcom",
@@ -13008,7 +13674,9 @@
     "climate_tech_category": "Mineral Recovery & Circular Mining",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Mining",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwardenttechnologiescom",
@@ -13035,7 +13703,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkarawatercom",
@@ -13062,7 +13732,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwedisonxfccom",
@@ -13089,7 +13761,9 @@
     "climate_tech_category": "Advanced Battery Technologies",
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwemvoloncom",
@@ -13116,7 +13790,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwferolabscom",
@@ -13143,7 +13819,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkadeyacom",
@@ -13170,7 +13848,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwporositycom",
@@ -13197,7 +13877,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsensecom",
@@ -13224,7 +13906,9 @@
     "climate_tech_category": "Smart Buildings",
     "primary_sector": "Buildings",
     "opportunity_area": "Operational Efficiency",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwdriveserescom",
@@ -13251,7 +13935,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsparkzenergy",
@@ -13278,7 +13964,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvertiqco",
@@ -13305,7 +13993,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwautonomycom",
@@ -13332,7 +14022,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbalanceaiio",
@@ -13359,7 +14051,9 @@
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
     "opportunity_area": "Enhanced Transmission & Distribution",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbsuinccom",
@@ -13386,7 +14080,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwestercycleco",
@@ -13413,7 +14109,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwintramotevcom",
@@ -13440,7 +14138,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnelnetenergycom",
@@ -13467,7 +14167,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwplantaercom",
@@ -13494,7 +14196,9 @@
     "climate_tech_category": "Seed Editing & Breeding",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Sustainable Crops",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwschupancom",
@@ -13521,7 +14225,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwblockfusioncom",
@@ -13548,7 +14254,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "ceciliamaterialscom",
@@ -13575,7 +14283,9 @@
     "climate_tech_category": "Advanced Battery Technologies",
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwetapodscom",
@@ -13602,7 +14312,9 @@
     "climate_tech_category": "Public & Shared Transit Systems",
     "primary_sector": "Transportation",
     "opportunity_area": "Efficiency & Reduced Demand",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfluxmarinecom",
@@ -13629,7 +14341,9 @@
     "climate_tech_category": "Marine",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfourthstatetechcom",
@@ -13656,7 +14370,9 @@
     "climate_tech_category": "Fusion",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkulabiocom",
@@ -13683,7 +14399,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "N/A",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsperorenewablescom",
@@ -13710,7 +14428,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": null,
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwarboncorpcom",
@@ -13737,7 +14457,9 @@
     "climate_tech_category": "Carbon Storage",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Engineered Carbon Removal",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwergbiocom",
@@ -13764,7 +14486,9 @@
     "climate_tech_category": "Bio Energy- BECCS",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwexposttechnologycom",
@@ -13791,7 +14515,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwoctaviacarboncom",
@@ -13818,7 +14544,9 @@
     "climate_tech_category": "Direct Air Capture (DAC)",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Engineered Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwabeyaco",
@@ -13845,7 +14573,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwproteinkapitalee",
@@ -13872,7 +14602,9 @@
     "climate_tech_category": "Plant-Based",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Alternative Proteins & Fats",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsuperiorboilercom",
@@ -13899,7 +14631,9 @@
     "climate_tech_category": "Direct Electrification",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Industrial Heat",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwaddisenergycom",
@@ -13926,7 +14660,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwambiaservicescom",
@@ -13953,7 +14689,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwdrizzlexcom",
@@ -13980,7 +14718,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgtf-technologiescom",
@@ -14007,7 +14747,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrevozerocom",
@@ -14034,7 +14776,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtyntio",
@@ -14061,7 +14805,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbranchoutfoodcom",
@@ -14088,7 +14834,9 @@
     "climate_tech_category": "Plant-Based",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Alternative Proteins & Fats",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcarboncountstech",
@@ -14115,7 +14863,9 @@
     "climate_tech_category": "Mineral MRV",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Mineral Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwexowattcom",
@@ -14142,7 +14892,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwhalciumcom",
@@ -14169,7 +14921,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlivinginkco",
@@ -14196,7 +14950,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwworiginmaterialscom",
@@ -14223,7 +14979,9 @@
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwqueenscarboncom",
@@ -14250,7 +15008,9 @@
     "climate_tech_category": "Carbon Capture / Utilization / & Storage",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics / Cross-Cutting Solutions",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwatonometricscom",
@@ -14277,7 +15037,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwecotonerenewablescom",
@@ -14304,7 +15066,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwelectricplantco",
@@ -14328,7 +15092,9 @@
     "careers_page_url": null,
     "ats_platform": null,
     "ocr_uncertain": false,
-    "category_error": "No JSON object found in LLM response"
+    "category_error": "No JSON object found in LLM response",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgreenlanternsolarcom",
@@ -14355,7 +15121,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmaxwellcom",
@@ -14382,7 +15150,9 @@
     "climate_tech_category": "Electrochemical",
     "primary_sector": "Electricity",
     "opportunity_area": "Energy Storage & Demand Flexibility",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmuonspacecom",
@@ -14409,7 +15179,9 @@
     "climate_tech_category": "Ecosystem Monitoring",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Protecting Nature",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnamuroboticsai",
@@ -14436,7 +15208,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "N/A",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrocawatercom",
@@ -14460,7 +15234,9 @@
     "careers_page_url": null,
     "ats_platform": null,
     "ocr_uncertain": false,
-    "category_error": "No JSON object found in LLM response"
+    "category_error": "No JSON object found in LLM response",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwswitchedsourcecom",
@@ -14487,7 +15263,9 @@
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
     "opportunity_area": "Enhanced Transmission & Distribution",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwvibrantplanetnet",
@@ -14514,7 +15292,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "xperfai",
@@ -14541,7 +15321,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwterrafuse-aicom",
@@ -14568,7 +15350,9 @@
     "climate_tech_category": "Mineral Discovery",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Mining",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "abbychairmyshopifycom",
@@ -14595,7 +15379,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwarborbio",
@@ -14622,7 +15408,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwarldesignsllccom",
@@ -14649,7 +15437,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwearthstorecom",
@@ -14676,7 +15466,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwithforerunnercom",
@@ -14703,7 +15495,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgridxcom",
@@ -14730,7 +15524,9 @@
     "climate_tech_category": "System Monitoring & Optimization",
     "primary_sector": "Electricity",
     "opportunity_area": "Enhanced Transmission & Distribution",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnavitassemicom",
@@ -14757,7 +15553,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "pachamacom",
@@ -14784,7 +15582,9 @@
     "climate_tech_category": "Reforestation & Afforestation",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwquinoenergycom",
@@ -14811,7 +15611,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsuntrainco",
@@ -14838,7 +15640,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgoseethecitycom",
@@ -14865,7 +15669,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwicarusone",
@@ -14892,7 +15698,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkestrelintelligencecom",
@@ -14919,7 +15727,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmeshcommengineeringcom",
@@ -14946,7 +15756,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrayvasolarcom",
@@ -14973,7 +15785,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "solarmantlecom",
@@ -15000,7 +15814,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwavnoscom",
@@ -15027,7 +15843,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwevotrexcom",
@@ -15054,7 +15872,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfibarcodecom",
@@ -15081,7 +15901,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwupwayco",
@@ -15108,7 +15930,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbiobondcom",
@@ -15135,7 +15959,9 @@
     "climate_tech_category": "Biomass-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwclevercarnivorecom",
@@ -15162,7 +15988,9 @@
     "climate_tech_category": "Cultivated",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Alternative Proteins & Fats",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwflux12com",
@@ -15189,7 +16017,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "hemptownnaturalscom",
@@ -15216,7 +16046,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "N/A",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgrowerssecretcom",
@@ -15243,7 +16075,9 @@
     "climate_tech_category": "Fertilizers & Nutrients",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Sustainable Crops",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkykloriscom",
@@ -15270,7 +16104,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwlacuumai",
@@ -15297,7 +16133,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwmobiwastecom",
@@ -15324,7 +16162,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwkmxtechnologiescom",
@@ -15351,7 +16191,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "N/A",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnvolvetechnologiescom",
@@ -15378,7 +16220,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwtrydownstreamcom",
@@ -15405,7 +16249,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwminersaicom",
@@ -15432,7 +16278,9 @@
     "climate_tech_category": "Mineral Discovery",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Mining",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgonimblecom",
@@ -15459,7 +16307,9 @@
     "climate_tech_category": "Appliances",
     "primary_sector": "Buildings",
     "opportunity_area": "Operational Efficiency",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwaequorinccom",
@@ -15486,7 +16336,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwallonniacom",
@@ -15513,7 +16365,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwathianai",
@@ -15540,7 +16394,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwbubblepapercom",
@@ -15567,7 +16423,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcarbonwavecom",
@@ -15594,7 +16452,9 @@
     "climate_tech_category": "Ocean Capture",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Engineered Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwcompassrecyclingcom",
@@ -15621,7 +16481,9 @@
     "climate_tech_category": "Waste & Recycling",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Cross-Cutting Solutions",
-    "category_confidence": "high"
+    "category_confidence": "high",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "hover-citycom",
@@ -15648,7 +16510,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwnoonenergy",
@@ -15675,7 +16539,9 @@
     "climate_tech_category": "Solar",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwok2chargecom",
@@ -15702,7 +16568,9 @@
     "climate_tech_category": "Charging Infrastructure",
     "primary_sector": "Transportation",
     "opportunity_area": "Vehicle Electrification",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwradifymetalscom",
@@ -15726,7 +16594,9 @@
     "careers_page_url": null,
     "ats_platform": null,
     "ocr_uncertain": false,
-    "category_error": "No JSON object found in LLM response"
+    "category_error": "No JSON object found in LLM response",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwrhoicco",
@@ -15753,7 +16623,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsemsolarequipcom",
@@ -15780,7 +16652,9 @@
     "climate_tech_category": "Smart Buildings",
     "primary_sector": "Buildings",
     "opportunity_area": "Operational Efficiency",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwthreshpowercom",
@@ -15807,7 +16681,9 @@
     "climate_tech_category": "Alternative Fuels",
     "primary_sector": "Electricity",
     "opportunity_area": "Low-Emissions Generation",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwumidaagcom",
@@ -15834,7 +16710,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "waytrade",
@@ -15861,7 +16739,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwitchinghourio",
@@ -15888,7 +16768,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwwrenhomesnet",
@@ -15912,7 +16794,9 @@
     "careers_page_url": null,
     "ats_platform": null,
     "ocr_uncertain": false,
-    "category_error": "No JSON object found in LLM response"
+    "category_error": "No JSON object found in LLM response",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwammobiaco",
@@ -15939,7 +16823,9 @@
     "climate_tech_category": "Hydrogen-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwatsenergy",
@@ -15966,7 +16852,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwflowenvirosyscom",
@@ -15993,7 +16881,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": "None",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwfireneuralnetworkcom",
@@ -16020,7 +16910,9 @@
     "climate_tech_category": null,
     "primary_sector": null,
     "opportunity_area": null,
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwgreenacresmillingcom",
@@ -16047,7 +16939,9 @@
     "climate_tech_category": "Biomass Utilization and Storage",
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwsentinelagtech",
@@ -16074,7 +16968,9 @@
     "climate_tech_category": "Precision Agriculture",
     "primary_sector": "Food / Ag & Nature",
     "opportunity_area": "Sustainable Crops",
-    "category_confidence": "medium"
+    "category_confidence": "medium",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   },
   {
     "id": "wwwstandardh2com",
@@ -16101,6 +16997,8 @@
     "climate_tech_category": "Hydrogen-Based Production",
     "primary_sector": "Manufacturing",
     "opportunity_area": "Low-Emissions Chemicals & Plastics",
-    "category_confidence": "low"
+    "category_confidence": "low",
+    "consecutive_empty_scrapes": 0,
+    "dormant": false
   }
 ]

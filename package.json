@@ -18,7 +18,13 @@
     "pipeline": "node src/orchestrator.js",
     "benchmark": "node scripts/benchmark.js",
     "benchmark:compare": "node scripts/compare-benchmarks.js",
-    "optimize": "node scripts/optimize-prompts.js"
+    "optimize": "node scripts/optimize-prompts.js",
+    "notion-sync": "node src/agents/notion-sync.js --verbose",
+    "notion-sync:dry": "node src/agents/notion-sync.js --dry-run --verbose",
+    "notion-sync:companies": "node src/agents/notion-sync.js --companies-only --verbose",
+    "notion-sync:jobs": "node src/agents/notion-sync.js --jobs-only --verbose",
+    "notion-setup": "node src/agents/notion-setup.js",
+    "notion-clear": "node src/agents/notion-clear.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"
