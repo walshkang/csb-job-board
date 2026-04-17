@@ -66,6 +66,7 @@ Details in [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
 10. [Troubleshooting](#troubleshooting)
 11. [Data Files](#data-files)
 12. [Security](#security)
+13. [Documentation](#documentation)
 
 ---
 
@@ -802,3 +803,14 @@ src/
 ## Security
 
 Never commit `.env.local`. It contains API keys and is gitignored by default.
+
+---
+
+## Documentation
+
+| Document | Purpose |
+|---|---|
+| **[README.md](README.md)** (this file) | Pipeline overview, setup, CLI reference, troubleshooting |
+| **[AGENTS.md](AGENTS.md)** | Developer & AI assistant protocol — agent ownership table, data contracts, concurrency/scoping rules, standardized handoff format |
+
+If you're an AI assistant or developer working in this repo, read [AGENTS.md](AGENTS.md) before making changes. It defines which files each agent owns, the data contracts between stages, and the concurrency rules that prevent collisions in a multi-agent environment.
