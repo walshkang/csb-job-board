@@ -56,7 +56,7 @@
   {
     "Tech Category Name": "Supply Chain",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -74,7 +74,7 @@
   {
     "Tech Category Name": "Seed Editing & Breeding",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Pilot"
   },
   {
@@ -92,19 +92,19 @@
   {
     "Tech Category Name": "Restoration & Conservation",
     "Related Opportunity Area": "Protecting Nature",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
     "Tech Category Name": "Response",
     "Related Opportunity Area": "Fire Mitigation",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
     "Tech Category Name": "Regenerative Agriculture",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -182,7 +182,7 @@
   {
     "Tech Category Name": "Monitoring",
     "Related Opportunity Area": "Fire Mitigation",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -230,7 +230,7 @@
   {
     "Tech Category Name": "Manure Management",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -254,13 +254,13 @@
   {
     "Tech Category Name": "Lifespan",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
     "Tech Category Name": "Insect-Based",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "-"
   },
   {
@@ -314,7 +314,7 @@
   {
     "Tech Category Name": "Harvest",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -362,13 +362,13 @@
   {
     "Tech Category Name": "Fertilizers & Nutrients",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Pilot"
   },
   {
     "Tech Category Name": "Fermented",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "-"
   },
   {
@@ -404,7 +404,7 @@
   {
     "Tech Category Name": "Ecosystem Monitoring",
     "Related Opportunity Area": "Protecting Nature",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -434,7 +434,7 @@
   {
     "Tech Category Name": "Cultivated",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "-"
   },
   {
@@ -452,7 +452,7 @@
   {
     "Tech Category Name": "Circularity",
     "Related Opportunity Area": "Reduced Food Waste",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {
@@ -488,7 +488,7 @@
   {
     "Tech Category Name": "Burp Mitigation",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "-"
   },
   {
@@ -530,7 +530,7 @@
   {
     "Tech Category Name": "Aquaculture & Fishing",
     "Related Opportunity Area": "Sustainable Animal & Fish Production",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "Readiness": "Commercial"
   },
   {

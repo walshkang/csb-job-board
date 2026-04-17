@@ -59,9 +59,9 @@ async function callGeminiEnrichment(prompt, { stream = false, label = '' } = {})
   if (stream) {
     const prefix = label ? `\n[${label}] ` : '\n';
     process.stderr.write(prefix);
-    return streamLLM({ ...opts, onToken: chunk => process.stderr.write(chunk) });
+    return streamLLM({ ...opts, _agent: 'enrichment', onToken: chunk => process.stderr.write(chunk) });
   }
-  return callLLM(opts);
+  return callLLM({ ...opts, _agent: 'enrichment' });
 }
 
 function extractJSON(text) {

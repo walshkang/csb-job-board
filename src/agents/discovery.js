@@ -350,7 +350,7 @@ async function callGeminiLLM(prompt, domain, silent = false) {
   if (!config.discovery.geminiKey && !config.discovery.anthropicKey) throw new Error('No LLM API key configured');
   if (!silent) process.stderr.write('\n[discovery: ' + (domain || 'unknown') + ']\n');
   const opts = config.resolveAgent('discovery');
-  return streamLLM({ ...opts, prompt, maxOutputTokens: 256, onToken: silent ? null : chunk => process.stderr.write(chunk) });
+  return streamLLM({ ...opts, prompt, maxOutputTokens: 256, _agent: 'discovery', onToken: silent ? null : chunk => process.stderr.write(chunk) });
 }
 
 function normalizeDomain(domainRaw) {

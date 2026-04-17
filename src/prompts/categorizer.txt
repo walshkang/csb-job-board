@@ -10,7 +10,7 @@ Representative job title: {job_title}
 Job function: {job_function}
 Description summary: {description_summary}
 
-Climate-tech categories (Tech Category Name | Related Opportunity Area | Primary Sector | Description | Example Keywords):
+Climate-tech categories:
 {categories_list}
 
 Task: Select the single best-matching Tech Category Name for this company.

@@ -421,7 +421,7 @@
   {
     "Tech Category Name": "Prevention",
     "Related Opportunity Area": "Fire Mitigation",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "brush clearing",
       "controlled burns",
@@ -439,7 +439,7 @@
   {
     "Tech Category Name": "Precision Agriculture",
     "Related Opportunity Area": "Sustainable Crops",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "agtech",
       "drone agriculture",
@@ -457,7 +457,7 @@
   {
     "Tech Category Name": "Plant-Based",
     "Related Opportunity Area": "Alternative Proteins & Fats",
-    "Primary Sector": "Food, Ag & Nature",
+    "Primary Sector": "Food / Ag & Nature",
     "keywords": [
       "meat substitutes",
       "pea protein",
@@ -742,7 +742,7 @@
     ]
   },
   {
-    "Tech Category Name": "Lightweight Materials, Engines & Aerodynamic Designs",
+    "Tech Category Name": "Lightweight Materials / Engines & Aerodynamic Designs",
     "Related Opportunity Area": "Efficiency & Reduced Demand",
     "Primary Sector": "Transportation",
     "keywords": [
@@ -995,8 +995,8 @@
   },
   {
     "Tech Category Name": "Geothermal",
-    "Related Opportunity Area": "Low-Emissions Generation, Industrial Heat",
-    "Primary Sector": "Manufacturing, Electricity",
+    "Related Opportunity Area": "Low-Emissions Generation / Industrial Heat",
+    "Primary Sector": "Electricity",
     "keywords": [
       "baseload renewables",
       "binary cycle plants",

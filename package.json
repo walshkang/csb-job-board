@@ -15,7 +15,10 @@
     "reporter": "node src/agents/reporter.js",
     "review": "node src/agents/reviewer.js",
     "categorize": "node src/agents/categorizer.js",
-    "pipeline": "node src/orchestrator.js"
+    "pipeline": "node src/orchestrator.js",
+    "benchmark": "node scripts/benchmark.js",
+    "benchmark:compare": "node scripts/compare-benchmarks.js",
+    "optimize": "node scripts/optimize-prompts.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"

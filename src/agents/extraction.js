@@ -18,7 +18,7 @@ function writeJSONAtomic(p, obj) { const tmp = p + '.tmp'; ensureDir(path.dirnam
 async function callGeminiExtraction(prompt) {
   const opts = config.resolveAgent('extraction');
   if (!opts.apiKey) throw new Error('No LLM API key configured for extraction');
-  return streamLLM({ ...opts, prompt, maxOutputTokens: 8192, onToken: chunk => process.stderr.write(chunk) });
+  return streamLLM({ ...opts, prompt, maxOutputTokens: 8192, _agent: 'extraction', onToken: chunk => process.stderr.write(chunk) });
 }
 
 function extractJSONFromText(text) {

@@ -83,7 +83,7 @@ async function categorizeCompany(companyRecord, repJob, categoriesList, opts, sa
     .replace('{categories_list}', categoriesList);
 
   try {
-    const raw = await callLLM({ provider, apiKey, model, prompt, maxOutputTokens: 4096 });
+    const raw = await callLLM({ provider, apiKey, model, prompt, maxOutputTokens: 4096, _agent: 'categorizer' });
     let parsed = null;
     try {
       parsed = extractJSON(raw);
@@ -131,8 +131,8 @@ async function main() {
     const sector = c['Primary Sector'] || c['Primary sector'] || '';
     const desc = c.short_description || '';
     const kws = Array.isArray(c.keywords) && c.keywords.length ? c.keywords.join(', ') : '';
-    return `${name} | ${area} | ${sector} | ${desc}${kws ? ` | example keywords: ${kws}` : ''}`;
-  }).join('\n');
+    return `- Category: ${name}\n  Opportunity Area: ${area}\n  Primary Sector: ${sector}\n  Description: ${desc}${kws ? `\n  Keywords: ${kws}` : ''}`;
+  }).join('\n\n');
 
   // Build representative job map: company_id → best job (prefer enriched)
   const repJobByCompany = new Map();

@@ -3,6 +3,17 @@ Agents and responsibilities
 Overview
 One agent per slice. All agents are idempotent, log outputs, and write artifacts to data/ or artifacts/. Model and key config is centralized in src/config.js — edit there or override via .env.local.
 
+## Data Contracts
+"If you get the type right, you're probably not far off." Schemas are the literal enforcement mechanism for parallelization.
+- **Companies (data/companies.json)**: `id`, `name`, `careers_page_url`, `careers_page_reachable`, `ats_platform`, `ats_slug`, `consecutive_empty_scrapes`, `dormant`.
+- **Jobs (data/jobs.json)**: `id`, `company_id`, `job_title_raw`, `source_url`, `description_hash`, `first_seen_at`, `last_seen_at`, `job_title_normalized`, `mba_relevance_score`, `climate_relevance_confirmed`.
+- **Scrape Runs (data/scrape_runs.json)**: `company_id`, `timestamp`, `status`, `error_type`, `body_size_kb`.
+
+## Concurrency & Scoping Rules
+- **Volatile Filesystem**: Assume files are changing. Always read the current state of a shared file (e.g., `companies.json`) immediately before writing to it to avoid clobbering concurrent updates.
+- **Strict Scoping**: Never modify files outside your assigned domain. Each agent owns its declared outputs; if a change is needed elsewhere, use the **Stub and Signal** rule: log the requirement and flag it for a peer agent/coordinator.
+- **Idempotency**: All agents must be safe to re-run. Check for existing records or checksums before performing expensive operations or duplicate writes.
+
 1) OCR Agent (Slice 1)
 - File: src/agents/ocr.js
 - Input: screenshot images (PNG/JPG) in a directory
@@ -107,6 +118,26 @@ One agent per slice. All agents are idempotent, log outputs, and write artifacts
 Utility scripts
 - node src/agents/notion-setup.js   provision all DB properties (safe to re-run)
 - node src/agents/notion-clear.js   archive all pages in both DBs (destructive)
+## AI Assistant Protocol (Swarm Protocol)
+When multiple AI instances (Antigravity, Cursor, etc.) operate in this repo, adhere to these standards:
+
+### 1. Dynamic Roles
+- **Orchestrator**: If planning or delegating, define non-overlapping scopes and write interfaces/contracts. Do not write implementation logic.
+- **Peer Executor**: If assigned a feature/fix, execute only that scope. Do not spawn sub-agents or nested workflows.
+
+### 2. Execution Loop (Shape Up + TDD)
+1. **Scope & Appetite**: Identify exact files and boundaries.
+2. **Define Contracts**: Update/write Types and Schemas first.
+3. **Test First (Red)**: Write a failing test using Jest for the exact behavior.
+4. **Implement (Green)**: Write the minimum code to pass the test.
+5. **Handoff**: Stop. Do not refactor adjacent systems or "fix" out-of-scope files.
+
+### 3. Standardized Handoff
+Report status in this exact format:
+`[STATUS]` (SUCCESS | BLOCKED | REQUIRES_PEER)
+`[FILES_MODIFIED]` (List files changed)
+`[NEW_CONTRACTS]` (List any new Types/Schemas created)
+`[MESSAGE]` (Concise summary. If blocked, state the unknown. If `REQUIRES_PEER`, state the exact interface needed).
 
 Operational notes
 - Artifacts: data/companies.json, data/jobs.json, artifacts/html/<company-id>.html|.json

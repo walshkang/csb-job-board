@@ -166,7 +166,7 @@ async function main() {
   let postmortemText;
   try {
     process.stderr.write('\n[reviewer] generating postmortem...\n');
-    postmortemText = await streamLLM({ provider, apiKey, model, prompt, maxOutputTokens: 2000, fallbackModel: provider === 'anthropic' ? null : (fallbackModel || null), onToken: chunk => process.stderr.write(chunk) });
+    postmortemText = await streamLLM({ provider, apiKey, model, prompt, maxOutputTokens: 2000, _agent: 'reviewer', fallbackModel: provider === 'anthropic' ? null : (fallbackModel || null), onToken: chunk => process.stderr.write(chunk) });
   } catch (err) {
     if (err && err.name === 'DailyQuotaError') {
       console.error(`Gemini quota error: ${err.message}`);

@@ -1,0 +1,65 @@
+You are optimizing an LLM prompt for a climate-tech job board pipeline.
+
+## Context
+
+Target agent: {target_agent}
+Optimization objective: {objective}
+Iteration: {iteration} of {max_iterations}
+
+## Current Prompt
+
+```
+{current_prompt}
+```
+
+## Benchmark Results (N={n} companies)
+
+Summary:
+- Total LLM calls: {total_llm_calls}
+- Successful: {llm_successful}, Failed: {llm_failed}
+- Avg latency: {avg_latency_ms}ms, P95: {p95_latency_ms}ms
+- Total prompt chars: {total_prompt_chars}
+- Total response chars: {total_response_chars}
+- Est. cost: ${estimated_cost}
+
+Per-stage success rates:
+{stage_results}
+
+## Sample Outputs (up to 5)
+
+{sample_outputs}
+
+## Sample Failures (up to 5)
+
+{sample_failures}
+
+## Previous Iterations
+
+{previous_iterations}
+
+## Task
+
+Analyze the benchmark results and the current prompt. Propose ONE specific, targeted change that would improve the {objective_description}.
+
+Consider these mutation types:
+1. **tighten** — Remove redundant or verbose instructions to reduce token usage
+2. **add_example** — Add a concrete example to reduce ambiguity and failures
+3. **restructure** — Reorder or reformat instructions for clarity
+4. **fix_failure** — Address a specific failure pattern visible in sample outputs
+5. **reduce_input** — Modify instructions to work with less input context (shorter HTML, etc.)
+
+Rules:
+- Make exactly ONE change per iteration. Small, testable changes beat large rewrites.
+- The new prompt MUST preserve all placeholder variables (e.g. {company_name}, {html}, {base_url}).
+- Do NOT change the output schema/format — the pipeline code expects specific JSON keys.
+- If previous iterations show no improvement, try a different mutation type.
+- If the prompt already looks optimal, return mutation_type: "converged".
+
+Return ONLY a JSON object:
+{
+  "analysis": "What you observed in the results — be specific about numbers",
+  "mutation_type": "tighten|add_example|restructure|fix_failure|reduce_input|converged",
+  "mutation_description": "Exactly what you're changing and why",
+  "expected_impact": "What metric you expect to improve and by roughly how much",
+  "new_prompt": "The COMPLETE new prompt text (not a diff)"
+}

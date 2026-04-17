@@ -240,30 +240,53 @@ async function streamAnthropicText({ apiKey, model, prompt, maxOutputTokens = 81
 }
 
 // ---------------------------------------------------------------------------
-// Public API
+// Public API — with transparent telemetry
 // ---------------------------------------------------------------------------
+
+const { LLMTelemetry } = require('./utils/llm-telemetry');
 
 /**
  * @param {{ provider: 'gemini'|'anthropic', apiKey: string, model: string, prompt: string,
- *           maxOutputTokens?: number, fallbackModel?: string, baseDelayMs?: number }} opts
+ *           maxOutputTokens?: number, fallbackModel?: string, baseDelayMs?: number,
+ *           _agent?: string }} opts
  * @returns {Promise<string>}
  */
 async function callLLM(opts) {
+  const telemetry = LLMTelemetry.instance();
+  const span = telemetry.start(opts);
   const provider = opts.provider || 'gemini';
-  if (provider === 'anthropic') return callAnthropicText(opts);
-  return callGeminiText(opts);
+  try {
+    const result = provider === 'anthropic'
+      ? await callAnthropicText(opts)
+      : await callGeminiText(opts);
+    span.end({ success: true, response_chars: result.length });
+    return result;
+  } catch (err) {
+    span.end({ success: false, error: err.message || String(err) });
+    throw err;
+  }
 }
 
 /**
  * @param {{ provider: 'gemini'|'anthropic', apiKey: string, model: string, prompt: string,
  *           maxOutputTokens?: number, fallbackModel?: string, baseDelayMs?: number,
- *           onToken?: (chunk: string) => void }} opts
+ *           onToken?: (chunk: string) => void, _agent?: string }} opts
  * @returns {Promise<string>}
  */
 async function streamLLM(opts) {
+  const telemetry = LLMTelemetry.instance();
+  const span = telemetry.start(opts);
   const provider = opts.provider || 'gemini';
-  if (provider === 'anthropic') return streamAnthropicText(opts);
-  return streamGeminiText(opts);
+  try {
+    const result = provider === 'anthropic'
+      ? await streamAnthropicText(opts)
+      : await streamGeminiText(opts);
+    span.end({ success: true, response_chars: result.length });
+    return result;
+  } catch (err) {
+    span.end({ success: false, error: err.message || String(err) });
+    throw err;
+  }
 }
 
 module.exports = { callLLM, streamLLM, DailyQuotaError };

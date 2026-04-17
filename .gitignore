@@ -12,3 +12,8 @@ data/*.json
 data/runs/pipeline-events-*.jsonl
 data/runs/orchestrator-snapshot.json
 data/runs/discovery-debug-*.jsonl
+data/runs/llm-telemetry-*.jsonl
+
+# Benchmark artifacts
+data/benchmarks/
+data/prompt-history/
