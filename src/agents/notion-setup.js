@@ -21,7 +21,7 @@ const COMPANIES_PROPERTIES = [
   { name: 'Latest Stage',             type: 'select' },
   { name: 'Total Raised ($M)',        type: 'number' },
   { name: 'Latest Round Size ($M)',   type: 'number' },
-  { name: 'Last Financing Date',      type: 'rich_text' },
+  { name: 'Latest Financing Date',      type: 'rich_text' },
   { name: 'Profile Description',      type: 'rich_text' },
   { name: 'Sector',                   type: 'select' },
   { name: 'HQ',                       type: 'rich_text' },
