@@ -50,9 +50,9 @@ const DRY_RUN = flag('dry-run');
 const VERBOSE = flag('verbose');
 
 const CONCURRENCIES = {
-  discovery: 15,
-  fingerprint: 5,
-  scrape: 8,
+  discovery: 8,
+  fingerprint: 4,
+  scrape: 5,
   extract: 4,
   categorize: 3,
 };

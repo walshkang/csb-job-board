@@ -171,7 +171,7 @@ Streaming orchestrator (concurrent pipeline)
 
 The linear per-stage CLIs above each iterate all 551 companies before the next CLI starts; one slow company blocks the rest. The orchestrator at src/orchestrator.js (npm run pipeline) instead runs all five stages (discovery → fingerprint → scrape → extract → categorize) concurrently with per-stage p-queue caps, so each company flows through independently and head-of-line blocking is gone. Enrichment stays separate (per-job, not per-company) for now.
 
-Per-stage concurrency caps: discovery=15, fingerprint=5, scrape=8, extract=4, categorize=3. The individual `npm run <stage>` scripts still work unchanged; the orchestrator just composes them.
+Per-stage concurrency caps: discovery=8, fingerprint=4, scrape=5, extract=4, categorize=3. (Reduced from 15/5/8 on 2026-04-17 to prevent OOM.) The individual `npm run <stage>` scripts still work unchanged; the orchestrator just composes them.
 
 Stage state is derived, not stamped as a new field, so agents and orchestrator stay coherent. src/utils/pipeline-stages.js::getStage inspects the company record (careers_page_discovery_method, careers_page_reachable, ats_platform, fingerprint_attempted_at, last_scraped_at, last_extracted_at, climate_tech_category) and returns which stage should run next. Companies with careers_page_reachable === false skip straight to categorize. Crash-resume is automatic — startup calls getStage for every company and enqueues it into the matching queue.
 
@@ -217,6 +217,51 @@ Scraping quality
     4. Playwright tuning: longer networkidle wait for SPAs, explicit scroll-to-bottom for infinite-scroll boards, click-handling for "show more jobs".
     5. Per-company scrape-method memory: once we successfully scrape a company one way, prefer that method on next run instead of re-detecting.
     6. Structured "scrape_health" per company: last_method, last_success, consecutive_empty_scrapes (already on the record) — use consecutive_empty_scrapes >= N to demote into a slower cadence rather than re-scraping every run.
+
+OOM fix — 2026-04-17
+
+Root causes identified and patched:
+  1. GoogleGenerativeAI + Anthropic SDK clients instantiated per LLM call — 20+ concurrent calls created separate client objects with their own HTTP pools, never GC'd fast enough. Fixed: module-level cache by API key in llm-client.js.
+  2. Orchestrator concurrencies too aggressive: discovery=15, scrape=8. Fixed: discovery→8, fingerprint→4, scrape→5.
+  3. Default Node heap (~1.5GB) undersized for 551-company run. Fixed: --max-old-space-size=4096 in pipeline script.
+
+Audit findings — 2026-04-17
+
+Improvements ordered by impact. Parallelization notes where independent.
+
+[A] ATS detection centralization (medium effort, low risk — can do in parallel with anything)
+  Problem: URL-based ATS detection re-implemented separately in discovery.js, fingerprinter.js, and scraper.js with slightly different regex. Drift will cause silent misrouting.
+  Fix: single shared util/ats-detect.js (detectATS(url, html?) → { platform, slug }). Wire discovery + scraper to use it; fingerprinter already does HTML-based detection so it becomes a strict superset.
+
+[B] Homepage/careers HTML cached once per run (medium effort — independent of A/C)
+  Problem: discovery fetches homepage, then fingerprinter re-fetches the same URL independently. ~551 redundant HTTP requests per full run.
+  Fix: orchestrator passes cached HTML artifacts from fingerprint stage into scrape stage. Already partially done (fingerprinter writes {id}.homepage.html + {id}.careers.html); scraper just needs to read those instead of re-fetching.
+
+[C] HTML truncation ceiling too low for custom sites (small effort — independent)
+  Problem: extraction.js truncates HTML to 12,000 chars before LLM call. Custom/non-ATS pages with 30+ jobs routinely exceed this; jobs past the cutoff are silently lost. ATS API paths (Greenhouse, Lever, Ashby, Workday) are unaffected.
+  Fix: raise MAX_HTML_CHARS to 24,000 for direct_html / playwright_html methods; keep low limit for ATS JSON (no HTML to send). Add a log line when truncation fires so we can measure impact.
+  Note: increases LLM token cost for the ~30% of companies on custom sites.
+
+[D] Extraction attempt timestamp (tiny effort — independent)
+  Problem: last_extracted_at only set on success. Can't distinguish "never attempted" from "tried and failed" — makes retry analysis hard.
+  Fix: add last_extraction_attempt_at set at start of extract stage regardless of outcome.
+
+[E] Dormant company auto-revival (small effort)
+  Problem: temporal.js sets dormant=true after 5 empty scrapes but nothing ever unsets it, even if a company relaunches hiring.
+  Fix: add a periodic re-discovery pass for dormant companies (e.g. once every 30 days) that resets dormant=false if careers page becomes reachable again.
+
+[F] QA wired into pipeline end (tiny effort — independent)
+  Problem: npm run qa is manual-only. Enrichment error rate and climate relevance anomalies go unnoticed until a human runs it.
+  Fix: call qa logic (or print equivalent summary) at end of orchestrator shutdown, writing to stderr. No blocking — just visibility.
+
+[G] Playwright default for discovery (medium effort — depends on A)
+  Problem: discovery uses Playwright only with --playwright flag. Scraper auto-detects SPA shells and triggers Playwright; discovery doesn't, so careers URLs found via static scan may be SPA shells that return no useful links.
+  Fix: enable Playwright fallback in discovery by default for any homepage that returns <4 links (same heuristic scraper uses).
+
+Parallelization plan:
+  Can start simultaneously right now: A + B + C + D + F
+  Depends on A first: G
+  Independent medium-term: E
 
 Decision needed: company summary source
 - We currently lack reliable PitchBook-exported company descriptions in the screenshots. Need to decide the canonical source for company_profile.description (pick one):

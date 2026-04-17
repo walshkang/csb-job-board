@@ -25,9 +25,15 @@ class DailyQuotaError extends Error {
 // Gemini paths (ported from gemini-text.js, unchanged logic)
 // ---------------------------------------------------------------------------
 
+const _geminiClients = new Map();
+function getGeminiClient(apiKey) {
+  if (!_geminiClients.has(apiKey)) _geminiClients.set(apiKey, new GoogleGenerativeAI(apiKey));
+  return _geminiClients.get(apiKey);
+}
+
 async function callGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192, fallbackModel = null, baseDelayMs = 2000 }) {
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-  const genAI = new GoogleGenerativeAI(apiKey);
+  const genAI = getGeminiClient(apiKey);
   const makeModel = (name) => genAI.getGenerativeModel({ model: name, generationConfig: { temperature: 0, maxOutputTokens } });
 
   const maxAttempts = 5;
@@ -70,7 +76,7 @@ async function callGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192, f
 async function streamGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192, fallbackModel = null, baseDelayMs = 2000, onToken }) {
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
   const emit = onToken || (chunk => process.stderr.write(chunk));
-  const genAI = new GoogleGenerativeAI(apiKey);
+  const genAI = getGeminiClient(apiKey);
   const makeModel = (name) => genAI.getGenerativeModel({ model: name, generationConfig: { temperature: 0, maxOutputTokens } });
 
   async function runStream(m) {
@@ -120,14 +126,18 @@ async function streamGeminiText({ apiKey, model, prompt, maxOutputTokens = 8192,
 // Anthropic path
 // ---------------------------------------------------------------------------
 
+const _anthropicClients = new Map();
 function getAnthropicClient(apiKey) {
+  if (_anthropicClients.has(apiKey)) return _anthropicClients.get(apiKey);
   let Anthropic;
   try {
     Anthropic = require('@anthropic-ai/sdk');
   } catch {
     throw new Error('Anthropic SDK not installed — run: npm install @anthropic-ai/sdk');
   }
-  return new Anthropic({ apiKey });
+  const client = new Anthropic({ apiKey });
+  _anthropicClients.set(apiKey, client);
+  return client;
 }
 
 function isAnthropicRetryable(err) {
