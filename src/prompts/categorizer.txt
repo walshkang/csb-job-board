@@ -23,5 +23,7 @@ Matching priority (highest to lowest):
 
 If no category fits well (e.g. generic B2B SaaS, pure finance, professional services with no climate angle), return "None". Do not default to a vaguely related category — a wrong category is worse than "None".
 
+Note: you are shown only the top-matched categories for this company, not the full taxonomy. If none fit well, return "None" — do not force a match.
+
 Return ONLY a JSON object:
 {"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}

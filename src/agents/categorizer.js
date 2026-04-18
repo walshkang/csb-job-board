@@ -58,7 +58,7 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
   };
 }
 
-async function categorizeCompany(companyRecord, repJob, categoriesList, opts, samples) {
+async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples) {
   const { provider, apiKey, model, dryRun } = opts;
   const companyId = companyRecord.id;
   const companyName = companyRecord.name || companyRecord.company || String(companyId);
@@ -70,6 +70,45 @@ async function categorizeCompany(companyRecord, repJob, categoriesList, opts, sa
   const companyProfile = (companyRecord.company_profile && companyRecord.company_profile.scraped_description) ? companyRecord.company_profile.scraped_description : null;
   const pitchbookKeywords = (companyRecord.company_profile && companyRecord.company_profile.keywords) ? companyRecord.company_profile.keywords : null;
   const samplesText = (!samples || samples.length === 0) ? 'None' : samples.map(s => `- ${s.title}: ${s.summary || ''}`).join('\n');
+
+  // Build company signal token set for keyword overlap scoring
+  const signalStr = [
+    companyName,
+    companyProfile || '',
+    Array.isArray(pitchbookKeywords) ? pitchbookKeywords.join(' ') : (pitchbookKeywords || ''),
+    jobTitle,
+    descSummary,
+  ].join(' ').toLowerCase();
+  const signalTokens = new Set(signalStr.split(/\W+/).filter(Boolean));
+
+  // Score each category by keyword token overlap
+  const scored = taxonomy.map(c => {
+    const name = c['Tech Category Name'] || c['Tech category name'] || c.name || '';
+    const kws = Array.isArray(c.keywords) ? c.keywords : [];
+    let score = 0;
+    for (const kw of kws) {
+      for (const tok of kw.toLowerCase().split(/\W+/).filter(Boolean)) {
+        if (signalTokens.has(tok)) score++;
+      }
+    }
+    return { c, name, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  const anyMatch = scored[0].score > 0;
+  const shortlist = anyMatch ? scored.slice(0, 10) : scored;
+
+  const topScores = scored.slice(0, 3).map(s => `${s.score}:${s.name}`).join(', ');
+  console.info(`[categorize] ${companyId} shortlisted ${shortlist.length}/${taxonomy.length} categories (top scores: ${topScores})`);
+
+  const categoriesList = shortlist.map(({ c }) => {
+    const name = c['Tech Category Name'] || c['Tech category name'] || c.name || '';
+    const area = c['Related Opportunity Area'] || c['Related opportunity area'] || '';
+    const sector = c['Primary Sector'] || c['Primary sector'] || '';
+    const desc = c.short_description || '';
+    const kws = Array.isArray(c.keywords) && c.keywords.length ? c.keywords.join(', ') : '';
+    return `- Category: ${name}\n  Opportunity Area: ${area}\n  Primary Sector: ${sector}\n  Description: ${desc}${kws ? `\n  Keywords: ${kws}` : ''}`;
+  }).join('\n\n');
 
   const promptTemplate = fs.readFileSync(path.join(__dirname, '../prompts/categorizer.txt'), 'utf8');
   const prompt = promptTemplate
@@ -125,15 +164,6 @@ async function main() {
   if (!companies) { console.error('No data/companies.json found'); process.exit(1); }
   const taxonomy = readJSONSafe(TAX_PATH, []);
 
-  const categoriesList = taxonomy.map(c => {
-    const name = c['Tech Category Name'] || c['Tech category name'] || c.name || '';
-    const area = c['Related Opportunity Area'] || c['Related opportunity area'] || '';
-    const sector = c['Primary Sector'] || c['Primary sector'] || '';
-    const desc = c.short_description || '';
-    const kws = Array.isArray(c.keywords) && c.keywords.length ? c.keywords.join(', ') : '';
-    return `- Category: ${name}\n  Opportunity Area: ${area}\n  Primary Sector: ${sector}\n  Description: ${desc}${kws ? `\n  Keywords: ${kws}` : ''}`;
-  }).join('\n\n');
-
   // Build representative job map: company_id → best job (prefer enriched)
   const repJobByCompany = new Map();
   // Also build a small samples map: company_id → up to 5 {title, summary}
@@ -174,7 +204,7 @@ async function main() {
     }
 
     const samples = (samplesByCompany.get(company.id) || []);
-    tasks.push(async () => categorizeCompany(company, repJob, categoriesList, { provider, apiKey, model, dryRun }, samples));
+    tasks.push(async () => categorizeCompany(company, repJob, taxonomy, { provider, apiKey, model, dryRun }, samples));
   }
 
   if (tasks.length === 0) {
