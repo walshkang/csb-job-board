@@ -391,13 +391,23 @@ npm run discovery -- --verbose
 
 **Output:** `data/companies.json` updated with accurate `ats_platform` and `ats_slug`
 
-**Detects:** Greenhouse, Lever, Ashby, Workday, Rippling, Jobvite, iCIMS, SmartRecruiters
+**Detects:** Greenhouse, Lever, Ashby, Workday, Workable, Recruitee, Teamtailor, BambooHR,
+Rippling, Jobvite, iCIMS, SmartRecruiters
 
 ```bash
 npm run fingerprint
 ```
 
 > **Why this step matters:** The scraper trusts `ats_platform` from this step for provider routing. Accurate ATS detection means structured JSON from official APIs instead of fragile HTML parsing.
+
+> **ATS platforms vs job aggregators:** All supported platforms above are native ATS systems —
+> companies use them directly to manage their own hiring pipelines. Jobs scraped from these
+> platforms are original postings, not reposts. This is intentional: aggregators (LinkedIn,
+> Indeed, Glassdoor, Wellfound) repost jobs from ATS platforms and would cause double-counting.
+> Never add an aggregator as an ATS adapter. To confirm a detection is real (not a stale HTML
+> reference), the fingerprinter records `ats_detection_confidence: 'url'` when the company's
+> careers URL is hosted on the ATS domain, vs `'html'` when detected only from page content.
+> The scraper falls back to direct HTML on a 404 from any ATS API.
 
 ---
 
@@ -422,6 +432,10 @@ npm run fingerprint
 | Lever | Official API (`api.lever.co`) | 5 |
 | Ashby | Official API (`api.ashbyhq.com`) | 5 |
 | Workday | Official API | 2 |
+| Workable    | workable_api   | 3           |
+| Recruitee   | recruitee_api  | 3           |
+| Teamtailor  | teamtailor_api | 3           |
+| BambooHR    | bamboohr_html  | 3           |
 | Custom / Unknown | Direct HTML fetch + Playwright fallback | 3 |
 
 ```bash
