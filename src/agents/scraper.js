@@ -359,13 +359,18 @@ async function scrapeCompany(company, opts = {}) {
       result.content_type = res.headers.get('content-type') || null;
       const body = await res.text();
       result.byte_length = Buffer.byteLength(body, 'utf8');
-      if (result.byte_length < 1024) console.warn(`[warn] greenhouse response small for ${companyId} (${result.byte_length} bytes)`);
-      await saveArtifact(companyId, 'greenhouse_api', body, true);
-      result.success = res.ok;
-      result.status = result.success ? 'success' : 'error';
-      if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-      await appendScrapeRun(result);
-      return result;
+      if (res && res.status === 404) {
+        console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+        providerKey = 'direct_html';
+      } else {
+        if (result.byte_length < 1024) console.warn(`[warn] greenhouse response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'greenhouse_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
     }
 
     if (providerKey === 'lever_api') {
@@ -376,13 +381,18 @@ async function scrapeCompany(company, opts = {}) {
       result.content_type = res.headers.get('content-type') || null;
       const body = await res.text();
       result.byte_length = Buffer.byteLength(body, 'utf8');
-      if (result.byte_length < 1024) console.warn(`[warn] lever response small for ${companyId} (${result.byte_length} bytes)`);
-      await saveArtifact(companyId, 'lever_api', body, true);
-      result.success = res.ok;
-      result.status = result.success ? 'success' : 'error';
-      if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-      await appendScrapeRun(result);
-      return result;
+      if (res && res.status === 404) {
+        console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+        providerKey = 'direct_html';
+      } else {
+        if (result.byte_length < 1024) console.warn(`[warn] lever response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'lever_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
     }
 
     if (providerKey === 'ashby_api') {
@@ -394,13 +404,18 @@ async function scrapeCompany(company, opts = {}) {
       result.content_type = res.headers.get('content-type') || null;
       const body = await res.text();
       result.byte_length = Buffer.byteLength(body, 'utf8');
-      if (result.byte_length < 256) console.warn(`[warn] ashby response small for ${companyId} (${result.byte_length} bytes)`);
-      await saveArtifact(companyId, 'ashby_api', body, true);
-      result.success = res.ok;
-      result.status = result.success ? 'success' : 'error';
-      if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-      await appendScrapeRun(result);
-      return result;
+      if (res && res.status === 404) {
+        console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+        providerKey = 'direct_html';
+      } else {
+        if (result.byte_length < 256) console.warn(`[warn] ashby response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'ashby_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
     }
 
     if (providerKey === 'workday_api') {
@@ -415,13 +430,18 @@ async function scrapeCompany(company, opts = {}) {
         result.content_type = res.headers.get('content-type') || null;
         const body = await res.text();
         result.byte_length = Buffer.byteLength(body, 'utf8');
-        if (result.byte_length < 256) console.warn(`[warn] workday response small for ${companyId} (${result.byte_length} bytes)`);
-        await saveArtifact(companyId, 'workday_api', body, true);
-        result.success = res.ok;
-        result.status = result.success ? 'success' : 'error';
-        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-        await appendScrapeRun(result);
-        return result;
+        if (res && res.status === 404) {
+          console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+          providerKey = 'direct_html';
+        } else {
+          if (result.byte_length < 256) console.warn(`[warn] workday response small for ${companyId} (${result.byte_length} bytes)`);
+          await saveArtifact(companyId, 'workday_api', body, true);
+          result.success = res.ok;
+          result.status = result.success ? 'success' : 'error';
+          if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+          await appendScrapeRun(result);
+          return result;
+        }
       }
       // fall through to HTML fetch if parsing failed
     }
@@ -438,13 +458,18 @@ async function scrapeCompany(company, opts = {}) {
         result.content_type = res.headers.get('content-type') || null;
         const body = await res.text();
         result.byte_length = Buffer.byteLength(body, 'utf8');
-        if (result.byte_length < 256) console.warn(`[warn] workable response small for ${companyId} (${result.byte_length} bytes)`);
-        await saveArtifact(companyId, 'workable_api', body, true);
-        result.success = res.ok;
-        result.status = result.success ? 'success' : 'error';
-        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-        await appendScrapeRun(result);
-        return result;
+        if (res && res.status === 404) {
+          console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+          providerKey = 'direct_html';
+        } else {
+          if (result.byte_length < 256) console.warn(`[warn] workable response small for ${companyId} (${result.byte_length} bytes)`);
+          await saveArtifact(companyId, 'workable_api', body, true);
+          result.success = res.ok;
+          result.status = result.success ? 'success' : 'error';
+          if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+          await appendScrapeRun(result);
+          return result;
+        }
       }
     }
 
@@ -460,13 +485,18 @@ async function scrapeCompany(company, opts = {}) {
         result.content_type = res.headers.get('content-type') || null;
         const body = await res.text();
         result.byte_length = Buffer.byteLength(body, 'utf8');
-        if (result.byte_length < 256) console.warn(`[warn] recruitee response small for ${companyId} (${result.byte_length} bytes)`);
-        await saveArtifact(companyId, 'recruitee_api', body, true);
-        result.success = res.ok;
-        result.status = result.success ? 'success' : 'error';
-        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-        await appendScrapeRun(result);
-        return result;
+        if (res && res.status === 404) {
+          console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+          providerKey = 'direct_html';
+        } else {
+          if (result.byte_length < 256) console.warn(`[warn] recruitee response small for ${companyId} (${result.byte_length} bytes)`);
+          await saveArtifact(companyId, 'recruitee_api', body, true);
+          result.success = res.ok;
+          result.status = result.success ? 'success' : 'error';
+          if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+          await appendScrapeRun(result);
+          return result;
+        }
       }
     }
 
@@ -482,13 +512,18 @@ async function scrapeCompany(company, opts = {}) {
         result.content_type = res.headers.get('content-type') || null;
         const body = await res.text();
         result.byte_length = Buffer.byteLength(body, 'utf8');
-        if (result.byte_length < 256) console.warn(`[warn] teamtailor response small for ${companyId} (${result.byte_length} bytes)`);
-        await saveArtifact(companyId, 'teamtailor_api', body, true);
-        result.success = res.ok;
-        result.status = result.success ? 'success' : 'error';
-        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-        await appendScrapeRun(result);
-        return result;
+        if (res && res.status === 404) {
+          console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+          providerKey = 'direct_html';
+        } else {
+          if (result.byte_length < 256) console.warn(`[warn] teamtailor response small for ${companyId} (${result.byte_length} bytes)`);
+          await saveArtifact(companyId, 'teamtailor_api', body, true);
+          result.success = res.ok;
+          result.status = result.success ? 'success' : 'error';
+          if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+          await appendScrapeRun(result);
+          return result;
+        }
       }
     }
 
@@ -504,13 +539,18 @@ async function scrapeCompany(company, opts = {}) {
         result.content_type = res.headers.get('content-type') || null;
         const body = await res.text();
         result.byte_length = Buffer.byteLength(body, 'utf8');
-        if (result.byte_length < 512) console.warn(`[warn] bamboohr response small for ${companyId} (${result.byte_length} bytes)`);
-        await saveArtifact(companyId, 'bamboohr_html', body, false);
-        result.success = res.ok;
-        result.status = result.success ? 'success' : 'error';
-        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
-        await appendScrapeRun(result);
-        return result;
+        if (res && res.status === 404) {
+          console.warn(`[warn] ${companyId} ${providerKey} returned 404 — slug may be wrong, falling through to direct_html`);
+          providerKey = 'direct_html';
+        } else {
+          if (result.byte_length < 512) console.warn(`[warn] bamboohr response small for ${companyId} (${result.byte_length} bytes)`);
+          await saveArtifact(companyId, 'bamboohr_html', body, false);
+          result.success = res.ok;
+          result.status = result.success ? 'success' : 'error';
+          if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+          await appendScrapeRun(result);
+          return result;
+        }
       }
     }
 

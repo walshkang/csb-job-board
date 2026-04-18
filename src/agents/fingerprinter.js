@@ -210,6 +210,7 @@ async function fingerprintCompany(c, opts = {}) {
     }
     // mark where detection came from
     c.ats_detection_source = 'homepage';
+    c.ats_detection_confidence = urlConfirmsplatform(c.careers_page_url, c.ats_platform) ? 'url' : 'html';
   } else if (c.careers_page_url) {
     // only fetch careers page if it's different from homepage URL
     if (normalize(c.careers_page_url) !== normalize(homepageUrl)) {
@@ -253,6 +254,7 @@ async function fingerprintCompany(c, opts = {}) {
           platformCounts[origPlatform || detectedFromCareers] = (platformCounts[origPlatform || detectedFromCareers] || 0) + 1;
         }
         c.ats_detection_source = 'careers_page';
+        c.ats_detection_confidence = urlConfirmsplatform(c.careers_page_url, c.ats_platform) ? 'url' : 'html';
         // re-run slug extraction against careers page URL
         const careersSlug = extractSlugFromUrl(c.careers_page_url);
         if (careersSlug && !c.ats_slug) {
