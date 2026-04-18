@@ -17,7 +17,7 @@ Return ONLY a single JSON object with these keys:
   "mba_relevance_score": 0-100,
   "description_summary": "2-3 sentence summary",
   "climate_relevance_confirmed": true/false,
-  "climate_relevance_reason": "one sentence"
+  "climate_relevance_reason": "one sentence if false, else null"
 }
 
 ## Field rules

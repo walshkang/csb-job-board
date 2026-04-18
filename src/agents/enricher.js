@@ -252,6 +252,7 @@ async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {
       job.description_summary = sanitized.description_summary || job.description_summary || null;
       job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
       job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
+      if (job.climate_relevance_confirmed === true) job.climate_relevance_reason = null;
       delete job.enrichment_error;
     } else {
       job.enrichment_error = `batch result missing for index ${i}`;
