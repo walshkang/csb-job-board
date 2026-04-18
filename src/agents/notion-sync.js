@@ -222,7 +222,16 @@ async function main() {
       'Latest Stage': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals.find(x => x.deal_type); return f ? { select: { name: String(f.deal_type) } } : undefined; })(),
       'Total Raised ($M)': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals.find(x => typeof x.total_raised_mm === 'number'); return f ? { number: f.total_raised_mm } : undefined; })(),
       'Latest Round Size ($M)': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals.find(x => typeof x.size_mm === 'number'); return f ? { number: f.size_mm } : undefined; })(),
-      'Last Financing Date': (() => { const f = Array.isArray(c.funding_signals) && c.funding_signals.find(x => x.date); return f ? { rich_text: [{ text: { content: String(f.date) } }] } : undefined; })(),
+      'Last Financing Date': (() => {
+        const f = Array.isArray(c.funding_signals) && c.funding_signals.find(x => x.date);
+        if (!f || !f.date) return undefined;
+        // Strip leading "Expected " and try to parse; if invalid, omit the field.
+        const s = String(f.date).replace(/^Expected\s+/, '');
+        const d = new Date(s);
+        if (isNaN(d.getTime())) return undefined;
+        const iso = d.toISOString().slice(0,10);
+        return { date: { start: iso } };
+      })(),
       'Profile Description': c.company_profile && c.company_profile.description ? { rich_text: [{ text: { content: truncate(c.company_profile.description, 2000) } }] } : undefined,
       'Sector': c.company_profile && c.company_profile.sector ? { select: { name: normalizeSelectName(c.company_profile.sector) } } : undefined,
       'HQ': c.company_profile && c.company_profile.hq ? { rich_text: [{ text: { content: String(c.company_profile.hq) } }] } : undefined,
