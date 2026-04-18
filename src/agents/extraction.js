@@ -48,7 +48,7 @@ function extractJSONFromText(text) {
 }
 
 function resolveUrl(urlStr, base) { if (!urlStr) return null; try { return new URL(urlStr, base).toString(); } catch (e) { return null; } }
-function normalizeEmploymentType(v) { if (!v) return null; const s = String(v).toLowerCase().trim().replace(/[-\s]+/g, '_'); const allowed = new Set(['full_time', 'part_time', 'contract', 'intern']); return allowed.has(s) ? s : null; }
+function normalizeEmploymentType(v) { if (!v) return 'full_time'; const s = String(v).toLowerCase().trim().replace(/[-\s]+/g, '_'); const allowed = new Set(['full_time', 'part_time', 'contract', 'intern']); return allowed.has(s) ? s : 'full_time'; }
 
 function isPlaceholder(job) {
   const title = (job.job_title_raw || '').toLowerCase();
@@ -135,11 +135,25 @@ async function runExtraction({ html, company, baseUrl, callFn = callGeminiExtrac
   const parsed = extractJSONFromText(rawResponse);
   const items = Array.isArray(parsed) ? parsed : [parsed];
   // Normalize location arrays and resolve relative URLs at the raw level
-  return items.map(it => ({
-    ...it,
-    url: it.url ? resolveUrl(String(it.url), baseUrl) : null,
-    location: Array.isArray(it.location) ? it.location.map(String).join(' | ') : (it.location || null)
-  }));
+  return items.map(it => {
+    const resolved = it.url ? resolveUrl(String(it.url), baseUrl) : null;
+    let validatedUrl = resolved;
+    if (resolved) {
+      try {
+        const { pathname } = new URL(resolved);
+        if (!htmlForPrompt.includes(pathname) && !htmlForPrompt.includes(resolved)) {
+          validatedUrl = null;
+        }
+      } catch (e) {
+        validatedUrl = null;
+      }
+    }
+    return {
+      ...it,
+      url: validatedUrl,
+      location: Array.isArray(it.location) ? it.location.map(String).join(' | ') : (it.location || null)
+    };
+  });
 }
 
 function normalizeExtractedItem(it, companyId, companyName, baseUrl, companyCategories = null) {

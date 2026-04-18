@@ -3,13 +3,13 @@ const fs = require('fs');
 const extraction = require('../src/agents/extraction');
 
 describe('extraction agent helpers', () => {
-  test('normalizeEmploymentType returns allowed values or null', () => {
+  test('normalizeEmploymentType returns allowed values or full_time fallback', () => {
     expect(extraction.normalizeEmploymentType('Full Time')).toBe('full_time');
     expect(extraction.normalizeEmploymentType('part-time')).toBe('part_time');
     expect(extraction.normalizeEmploymentType('Intern')).toBe('intern');
     expect(extraction.normalizeEmploymentType('Contract')).toBe('contract');
-    expect(extraction.normalizeEmploymentType('Temporary')).toBeNull();
-    expect(extraction.normalizeEmploymentType(null)).toBeNull();
+    expect(extraction.normalizeEmploymentType('Temporary')).toBe('full_time');
+    expect(extraction.normalizeEmploymentType(null)).toBe('full_time');
   });
 
   test('extractJSONFromText handles code fences and trailing commas', () => {

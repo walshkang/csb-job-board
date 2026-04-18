@@ -15,7 +15,7 @@ Base URL (for resolving relative links): {base_url}
 Rules:
 - Return every distinct job listing. Do not summarize or deduplicate.
 - For url: use ONLY href attribute values that are literally present in the HTML. Resolve relative paths against the base URL. If only a fragment or anchor exists, combine with base URL. If no href link exists for a job, use null. NEVER construct, guess, or hallucinate URLs based on the job title. If the HTML does not contain a working link for the job, set url to null.
-- For employment_type: only set if explicitly stated on the page. Do not guess from the title.
+- For employment_type: default to full_time. Only override to intern, part_time, or contract if the page explicitly states it. Do not infer from the title.
 - For description: copy VERBATIM text from the HTML only — up to 500 characters, stripped of tags, truncated at a word boundary. NEVER generate, infer, or paraphrase descriptions. If the description text is not literally present in the HTML provided, set to null.
 - For location: extract exactly as shown. Include parentheticals like "(Remote)" or "(Hybrid - NYC)". If multiple locations, join with " | ".
 - If the page contains department/team groupings, do NOT create a job for the department header — only for individual roles.
