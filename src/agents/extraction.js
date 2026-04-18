@@ -117,6 +117,54 @@ function mapWorkday(json, company) {
   });
 }
 
+function mapWorkable(json, company) {
+  if (!json || !Array.isArray(json.results)) return [];
+  const slug = company && company.ats_slug ? company.ats_slug : null;
+  return json.results.map(item => {
+    const loc = item.location && typeof item.location === 'object'
+      ? [item.location.city, item.location.region, item.location.country].filter(Boolean).join(', ')
+      : (item.location || null);
+    let url = item.url || null;
+    if (!url && slug && item.shortcode) url = `https://apply.workable.com/${slug}/j/${item.shortcode}`;
+    return {
+      job_title: item.title || null,
+      url,
+      location: loc || null,
+      employment_type: item.employment_type || null,
+      description: item.description ? String(item.description).slice(0, 500) : null
+    };
+  });
+}
+
+function mapRecruitee(json, company) {
+  const arr = Array.isArray(json) ? json : (json && Array.isArray(json.offers) ? json.offers : []);
+  return arr.map(item => ({
+    job_title: item.title || null,
+    url: item.url || (item.careers_url || null),
+    location: item.remote ? 'Remote' : [item.city, item.country_code].filter(Boolean).join(', ') || null,
+    employment_type: item.kind || null,
+    description: item.description ? String(item.description).replace(/<[^>]+>/g, '').slice(0, 500) : null
+  }));
+}
+
+function mapTeamtailor(json, company) {
+  const arr = Array.isArray(json) ? json : (json && Array.isArray(json.data) ? json.data : (Array.isArray(json && json.jobs) ? json.jobs : []));
+  return arr.map(item => {
+    const attrs = item.attributes || {};
+    const title = item.title || attrs.title || null;
+    let url = item.url || null;
+    if (!url && item.links) url = item.links['careersite-job-url'] || null;
+    const location = item.location || attrs.location || null;
+    return {
+      job_title: title,
+      url,
+      location: location || null,
+      employment_type: null,
+      description: null
+    };
+  });
+}
+
 const BLOCKER_PATTERNS = [/captcha/i, /please enable cookies/i, /access denied/i, /cookie consent/i, /set your browser to accept cookies/i, /you are being redirected/i];
 
 // runExtraction: calls LLM (or callFn override) on raw HTML, returns array of raw items.
@@ -283,16 +331,28 @@ async function extractCompanyJobs(company, opts = {}) {
   if (fs.existsSync(jsonPath)) {
     try {
       const raw = readJsonSafe(jsonPath);
+      const platform = (company && company.ats_platform ? String(company.ats_platform).toLowerCase() : '');
       let items = [];
       let mapperName = 'unknown';
-      if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) {
+      if (platform === 'workable' || (raw && Array.isArray(raw.results))) {
+        items = mapWorkable(raw, company); mapperName = 'workable';
+      } else if (platform === 'teamtailor' || (raw && Array.isArray(raw.data))) {
+        items = mapTeamtailor(raw, company); mapperName = 'teamtailor';
+      } else if (platform === 'recruitee') {
+        items = mapRecruitee(raw, company); mapperName = 'recruitee';
+      } else if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) {
         items = mapAshby(raw, company); mapperName = 'ashby';
       } else if (raw && Array.isArray(raw.jobPostings)) {
         items = mapWorkday(raw, company); mapperName = 'workday';
       } else if (raw && Array.isArray(raw.jobs)) {
         items = mapGreenhouse(raw, company); mapperName = 'greenhouse';
       } else if (Array.isArray(raw)) {
-        items = mapLever(raw, company); mapperName = 'lever';
+        // Recruitee returns a bare array too; distinguish by field signature
+        if (raw.length > 0 && raw[0] && (raw[0].kind !== undefined || raw[0].country_code !== undefined || raw[0].remote !== undefined)) {
+          items = mapRecruitee(raw, company); mapperName = 'recruitee';
+        } else {
+          items = mapLever(raw, company); mapperName = 'lever';
+        }
       }
       if (verbose) console.log(`[${company.id}] json/${mapperName} → ${items.length} job(s)`);
       for (const it of items) {
@@ -422,6 +482,9 @@ module.exports = {
   mapLever,
   mapAshby,
   mapWorkday,
+  mapWorkable,
+  mapRecruitee,
+  mapTeamtailor,
   normalizeExtractedItem,
   mergeJobs,
   extractCompanyJobs,

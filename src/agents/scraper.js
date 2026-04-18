@@ -54,6 +54,10 @@ const PROVIDER_LIMITS = {
   lever_api: 5,
   ashby_api: 5,
   workday_api: 2,
+  workable_api: 3,
+  recruitee_api: 3,
+  teamtailor_api: 3,
+  bamboohr_api: 3,
   direct_html: 3
 };
 
@@ -159,6 +163,45 @@ function extractWorkdayTenant(url) {
     return null;
   }
   return null;
+}
+
+function extractWorkableSlug(url) {
+  try {
+    const u = new URL(url);
+    const h = u.hostname.toLowerCase();
+    if (h.includes('workable.com')) {
+      const parts = u.pathname.split('/').filter(Boolean);
+      return parts[0] || null;
+    }
+    return null;
+  } catch (e) { return null; }
+}
+
+function extractRecruiteeSlug(url) {
+  try {
+    const u = new URL(url);
+    const h = u.hostname.toLowerCase();
+    if (h.endsWith('.recruitee.com')) return h.split('.')[0];
+    return null;
+  } catch (e) { return null; }
+}
+
+function extractTeamtailorSlug(url) {
+  try {
+    const u = new URL(url);
+    const h = u.hostname.toLowerCase();
+    if (h.endsWith('.teamtailor.com')) return h.split('.')[0];
+    return null;
+  } catch (e) { return null; }
+}
+
+function extractBambooHRSlug(url) {
+  try {
+    const u = new URL(url);
+    const h = u.hostname.toLowerCase();
+    if (h.endsWith('.bamboohr.com')) return h.split('.')[0];
+    return null;
+  } catch (e) { return null; }
 }
 
 async function fetchWithRetries(url, opts = {}, attempt = 0) {
@@ -275,6 +318,10 @@ async function scrapeCompany(company, opts = {}) {
   const leverSlug = extractLeverSlug(careersUrl);
   const ashbySlug = extractAshbySlug(careersUrl);
   const workdayInfo = extractWorkdayTenant(careersUrl); // { baseUrl, tenant } or null
+  const workableSlug = extractWorkableSlug(careersUrl);
+  const recruiteeSlug = extractRecruiteeSlug(careersUrl);
+  const teamtailorSlug = extractTeamtailorSlug(careersUrl);
+  const bamboohrSlug = extractBambooHRSlug(careersUrl);
 
   // choose provider key (priority: configured ats_platform, greenhouse, lever, ashby, workday, html)
   let providerKey = 'direct_html';
@@ -284,11 +331,19 @@ async function scrapeCompany(company, opts = {}) {
     else if (p === 'lever') providerKey = 'lever_api';
     else if (p === 'ashby') providerKey = 'ashby_api';
     else if (p === 'workday') providerKey = 'workday_api';
+    else if (p === 'workable') providerKey = 'workable_api';
+    else if (p === 'recruitee') providerKey = 'recruitee_api';
+    else if (p === 'teamtailor') providerKey = 'teamtailor_api';
+    else if (p === 'bamboohr') providerKey = 'bamboohr_api';
   } else {
     if (ghToken) providerKey = 'greenhouse_api';
     else if (leverSlug) providerKey = 'lever_api';
     else if (ashbySlug) providerKey = 'ashby_api';
     else if (workdayInfo && workdayInfo.tenant) providerKey = 'workday_api';
+    else if (workableSlug) providerKey = 'workable_api';
+    else if (recruiteeSlug) providerKey = 'recruitee_api';
+    else if (teamtailorSlug) providerKey = 'teamtailor_api';
+    else if (bamboohrSlug) providerKey = 'bamboohr_api';
   }
   if (verbose) console.log(`[${companyId}] provider: ${providerKey} | url: ${careersUrl}`);
 
@@ -369,6 +424,94 @@ async function scrapeCompany(company, opts = {}) {
         return result;
       }
       // fall through to HTML fetch if parsing failed
+    }
+
+    if (providerKey === 'workable_api') {
+      const slug = workableSlug || company.ats_slug;
+      if (!slug) {
+        console.warn(`[warn] Could not parse Workable slug for ${companyId} (${careersUrl}), falling back to HTML`);
+      } else {
+        const apiUrl = `https://apply.workable.com/api/v3/accounts/${encodeURIComponent(slug)}/jobs`;
+        result.method = 'workable_api';
+        const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
+        result.status_code = res.status;
+        result.content_type = res.headers.get('content-type') || null;
+        const body = await res.text();
+        result.byte_length = Buffer.byteLength(body, 'utf8');
+        if (result.byte_length < 256) console.warn(`[warn] workable response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'workable_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
+    }
+
+    if (providerKey === 'recruitee_api') {
+      const slug = recruiteeSlug || company.ats_slug;
+      if (!slug) {
+        console.warn(`[warn] Could not parse Recruitee slug for ${companyId} (${careersUrl}), falling back to HTML`);
+      } else {
+        const apiUrl = `https://${slug}.recruitee.com/api/offers`;
+        result.method = 'recruitee_api';
+        const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
+        result.status_code = res.status;
+        result.content_type = res.headers.get('content-type') || null;
+        const body = await res.text();
+        result.byte_length = Buffer.byteLength(body, 'utf8');
+        if (result.byte_length < 256) console.warn(`[warn] recruitee response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'recruitee_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
+    }
+
+    if (providerKey === 'teamtailor_api') {
+      const slug = teamtailorSlug || company.ats_slug;
+      if (!slug) {
+        console.warn(`[warn] Could not parse Teamtailor slug for ${companyId} (${careersUrl}), falling back to HTML`);
+      } else {
+        const apiUrl = `https://${slug}.teamtailor.com/jobs.json`;
+        result.method = 'teamtailor_api';
+        const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'application/json' } });
+        result.status_code = res.status;
+        result.content_type = res.headers.get('content-type') || null;
+        const body = await res.text();
+        result.byte_length = Buffer.byteLength(body, 'utf8');
+        if (result.byte_length < 256) console.warn(`[warn] teamtailor response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'teamtailor_api', body, true);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
+    }
+
+    if (providerKey === 'bamboohr_api') {
+      const slug = bamboohrSlug || company.ats_slug;
+      if (!slug) {
+        console.warn(`[warn] Could not parse BambooHR slug for ${companyId} (${careersUrl}), falling back to HTML`);
+      } else {
+        const apiUrl = `https://${slug}.bamboohr.com/jobs/embed2.php`;
+        result.method = 'bamboohr_html';
+        const res = await attemptFetchWithRetries(apiUrl, { headers: { 'User-Agent': ua, Accept: 'text/html' } });
+        result.status_code = res.status;
+        result.content_type = res.headers.get('content-type') || null;
+        const body = await res.text();
+        result.byte_length = Buffer.byteLength(body, 'utf8');
+        if (result.byte_length < 512) console.warn(`[warn] bamboohr response small for ${companyId} (${result.byte_length} bytes)`);
+        await saveArtifact(companyId, 'bamboohr_html', body, false);
+        result.success = res.ok;
+        result.status = result.success ? 'success' : 'error';
+        if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
+        await appendScrapeRun(result);
+        return result;
+      }
     }
 
     // fallback: direct HTML fetch

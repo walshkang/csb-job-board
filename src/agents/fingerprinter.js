@@ -63,6 +63,14 @@ function detectFromHtml(html) {
   if (low.includes('icims.com') || low.includes('careers.icims')) return 'icims';
   // SmartRecruiters
   if (low.includes('jobs.smartrecruiters.com') || low.includes('smartrecruiters-widget')) return 'smartrecruiters';
+  // Workable
+  if (low.includes('apply.workable.com')) return 'workable';
+  // Recruitee
+  if (low.includes('.recruitee.com')) return 'recruitee';
+  // Teamtailor
+  if (low.includes('teamtailor.com')) return 'teamtailor';
+  // BambooHR
+  if (low.includes('.bamboohr.com')) return 'bamboohr';
   return null;
 }
 
@@ -81,6 +89,22 @@ function extractSlugFromUrl(u) {
     }
     if (host.includes('jobs.ashbyhq.com') || host.includes('ashby')) {
       return parts.length ? parts[parts.length - 1] : null;
+    }
+    // Workable: apply.workable.com/{slug}/jobs
+    if (host.includes('workable.com')) {
+      return parts.length ? parts[0] : null;
+    }
+    // Recruitee: {slug}.recruitee.com
+    if (host.endsWith('.recruitee.com')) {
+      return host.split('.')[0];
+    }
+    // Teamtailor: {slug}.teamtailor.com
+    if (host.endsWith('.teamtailor.com')) {
+      return host.split('.')[0];
+    }
+    // BambooHR: {slug}.bamboohr.com
+    if (host.endsWith('.bamboohr.com')) {
+      return host.split('.')[0];
     }
     // Generic: take first path segment
     return parts.length ? parts[0] : null;
