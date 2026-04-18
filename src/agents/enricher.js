@@ -154,6 +154,7 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
   job.description_summary = sanitized.description_summary || job.description_summary || null;
   job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
   job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
+  if (job.climate_relevance_confirmed === true) job.climate_relevance_reason = null;
 
   job.enrichment_prompt_version = ENRICHMENT_PROMPT_VERSION;
   job.description_raw_hash = sha256(job.description_raw || '');
