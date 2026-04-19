@@ -221,36 +221,36 @@ flowchart TD
     SRC["📄 PitchBook PDFs / Screenshots\ndata/images/"]
 
     SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ AI: ocr-pdf.txt / ocr.txt"]
-    S1 -->|"data/companies.json\n(id, name, domain, funding_signals)"| S9
+    S1 -->|"data/companies.json\n(id, name, domain, funding_signals, keywords)"| S2
 
-    S9["Step 9 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\n(can run on company data alone — PitchBook keywords & metadata sufficient)"]
-    S9 -->|"companies.json\n(+ category fields)"| S2
+    S2["Step 2 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\nRequires PitchBook keywords — run right after OCR"]
+    S2 -->|"companies.json\n(+ climate_tech_category, primary_sector)"| S3
 
-    S2["Step 2 — Discovery\nnpm run discovery\n⚙ AI: inline LLM fallback prompt"]
-    S2 -->|"companies.json +\ncareers_page_url, ats_platform"| S3
+    S3["Step 3 — Discovery\nnpm run discovery\n⚙ AI: discovery-nohtml.txt (LLM fallback)"]
+    S3 -->|"companies.json +\ncareers_page_url, ats_platform"| S4
 
-    S3["Step 3 — Fingerprint\nnpm run fingerprint\n(no AI — HTML pattern matching)"]
-    S3 -->|"companies.json +\naccurate ats_platform, ats_slug"| S4
+    S4["Step 4 — Fingerprint\nnpm run fingerprint\n(no AI — HTML pattern matching)"]
+    S4 -->|"companies.json +\naccurate ats_platform, ats_slug\nats_detection_confidence"| S5
 
-    S4["Step 4 — Scrape\nnpm run scrape\n(no AI — API adapters + HTML)"]
-    S4 -->|"artifacts/html/\n{company_id}.json|html"| S5
+    S5["Step 5 — Scrape\nnpm run scrape\n(no AI — ATS API adapters + HTML fallback)"]
+    S5 -->|"artifacts/html/\n{company_id}.json|html"| S6
 
-    S5["Step 5 — Extract\nnpm run extract\n⚙ AI: extraction.txt\n(ATS JSON needs no AI)"]
-    S5 -->|"data/jobs.json\n(raw job records)"| S6
+    S6["Step 6 — Extract\nnpm run extract\n⚙ AI: extraction.txt\n(ATS JSON uses direct mappers — no AI)"]
+    S6 -->|"data/jobs.json\n(raw job records)"| S7
 
-    S6["Step 6 — Enrich\nnpm run enrich\n⚙ AI: enrichment.txt"]
-    S6 -->|"jobs.json +\nclassification fields"| S7
+    S7["Step 7 — Enrich\nnpm run enrich\n⚙ AI: enrichment.txt"]
+    S7 -->|"jobs.json +\nclimate_relevance, mba_relevance\nfunction, seniority, employment_type"| S8
 
-    S7["Step 7 — QA\nnpm run qa\n(read-only checks)"]
-    S7 --> S8T
+    S8["Step 8 — QA\nnpm run qa\n(read-only checks)"]
+    S8 --> S9
 
-    S8T["Step 8a — Temporal\nnode src/agents/temporal.js\n(no AI)"]
-    S8T -->|"jobs.json + companies.json\n+ last_seen_at, dormancy"| S8N
+    S9["Step 9 — Temporal\nnode src/agents/temporal.js\n(no AI — marks removed jobs via last_seen_at)"]
+    S9 -->|"jobs.json + companies.json\n+ last_seen_at, dormancy flags"| S10
 
-    S8N["Step 10 — Notion Sync\nnode src/agents/notion-sync.js"]
-    S8N --> NOTION["🗂 Notion Databases\nCompanies + Jobs"]
+    S10["Step 10 — Notion Sync\nnode src/agents/notion-sync.js"]
+    S10 --> NOTION["🗂 Notion Databases\nCompanies + Jobs"]
 
-    S6 --> OBS1
+    S7 --> OBS1
     OBS1["Reporter\nnpm run reporter"]
     OBS1 --> OBS2["Reviewer\nnpm run review\n⚙ AI: inline postmortem prompt"]
     OBS2 --> PM["📝 data/postmortems/\nYYYY-MM-DD.md"]
@@ -261,25 +261,25 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph Prompts ["src/prompts/"]
-        P1["ocr.txt\n(image / screenshot mode)"]
+        P1["ocr.txt\n(screenshot mode)"]
         P2["ocr-pdf.txt\n(PDF mode)"]
-        P3["extraction.txt"]
-        P4["enrichment.txt"]
+        P3["discovery-nohtml.txt\n(LLM fallback after 404s)"]
+        P4["extraction.txt\n(HTML → job fields)"]
+        P5["enrichment.txt\n(job classification)"]
     end
 
     subgraph Inline ["Built inline (no file)"]
-        I1["Discovery LLM fallback\ncompany name + domain + slugs"]
-        I2["Categorizer prompt\ntaxonomy + company context"]
-        I3["Reviewer postmortem prompt\nlatest.json + error samples"]
+        I1["Categorizer prompt\ntaxonomy + company keywords + metadata"]
+        I2["Reviewer postmortem prompt\nlatest pipeline run + error samples"]
     end
 
-    P1 --> OCR["OCR Agent (Step 1)\nimage mode"]
-    P2 --> OCR2["OCR Agent (Step 1)\nPDF mode"]
-    P3 --> EXT["Extraction Agent (Step 5)\nHTML only — ATS JSON uses direct mappers"]
-    P4 --> ENR["Enrichment Agent (Step 6)"]
-    I1 --> DISC["Discovery Agent (Step 2)"]
-    I2 --> CAT["Categorizer (Step 9)"]
-    I3 --> REV["Reviewer (Observability)"]
+    P1 --> OCR["OCR — Step 1\nscreenshot mode"]
+    P2 --> OCR
+    P3 --> DISC["Discovery — Step 3\nafter slug + standard path 404s"]
+    P4 --> EXT["Extract — Step 6\nHTML only; ATS JSON uses direct mappers"]
+    P5 --> ENR["Enrich — Step 7"]
+    I1 --> CAT["Categorize — Step 2"]
+    I2 --> REV["Reviewer (Observability)"]
 ```
 
 ---
