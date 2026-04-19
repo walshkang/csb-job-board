@@ -167,6 +167,7 @@ async function callTextModelOCR(pageText) {
     contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
     generationConfig: {
       maxOutputTokens: 65536,
+      temperature: 0,
       responseMimeType: 'application/json',
       responseSchema: {
         type: SchemaType.ARRAY,
@@ -387,22 +388,25 @@ function parseJSONResponse(text) {
     }
   }
 
-  // Partial recovery: response was truncated mid-array — salvage complete objects.
-  // Collect every well-formed {...} block from the truncated text.
+  // Partial recovery: response was truncated mid-array (or a string value looped infinitely).
+  // First, cap any suspiciously long string values (> 1000 chars) — Gemini repetition loops
+  // produce multi-kilobyte strings that prevent the brace scanner from finding closing braces.
+  const capped = s.replace(/"([^"\\]|\\.){1001,}"/g, m => JSON.stringify(m.slice(1, 501) + '…'));
+
   if (fa !== -1 && fo !== -1) {
     const partial = [];
     let depth = 0, start = -1;
-    for (let i = fa; i < s.length; i++) {
-      if (s[i] === '{') { if (depth++ === 0) start = i; }
-      else if (s[i] === '}') {
+    for (let i = fa; i < capped.length; i++) {
+      if (capped[i] === '{') { if (depth++ === 0) start = i; }
+      else if (capped[i] === '}') {
         if (--depth === 0 && start !== -1) {
-          try { partial.push(JSON.parse(s.slice(start, i + 1))); } catch (_) {}
+          try { partial.push(JSON.parse(capped.slice(start, i + 1))); } catch (_) {}
           start = -1;
         }
       }
     }
     if (partial.length > 0) {
-      console.warn(`[WARN] OCR response was truncated — recovered ${partial.length} complete row(s). Consider splitting the PDF into smaller batches.`);
+      console.warn(`[WARN] OCR response truncated or looped — recovered ${partial.length} complete row(s).`);
       return partial;
     }
   }
