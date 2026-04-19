@@ -164,7 +164,7 @@ PitchBook's native export sometimes cuts off columns. The most reliable method:
 
 > If columns are still truncating, zoom out your browser (e.g. `Cmd + -`) before printing until all columns fit across the page width, then print to PDF.
 
-Save the file to `data/images/` with a descriptive name indicating the row range (e.g. `1-250 climatecompanies.pdf`, `251-500 climatecompanies.pdf`).
+Save the file to `data/images/` with a descriptive name indicating the row range (e.g. `1-250 climate companies.pdf`, `251-500 climate companies.pdf`).
 
 **Pagination tip:** By default PitchBook shows 25 rows per page. Use the **Show** dropdown in the bottom-left of the table to set it to **250** — the maximum. This means each page (and each PDF export) covers up to 250 companies. Page through the results (Prev / 1 / 2 / 3 … / Next) and print each page to a separate PDF.
 
@@ -203,7 +203,7 @@ Save the file to `data/images/` with a descriptive name indicating the row range
     "margins": "minimum",
     "background_graphics": false,
     "output_dir": "data/images/",
-    "naming_convention": "{row_start}-{row_end} climatecompanies.pdf",
+    "naming_convention": "{row_start}-{row_end} climate companies.pdf",
     "rows_per_page": 250,
     "pagination_note": "Set Show dropdown (bottom-left) to 250 before exporting. Each page = one PDF."
   }
@@ -296,14 +296,16 @@ flowchart LR
 
 **Prompt injected:** `src/prompts/ocr-pdf.txt` (PDF mode) or `src/prompts/ocr.txt` (screenshot mode)
 
-**PDF processing:** Large PDFs are automatically chunked into 8-page batches (configurable via `PDF_CHUNK_SIZE` env var) to stay within LLM output token limits. Each chunk is processed independently — a failure in one chunk doesn't lose the rest.
+**Preflight:** Before any API calls, the agent extracts the header row from the first PDF page, detects which columns are present, and diffs them against the Gemini response schema (`SCHEMA_FIELDS` in `ocr.js`). Any column in the PDF that isn't in the schema is flagged as an error and the run aborts — preventing silent data loss.
+
+**PDF processing:** Each page is processed as its own LLM call (configurable via `PDF_CHUNK_SIZE` env var — default 1) to prevent hallucination from long context. A failure in one chunk doesn't lose the rest.
 
 ```bash
 # Recommended: point at the directory (handles both PDFs and screenshots)
 npm run ocr -- data/images
 
 # Single PDF
-node src/agents/ocr.js "data/images/250-500 climatecompanies.pdf"
+node src/agents/ocr.js "data/images/1-250 climate companies.pdf"
 
 # Dry-run: preview output without writing to companies.json
 npm run ocr -- data/images --dry-run
