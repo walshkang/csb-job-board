@@ -69,6 +69,12 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
 
   const companyProfile = (companyRecord.company_profile && companyRecord.company_profile.scraped_description) ? companyRecord.company_profile.scraped_description : null;
   const pitchbookKeywords = (companyRecord.company_profile && companyRecord.company_profile.keywords) ? companyRecord.company_profile.keywords : null;
+
+  if (!pitchbookKeywords) {
+    console.info(`[categorize] ${companyId} skipped — no PitchBook keywords`);
+    return;
+  }
+
   const samplesText = (!samples || samples.length === 0) ? 'None' : samples.map(s => `- ${s.title}: ${s.summary || ''}`).join('\n');
 
   // Build company signal token set for keyword overlap scoring

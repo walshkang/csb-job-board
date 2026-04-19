@@ -493,11 +493,13 @@ async function processCompany(company, opts) {
         .replace('{homepage_html}', homepageHtml);
     } else {
       const slugs = deriveAtsSlugs(company).join(', ');
+      const triedPaths = STANDARD_PATHS.join(', ');
       const tmpl = fs.readFileSync(path.join(__dirname, '../prompts/discovery-nohtml.txt'), 'utf8');
       prompt = tmpl
         .replace('{company_name}', company.name || '')
         .replace('{domain}', domain)
-        .replace('{slugs}', slugs);
+        .replace('{slugs}', slugs)
+        .replace('{tried_paths}', triedPaths);
     }
 
     // Call LLM and mark that it was attempted so callers can record metrics.

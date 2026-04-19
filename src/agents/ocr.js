@@ -154,10 +154,15 @@ async function callTextModelOCR(pageText) {
     throw lastErr;
   }
 
-  // Default: Gemini — use responseSchema to enforce structured output and prevent truncation
+  // Default: Gemini — use responseSchema to enforce structured output and prevent truncation.
+  // Properties are derived from SCHEMA_FIELDS so adding a field there auto-updates the schema.
   const { GoogleGenerativeAI, SchemaType } = require('@google/generative-ai');
   const genAI = new GoogleGenerativeAI(config.ocr.geminiKey);
   const geminiModel = genAI.getGenerativeModel({ model: config.ocr.model });
+  const schemaProperties = {};
+  for (const field of SCHEMA_FIELDS) {
+    schemaProperties[field] = { type: SchemaType.STRING, nullable: true };
+  }
   const geminiRequest = {
     contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
     generationConfig: {
@@ -165,20 +170,7 @@ async function callTextModelOCR(pageText) {
       responseMimeType: 'application/json',
       responseSchema: {
         type: SchemaType.ARRAY,
-        items: {
-          type: SchemaType.OBJECT,
-          properties: {
-            'Company Name':                    { type: SchemaType.STRING, nullable: true },
-            'Website':                         { type: SchemaType.STRING, nullable: true },
-            'Employees':                       { type: SchemaType.STRING, nullable: true },
-            'Last Financing Date':             { type: SchemaType.STRING, nullable: true },
-            'Last Financing Deal Type':        { type: SchemaType.STRING, nullable: true },
-            'Last Financing Size':             { type: SchemaType.STRING, nullable: true },
-            'Total Raised':                    { type: SchemaType.STRING, nullable: true },
-            'HQ Location':                     { type: SchemaType.STRING, nullable: true },
-            'Primary PitchBook Industry Code': { type: SchemaType.STRING, nullable: true },
-          },
-        },
+        items: { type: SchemaType.OBJECT, properties: schemaProperties },
       },
     },
   };
@@ -214,7 +206,101 @@ function validatePDFRows(rows, label) {
 
 // Number of PDF pages to send per LLM call. Keeps prompts within token limits
 // for large PitchBook exports (500+ companies). Override with PDF_CHUNK_SIZE env var.
-const PDF_CHUNK_SIZE = parseInt(process.env.PDF_CHUNK_SIZE || '8', 10);
+const PDF_CHUNK_SIZE = parseInt(process.env.PDF_CHUNK_SIZE || '1', 10);
+
+// Single source of truth: every field the Gemini responseSchema declares.
+// Adding a field here auto-updates both the schema sent to Gemini and the preflight check.
+const SCHEMA_FIELDS = new Set([
+  'Company Name',
+  'Website',
+  'Employees',
+  'Last Financing Date',
+  'Last Financing Deal Type',
+  'Last Financing Size',
+  'Total Raised',
+  'HQ Location',
+  'Keywords',
+]);
+
+// Each entry maps a canonical field name to regex patterns that identify it anywhere in the header area.
+// PitchBook headers sometimes span 2-3 lines (e.g. "Last Financing" on one line, "Deal Type" below),
+// so we pattern-match against a multi-line window rather than splitting a single line.
+const COLUMN_PATTERNS = [
+  { name: 'Company Name',             pattern: /companies\s*\(|company name/i },
+  { name: 'Website',                  pattern: /\bwebsite\b/i },
+  { name: 'HQ Location',              pattern: /\bhq location\b/i },
+  { name: 'Total Raised',             pattern: /\btotal raised\b/i },
+  { name: 'Last Financing Date',      pattern: /last financing date/i },
+  { name: 'Last Financing Size',      pattern: /financing size/i },
+  { name: 'Last Financing Deal Type', pattern: /deal type/i },
+  { name: 'Employees',                pattern: /\bemployees\b|\bheadcount\b/i },
+  { name: 'Keywords',                 pattern: /\bkeywords?\b/i },
+];
+
+// Find which COLUMN_PATTERNS match within a 5-line window around the most anchor-dense line.
+// Returns an array of canonical column names present in the PDF, or null if no header found.
+function detectPDFColumns(pdfText) {
+  const lines = pdfText.split('\n');
+  const anchors = ['Website', 'Employees', 'Keywords', 'Companies', 'Location', 'Raised'];
+
+  let bestIdx = -1, bestCount = 0;
+  lines.forEach((l, i) => {
+    const count = anchors.filter(a => new RegExp(a, 'i').test(l)).length;
+    if (count > bestCount) { bestCount = count; bestIdx = i; }
+  });
+  if (bestIdx === -1 || bestCount < 2) return null;
+
+  // Window: 2 lines above anchor through 2 lines below (covers PitchBook's split column headers)
+  const windowText = lines.slice(Math.max(0, bestIdx - 2), bestIdx + 3).join('\n');
+  return COLUMN_PATTERNS.filter(c => c.pattern.test(windowText)).map(c => c.name);
+}
+
+// Run before any LLM calls: detect PDF columns and diff against SCHEMA_FIELDS.
+// Aborts (throws) if any PDF column has no matching schema field — data would be silently dropped.
+async function preflightPDF(pdfPath) {
+  const { execFile } = require('child_process');
+  const { promisify } = require('util');
+  const exec = promisify(execFile);
+  const label = path.basename(pdfPath);
+
+  let page1Text;
+  try {
+    const { stdout } = await exec('pdftotext', ['-layout', '-f', '1', '-l', '1', pdfPath, '-']);
+    page1Text = stdout;
+  } catch {
+    console.warn(`  [preflight] pdftotext unavailable — skipping schema check for ${label}`);
+    return;
+  }
+
+  const detected = detectPDFColumns(page1Text);
+  if (!detected) {
+    console.warn(`  [preflight] Could not detect column headers in ${label} — verify this is a PitchBook company list`);
+    return;
+  }
+
+  let allOk = true;
+  console.log(`  [preflight] ${label}: ${detected.length} column(s) detected`);
+  for (const col of detected) {
+    if (SCHEMA_FIELDS.has(col)) {
+      console.log(`    ✓ ${col}`);
+    } else {
+      console.error(`    ✗ ${col} — NOT in schema (data will be dropped)`);
+      allOk = false;
+    }
+  }
+
+  // Inform about schema fields absent from this PDF (expected for optional columns)
+  const detectedSet = new Set(detected);
+  for (const field of SCHEMA_FIELDS) {
+    if (!detectedSet.has(field)) {
+      console.warn(`    ~ ${field} — not in this PDF (will be null)`);
+    }
+  }
+
+  if (!allOk) {
+    throw new Error(`[preflight] ${label}: PDF has columns not in SCHEMA_FIELDS — add them before proceeding.`);
+  }
+}
 
 async function processPDF(pdfPath, verbose = false) {
   const label = path.basename(pdfPath);
@@ -390,6 +476,18 @@ function resolveCompanyName(row) {
 // Handles actual Pitchbook export columns:
 //   Companies (N), Website, Employees, Last Financing Date,
 //   Last Financing Deal Type, Last Financing Size, Total Raised, HQ Location
+// Fuzzy column lookup: find the value for a canonical field regardless of
+// exact key casing or minor naming variations returned by the LLM.
+function resolveColumn(row, patterns) {
+  const keys = Object.keys(row);
+  for (const pat of patterns) {
+    const re = typeof pat === 'string' ? new RegExp(`^${pat}$`, 'i') : pat;
+    const match = keys.find(k => re.test(k.trim()));
+    if (match && row[match] != null) return row[match];
+  }
+  return null;
+}
+
 async function mapRowToCompanySchema(row) {
   // Strip trailing '?' from any string cell produced by OCR and set an uncertainty flag
   let ocr_uncertain = false;
@@ -408,7 +506,8 @@ async function mapRowToCompanySchema(row) {
   }
 
   const name = resolveCompanyName(cleanRow);
-  const domainRaw = cleanRow['Website'] || cleanRow['website'] || null;
+  const domainRaw = resolveColumn(cleanRow, ['Website', 'website', 'Domain', 'URL']) ||
+    cleanRow['Website'] || cleanRow['website'] || null;
   const domain = domainRaw
     ? domainRaw
         .replace(/^https?:\/\//, '')  // strip protocol
@@ -419,10 +518,10 @@ async function mapRowToCompanySchema(row) {
   const id = domain ? slugify(domain) : deterministicId(name);
 
   const funding_signals = [];
-  const date = cleanRow['Last Financing Date'] || null;
-  const dealType = cleanRow['Last Financing Deal Type'] || null;
-  const size = cleanRow['Last Financing Size'] || null;
-  const totalRaised = cleanRow['Total Raised'] || null;
+  const date = resolveColumn(cleanRow, ['Last Financing Date', /financing.d(ate)?/i, /last.*date/i]);
+  const dealType = resolveColumn(cleanRow, ['Last Financing Deal Type', /deal.type/i, /financing.deal/i, /last.*deal/i]);
+  const size = resolveColumn(cleanRow, ['Last Financing Size', /financing.size/i, /last.*size/i, /round.size/i]);
+  const totalRaised = resolveColumn(cleanRow, ['Total Raised', /total.raised/i, /cumulative/i]);
   if (date || dealType || size) {
     funding_signals.push({
       date,
@@ -432,12 +531,13 @@ async function mapRowToCompanySchema(row) {
     });
   }
 
+  const employeesRaw = resolveColumn(cleanRow, ['Employees', 'Employee', 'Headcount', /^num.*employee/i]);
   const company_profile = {
-    sector: cleanRow['Sector'] || null,
-    description: cleanRow['Description'] || null,
-    keywords: cleanRow['Keywords'] || null,
-    hq: cleanRow['HQ Location'] || cleanRow['HQ'] || null,
-    employees: cleanRow['Employees'] ? parseInt(String(cleanRow['Employees']).replace(/[^0-9]/g, ''), 10) || null : null,
+    sector: resolveColumn(cleanRow, ['Sector', 'Industry', /primary.*pitchbook/i]),
+    description: resolveColumn(cleanRow, ['Description', 'Summary']),
+    keywords: resolveColumn(cleanRow, ['Keywords', 'Keyword', /pitchbook.*keyword/i, /keyword.*tag/i]),
+    hq: resolveColumn(cleanRow, ['HQ Location', 'HQ', 'Location', 'Headquarters', /hq.*/i]),
+    employees: employeesRaw ? parseInt(String(employeesRaw).replace(/[^0-9]/g, ''), 10) || null : null,
   };
 
   return {
@@ -490,7 +590,13 @@ function mergeCompanies(existing = [], extracted = []) {
       target.domain = target.domain || c.domain;
       const combined = (target.funding_signals || []).concat(c.funding_signals || []);
       target.funding_signals = dedupFundingSignals(combined);
-      target.company_profile = Object.assign({}, c.company_profile || {}, target.company_profile || {});
+      const existingProfile = target.company_profile || {};
+      const newProfile = c.company_profile || {};
+      const mergedProfile = { ...newProfile };
+      for (const [k, v] of Object.entries(existingProfile)) {
+        if (v != null) mergedProfile[k] = v;
+      }
+      target.company_profile = mergedProfile;
       // keep careers_page_url and ats_platform from existing if present
     } else {
       merged.push(c);
@@ -608,6 +714,7 @@ async function main() {
     if (pdfs.length === 0) { console.log('No PDFs found in', inputPath); return; }
     console.log(`Found ${pdfs.length} PDF(s)`);
     for (const pdf of pdfs) {
+      await preflightPDF(pdf);
       const { allRows, failures: pdfFailures } = await processPDF(pdf, verbose);
       failures.push(...pdfFailures);
       extractedCompanies.push(...await rowsToCompanies(allRows, path.basename(pdf), failures));
