@@ -6,17 +6,16 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const JOBS_PATH = path.join(REPO_ROOT, 'data', 'jobs.json');
 const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categories.json');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
-const ENRICHMENT_PROMPT_VERSION = '1.2.0';
+const ENRICHMENT_PROMPT_VERSION = '1.3.1';
 
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { callLLM, streamLLM } = require('../llm-client');
 const Progress = require('../utils/progress');
 
-const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
-const SENIORITY = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite']);
-const LOCATION_TYPES = new Set(['remote','hybrid','on_site','unknown']);
+const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','customer_success','other']);
 const MBA_RELEVANCE = new Set(['low', 'medium', 'high']);
+const SENIORITY_LEVELS = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite','unknown']);
 
 function readJSONSafe(p, fallback) {
   try {
@@ -89,11 +88,9 @@ function sanitize(parsed) {
   out.job_function = parsed.job_function ? String(parsed.job_function).toLowerCase().trim() : null;
   if (!JOB_FUNCTIONS.has(out.job_function)) out.job_function = 'other';
 
-  out.seniority_level = parsed.seniority_level ? String(parsed.seniority_level).toLowerCase().trim() : null;
-  if (!SENIORITY.has(out.seniority_level)) out.seniority_level = null;
-
-  out.location_type = parsed.location_type ? String(parsed.location_type).toLowerCase().trim() : 'unknown';
-  if (!LOCATION_TYPES.has(out.location_type)) out.location_type = 'unknown';
+  let seniorityLevel = parsed.seniority_level ? String(parsed.seniority_level).toLowerCase().trim() : null;
+  if (!SENIORITY_LEVELS.has(seniorityLevel)) seniorityLevel = 'unknown';
+  out.seniority_level = seniorityLevel;
 
   let mbaRelevance = parsed.mba_relevance ? String(parsed.mba_relevance).toLowerCase().trim() : null;
   if (!MBA_RELEVANCE.has(mbaRelevance)) mbaRelevance = 'low';
@@ -108,13 +105,42 @@ function sanitize(parsed) {
   return out;
 }
 
+function resolveDeterministic(job) {
+  const title = String(job.job_title_raw || job.title || '').trim();
+  const description = String(job.description_raw || job.description || '').trim();
+  const location = String(job.location_raw || job.location || '').trim();
+  const titleAndDescription = `${title} ${description}`.trim();
+
+  let seniority_level = null;
+  if (/\b(intern|internship)\b/i.test(title)) seniority_level = 'intern';
+  else if (/\b(vp|vice president)\b/i.test(title)) seniority_level = 'vp';
+  else if (/\b(director)\b/i.test(title)) seniority_level = 'director';
+  else if (/\b(senior|sr\.?|staff|principal|lead)\b/i.test(title)) seniority_level = 'senior';
+  else if (/\b(junior|jr\.?|associate|entry)\b/i.test(title)) seniority_level = 'entry';
+
+  let employment_type = 'full_time';
+  if (/\bintern(ship)?\b/i.test(titleAndDescription)) employment_type = 'intern';
+  else if (/\b(contract|contractor|consultant)\b/i.test(titleAndDescription)) employment_type = 'contract';
+  else if (/\bpart[- ]time\b/i.test(titleAndDescription)) employment_type = 'part_time';
+
+  let location_type = 'unknown';
+  if (/\bremote\b/i.test(location)) location_type = 'remote';
+  else if (/\bhybrid\b/i.test(location)) location_type = 'hybrid';
+  else if (location.length > 0) location_type = 'on_site';
+
+  return { seniority_level, employment_type, location_type };
+}
+
 async function enrichJob(job, categories, promptTemplate, options = {}) {
+  const deterministic = resolveDeterministic(job);
+
   // Skip LLM call when there's no description — apply null defaults and mark complete.
   if (!job.description_raw) {
     job.job_title_normalized = job.job_title_normalized || job.job_title_raw || null;
     job.job_function = job.job_function || 'other';
-    job.seniority_level = job.seniority_level || null;
-    job.location_type = job.location_type || 'unknown';
+    job.seniority_level = deterministic.seniority_level;
+    job.employment_type = deterministic.employment_type;
+    job.location_type = deterministic.location_type;
     job.mba_relevance = MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low';
     job.description_summary = null;
     job.climate_relevance_confirmed = false;
@@ -143,8 +169,9 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
   // assign fields to job
   job.job_title_normalized = sanitized.job_title_normalized || job.job_title_normalized || null;
   job.job_function = sanitized.job_function || job.job_function || 'other';
-  job.seniority_level = sanitized.seniority_level || job.seniority_level || null;
-  job.location_type = sanitized.location_type || job.location_type || 'unknown';
+  job.seniority_level = deterministic.seniority_level ?? sanitized.seniority_level ?? 'unknown';
+  job.employment_type = deterministic.employment_type;
+  job.location_type = deterministic.location_type;
   job.mba_relevance = MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
   job.description_summary = sanitized.description_summary || job.description_summary || null;
   job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
@@ -163,6 +190,13 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
 async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {}) {
   const N = jobsArray.length;
   if (N < 2 || N > 10) throw new Error('enrichJobBatch requires 2-10 jobs');
+
+  const deterministicByJob = jobsArray.map(job => resolveDeterministic(job));
+  for (let i = 0; i < N; i++) {
+    jobsArray[i].seniority_level = deterministicByJob[i].seniority_level;
+    jobsArray[i].employment_type = deterministicByJob[i].employment_type;
+    jobsArray[i].location_type = deterministicByJob[i].location_type;
+  }
 
   // build numbered jobs list
   const jobsRendered = jobsArray.map((job, idx) => {
@@ -242,8 +276,9 @@ async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {
       const sanitized = sanitize(res);
       job.job_title_normalized = sanitized.job_title_normalized || job.job_title_normalized || null;
       job.job_function = sanitized.job_function || job.job_function || 'other';
-      job.seniority_level = sanitized.seniority_level || job.seniority_level || null;
-      job.location_type = sanitized.location_type || job.location_type || 'unknown';
+      job.seniority_level = deterministicByJob[i].seniority_level ?? sanitized.seniority_level ?? 'unknown';
+      job.employment_type = deterministicByJob[i].employment_type;
+      job.location_type = deterministicByJob[i].location_type;
       job.mba_relevance = MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
       job.description_summary = sanitized.description_summary || job.description_summary || null;
       job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
@@ -334,7 +369,7 @@ async function main() {
     for (const job of jobs) {
       const prevVersion = job.enrichment_prompt_version || null;
       const descHash = sha256(job.description_raw || '');
-      const requiredFields = ['job_title_normalized','job_function','seniority_level','location_type','mba_relevance','description_summary','climate_relevance_confirmed'];
+      const requiredFields = ['job_title_normalized','job_function','seniority_level','employment_type','location_type','mba_relevance','description_summary','climate_relevance_confirmed'];
       const missing = requiredFields.some(f => job[f] == null);
       const changed = job.description_raw_hash !== descHash;
       if (force || prevVersion !== ENRICHMENT_PROMPT_VERSION || changed || missing) toEnrich.push(job);
@@ -446,6 +481,7 @@ module.exports = {
   sha256,
   extractJSON,
   sanitize,
+  resolveDeterministic,
   renderPrompt,
   chunkArray,
   ENRICHMENT_PROMPT_VERSION,

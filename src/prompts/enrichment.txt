@@ -11,9 +11,8 @@ Return ONLY a single JSON object with these keys:
 
 {
   "job_title_normalized": "standardized title",
-  "job_function": "one of the allowed values",
-  "seniority_level": "one of the allowed values",
-  "location_type": "one of the allowed values",
+  "job_function": "engineering | product | design | operations | sales | marketing | finance | legal | hr | data_science | strategy | policy | supply_chain | customer_success | other",
+  "seniority_level": "intern | entry | mid | senior | staff | director | vp | c_suite | unknown",
   "mba_relevance": "low | medium | high",
   "description_summary": "2-3 sentence summary",
   "climate_relevance_confirmed": true/false,
@@ -27,31 +26,28 @@ job_title_normalized:
 - Standardize level prefixes: "Senior Software Engineer", not "Sr. SWE III"
 - Keep the functional title intact — don't invent one
 
-job_function — exactly one of:
-  engineering, product, design, operations, sales, marketing, finance,
-  legal, hr, data_science, strategy, policy, supply_chain, other
+job_function — exactly one of the values shown in the schema above:
 - "Business Development" -> sales
 - "Chief of Staff" / "Strategy & Ops" -> strategy
 - "Program Manager" -> operations (unless explicitly product-focused)
+- "General Counsel" / "Legal Counsel" / "Attorney" -> legal
+- "Data Scientist" / "Data Analyst" / "Analytics Engineer" -> data_science
+- "Customer Success" / "Customer Support" / "Account Manager" (post-sale) -> customer_success
+- "People Operations" / "Recruiter" / "Talent" -> hr
+- "Corporate Accounting" / "Controller" / "FP&A" / "Treasury" -> finance
 - If genuinely ambiguous, use the primary responsibility from the description
+- "other" is a last resort — if ANY listed function partially fits, use it
 
-seniority_level — exactly one of:
-  intern, entry, mid, senior, staff, director, vp, c_suite
+seniority_level — exactly one of the values shown in the schema above:
 - "Manager" with direct reports -> senior
-- "Manager" as IC title (e.g., "Account Manager") -> mid
-- "Head of" with < 50 employees company -> senior; otherwise director
+- "Manager" as IC title (e.g., "Account Manager", "Program Manager") -> mid
+- "Head of" at < 50-person company -> senior; otherwise director
 - "Principal" / "Staff" -> staff
 - "Associate" -> entry (unless "Associate Director" -> director)
-- No title clues + 3-5 years experience -> mid
-- No title clues + 7+ years experience -> senior
-
-location_type — exactly one of:
-  remote, hybrid, on_site, unknown
-- Infer from BOTH location_raw and description text
-- "Remote" or "Anywhere" -> remote
-- "Hybrid" or city + "flexible" -> hybrid
-- City with no remote mention -> on_site
-- No signal at all -> unknown
+- "C-suite" (CEO, COO, CFO, CTO, CPO) -> c_suite
+- No title clues + 3–5 years experience in description -> mid
+- No title clues + 7+ years experience in description -> senior
+- "unknown" is the only valid fallback — never omit this field
 
 mba_relevance — exactly one of:
   low, medium, high
@@ -67,12 +63,21 @@ climate_relevance_confirmed:
 ## Examples
 
 Input: Title="VP of Business Development", Company="Arcadia" (clean energy), Location="Remote", 5+ years in energy markets
-Output: job_function=sales, seniority_level=vp, mba_relevance=high, location_type=remote, climate_relevance_confirmed=true
+Output: job_function=sales, seniority_level=vp, mba_relevance=high, climate_relevance_confirmed=true
 
 Input: Title="Junior Frontend Engineer", Company="Climate startup", Location="San Francisco, CA", 1-2 years experience
-Output: job_function=engineering, seniority_level=entry, mba_relevance=low, location_type=on_site, climate_relevance_confirmed=true
+Output: job_function=engineering, seniority_level=entry, mba_relevance=low, climate_relevance_confirmed=true
 
 Input: Title="Account Manager", Company="SolarEdge", Location="Austin, TX (Hybrid)"
-Output: job_function=sales, seniority_level=mid, mba_relevance=medium, location_type=hybrid, climate_relevance_confirmed=true
+Output: job_function=sales, seniority_level=mid, mba_relevance=medium, climate_relevance_confirmed=true
+
+Input: Title="Customer Support Specialist", Company="Vulcan Elements", Location="Remote"
+Output: job_function=customer_success, seniority_level=mid, mba_relevance=low, climate_relevance_confirmed=true
+
+Input: Title="Associate General Counsel, Commercial", Company="GoFlex", Location="New York, NY"
+Output: job_function=legal, seniority_level=entry, mba_relevance=low, climate_relevance_confirmed=false
+
+Input: Title="Director, Analytics Engineer", Company="GoFlex", Location="San Francisco, CA"
+Output: job_function=data_science, seniority_level=director, mba_relevance=medium, climate_relevance_confirmed=false
 
 Return valid JSON only. No markdown fences.
