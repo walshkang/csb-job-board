@@ -79,12 +79,34 @@ function updateJobsForLastRun(jobs, lastRun, nowIso) {
   
   const companyId = lastRun.company_id;
   const runWasSuccessful = lastRun.status === 'success' || lastRun.success === true;
+  const runWasSignatureSkipped = lastRun.outcome === 'skipped_signature_match' || lastRun.skipped_signature_match === true;
   
   // Scraper timestamp or current time
   const runTime = Date.parse(lastRun.scraped_at || nowIso);
 
   for (const job of jobs) {
     if (job.company_id !== companyId) continue;
+
+    if (runWasSignatureSkipped) {
+      if (!job.removed_at) {
+        job.last_seen_at = nowIso;
+        stats.updated++;
+      }
+      try {
+        const first = job.first_seen_at ? Date.parse(job.first_seen_at) : NaN;
+        const last = job.last_seen_at ? Date.parse(job.last_seen_at) : NaN;
+        if (!Number.isNaN(first) && !Number.isNaN(last)) {
+          const days = Math.floor((last - first) / 86400000);
+          job.days_live = days >= 0 ? days : 0;
+        } else {
+          job.days_live = 0;
+        }
+      } catch (err) {
+        console.warn('[temporal] days_live calculation failed for job', job.id || job.source_url, ':', err.message);
+        job.days_live = 0;
+      }
+      continue;
+    }
     
     // If the run was successful, any job not seen during or after this run is considered removed
     if (runWasSuccessful && !job.removed_at) {

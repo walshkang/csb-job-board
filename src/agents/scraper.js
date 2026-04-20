@@ -14,6 +14,7 @@
 const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
+const crypto = require('crypto');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
@@ -91,6 +92,91 @@ function releaseProvider(provider) {
 
 function chooseUserAgent(i) {
   return USER_AGENTS[i % USER_AGENTS.length];
+}
+
+function normalizeJobUrl(urlStr, baseUrl = null) {
+  if (!urlStr) return null;
+  try {
+    const u = baseUrl ? new URL(urlStr, baseUrl) : new URL(urlStr);
+    const host = u.hostname.toLowerCase();
+    let pathname = (u.pathname || '/').toLowerCase().replace(/\/+$/, '');
+    if (!pathname) pathname = '/';
+    return `${u.protocol}//${host}${pathname}`;
+  } catch (e) {
+    return null;
+  }
+}
+
+function buildSignature(urls) {
+  const normalized = Array.isArray(urls)
+    ? urls
+      .map(u => normalizeJobUrl(u))
+      .filter(Boolean)
+    : [];
+  const dedupedSorted = Array.from(new Set(normalized)).sort();
+  const payload = dedupedSorted.join('\n');
+  return {
+    signature: crypto.createHash('sha256').update(payload, 'utf8').digest('hex'),
+    urls: dedupedSorted
+  };
+}
+
+function getAtsProviderListUrls(providerKey, body, company, careersUrl) {
+  let parsed;
+  try { parsed = JSON.parse(body); } catch (e) { parsed = null; }
+  const baseUrl = careersUrl || company.careers_page_url || company.domain || null;
+  if (providerKey === 'greenhouse_api') {
+    const arr = parsed && Array.isArray(parsed.jobs) ? parsed.jobs : [];
+    return arr.map(j => j && (j.absolute_url || j.url || j.apply_url || j.job_url)).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'lever_api') {
+    const arr = Array.isArray(parsed) ? parsed : [];
+    return arr.map(j => j && (j.hostedUrl || j.hosted_url || j.url || j.applyUrl)).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'ashby_api') {
+    const arr = parsed && Array.isArray(parsed.jobs) ? parsed.jobs : [];
+    return arr.map(j => j && (j.jobUrl || j.hostedUrl || j.url)).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'workday_api') {
+    const arr = parsed && Array.isArray(parsed.jobPostings) ? parsed.jobPostings : [];
+    return arr.map(j => j && (j.externalPath || j.url)).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'workable_api') {
+    const arr = parsed && Array.isArray(parsed.results) ? parsed.results : [];
+    const slug = company && company.ats_slug ? company.ats_slug : null;
+    return arr.map(j => {
+      if (j && j.url) return j.url;
+      if (j && slug && j.shortcode) return `https://apply.workable.com/${slug}/j/${j.shortcode}`;
+      return null;
+    }).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'recruitee_api') {
+    const arr = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.offers) ? parsed.offers : []);
+    return arr.map(j => j && (j.url || j.careers_url)).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'teamtailor_api') {
+    const arr = Array.isArray(parsed)
+      ? parsed
+      : (parsed && Array.isArray(parsed.data) ? parsed.data : (parsed && Array.isArray(parsed.jobs) ? parsed.jobs : []));
+    return arr.map(j => {
+      if (!j) return null;
+      if (j.url) return j.url;
+      if (j.links && j.links['careersite-job-url']) return j.links['careersite-job-url'];
+      return null;
+    }).filter(Boolean).map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  if (providerKey === 'bamboohr_api') {
+    // BambooHR returns HTML; extract hrefs from links.
+    const hrefRegex = /href\s*=\s*["']([^"']+)["']/gi;
+    const out = [];
+    let m = hrefRegex.exec(body);
+    while (m) {
+      out.push(m[1]);
+      m = hrefRegex.exec(body);
+    }
+    return out.map(u => normalizeJobUrl(u, baseUrl)).filter(Boolean);
+  }
+  return [];
 }
 
 function extractGreenhouseToken(url) {
@@ -350,6 +436,79 @@ async function scrapeCompany(company, opts = {}) {
   await acquireProvider(providerKey);
   try {
     const ua = chooseUserAgent(index);
+    const atsGateProviders = new Set([
+      'greenhouse_api',
+      'lever_api',
+      'ashby_api',
+      'workday_api',
+      'workable_api',
+      'recruitee_api',
+      'teamtailor_api',
+      'bamboohr_api'
+    ]);
+
+    // Signature gate: cheap list call for ATS-backed providers before full scrape.
+    if (atsGateProviders.has(providerKey)) {
+      let listUrl = null;
+      let listFetchOpts = { headers: { 'User-Agent': ua, Accept: 'application/json' } };
+      if (providerKey === 'greenhouse_api') {
+        listUrl = `https://boards-api.greenhouse.io/v1/boards/${ghToken}/jobs`;
+      } else if (providerKey === 'lever_api') {
+        listUrl = `https://api.lever.co/v0/postings/${leverSlug}?mode=json`;
+      } else if (providerKey === 'ashby_api') {
+        listUrl = `https://jobs.ashbyhq.com/api/non-user-facing/job-board/jobs?organizationHostedJobsPageName=${encodeURIComponent(ashbySlug)}`;
+        listFetchOpts = { method: 'POST', headers: { 'User-Agent': ua, 'Content-Type': 'application/json', Accept: 'application/json' }, body: '{}' };
+      } else if (providerKey === 'workday_api' && workdayInfo && workdayInfo.tenant) {
+        listUrl = `${workdayInfo.baseUrl}/wday/cxs/${workdayInfo.tenant}/jobs`;
+      } else if (providerKey === 'workable_api') {
+        const slug = workableSlug || company.ats_slug;
+        if (slug) listUrl = `https://apply.workable.com/api/v3/accounts/${encodeURIComponent(slug)}/jobs`;
+      } else if (providerKey === 'recruitee_api') {
+        const slug = recruiteeSlug || company.ats_slug;
+        if (slug) listUrl = `https://${slug}.recruitee.com/api/offers`;
+      } else if (providerKey === 'teamtailor_api') {
+        const slug = teamtailorSlug || company.ats_slug;
+        if (slug) listUrl = `https://${slug}.teamtailor.com/jobs.json`;
+      } else if (providerKey === 'bamboohr_api') {
+        const slug = bamboohrSlug || company.ats_slug;
+        if (slug) {
+          listUrl = `https://${slug}.bamboohr.com/jobs/embed2.php`;
+          listFetchOpts = { headers: { 'User-Agent': ua, Accept: 'text/html' } };
+        }
+      }
+
+      if (listUrl) {
+        try {
+          const listRes = await attemptFetchWithRetries(listUrl, listFetchOpts);
+          if (listRes && listRes.ok) {
+            const listBody = await listRes.text();
+            const listUrls = getAtsProviderListUrls(providerKey, listBody, company, careersUrl);
+            if (listUrls.length > 0) {
+              const { signature, urls } = buildSignature(listUrls);
+              result.preflight_signature = signature;
+              result.preflight_url_count = urls.length;
+              if (company.last_scrape_signature && company.last_scrape_signature === signature) {
+                result.method = `${providerKey}_signature_probe`;
+                result.status_code = listRes.status;
+                result.content_type = listRes.headers.get('content-type') || null;
+                result.byte_length = 0;
+                result.success = true;
+                result.status = 'success';
+                result.outcome = 'skipped_signature_match';
+                result.skipped_signature_match = true;
+                result.last_scrape_signature = signature;
+                result.seen_urls = urls;
+                result.job_count = urls.length;
+                await appendScrapeRun(result);
+                return result;
+              }
+            }
+          }
+        } catch (e) {
+          if (verbose) console.warn(`[${companyId}] signature preflight failed (${providerKey}): ${e.message}`);
+        }
+      }
+    }
 
     if (providerKey === 'greenhouse_api') {
       const apiUrl = `https://boards-api.greenhouse.io/v1/boards/${ghToken}/jobs?content=true`;
@@ -367,6 +526,7 @@ async function scrapeCompany(company, opts = {}) {
         await saveArtifact(companyId, 'greenhouse_api', body, true);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
+        if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
         if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
         await appendScrapeRun(result);
         return result;
@@ -389,6 +549,7 @@ async function scrapeCompany(company, opts = {}) {
         await saveArtifact(companyId, 'lever_api', body, true);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
+        if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
         if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
         await appendScrapeRun(result);
         return result;
@@ -412,6 +573,7 @@ async function scrapeCompany(company, opts = {}) {
         await saveArtifact(companyId, 'ashby_api', body, true);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
+        if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
         if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
         await appendScrapeRun(result);
         return result;
@@ -438,6 +600,7 @@ async function scrapeCompany(company, opts = {}) {
           await saveArtifact(companyId, 'workday_api', body, true);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
+          if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
           if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
           await appendScrapeRun(result);
           return result;
@@ -466,6 +629,7 @@ async function scrapeCompany(company, opts = {}) {
           await saveArtifact(companyId, 'workable_api', body, true);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
+          if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
           if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
           await appendScrapeRun(result);
           return result;
@@ -493,6 +657,7 @@ async function scrapeCompany(company, opts = {}) {
           await saveArtifact(companyId, 'recruitee_api', body, true);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
+          if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
           if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
           await appendScrapeRun(result);
           return result;
@@ -520,6 +685,7 @@ async function scrapeCompany(company, opts = {}) {
           await saveArtifact(companyId, 'teamtailor_api', body, true);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
+          if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
           if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
           await appendScrapeRun(result);
           return result;
@@ -547,6 +713,7 @@ async function scrapeCompany(company, opts = {}) {
           await saveArtifact(companyId, 'bamboohr_html', body, false);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
+          if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
           if (verbose) console.log(`[${companyId}] ${result.method} → ${result.status_code} (${result.byte_length}b)`);
           await appendScrapeRun(result);
           return result;
@@ -602,6 +769,7 @@ async function scrapeCompany(company, opts = {}) {
     }
 
     result.status = result.success ? 'success' : 'error';
+    if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
     await appendScrapeRun(result);
     return result;
   } catch (err) {
@@ -669,7 +837,10 @@ async function run(companiesPath, companyFilter = null) {
 
 module.exports = {
   scrapeCompany,
-  run
+  run,
+  normalizeJobUrl,
+  buildSignature,
+  getAtsProviderListUrls
 };
 
 if (require.main === module) {

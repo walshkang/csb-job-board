@@ -56,4 +56,17 @@ describe('Temporal agent helpers', () => {
     expect(c2.consecutive_empty_scrapes).toBe(0);
     expect(c2.dormant).toBe(false);
   });
+
+  test('signature-skip run refreshes last_seen_at and does not mark removed', () => {
+    const now = new Date('2026-03-01T00:00:00.000Z').toISOString();
+    const jobs = [
+      { id: 'j1', company_id: 'c1', source_url: 'https://x', first_seen_at: '2026-01-01T00:00:00.000Z', last_seen_at: '2026-02-01T00:00:00.000Z' }
+    ];
+    const lastRun = { company_id: 'c1', status: 'success', outcome: 'skipped_signature_match', scraped_at: now };
+    const stats = updateJobsForLastRun(jobs, lastRun, now);
+    expect(stats.removed).toBe(0);
+    expect(stats.updated).toBe(1);
+    expect(jobs[0].last_seen_at).toBe(now);
+    expect(jobs[0].removed_at).toBeUndefined();
+  });
 });

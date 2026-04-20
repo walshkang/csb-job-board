@@ -45,6 +45,7 @@ async function main() {
       direct_html: 0,
       playwright_html: 0,
     },
+    skipped_signature_match: 0,
     by_status_code: {},
     small_body_count: 0,
     errors: [],
@@ -54,6 +55,9 @@ async function main() {
     scrape.total += 1;
     if (r && r.success) scrape.success += 1;
     else scrape.error += 1;
+    if (r && (r.outcome === 'skipped_signature_match' || r.skipped_signature_match === true)) {
+      scrape.skipped_signature_match += 1;
+    }
 
     const method = (r && r.method) || 'unknown';
     const m = String(method).toLowerCase();

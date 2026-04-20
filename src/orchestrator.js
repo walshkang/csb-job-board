@@ -83,15 +83,6 @@ if (!companies) { console.error('No data/companies.json'); process.exit(1); }
 const initialJobs = readJSON(JOBS_PATH, []);
 const taxonomy = readJSON(TAX_PATH, []);
 
-const categoriesList = taxonomy.map(c => {
-  const name = c['Tech Category Name'] || c['Tech category name'] || c.name || '';
-  const area = c['Related Opportunity Area'] || c['Related opportunity area'] || '';
-  const sector = c['Primary Sector'] || c['Primary sector'] || '';
-  const desc = c.short_description || '';
-  const kws = Array.isArray(c.keywords) && c.keywords.length ? c.keywords.join(', ') : '';
-  return `${name} | ${area} | ${sector} | ${desc}${kws ? ` | example keywords: ${kws}` : ''}`;
-}).join('\n');
-
 const categorizerAgent = (() => {
   try { return config.resolveAgent('categorizer'); } catch (e) { return null; }
 })();
@@ -173,6 +164,16 @@ async function runStage(stage, c) {
     if (!c.careers_page_reachable) return { outcome: 'skipped', extra: { reason: 'unreachable' } };
     const result = await scrapeCompany(c, { verbose: VERBOSE });
     c.last_scraped_at = new Date().toISOString();
+    if (result && result.last_scrape_signature) c.last_scrape_signature = result.last_scrape_signature;
+    if (result && result.skipped_signature_match) {
+      c.last_scrape_outcome = 'skipped_signature_match';
+      return { outcome: 'skipped_signature_match', extra: {
+        method: result.method,
+        status_code: result.status_code,
+        preflight_url_count: result.preflight_url_count || result.job_count || 0,
+      }};
+    }
+    c.last_scrape_outcome = (result && result.success) ? 'success' : 'no_result';
     if (result && result.success) {
       return { outcome: 'success', extra: {
         method: result.method, status_code: result.status_code, byte_length: result.byte_length,
@@ -213,15 +214,16 @@ async function runStage(stage, c) {
       rep = { job_title_normalized: '', job_function: '', description_summary: desc, climate_relevance_reason: '' };
     }
     const { provider, apiKey, model } = categorizerAgent;
-    await categorizeCompany(c, rep, categoriesList, { provider, apiKey, model, dryRun: DRY_RUN }, []);
+    await categorizeCompany(c, rep, taxonomy, { provider, apiKey, model, dryRun: DRY_RUN }, []);
     if (c.climate_tech_category && c.climate_tech_category !== 'None') {
       return { outcome: 'success', extra: {
-        category: c.climate_tech_category, confidence: c.category_confidence,
+        category: c.climate_tech_category, confidence: c.category_confidence, resolver: c.category_resolver || 'llm',
       }};
     }
     return { outcome: 'no_result', extra: {
       category: c.climate_tech_category || null,
       category_error: c.category_error || null,
+      resolver: c.category_resolver || null,
     }};
   }
 
@@ -269,6 +271,11 @@ function enqueue(c) {
         events.emit(stage, c, 'skipped', { duration_ms: ms, ...extra });
         log(stage, c, '⊘', JSON.stringify(extra));
         // Skipped stages should advance so getStage re-evaluates (categorize still runs).
+        shouldAdvance = true;
+      } else if (outcome === 'skipped_signature_match') {
+        stats.skipped[stage]++;
+        events.emit(stage, c, 'skipped_signature_match', { duration_ms: ms, ...extra });
+        log(stage, c, '⊘', `${ms}ms signature-match`);
         shouldAdvance = true;
       }
     } catch (err) {

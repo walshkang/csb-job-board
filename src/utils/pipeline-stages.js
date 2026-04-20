@@ -30,6 +30,14 @@ function getStage(company) {
     return 'scrape';
   }
 
+  // Signature-gated ATS companies intentionally skip extraction when unchanged.
+  if (c.last_scrape_outcome === 'skipped_signature_match') {
+    if (isBlank(c.climate_tech_category) || c.climate_tech_category === 'None') {
+      return 'categorize';
+    }
+    return 'done';
+  }
+
   if (isBlank(c.last_extracted_at)) {
     return 'extract';
   }
