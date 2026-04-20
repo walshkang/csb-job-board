@@ -442,13 +442,18 @@ npm run scrape
 
 **Playwright fallback** fires automatically when: response is 4xx, body is under 5KB, or content-type is not HTML. Skips if the page matches known blocker patterns (CAPTCHA, cookie walls).
 
+**Signature gate (ATS only).** Before scraping a company on a known ATS, a cheap preflight pulls the job-ID list and hashes it. If the hash matches `last_scrape_signature` on `companies.json`, the run short-circuits: no full scrape, no extract, no enrich — the temporal stage just re-stamps `last_seen_at`. Emits a `skipped_signature_match` event for the reporter. Raw-HTML companies bypass the gate (trivial diffs would churn the signature).
+
 ---
 
 ### Step 6 — Extract: Parse jobs into structured records
 
-**What it does:** Converts raw artifacts into structured job records in `data/jobs.json`. For ATS API responses (JSON), uses direct field mappers — no LLM. For HTML artifacts, calls the LLM with `extraction.txt`.
+**What it does:** Converts raw artifacts into structured job records in `data/jobs.json`. Three-tier resolution:
+1. **ATS API JSON** → direct field mappers (no LLM).
+2. **HTML DOM adapters** → deterministic extractors for the top 3 shapes (anchor job-link lists, WordPress-ish, Webflow). Covers ~82% of HTML artifacts. See `src/agents/extraction/html-adapters/` and [the shape audit](docs/extract-html-shape-audit.md).
+3. **LLM fallback** → only for the long-tail HTML that no adapter matches, via `extraction.txt`.
 
-**Prompt injected:** `src/prompts/extraction.txt` — HTML path only
+**Prompt injected:** `src/prompts/extraction.txt` — LLM fallback only
 
 **Input:** `artifacts/html/` — all artifacts from Step 4
 

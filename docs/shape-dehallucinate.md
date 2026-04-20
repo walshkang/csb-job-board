@@ -1,5 +1,24 @@
 # Shape Up: De-hallucinate & Tighten the Pipeline
 
+**Status (2026-04-20):**
+
+| Slice | Status | Commit(s) |
+|---|---|---|
+| 0 — MBA score → tiers | ✅ Shipped | `34be8b7`, `6ce47b6` (prompt regression fix 1.3.1), `b81204e` (strict mapping 1.3.2) |
+| 1 — Categorizer keyword pre-pass | ✅ Shipped | `7724eb4` |
+| 2 — ATS scrape signature gate | ✅ Shipped | `364444a` |
+| 3 — Enrich deterministic pre-pass | 🟡 Pending | — |
+| 4 — Kill discovery LLM fallback | ✅ Shipped | `134fba1` |
+| 5 — HTML extract adapters | ✅ Shipped (audit justified: top 3 shapes = 82.5%) | `ae4c939` |
+
+**Open work:**
+- Full `npm run enrich -- --force` on v1.3.2 to validate prompt fixes across all 388 jobs.
+- Slice 3 (deterministic pre-pass for `seniority_level`, `employment_type`, `location_type`).
+
+**Lessons:** Slice 0's prompt rewrite unintentionally weakened the `job_function` and `seniority_level` guidance alongside the MBA change. Caught only after a partial re-enrich showed 83% "other" job_function and 44% null seniority. Fixed in 1.3.1; 1.3.2 added a tiebreaker ladder to enforce mutual exclusivity. **When editing a shared prompt, diff the full file — not just the section you intend to change.**
+
+---
+
 **Appetite:** ~1 day across slices
 **Problem:** The pipeline invokes LLMs for work that can be code-driven, which costs money, adds latency, and introduces hallucinations (phantom careers URLs, drifting MBA scores, 0–100 numbers with no real precision). It also lacks a dedup gate — every run re-scrapes and re-enriches companies whose job list hasn't changed.
 
