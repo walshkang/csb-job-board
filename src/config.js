@@ -55,8 +55,8 @@ try {
 
 // Global provider: explicit override → key-based detection → gemini default
 const LLM_PROVIDER = process.env.LLM_PROVIDER
-  || (process.env.GEMINI_API_KEY ? 'gemini'
-    : process.env.ANTHROPIC_API_KEY ? 'anthropic'
+  || (process.env.ANTHROPIC_API_KEY ? 'anthropic'
+    : process.env.GEMINI_API_KEY ? 'gemini'
     : 'gemini');
 
 const cfg = {

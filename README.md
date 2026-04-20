@@ -6,6 +6,32 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 
 ---
 
+## Quick Start for Collaborators (Claude Haiku + Custom Notion)
+
+If you are joining this project with your own Anthropic API key and Notion databases:
+
+1. **Clone the repo** and run `npm install`.
+2. **Copy `.env.example` to `.env.local`**:
+   ```bash
+   cp .env.example .env.local
+   ```
+3. **Fill in your keys** in `.env.local`:
+   - `ANTHROPIC_API_KEY`: Your key from [console.anthropic.com](https://console.anthropic.com).
+   - `NOTION_API_KEY`: Create an internal integration at [notion.so/my-integrations](https://notion.so/my-integrations).
+   - `NOTION_COMPANIES_DB_ID`: Copy from the Companies database URL.
+   - `NOTION_JOBS_DB_ID`: Copy from the Jobs database URL.
+4. **Share your databases**: Ensure your Notion integration has access to both databases (click "..." on the DB page -> Connect to).
+5. **Provision the databases**: Run the setup script to add required properties:
+   ```bash
+   node src/agents/notion-setup.js
+   ```
+6. **Run the pipeline**:
+   ```bash
+   npm run pipeline
+   ```
+
+---
+
 ## Two ways to run
 
 **Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500. The pipeline recognizes 'cold' and 'warm' lanes to reduce LLM calls and enable targeted extraction; see docs/lanes-slices.md for details.
