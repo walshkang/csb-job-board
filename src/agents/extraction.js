@@ -5,6 +5,8 @@ const enricher = require('./enricher');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { streamLLM } = require('../llm-client');
+const { tryHtmlAdapters } = require('./extraction/html-adapters');
+const { isXmlSitemapOrNonHtml } = require('./extraction/html-adapters/shared');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
@@ -48,6 +50,14 @@ function extractJSONFromText(text) {
 }
 
 function resolveUrl(urlStr, base) { if (!urlStr) return null; try { return new URL(urlStr, base).toString(); } catch (e) { return null; } }
+
+function normalizeHtmlBaseUrl(u) {
+  if (u == null || u === '') return '';
+  const s = String(u).trim();
+  if (!s) return '';
+  if (/^https?:\/\//i.test(s)) return s;
+  return `https://${s}`;
+}
 function normalizeEmploymentType(v) { if (!v) return 'full_time'; const s = String(v).toLowerCase().trim().replace(/[-\s]+/g, '_'); const allowed = new Set(['full_time', 'part_time', 'contract', 'intern']); return allowed.has(s) ? s : 'full_time'; }
 
 function isPlaceholder(job) {
@@ -319,7 +329,8 @@ async function extractCompanyJobs(company, opts = {}) {
     artifactsDir = ARTIFACTS_DIR,
     promptPath = PROMPT_PATH,
     callFn = callGeminiExtraction,
-    companyCategories = null
+    companyCategories = null,
+    extractStats = null
   } = opts;
 
   const htmlPath = path.join(artifactsDir, `${company.id}.html`);
@@ -369,16 +380,34 @@ async function extractCompanyJobs(company, opts = {}) {
   if (!processed && fs.existsSync(htmlPath)) {
     try {
       const html = readFileSafe(htmlPath) || '';
-      const baseUrl = company.careers_page_url || company.domain || '';
-      const items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn, promptPath });
-      if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
-        errors.push({ company: company.id, err: items[0] });
+      const baseUrl = normalizeHtmlBaseUrl(company.careers_page_url || company.domain || '');
+
+      if (isXmlSitemapOrNonHtml(html)) {
+        errors.push({ company: company.id, err: 'artifact_not_html_xml_or_sitemap' });
+        processed = true;
       } else {
-        if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
-        for (const it of items) {
-          const normalized = normalizeExtractedItem(it, company.id, company.name, baseUrl, companyCategories);
-          if (isPlaceholder(normalized)) continue;
-          extracted.push(normalized);
+        let items = null;
+        const adapted = tryHtmlAdapters(html, baseUrl);
+        if (adapted && adapted.items.length) {
+          items = adapted.items;
+          if (extractStats) extractStats.htmlAdapterCompanies += 1;
+          if (verbose) console.log(`[${company.id}] html/adapter:${adapted.adapterName} → ${items.length} item(s)`);
+        }
+
+        if (!items) {
+          items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn, promptPath });
+          if (extractStats) extractStats.htmlLlmCompanies += 1;
+          if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
+        }
+
+        if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
+          errors.push({ company: company.id, err: items[0] });
+        } else if (items) {
+          for (const it of items) {
+            const normalized = normalizeExtractedItem(it, company.id, company.name, baseUrl, companyCategories);
+            if (isPlaceholder(normalized)) continue;
+            extracted.push(normalized);
+          }
         }
       }
       processed = true;
@@ -419,6 +448,7 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
   const extracted = [];
   const errors = [];
   const companiesProcessed = [];
+  const extractStats = { htmlAdapterCompanies: 0, htmlLlmCompanies: 0 };
 
   for (const company of companies) {
     if (companyFilter && company.id !== companyFilter) continue;
@@ -427,7 +457,8 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
       artifactsDir: ARTIFACTS_DIR,
       promptPath: PROMPT_PATH,
       callFn: callGeminiExtraction,
-      companyCategories: categoryByCompanyId.get(company.id) || null
+      companyCategories: categoryByCompanyId.get(company.id) || null,
+      extractStats
     });
     extracted.push(...result.jobs);
     errors.push(...result.errors);
@@ -440,7 +471,13 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
   if (!dryRun) writeJSONAtomic(OUT_JOBS, merged);
 
   if (verbose) console.log(`Extraction done: ${companiesProcessed.length} companies, ${extracted.length} jobs, ${errors.length} errors`);
-  return { companiesProcessed, extractedCount: extracted.length, written: dryRun ? 0 : merged.length, errors };
+  return {
+    companiesProcessed,
+    extractedCount: extracted.length,
+    written: dryRun ? 0 : merged.length,
+    errors,
+    extractStats
+  };
 }
 
 async function main() {
@@ -453,12 +490,21 @@ async function main() {
 
   if (input) {
     // legacy single-file mode
-    const baseUrl = argv.find(a => a.startsWith('--base-url=')) ? argv.find(a => a.startsWith('--base-url=')).split('=')[1] : null;
-    if (!baseUrl) { console.error('--base-url required for --input mode'); process.exit(1); }
+    const rawBase = argv.find(a => a.startsWith('--base-url=')) ? argv.find(a => a.startsWith('--base-url=')).split('=')[1] : null;
+    if (!rawBase) { console.error('--base-url required for --input mode'); process.exit(1); }
+    const baseUrl = normalizeHtmlBaseUrl(rawBase);
     const html = readFileSafe(input);
     if (html == null) { console.error('Failed to read input file', input); process.exit(1); }
     try {
-      const items = await runExtraction({ html, company: companyArg || 'unknown', baseUrl, callFn: callGeminiExtraction, promptPath: PROMPT_PATH });
+      if (isXmlSitemapOrNonHtml(html)) {
+        console.error('Input looks like XML sitemap, not HTML; skipping extraction');
+        process.exit(1);
+      }
+      const adapted = tryHtmlAdapters(html, baseUrl);
+      const items = adapted && adapted.items.length
+        ? adapted.items
+        : await runExtraction({ html, company: companyArg || 'unknown', baseUrl, callFn: callGeminiExtraction, promptPath: PROMPT_PATH });
+      if (adapted && adapted.items.length) console.log('Source: html adapter', adapted.adapterName);
       console.log('Extracted', Array.isArray(items) ? items.length : 1, 'items');
     } catch (err) { console.error('Extraction failed:', String(err)); process.exit(1); }
     return;
@@ -469,6 +515,8 @@ async function main() {
   console.log('  companies processed:', res.companiesProcessed.length);
   console.log('  extracted items:', res.extractedCount);
   console.log('  jobs written:', res.written);
+  console.log('  HTML adapter companies:', res.extractStats.htmlAdapterCompanies);
+  console.log('  HTML LLM companies:', res.extractStats.htmlLlmCompanies);
   if (res.errors.length) console.log('  errors:', res.errors.slice(0, 20));
   await endRun(run, { processed: res.companiesProcessed.length, extracted: res.extractedCount, errors: res.errors.length });
 }
@@ -477,6 +525,7 @@ module.exports = {
   extractJSONFromText,
   resolveUrl,
   normalizeEmploymentType,
+  tryHtmlAdapters,
   runExtraction,
   mapGreenhouse,
   mapLever,
