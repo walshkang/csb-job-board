@@ -2,7 +2,7 @@
 
 Automatically finds and tracks job listings at climate-tech companies — pulled from PitchBook exports, enriched with AI, and synced to a Notion database you can search and filter.
 
-**What you get:** A live Notion database of open roles at climate/clean-tech companies, each tagged with job function, seniority, location type, an MBA relevance score (0–100), a climate relevance flag, and an industry category from the Climate Tech Map taxonomy. New runs update existing records and mark removed jobs.
+**What you get:** A live Notion database of open roles at climate/clean-tech companies, each tagged with job function, seniority, location type, MBA relevance (`low|medium|high`), a climate relevance flag, and an industry category from the Climate Tech Map taxonomy. New runs update existing records and mark removed jobs.
 
 ---
 
@@ -73,7 +73,7 @@ Details in [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
 ## Prerequisites
 
 - **PitchBook access** — to export company lists as PDFs or screenshots
-- **Gemini API key** (paid tier) — powers OCR, job classification, and discovery heuristics. Get one at [aistudio.google.com](https://aistudio.google.com). Alternatively, an **Anthropic API key** runs all agents through Claude Haiku (see [Config / Multi-provider](#config--multi-provider))
+- **Gemini API key** (paid tier) — powers OCR and job classification. Get one at [aistudio.google.com](https://aistudio.google.com). Alternatively, an **Anthropic API key** runs all LLM-powered agents through Claude Haiku (see [Config / Multi-provider](#config--multi-provider))
 - **Notion account** — two databases: one for Companies, one for Jobs. Run the setup script once to provision them (see Setup below)
 - **Node.js 18+** — check with `node --version`
 - **poppler-utils** — for PDF text extraction (`brew install poppler` on macOS)
@@ -226,7 +226,7 @@ flowchart TD
     S2["Step 2 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\nRequires PitchBook keywords — run right after OCR"]
     S2 -->|"companies.json\n(+ climate_tech_category, primary_sector)"| S3
 
-    S3["Step 3 — Discovery\nnpm run discovery\n⚙ AI: discovery-nohtml.txt (LLM fallback)"]
+    S3["Step 3 — Discovery\nnpm run discovery\n(no AI — URL and HTML heuristics)"]
     S3 -->|"companies.json +\ncareers_page_url, ats_platform"| S4
 
     S4["Step 4 — Fingerprint\nnpm run fingerprint\n(no AI — HTML pattern matching)"]
@@ -263,7 +263,6 @@ flowchart LR
     subgraph Prompts ["src/prompts/"]
         P1["ocr.txt\n(screenshot mode)"]
         P2["ocr-pdf.txt\n(PDF mode)"]
-        P3["discovery-nohtml.txt\n(LLM fallback after 404s)"]
         P4["extraction.txt\n(HTML → job fields)"]
         P5["enrichment.txt\n(job classification)"]
     end
@@ -275,7 +274,6 @@ flowchart LR
 
     P1 --> OCR["OCR — Step 1\nscreenshot mode"]
     P2 --> OCR
-    P3 --> DISC["Discovery — Step 3\nafter slug + standard path 404s"]
     P4 --> EXT["Extract — Step 6\nHTML only; ATS JSON uses direct mappers"]
     P5 --> ENR["Enrich — Step 7"]
     I1 --> CAT["Categorize — Step 2"]
@@ -366,8 +364,6 @@ npm run categorize -- --dry-run
 2. ATS slug guessing — checks `boards.greenhouse.io/{slug}`, `jobs.lever.co/{slug}`, `jobs.ashby.com/{slug}`
 3. Homepage `<a href>` link scan — fetches homepage, finds career-related links
 4. Sitemap scan — checks `/sitemap.xml`, `/sitemap_index.xml`
-5. **LLM fallback** — fires even without homepage HTML; uses company name + domain + derived slugs. Prompt built inline.
-
 ```bash
 npm run discovery
 
@@ -504,7 +500,7 @@ job_function            — engineering | product | design | operations | sales 
                           finance | legal | hr | data_science | strategy | policy | supply_chain | other
 seniority_level         — intern | entry | mid | senior | staff | director | vp | c_suite
 location_type           — remote | hybrid | on_site | unknown
-mba_relevance_score     — integer 0–100 (see rubric below)
+mba_relevance           — low | medium | high (see rubric below)
 description_summary     — 2–3 sentence summary
 climate_relevance_confirmed — true | false
 climate_relevance_reason    — one sentence explanation
@@ -542,7 +538,7 @@ npm run enrich -- --concurrency=5 --delay=1000
 - Enrichment error rate (warns if >10%)
 - Climate relevance distribution (warns if <30% confirmed)
 - Missing required fields (`job_title_raw`, `source_url`, `company_id`)
-- Jobs with no `mba_relevance_score`
+- Jobs with no `mba_relevance`
 
 ```bash
 npm run qa
@@ -611,7 +607,7 @@ Run after any full pipeline run to get metrics and an AI-written postmortem.
 ```bash
 npm run reporter
 ```
-Tracks: per-provider scrape success rates, discovery yield, ATS distribution, enrichment error rate, climate relevance %, MBA score distribution, small body count.
+Tracks: per-provider scrape success rates, discovery yield, ATS distribution, enrichment error rate, climate relevance %, MBA relevance distribution, small body count.
 
 **Reviewer** — reads `latest.json` + error samples → LLM writes a postmortem to `data/postmortems/YYYY-MM-DD.md`:
 ```bash
@@ -630,12 +626,12 @@ Prompt built inline. Output: what went well, what failed and why, which stage ha
 | `src/prompts/ocr.txt` | OCR Agent — image/screenshot mode | Instructs Gemini vision to extract PitchBook tabular data from a screenshot into a JSON array |
 | `src/prompts/ocr-pdf.txt` | OCR Agent — PDF mode | Same goal but for `pdftotext`-extracted text; includes column truncation mappings and sidebar noise filtering |
 | `src/prompts/extraction.txt` | Extraction Agent — HTML only | Extracts job listings (title, URL, location, type, description) from raw careers page HTML; strict anti-hallucination rules for URLs and descriptions |
-| `src/prompts/enrichment.txt` | Enrichment Agent | Classifies a single job (or batch of 5 in `--batch-mode`) with function, seniority, location type, MBA score, climate relevance |
+| `src/prompts/enrichment.txt` | Enrichment Agent | Classifies a single job (or batch of 5 in `--batch-mode`) with function, seniority, location type, MBA relevance tier, climate relevance |
 
 **Tuning tips:**
 - Edit any prompt file and re-run the relevant agent.
 - For enrichment: after editing `enrichment.txt`, bump `ENRICHMENT_PROMPT_VERSION` in `src/agents/enricher.js` and run `npm run enrich -- --force` to re-classify all jobs.
-- Discovery and categorizer prompts are inline in their agent files (`src/agents/discovery.js` and `src/agents/categorizer.js`).
+- Categorizer prompt is inline in its agent file (`src/agents/categorizer.js`).
 
 ---
 
@@ -653,13 +649,11 @@ ANTHROPIC_API_KEY=...        # setting this alone routes all agents through Clau
 
 # Per-agent model overrides (Gemini)
 OCR_MODEL=gemini-2.5-flash-lite
-DISCOVERY_MODEL=gemini-2.5-flash
 EXTRACTION_MODEL=gemini-2.5-flash
 ENRICHMENT_MODEL=gemini-2.5-flash
 
 # Per-agent model overrides (Anthropic)
 OCR_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
-DISCOVERY_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
 EXTRACTION_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
 ENRICHMENT_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
 CATEGORIZER_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
@@ -758,13 +752,12 @@ npm run enrich -- --retry-errors
 
 ## Reading Results in Notion
 
-**MBA Relevance Score** — use this to filter for actionable roles:
-| Score | What it means |
+**MBA Relevance** — use this to filter for actionable roles:
+| Tier | What it means |
 |---|---|
-| 80–100 | Prioritize — strategy, BD, product leadership, GM, ops leadership, venture/finance |
-| 60–79 | Worth reviewing — PM, marketing leadership, partnerships, supply chain |
-| 40–59 | Senior IC engineering, data science, policy, mid-level ops |
-| Below 40 | Primarily technical or entry-level; less typical for MBA recruiting |
+| high | Prioritize — strategy, BD, product leadership, GM, ops leadership, venture/finance |
+| medium | Worth reviewing — PM, marketing leadership, partnerships, supply chain |
+| low | Primarily technical or entry-level; less typical for MBA recruiting |
 
 **Climate Relevance Confirmed** — filter to `true` to exclude companies with no clear climate/energy connection.
 

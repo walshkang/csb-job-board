@@ -52,7 +52,7 @@ Slice 5 — Extraction
 Slice 6 — LLM Enrichment
   npm run enrich [--retry-errors] [--force] [--batch-size=N] [--concurrency=N] [--batch-mode]
   Input: jobs.json with raw fields
-  Gemini classifies: job_title_normalized, job_function, seniority_level, location_type, mba_relevance_score, description_summary, climate_relevance_confirmed
+  Gemini classifies: job_title_normalized, job_function, seniority_level, location_type, mba_relevance, description_summary, climate_relevance_confirmed
   Rate-limited worker pool (concurrency=3, delay=1500ms); exponential backoff on 429/503; fallback model on persistent failure
   --batch-mode: sends 5 jobs per LLM call instead of 1; reduces API calls 5x; individual failures within a batch fall back to --retry-errors
   Description HTML stripped before truncation to maximize signal within the 8000-char window
@@ -71,7 +71,7 @@ Slice 8 — Temporal Tracking + Notion Sync
 Slice 10 — Observability
   npm run reporter   # aggregates scrape_runs.json + companies.json + jobs.json → data/runs/YYYY-MM-DD-HH.json + data/runs/latest.json
   npm run review     # reads latest.json + samples failures → calls Gemini → writes data/postmortems/YYYY-MM-DD.md
-  Reporter: per-provider scrape success rates, discovery yield, ATS distribution, enrichment error rate, climate relevance %, MBA score avg
+  Reporter: per-provider scrape success rates, discovery yield, ATS distribution, enrichment error rate, climate relevance %, MBA relevance tier distribution
   Reviewer: LLM-written postmortem; requires GEMINI_API_KEY; outputs markdown with what went well, failures, worst stage, one prompt suggestion
 
 Utility scripts
@@ -80,7 +80,7 @@ Utility scripts
 
 Data model
   companies.json: id, name, domain, funding_signals, company_profile, careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform, ats_slug, dormant, consecutive_empty_scrapes
-  jobs.json: id, company_id, job_title_raw, job_title_normalized, description_raw, source_url, location_raw, employment_type, job_function, seniority_level, location_type, mba_relevance_score, description_summary, climate_relevance_confirmed, climate_relevance_reason, first_seen_at, last_seen_at, removed_at, days_live, enrichment_prompt_version, enrichment_error
+  jobs.json: id, company_id, job_title_raw, job_title_normalized, description_raw, source_url, location_raw, employment_type, job_function, seniority_level, location_type, mba_relevance, description_summary, climate_relevance_confirmed, climate_relevance_reason, first_seen_at, last_seen_at, removed_at, days_live, enrichment_prompt_version, enrichment_error
 
 Notion integration
   Jobs and Companies databases mirror the JSON schema
@@ -118,7 +118,7 @@ Next meaningful work
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
   - Discovery LLM fallback: how often does the no-HTML path fire vs. return NOT_FOUND? (llm_attempted now persisted to companies.json — check after next discovery run)
-  - Enrichment quality at scale: spot-check mba_relevance_score and climate_relevance_confirmed on 20+ jobs once enrichment runs cleanly
+  - Enrichment quality at scale: spot-check mba_relevance and climate_relevance_confirmed on 20+ jobs once enrichment runs cleanly
 
 Postmortem — 2026-04-13
 
@@ -165,7 +165,7 @@ Project todos (session DB):
 7. scraping-cadence-dormancy — Implement scraping cadence (3–5 days) and dormancy logic (consecutive empty scrapes >=6 → dormant).
 8. notion-sync-qa — Notion sync dry-run & QA: run node src/agents/notion-sync.js --dry-run after categorize/enrich and verify property mappings.
 9. analytics-metrics — Add analytics to compute days_live, funding_to_posting_lag, posting longevity buckets, and surface reporter metrics.
-10. user-facing-filters — Design user-facing filters and mock a Notion view for MBA users (function, location, remote, seniority, MBA score).
+10. user-facing-filters — Design user-facing filters and mock a Notion view for MBA users (function, location, remote, seniority, MBA relevance).
 
 Streaming orchestrator (concurrent pipeline)
 
