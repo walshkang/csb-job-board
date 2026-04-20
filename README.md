@@ -497,7 +497,8 @@ last_seen_at        — ISO timestamp of most recent extraction
 ```
 job_title_normalized    — standardized title (abbreviations expanded, level prefixes normalized)
 job_function            — engineering | product | design | operations | sales | marketing |
-                          finance | legal | hr | data_science | strategy | policy | supply_chain | other
+                          finance | legal | hr | data_science | strategy | policy | supply_chain |
+                          customer_success | other
 seniority_level         — intern | entry | mid | senior | staff | director | vp | c_suite
 location_type           — remote | hybrid | on_site | unknown
 mba_relevance           — low | medium | high (see rubric below)
@@ -820,6 +821,6 @@ Never commit `.env.local`. It contains API keys and is gitignored by default.
 | Document | Purpose |
 |---|---|
 | **[README.md](README.md)** (this file) | Pipeline overview, setup, CLI reference, troubleshooting |
-| **[AGENTS.md](AGENTS.md)** | Developer & AI assistant protocol — agent ownership table, data contracts, concurrency/scoping rules, standardized handoff format |
+| **[agents.md](agents.md)** | Developer & AI assistant protocol — agent ownership table, data contracts, concurrency/scoping rules, standardized handoff format |
 
-If you're an AI assistant or developer working in this repo, read [AGENTS.md](AGENTS.md) before making changes. It defines which files each agent owns, the data contracts between stages, and the concurrency rules that prevent collisions in a multi-agent environment.
+If you're an AI assistant or developer working in this repo, read [agents.md](agents.md) before making changes. It defines which files each agent owns, the data contracts between stages, and the concurrency rules that prevent collisions in a multi-agent environment.

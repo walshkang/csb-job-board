@@ -6,7 +6,7 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const JOBS_PATH = path.join(REPO_ROOT, 'data', 'jobs.json');
 const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categories.json');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
-const ENRICHMENT_PROMPT_VERSION = '1.3.1';
+const ENRICHMENT_PROMPT_VERSION = '1.3.2';
 
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
