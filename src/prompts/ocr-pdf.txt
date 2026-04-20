@@ -21,7 +21,8 @@ Known columns and what to extract from each (present in any order, not all may e
 
 Rules:
 - CRITICAL: Copy cell values VERBATIM from the source text. Do NOT generate, translate, paraphrase, or invent any content. If a value is not literally present in the text, use null.
-- Read the actual column headers from the text to determine which column is which — do not assume a fixed order.
+- Column headers typically appear only on the first page. If they are missing on subsequent pages, follow the column layout and order established on the first page.
+- Read the actual column headers from the text to determine which column is which — do not assume a fixed order if headers are present.
 - One JSON object per company row. Do not merge, skip, or invent rows.
 - Ignore the row number column (#).
 - Use null for any cell that is empty, missing, or not applicable.

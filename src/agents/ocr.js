@@ -108,8 +108,16 @@ async function extractPageTexts(pdfPath) {
 
 // Send extracted page text to the configured provider for JSON parsing.
 // Retries up to 4 times with exponential backoff on transient errors.
-async function callTextModelOCR(pageText) {
-  const promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr-pdf.txt'), 'utf8');
+async function callTextModelOCR(pageText, headerHint = null) {
+  let promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr-pdf.txt'), 'utf8');
+
+  if (headerHint && headerHint.length > 0) {
+    promptText = promptText.replace(
+      '--- EXTRACTED PDF TEXT ---',
+      `Note: Column headers typically only appear on the first page. For this chunk, assume the following column order (detected from page 1) if headers are missing:\n${headerHint.join(', ')}\n\n--- EXTRACTED PDF TEXT ---`
+    );
+  }
+
   const fullPrompt = promptText + '\n' + pageText;
 
   const MAX_ATTEMPTS = 5;
@@ -270,13 +278,13 @@ async function preflightPDF(pdfPath) {
     page1Text = stdout;
   } catch {
     console.warn(`  [preflight] pdftotext unavailable — skipping schema check for ${label}`);
-    return;
+    return null;
   }
 
   const detected = detectPDFColumns(page1Text);
   if (!detected) {
     console.warn(`  [preflight] Could not detect column headers in ${label} — verify this is a PitchBook company list`);
-    return;
+    return null;
   }
 
   let allOk = true;
@@ -301,9 +309,11 @@ async function preflightPDF(pdfPath) {
   if (!allOk) {
     throw new Error(`[preflight] ${label}: PDF has columns not in SCHEMA_FIELDS — add them before proceeding.`);
   }
+
+  return detected;
 }
 
-async function processPDF(pdfPath, verbose = false) {
+async function processPDF(pdfPath, verbose = false, headerHint = null) {
   const label = path.basename(pdfPath);
   console.log(`Processing PDF: ${label}`);
   const pages = await extractPageTexts(pdfPath);
@@ -321,7 +331,7 @@ async function processPDF(pdfPath, verbose = false) {
   for (let ci = 0; ci < chunks.length; ci++) {
     const chunkText = chunks[ci].join('\n\n--- PAGE BREAK ---\n\n');
     try {
-      const rows = await callTextModelOCR(chunkText);
+      const rows = await callTextModelOCR(chunkText, headerHint);
       const { warnings } = validatePDFRows(rows, `${label} chunk ${ci + 1}/${chunks.length}`);
       for (const w of warnings) console.warn(w);
       if (verbose && rows.length > 0) {
@@ -718,8 +728,8 @@ async function main() {
     if (pdfs.length === 0) { console.log('No PDFs found in', inputPath); return; }
     console.log(`Found ${pdfs.length} PDF(s)`);
     for (const pdf of pdfs) {
-      await preflightPDF(pdf);
-      const { allRows, failures: pdfFailures } = await processPDF(pdf, verbose);
+      const headerHint = await preflightPDF(pdf);
+      const { allRows, failures: pdfFailures } = await processPDF(pdf, verbose, headerHint);
       failures.push(...pdfFailures);
       extractedCompanies.push(...await rowsToCompanies(allRows, path.basename(pdf), failures));
     }
