@@ -58,6 +58,93 @@ function createRateLimitedPool(concurrency = 3, delayBetweenMs = 1500) {
   };
 }
 
+function normalizeKeyword(value) {
+  if (value == null) return '';
+  return String(value).toLowerCase().trim().replace(/\s+/g, ' ');
+}
+
+function getCategoryName(category) {
+  return category['Tech Category Name'] || category['Tech category name'] || category.name || '';
+}
+
+function getOpportunityArea(category) {
+  return category['Related Opportunity Area'] || category['Related opportunity area'] || null;
+}
+
+function getPrimarySector(category) {
+  return category['Primary Sector'] || category['Primary sector'] || null;
+}
+
+function buildKeywordIndex(taxonomy) {
+  const keywordToCategoryIds = new Map();
+  const categoryById = new Map();
+
+  for (const category of taxonomy) {
+    const categoryId = getCategoryName(category);
+    if (!categoryId) continue;
+
+    categoryById.set(categoryId, category);
+    const keywords = Array.isArray(category.keywords) ? category.keywords : [];
+    for (const keyword of keywords) {
+      const normalized = normalizeKeyword(keyword);
+      if (!normalized) continue;
+      if (!keywordToCategoryIds.has(normalized)) keywordToCategoryIds.set(normalized, new Set());
+      keywordToCategoryIds.get(normalized).add(categoryId);
+    }
+  }
+
+  return { keywordToCategoryIds, categoryById };
+}
+
+const TAXONOMY_AT_LOAD = readJSONSafe(TAX_PATH, []);
+const MODULE_KEYWORD_INDEX = buildKeywordIndex(TAXONOMY_AT_LOAD);
+const TAXONOMY_INDEX_CACHE = new WeakMap();
+
+function getKeywordIndexForTaxonomy(taxonomy) {
+  if (!Array.isArray(taxonomy)) return MODULE_KEYWORD_INDEX;
+  if (taxonomy === TAXONOMY_AT_LOAD) return MODULE_KEYWORD_INDEX;
+  const cached = TAXONOMY_INDEX_CACHE.get(taxonomy);
+  if (cached) return cached;
+  const built = buildKeywordIndex(taxonomy);
+  TAXONOMY_INDEX_CACHE.set(taxonomy, built);
+  return built;
+}
+
+function resolveByRule(companyRecord, keywordIndex = MODULE_KEYWORD_INDEX) {
+  const pitchbookKeywords = companyRecord && companyRecord.company_profile && companyRecord.company_profile.keywords;
+  if (!Array.isArray(pitchbookKeywords) || pitchbookKeywords.length === 0) return null;
+
+  const scores = new Map();
+  for (const keyword of pitchbookKeywords) {
+    const normalized = normalizeKeyword(keyword);
+    if (!normalized) continue;
+    const matchedCategoryIds = keywordIndex.keywordToCategoryIds.get(normalized);
+    if (!matchedCategoryIds) continue;
+    for (const categoryId of matchedCategoryIds) {
+      scores.set(categoryId, (scores.get(categoryId) || 0) + 1);
+    }
+  }
+
+  if (scores.size === 0) return null;
+
+  let topScore = -1;
+  let topCategoryIds = [];
+  for (const [categoryId, score] of scores.entries()) {
+    if (score > topScore) {
+      topScore = score;
+      topCategoryIds = [categoryId];
+    } else if (score === topScore) {
+      topCategoryIds.push(categoryId);
+    }
+  }
+
+  if (topCategoryIds.length !== 1) return null;
+  const categoryId = topCategoryIds[0];
+  const category = keywordIndex.categoryById.get(categoryId);
+  if (!category) return null;
+  return { category, confidence: 'high', resolver: 'rule' };
+}
+
 async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples) {
   const { provider, apiKey, model, dryRun } = opts;
   const companyId = companyRecord.id;
@@ -75,6 +162,24 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
     return;
   }
 
+  const taxonomyList = Array.isArray(taxonomy) ? taxonomy : TAXONOMY_AT_LOAD;
+  const keywordIndex = getKeywordIndexForTaxonomy(taxonomyList);
+  const resolvedByRule = resolveByRule(companyRecord, keywordIndex);
+  if (resolvedByRule) {
+    const { category, confidence, resolver } = resolvedByRule;
+    const ctc = getCategoryName(category);
+    const primary = getPrimarySector(category);
+    const opp = getOpportunityArea(category);
+    companyRecord.climate_tech_category = ctc;
+    companyRecord.primary_sector = primary;
+    companyRecord.opportunity_area = opp;
+    companyRecord.category_confidence = confidence;
+    companyRecord.category_resolver = resolver;
+    delete companyRecord.category_error;
+    console.info(`[categorize] ${companyId} -> ${ctc} (${confidence}) [${resolver}]`);
+    return;
+  }
+
   const samplesText = (!samples || samples.length === 0) ? 'None' : samples.map(s => `- ${s.title}: ${s.summary || ''}`).join('\n');
 
   // Build company signal token set for keyword overlap scoring
@@ -88,8 +193,8 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
   const signalTokens = new Set(signalStr.split(/\W+/).filter(Boolean));
 
   // Score each category by keyword token overlap
-  const scored = taxonomy.map(c => {
-    const name = c['Tech Category Name'] || c['Tech category name'] || c.name || '';
+  const scored = taxonomyList.map(c => {
+    const name = getCategoryName(c);
     const kws = Array.isArray(c.keywords) ? c.keywords : [];
     let score = 0;
     for (const kw of kws) {
@@ -105,12 +210,12 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
   const shortlist = anyMatch ? scored.slice(0, 10) : scored;
 
   const topScores = scored.slice(0, 3).map(s => `${s.score}:${s.name}`).join(', ');
-  console.info(`[categorize] ${companyId} shortlisted ${shortlist.length}/${taxonomy.length} categories (top scores: ${topScores})`);
+  console.info(`[categorize] ${companyId} shortlisted ${shortlist.length}/${taxonomyList.length} categories (top scores: ${topScores})`);
 
   const categoriesList = shortlist.map(({ c }) => {
-    const name = c['Tech Category Name'] || c['Tech category name'] || c.name || '';
-    const area = c['Related Opportunity Area'] || c['Related opportunity area'] || '';
-    const sector = c['Primary Sector'] || c['Primary sector'] || '';
+    const name = getCategoryName(c);
+    const area = getOpportunityArea(c) || '';
+    const sector = getPrimarySector(c) || '';
     const desc = c.short_description || '';
     const kws = Array.isArray(c.keywords) && c.keywords.length ? c.keywords.join(', ') : '';
     return `- Category: ${name}\n  Opportunity Area: ${area}\n  Primary Sector: ${sector}\n  Description: ${desc}${kws ? `\n  Keywords: ${kws}` : ''}`;
@@ -147,6 +252,7 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
     companyRecord.primary_sector = primary;
     companyRecord.opportunity_area = opp;
     companyRecord.category_confidence = conf;
+    companyRecord.category_resolver = 'llm';
     delete companyRecord.category_error;
 
     if (dryRun) {
@@ -258,7 +364,9 @@ async function main() {
 }
 
 module.exports = {
-  categorizeCompany
+  categorizeCompany,
+  buildKeywordIndex,
+  resolveByRule
 };
 
 if (require.main === module) {

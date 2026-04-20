@@ -18,6 +18,7 @@
     "pipeline": "node --max-old-space-size=4096 src/orchestrator.js",
     "benchmark": "node scripts/benchmark.js",
     "benchmark:compare": "node scripts/compare-benchmarks.js",
+    "categorize:compare": "node scripts/compare-categorization-runs.js",
     "optimize": "node scripts/optimize-prompts.js",
     "notion-sync": "node src/agents/notion-sync.js --verbose",
     "notion-sync:dry": "node src/agents/notion-sync.js --dry-run --verbose",
