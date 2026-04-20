@@ -9,7 +9,7 @@
  *   node scripts/optimize-prompts.js [options]
  *
  * Options:
- *   --target=extraction       Which prompt to optimize (extraction|enrichment|categorizer|discovery-html|discovery-nohtml)
+ *   --target=extraction       Which prompt to optimize (extraction|enrichment|categorizer)
  *   --n=10                    Companies per benchmark run (default: 10)
  *   --max-iterations=5        Max optimization iterations (default: 5)
  *   --seed=42                 Fixed seed for consistent company selection
@@ -56,8 +56,6 @@ const PROMPT_FILES = {
   'extraction': 'extraction.txt',
   'enrichment': 'enrichment.txt',
   'categorizer': 'categorizer.txt',
-  'discovery-html': 'discovery-html.txt',
-  'discovery-nohtml': 'discovery-nohtml.txt',
 };
 
 if (!PROMPT_FILES[TARGET]) {

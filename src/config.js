@@ -15,8 +15,6 @@
 //   OCR_MODEL                — default: gemini-2.5-flash-lite  (Gemini provider)
 //   OCR_ANTHROPIC_MODEL      — default: claude-haiku-4-5-20251001 (Anthropic provider)
 //   OCR_PROVIDER             — "gemini" (default) | "anthropic"; auto-detects from available keys
-//   DISCOVERY_MODEL          — default: gemini-2.5-flash
-//   DISCOVERY_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
 //   EXTRACTION_MODEL         — default: gemini-2.5-flash
 //   EXTRACTION_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
 //   ENRICHMENT_MODEL         — default: gemini-2.5-flash
@@ -70,15 +68,6 @@ const cfg = {
     model: process.env.OCR_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
     anthropicModel: process.env.OCR_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
     // keep legacy apiKey alias so existing image OCR path still works
-    get apiKey() { return this.geminiKey; },
-  },
-  discovery: {
-    provider: process.env.DISCOVERY_PROVIDER || LLM_PROVIDER,
-    geminiKey: process.env.GEMINI_API_KEY || null,
-    anthropicKey: process.env.ANTHROPIC_API_KEY || null,
-    model: process.env.DISCOVERY_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
-    anthropicModel: process.env.DISCOVERY_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
-    // legacy alias
     get apiKey() { return this.geminiKey; },
   },
   extraction: {

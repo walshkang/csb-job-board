@@ -6,7 +6,6 @@
   Reads data/companies.json and discovers careers page URLs using:
     1) Standard URL patterns
     2) Sitemap
-    3) LLM fallback (Gemini) if GEMINI_API_KEY present
 
   Writes updates back to data/companies.json every 10 companies (atomic tmp-rename).
 */
@@ -17,7 +16,6 @@ const { URL } = require('url');
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { fetchRenderedHtml, closeBrowser } = require('../utils/browser');
-const { streamLLM, DailyQuotaError } = require('../llm-client');
 const Progress = require('../utils/progress');
 
 const CONCURRENCY = 15;
@@ -26,7 +24,6 @@ const REQUEST_TIMEOUT_MS = 5000; // 5s
 const DOMAIN_MIN_INTERVAL_MS = 200; // 5 requests / second per domain
 const MAX_FETCH_RETRIES = 2;
 const RETRY_BASE_MS = 500;
-const LLM_CONCURRENCY = 3; // cap simultaneous LLM fallback calls
 
 const USER_AGENTS = [
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -110,17 +107,6 @@ async function atomicSaveJson(filePath, data) {
   await fs.promises.mkdir(path.dirname(filePath), { recursive: true });
   await fs.promises.writeFile(tmp, JSON.stringify(data, null, 2), 'utf8');
   await fs.promises.rename(tmp, filePath);
-}
-
-// LLM concurrency semaphore — prevents quota bursts when many companies hit fallback simultaneously
-let _llmRunning = 0;
-const _llmWaiters = [];
-function acquireLlmSlot() {
-  if (_llmRunning < LLM_CONCURRENCY) { _llmRunning++; return Promise.resolve(); }
-  return new Promise(resolve => _llmWaiters.push(resolve));
-}
-function releaseLlmSlot() {
-  if (_llmWaiters.length > 0) { _llmWaiters.shift()(); } else { _llmRunning--; }
 }
 
 // Per-domain queue to enforce rate limit per domain
@@ -287,8 +273,6 @@ async function tryAtsSlugs(company, verbose) {
 }
 
 // Fetch homepage once and scan <a href> tags for career-related links.
-// Returns the homepage HTML as a side-effect in homepageCache so the LLM
-// fallback doesn't have to fetch it again.
 const CAREER_LINK_RE = /\b(career|careers|job|jobs|join|join-?us|openings|positions|hiring|work-with-us|work_with_us)\b/i;
 
 async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright = false) {
@@ -337,7 +321,7 @@ async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright =
     verboseLog(verbose, `Static scan empty for ${domain}, trying Playwright...`);
     const rendered = await fetchRenderedHtml(`https://${domain}/`);
     if (rendered) {
-      homepageCache.html = rendered; // update so LLM fallback gets rendered HTML too
+      homepageCache.html = rendered;
       const result = await tryCandidates(extractCandidates(rendered), 'playwright_scan');
       if (result) return result;
     }
@@ -346,29 +330,12 @@ async function scanHomepageLinks(domain, homepageCache, verbose, usePlaywright =
   return null;
 }
 
-async function callGeminiLLM(prompt, domain, silent = false) {
-  if (!config.discovery.geminiKey && !config.discovery.anthropicKey) throw new Error('No LLM API key configured');
-  if (!silent) process.stderr.write('\n[discovery: ' + (domain || 'unknown') + ']\n');
-  const opts = config.resolveAgent('discovery');
-  return streamLLM({ ...opts, prompt, maxOutputTokens: 256, _agent: 'discovery', onToken: silent ? null : chunk => process.stderr.write(chunk) });
-}
-
 function normalizeDomain(domainRaw) {
   if (!domainRaw) return null;
   return domainRaw.replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
 }
 
 function classifyFailureReason(steps) {
-  for (let i = steps.length - 1; i >= 0; i--) {
-    const s = steps[i];
-    if (s === 'llm:no_key') return 'no_careers_page';
-    if (s.startsWith('llm:truncated')) return 'llm_truncated';
-    if (s.startsWith('llm:homepage')) return 'llm_homepage';
-    if (s.startsWith('llm:validation_failed')) return 'llm_validation_failed';
-    if (s === 'llm:not_found') return 'llm_not_found';
-    if (s === 'llm:empty') return 'llm_not_found';
-    if (s.startsWith('llm:error')) return 'llm_error';
-  }
   // Check if early steps suggest network-level failures
   const hasTimeout = steps.some(s => s.includes('timeout'));
   if (hasTimeout) return 'timeout';
@@ -406,8 +373,6 @@ async function processCompany(company, opts) {
         company.ats_platform = null;
         company.careers_page_failure_reason = classifyFailureReason(steps);
       }
-      if (result.llm_attempted) company.llm_attempted = true;
-      if (result.llm_error) company.llm_error = true;
     }
     return { ...result, steps, duration_ms: Date.now() - t0 };
   };
@@ -475,100 +440,7 @@ async function processCompany(company, opts) {
     steps.push('sitemap:error');
   }
 
-  // 5) LLM fallback — attempt even if homepage HTML is not available (use company name/domain)
-  if (!config.discovery.apiKey) {
-    steps.push('llm:no_key');
-    return done({ found: false, method: 'not_found' });
-  }
-  try {
-    const homepageHtmlAvailable = !!homepageCache.html;
-
-    // Build prompt: prefer homepage HTML when available, otherwise use company name/domain and derived slugs
-    let prompt;
-    if (homepageHtmlAvailable) {
-      const homepageHtml = (homepageCache.html || '').slice(0, 10000);
-      const tmpl = fs.readFileSync(path.join(__dirname, '../prompts/discovery-html.txt'), 'utf8');
-      prompt = tmpl
-        .replace('{company_name}', company.name || domain)
-        .replace('{homepage_html}', homepageHtml);
-    } else {
-      const slugs = deriveAtsSlugs(company).join(', ');
-      const triedPaths = STANDARD_PATHS.join(', ');
-      const tmpl = fs.readFileSync(path.join(__dirname, '../prompts/discovery-nohtml.txt'), 'utf8');
-      prompt = tmpl
-        .replace('{company_name}', company.name || '')
-        .replace('{domain}', domain)
-        .replace('{slugs}', slugs)
-        .replace('{tried_paths}', triedPaths);
-    }
-
-    // Call LLM and mark that it was attempted so callers can record metrics.
-    await acquireLlmSlot();
-    let completion;
-    try {
-      completion = await callGeminiLLM(prompt, domain, verbose); // silent when verbose — output shown in summary
-    } finally {
-      releaseLlmSlot();
-    }
-
-    if (!completion) {
-      steps.push('llm:empty');
-      return done({ found: false, method: 'not_found', llm_attempted: true });
-    }
-
-    // Log raw completion for debug tracing
-    opts._llmRaw = completion.trim().slice(0, 200);
-
-    let answer = completion.trim().split('\n')[0].trim().replace(/^['"]?(.*?)['"]?$/, '$1');
-
-    if (!answer || /^NOT[_ -]?FOUND$/i.test(answer)) {
-      steps.push('llm:not_found');
-      return done({ found: false, method: 'not_found', llm_attempted: true });
-    }
-
-    if (answer.startsWith('/')) answer = `https://${domain}${answer}`;
-    if (!/^https?:\/\//i.test(answer)) answer = `https://${answer}`;
-
-    // Reject truncated URLs
-    let parsedAnswer;
-    try {
-      parsedAnswer = new URL(answer);
-    } catch (_) {
-      steps.push(`llm:truncated:${answer.slice(0, 60)}`);
-      return done({ found: false, method: 'not_found', llm_attempted: true });
-    }
-
-    // Reject if LLM returned just the homepage (path is / or empty)
-    const answerPath = parsedAnswer.pathname.replace(/\/+$/, '');
-    if (!answerPath) {
-      steps.push(`llm:homepage:${answer.slice(0, 60)}`);
-      return done({ found: false, method: 'not_found', llm_attempted: true });
-    }
-
-    // Reject if hostname looks truncated (e.g. "www.alchemyco2.")
-    if (/\.$/.test(parsedAnswer.hostname)) {
-      steps.push(`llm:truncated:${answer.slice(0, 60)}`);
-      return done({ found: false, method: 'not_found', llm_attempted: true });
-    }
-
-    try {
-      const res = await tryHeadThenGet(answer, parsedAnswer.hostname);
-      if (res && res.status === 200) {
-        steps.push(`llm:hit:${answerPath}`);
-        return done({ found: true, url: res.url || answer, method: 'llm_fallback', llm_attempted: true });
-      }
-      steps.push(`llm:validation_failed:${res ? res.status : 'no-res'}:${answer.slice(0, 60)}`);
-    } catch (err) {
-      steps.push(`llm:validation_failed:fetch_error:${answer.slice(0, 60)}`);
-    }
-
-    return done({ found: false, method: 'not_found', llm_attempted: true });
-  } catch (err) {
-    if (err.name === 'DailyQuotaError') throw err; // let it abort the run
-    steps.push(`llm:error:${err.message.slice(0, 60)}`);
-    warn(`LLM fallback failed for ${company.name || domain}:`, err.message);
-    return done({ found: false, method: 'not_found', llm_attempted: true, llm_error: true });
-  }
+  return done({ found: false, method: 'not_found' });
 }
 
 async function main() {
@@ -652,10 +524,8 @@ async function main() {
   let totalProcessed = 0;
   let foundCount = 0;
   let notFoundCount = 0;
-  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, playwright_scan: 0, llm_fallback: 0, llm_fallback_attempted: 0, not_found: 0 };
+  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, playwright_scan: 0, not_found: 0 };
   const errorDomains = new Set();
-  let dailyQuotaHit = false;
-  let llmErrorCount = 0;
 
   let writeQueue = Promise.resolve();
   function scheduleSave() {
@@ -684,13 +554,6 @@ async function main() {
           methodCounts[company.careers_page_discovery_method] = (methodCounts[company.careers_page_discovery_method] || 0) + 1;
         }
 
-        if (result && result.llm_attempted) {
-          methodCounts.llm_fallback_attempted = (methodCounts.llm_fallback_attempted || 0) + 1;
-        }
-        if (result && result.llm_error) {
-          llmErrorCount++;
-        }
-
         // Write debug entry
         if (debug && !result.skipped) {
           appendDebugEntry({
@@ -703,7 +566,6 @@ async function main() {
             failure_reason: company.careers_page_failure_reason || null,
             steps: result.steps || [],
             duration_ms: result.duration_ms || 0,
-            llm_raw: companyOpts._llmRaw || null,
           });
         }
 
@@ -720,20 +582,10 @@ async function main() {
           if (result.steps && result.steps.length) {
             process.stdout.write(`             steps: ${result.steps.join(' → ')}\n`);
           }
-          if (companyOpts._llmRaw) {
-            process.stdout.write(`             llm: ${companyOpts._llmRaw.slice(0, 80)}\n`);
-          }
         } else if (!verbose) {
           try { progress.tick(totalProcessed, company.name || company.domain || ''); } catch(_) {}
         }
       } catch (err) {
-        if (err.name === 'DailyQuotaError') {
-          warn('Daily quota exhausted — saving progress and stopping.');
-          warn(err.message);
-          dailyQuotaHit = true;
-          indices.length = 0; // drain queue so all workers exit
-          break;
-        }
         warn('Error processing company', company.domain || company.name, err.message);
         errorDomains.add(company.domain || company.name || 'unknown');
         // count this as processed and update progress
@@ -766,11 +618,6 @@ async function main() {
   log('  not_found:', notFoundCount);
   log('  method distribution:', methodCounts);
   if (errorDomains.size) log('  domains with errors:', Array.from(errorDomains).slice(0, 50));
-  if (llmErrorCount > 0) warn(`  LLM fallback errors: ${llmErrorCount} — check GEMINI_API_KEY and quota`);
-  if (dailyQuotaHit) {
-    log('  Stopped early: Gemini daily quota exhausted. Re-run tomorrow or enable billing.');
-    process.exit(1);
-  }
   await closeBrowser();
   process.exit(0);
 }

@@ -1,4 +1,0 @@
-Given this homepage HTML for {company_name}, what is the careers page URL? Return just the URL or the string NOT_FOUND.
-
-HTML:
-{homepage_html}
