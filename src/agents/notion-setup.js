@@ -51,7 +51,7 @@ const JOBS_PROPERTIES = [
   { name: 'Job Function',             type: 'select' },
   { name: 'Seniority Level',          type: 'select' },
   { name: 'Location Type',            type: 'select' },
-  { name: 'MBA Relevance Score',      type: 'number' },
+  { name: 'MBA Relevance',            type: 'select', options: ['low', 'medium', 'high'] },
   { name: 'Description Summary',      type: 'rich_text' },
   { name: 'Climate Relevance Confirmed', type: 'checkbox' },
   { name: 'Climate Relevance Reason', type: 'rich_text' },
@@ -64,7 +64,7 @@ function buildPropertySchema(prop) {
     case 'rich_text': return { rich_text: {} };
     case 'url':       return { url: {} };
     case 'number':    return { number: { format: 'number' } };
-    case 'select':    return { select: {} };
+    case 'select':    return { select: Array.isArray(prop.options) && prop.options.length > 0 ? { options: prop.options.map(name => ({ name })) } : {} };
     case 'checkbox':  return { checkbox: {} };
     case 'date':      return { date: {} };
     case 'relation':  return { relation: { database_id: prop.database_id, single_property: {} } };

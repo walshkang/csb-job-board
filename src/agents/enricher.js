@@ -6,7 +6,7 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const JOBS_PATH = path.join(REPO_ROOT, 'data', 'jobs.json');
 const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categories.json');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
-const ENRICHMENT_PROMPT_VERSION = '1.1.0';
+const ENRICHMENT_PROMPT_VERSION = '1.2.0';
 
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
@@ -16,6 +16,7 @@ const Progress = require('../utils/progress');
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','other']);
 const SENIORITY = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite']);
 const LOCATION_TYPES = new Set(['remote','hybrid','on_site','unknown']);
+const MBA_RELEVANCE = new Set(['low', 'medium', 'high']);
 
 function readJSONSafe(p, fallback) {
   try {
@@ -94,15 +95,9 @@ function sanitize(parsed) {
   out.location_type = parsed.location_type ? String(parsed.location_type).toLowerCase().trim() : 'unknown';
   if (!LOCATION_TYPES.has(out.location_type)) out.location_type = 'unknown';
 
-  let score = null;
-  if (typeof parsed.mba_relevance_score === 'number') score = Math.round(parsed.mba_relevance_score);
-  else if (typeof parsed.mba_relevance_score === 'string') {
-    const n = parseInt(parsed.mba_relevance_score.replace(/[^0-9]/g, ''), 10);
-    if (!Number.isNaN(n)) score = n;
-  }
-  if (score == null) score = 0;
-  score = Math.max(0, Math.min(100, score));
-  out.mba_relevance_score = score;
+  let mbaRelevance = parsed.mba_relevance ? String(parsed.mba_relevance).toLowerCase().trim() : null;
+  if (!MBA_RELEVANCE.has(mbaRelevance)) mbaRelevance = 'low';
+  out.mba_relevance = mbaRelevance;
 
   out.description_summary = parsed.description_summary ? String(parsed.description_summary).trim() : null;
 
@@ -120,7 +115,7 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
     job.job_function = job.job_function || 'other';
     job.seniority_level = job.seniority_level || null;
     job.location_type = job.location_type || 'unknown';
-    job.mba_relevance_score = typeof job.mba_relevance_score === 'number' ? job.mba_relevance_score : 0;
+    job.mba_relevance = MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low';
     job.description_summary = null;
     job.climate_relevance_confirmed = false;
     job.climate_relevance_reason = null;
@@ -150,7 +145,7 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
   job.job_function = sanitized.job_function || job.job_function || 'other';
   job.seniority_level = sanitized.seniority_level || job.seniority_level || null;
   job.location_type = sanitized.location_type || job.location_type || 'unknown';
-  job.mba_relevance_score = typeof sanitized.mba_relevance_score === 'number' ? sanitized.mba_relevance_score : (job.mba_relevance_score || 0);
+  job.mba_relevance = MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
   job.description_summary = sanitized.description_summary || job.description_summary || null;
   job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
   job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
@@ -249,7 +244,7 @@ async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {
       job.job_function = sanitized.job_function || job.job_function || 'other';
       job.seniority_level = sanitized.seniority_level || job.seniority_level || null;
       job.location_type = sanitized.location_type || job.location_type || 'unknown';
-      job.mba_relevance_score = typeof sanitized.mba_relevance_score === 'number' ? sanitized.mba_relevance_score : (job.mba_relevance_score || 0);
+      job.mba_relevance = MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
       job.description_summary = sanitized.description_summary || job.description_summary || null;
       job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
       job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
@@ -339,7 +334,7 @@ async function main() {
     for (const job of jobs) {
       const prevVersion = job.enrichment_prompt_version || null;
       const descHash = sha256(job.description_raw || '');
-      const requiredFields = ['job_title_normalized','job_function','seniority_level','location_type','mba_relevance_score','description_summary','climate_relevance_confirmed'];
+      const requiredFields = ['job_title_normalized','job_function','seniority_level','location_type','mba_relevance','description_summary','climate_relevance_confirmed'];
       const missing = requiredFields.some(f => job[f] == null);
       const changed = job.description_raw_hash !== descHash;
       if (force || prevVersion !== ENRICHMENT_PROMPT_VERSION || changed || missing) toEnrich.push(job);
@@ -356,7 +351,7 @@ async function main() {
 
   const batches = chunkArray(toEnrich, BATCH_SIZE);
   let enrichedCount = 0; let errorCountLocal = 0;
-  const scoreBuckets = [0,0,0,0,0]; // 0-19,20-39,40-59,60-79,80-100
+  const mbaBuckets = { low: 0, medium: 0, high: 0, unknown: 0 };
   let climateTrue = 0, climateFalse = 0;
 
   for (let i = 0; i < batches.length; i++) {
@@ -374,7 +369,7 @@ async function main() {
           if (verbose) {
             for (const job of batch) {
               if (!job.enrichment_error) {
-                console.log(`  [${job.company_name || job.company_id}] "${job.job_title_normalized || job.job_title_raw}" | fn=${job.job_function} seniority=${job.seniority_level} mba=${job.mba_relevance_score} climate=${job.climate_relevance_confirmed}`);
+                console.log(`  [${job.company_name || job.company_id}] "${job.job_title_normalized || job.job_title_raw}" | fn=${job.job_function} seniority=${job.seniority_level} mba=${job.mba_relevance} climate=${job.climate_relevance_confirmed}`);
               }
             }
           }
@@ -382,9 +377,8 @@ async function main() {
           for (const job of batch) {
             if (!job.enrichment_error) {
               enrichedCount += 1;
-              const s = job.mba_relevance_score || 0;
-              const idx = Math.min(4, Math.floor(s / 20));
-              scoreBuckets[idx] += 1;
+              const mba = MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'unknown';
+              mbaBuckets[mba] += 1;
               if (job.climate_relevance_confirmed) climateTrue += 1; else climateFalse += 1;
             } else {
               errorCountLocal += 1;
@@ -408,11 +402,10 @@ async function main() {
         const enrichOptions = { stream: useStream, label: job.id || job.job_title_raw || '' };
         try {
           await enrichJob(job, categories, promptTemplate, enrichOptions);
-          if (verbose) console.log(`  [${job.company_name || job.company_id}] "${job.job_title_normalized || job.job_title_raw}" | fn=${job.job_function} seniority=${job.seniority_level} mba=${job.mba_relevance_score} climate=${job.climate_relevance_confirmed}`);
+          if (verbose) console.log(`  [${job.company_name || job.company_id}] "${job.job_title_normalized || job.job_title_raw}" | fn=${job.job_function} seniority=${job.seniority_level} mba=${job.mba_relevance} climate=${job.climate_relevance_confirmed}`);
           enrichedCount += 1;
-          const s = job.mba_relevance_score || 0;
-          const idx = Math.min(4, Math.floor(s / 20));
-          scoreBuckets[idx] += 1;
+          const mba = MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'unknown';
+          mbaBuckets[mba] += 1;
           if (job.climate_relevance_confirmed) climateTrue += 1; else climateFalse += 1;
         } catch (err) {
           job.enrichment_error = String(err.message || err);
@@ -442,7 +435,7 @@ async function main() {
   console.log('\nEnrichment complete');
   console.log('Total enriched:', enrichedCount);
   console.log('Jobs with enrichment_error:', errorCount);
-  console.log('MBA relevance buckets (0-19,20-39,40-59,60-79,80-100):', scoreBuckets.join(', '));
+  console.log('MBA relevance buckets (low,medium,high,unknown):', `${mbaBuckets.low}, ${mbaBuckets.medium}, ${mbaBuckets.high}, ${mbaBuckets.unknown}`);
   const totalClimate = climateTrue + climateFalse || 1;
   console.log('Climate relevance true/false:', climateTrue, '/', climateFalse, `( ${Math.round((climateTrue/totalClimate)*100)}% true )`);
   // finalize run log

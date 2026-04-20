@@ -19,13 +19,11 @@ function pct(num, denom) {
   return denom === 0 ? 0 : Math.round((num / denom) * 10000) / 100;
 }
 
-function bucketize(score) {
-  if (typeof score !== 'number') return 'unknown';
-  if (score < 20) return '0-19';
-  if (score < 40) return '20-39';
-  if (score < 60) return '40-59';
-  if (score < 80) return '60-79';
-  return '80-100';
+function bucketize(tier) {
+  if (typeof tier !== 'string') return 'unknown';
+  const normalized = tier.toLowerCase();
+  if (normalized === 'low' || normalized === 'medium' || normalized === 'high') return normalized;
+  return 'unknown';
 }
 
 function sample(array, n) {
@@ -61,15 +59,15 @@ if (reachableNoJobs.length > 0) {
 // Jobs checks
 const totalJobs = jobs.length;
 const jobsWithEnrichmentError = jobs.filter(j => j && j.enrichment_error).length;
-const requiredFields = ['job_title_normalized', 'job_function', 'seniority_level', 'mba_relevance_score', 'climate_relevance_confirmed'];
+const requiredFields = ['job_title_normalized', 'job_function', 'seniority_level', 'mba_relevance', 'climate_relevance_confirmed'];
 const jobsMissingRequired = jobs.filter(j => {
   if (!j) return true;
   return requiredFields.some(f => j[f] === undefined || j[f] === null);
 }).length;
 
 // MBA distribution
-const buckets = { '0-19':0,'20-39':0,'40-59':0,'60-79':0,'80-100':0,'unknown':0 };
-jobs.forEach(j => { const b = bucketize(j && j.mba_relevance_score); buckets[b] = (buckets[b]||0)+1; });
+const buckets = { low: 0, medium: 0, high: 0, unknown: 0 };
+jobs.forEach(j => { const b = bucketize(j && j.mba_relevance); buckets[b] = (buckets[b]||0)+1; });
 
 const climateTrue = jobs.filter(j => j && j.climate_relevance_confirmed === true).length;
 const climateFalse = jobs.filter(j => j && j.climate_relevance_confirmed === false).length;
@@ -89,7 +87,7 @@ const sampleJobs = sample(jobs, Math.min(5, jobs.length));
 console.log('\nSample jobs:');
 sampleJobs.forEach(j => {
   const company = companies.find(c => c.id === j.company_id) || {};
-  console.log(` - ${company.name || j.company_id} | ${j.job_title_normalized || j.job_title_raw || ''} | MBA: ${j.mba_relevance_score} | Climate: ${j.climate_relevance_confirmed} | Seniority: ${j.seniority_level}`);
+  console.log(` - ${company.name || j.company_id} | ${j.job_title_normalized || j.job_title_raw || ''} | MBA: ${j.mba_relevance} | Climate: ${j.climate_relevance_confirmed} | Seniority: ${j.seniority_level}`);
 });
 
 // Anomaly flags

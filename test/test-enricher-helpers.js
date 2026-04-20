@@ -28,7 +28,7 @@ const parsed = {
   job_function: 'Engineering',
   seniority_level: 'Manager',
   location_type: 'REMOTE',
-  mba_relevance_score: '85',
+  mba_relevance: 'HIGH',
   description_summary: 'summary',
   climate_relevance_confirmed: 'true',
   climate_relevance_reason: 'matches category'
@@ -37,7 +37,7 @@ const s = enricher.sanitize(parsed);
 assert.strictEqual(s.job_function, 'engineering');
 assert.strictEqual(s.seniority_level, null);
 assert.strictEqual(s.location_type, 'remote');
-assert.strictEqual(s.mba_relevance_score, 85);
+assert.strictEqual(s.mba_relevance, 'high');
 assert.strictEqual(s.description_summary, 'summary');
 assert.strictEqual(s.climate_relevance_confirmed, true);
 assert.strictEqual(s.climate_relevance_reason, 'matches category');

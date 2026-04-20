@@ -139,11 +139,15 @@ async function main() {
 
   // --- Enrichment aggregates ---
   const climate_confirmed = (Array.isArray(jobs) ? jobs.filter(j => j && j.climate_relevance_confirmed) : []).length;
-  const mbaScores = (Array.isArray(jobs) ? jobs.map(j => (j && typeof j.mba_relevance_score === 'number' ? j.mba_relevance_score : null)).filter(n => n !== null) : []);
-  const mba_relevance_avg = mbaScores.length === 0 ? 0 : round1(mbaScores.reduce((a,b) => a + b, 0) / mbaScores.length);
+  const mba_relevance_distribution = { low: 0, medium: 0, high: 0, unknown: 0 };
+  for (const j of Array.isArray(jobs) ? jobs : []) {
+    const tier = j && typeof j.mba_relevance === 'string' ? j.mba_relevance.toLowerCase() : 'unknown';
+    if (tier === 'low' || tier === 'medium' || tier === 'high') mba_relevance_distribution[tier] += 1;
+    else mba_relevance_distribution.unknown += 1;
+  }
   const enrichment = {
     climate_confirmed_pct: total_jobs === 0 ? 0 : round1((climate_confirmed / total_jobs) * 100),
-    mba_relevance_avg,
+    mba_relevance_distribution,
     by_job_function: {},
     by_seniority: {},
   };
