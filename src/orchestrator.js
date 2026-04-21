@@ -36,6 +36,7 @@ const {
   clearSnapshot,
   writeLastRunSummary,
   classifyFailure,
+  classifyLlmMessage,
 } = require('./utils/pipeline-events');
 
 const argv = process.argv.slice(2);
@@ -59,12 +60,12 @@ const VERBOSE = flag('verbose');
 
 const CONCURRENCIES = {
   profile: 6,
-  discovery: 8,
+  discovery: 12,
   fingerprint: 4,
   scrape: 5,
   extract: 4,
-  enrich: 3,
-  categorize: 3,
+  enrich: 6,
+  categorize: 10,
 };
 
 function readJSON(p, fallback) {
@@ -289,10 +290,12 @@ async function runStage(stage, c) {
   if (stage === 'categorize') {
     if (!categorizerAgent) throw new Error('categorizer LLM config unavailable');
     let rep = repJobByCompany.get(c.id);
+    const profileDesc = ((c.company_profile && c.company_profile.description) || '').trim();
+    if (!rep && profileDesc.length < 80) {
+      return { outcome: 'skipped', extra: { reason: 'insufficient_signal', description_len: profileDesc.length } };
+    }
     if (!rep) {
-      const cp = c.company_profile || {};
-      const desc = (cp.description && String(cp.description).trim()) || c.name || '';
-      rep = { job_title_normalized: '', job_function: '', description_summary: desc, climate_relevance_reason: '' };
+      rep = { job_title_normalized: '', job_function: '', description_summary: profileDesc || c.name || '', climate_relevance_reason: '' };
     }
     const { provider, apiKey, model } = categorizerAgent;
     await categorizeCompany(c, rep, taxonomy, { provider, apiKey, model, dryRun: DRY_RUN }, []);
@@ -301,10 +304,13 @@ async function runStage(stage, c) {
         category: c.climate_tech_category, confidence: c.category_confidence, resolver: c.category_resolver || 'llm',
       }};
     }
+    const failureClass = c.category_error ? classifyLlmMessage(c.category_error) : null;
     return { outcome: 'no_result', extra: {
       category: c.climate_tech_category || null,
       category_error: c.category_error || null,
       resolver: c.category_resolver || null,
+      failure_class: failureClass || null,
+      error_origin: failureClass ? 'provider' : null,
     }};
   }
 

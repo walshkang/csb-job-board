@@ -174,7 +174,11 @@ Streaming orchestrator (concurrent pipeline)
 
 The linear per-stage CLIs above each iterate all 551 companies before the next CLI starts; one slow company blocks the rest. The orchestrator at src/orchestrator.js (npm run pipeline) instead runs all five stages (discovery → fingerprint → scrape → extract → categorize) concurrently with per-stage p-queue caps, so each company flows through independently and head-of-line blocking is gone. Enrichment stays separate (per-job, not per-company) for now.
 
-Per-stage concurrency caps: discovery=8, fingerprint=4, scrape=5, extract=4, categorize=3. (Reduced from 15/5/8 on 2026-04-17 to prevent OOM.) The individual `npm run <stage>` scripts still work unchanged; the orchestrator just composes them.
+Per-stage concurrency caps: profile=6, discovery=12, fingerprint=4, scrape=5, extract=4, enrich=6, categorize=10. (Bumped from discovery=8/enrich=3/categorize=3 on 2026-04-20 after observing LLM-stage backpressure — categorize had 229 queued mid-run. Earlier reduction from 15/5/8 on 2026-04-17 was to prevent OOM; LLM stages are not memory-bound and can scale higher.) The individual `npm run <stage>` scripts still work unchanged; the orchestrator just composes them.
+
+Categorize gate (2026-04-20): companies reaching the categorize stage with no rep job AND a company_profile.description shorter than 80 chars are skipped (`outcome: 'skipped', extra.reason: 'insufficient_signal'`) rather than burning an LLM call that returns "None". Drops no_result rate and token spend on hopeless inputs.
+
+Provider vs pipeline failure separation (2026-04-20): src/utils/pipeline-events.js::classifyLlmMessage pattern-matches LLM provider error strings (Gemini/Anthropic/Claude) and returns one of llm_provider_billing | llm_provider_auth | llm_rate_limit. Categorize no_result events now carry failure_class + error_origin: 'provider' when the cause is a provider response. The admin stage-detail panel stacks new banners (rose for billing/quota, sky for rate limits, orange for auth) on AI-driven stages so provider outages are visible instantly and not mistaken for pipeline bugs. pipeline-report.js aggregates no_result reasons as category_error:{failure_class} so provider issues show up by class in the dashboards.
 
 Stage state is derived, not stamped as a new field, so agents and orchestrator stay coherent. src/utils/pipeline-stages.js::getStage inspects the company record (careers_page_discovery_method, careers_page_reachable, ats_platform, fingerprint_attempted_at, last_scraped_at, last_extracted_at, climate_tech_category) and returns which stage should run next. Companies with careers_page_reachable === false skip straight to categorize. Crash-resume is automatic — startup calls getStage for every company and enqueues it into the matching queue.
 
@@ -192,6 +196,15 @@ Observability surfaces:
   data/runs/orchestrator-snapshot.json — live queue depths, in-flight counts, throughput-per-min
 
 Planned improvements (tracked here, not yet implemented)
+
+Orchestrator resilience (2026-04-20) — see docs/pipeline-improvements-slices.md
+  Sliced prompts for red/green TDD execution. Dependency graph:
+    Slice 1 (telemetry bug fixes: progress-bar math, skipped_signature_match unification) — parallelizable
+    Slice 2 (failure-class vocabulary + retry with exponential backoff for transient classes) — foundation
+    Slice 3 (per-stage circuit breaker with manual reset, admin UI banner) — after Slice 2
+    Slice 4 (batch categorize: 5–10 companies per LLM call, partial-failure fallback) — after Slice 2, parallel with Slice 3
+    Slice 5 (adaptive concurrency: auto-tune within [min,max] based on p95 + error rate) — after 2 + 3
+  All sized for Sonnet. Wave A = {1, 2} parallel; Wave B = {3, 4} parallel; Wave C = 5.
 
 Company description source & timing (NEW)
   - Objective: Move company description generation from job-level extraction to company-level categorization.

@@ -288,23 +288,71 @@
 
       function renderStageAlerts(detail) {
         const events = detail.events || [];
+        const alerts = [];
         const cfgPromptFailures = events.filter((event) => {
           const err = String(event.error || '').toLowerCase();
           return err.includes('config or prompt unavailable') || err.includes('unknown agent config block');
         });
-        if (!cfgPromptFailures.length) {
-          stageAlertsEl.innerHTML = '';
-          return;
-        }
-        stageAlertsEl.innerHTML = `
-          <div class="border border-amber-400/40 bg-amber-500/10 text-amber-200 rounded p-2 text-xs">
-            <div class="font-semibold mb-1">Regression Alert: config/prompt unavailable</div>
-            <div>
-              ${cfgPromptFailures.length} recent event(s) indicate ${detail.stage} is failing before model execution.
-              Check agent config key mapping and prompt file path.
+        if (cfgPromptFailures.length) {
+          alerts.push(`
+            <div class="border border-amber-400/40 bg-amber-500/10 text-amber-200 rounded p-2 text-xs">
+              <div class="font-semibold mb-1">Regression Alert: config/prompt unavailable</div>
+              <div>
+                ${cfgPromptFailures.length} recent event(s) indicate ${detail.stage} is failing before model execution.
+                Check agent config key mapping and prompt file path.
+              </div>
             </div>
-          </div>
-        `;
+          `);
+        }
+
+        const providerIssues = {
+          llm_provider_billing: 0,
+          llm_rate_limit: 0,
+          llm_provider_auth: 0,
+        };
+        for (const event of events) {
+          const fc = String(event.failure_class || '');
+          if (providerIssues[fc] != null) providerIssues[fc]++;
+        }
+
+        if (detail.metadata && detail.metadata.driver === 'ai' && providerIssues.llm_provider_billing > 0) {
+          alerts.push(`
+            <div class="border border-rose-400/40 bg-rose-500/10 text-rose-200 rounded p-2 text-xs">
+              <div class="font-semibold mb-1">Provider billing/quota signal</div>
+              <div>
+                ${providerIssues.llm_provider_billing} recent event(s) returned a billing/quota response from the model provider API.
+                This indicates the API key configured for this run has depleted credits or billing limits, not a pipeline logic error.
+                For Gemini, check project credits in <a class="underline" href="https://ai.studio/projects" target="_blank" rel="noreferrer">AI Studio</a>.
+              </div>
+            </div>
+          `);
+        }
+
+        if (detail.metadata && detail.metadata.driver === 'ai' && providerIssues.llm_rate_limit > 0) {
+          alerts.push(`
+            <div class="border border-sky-400/40 bg-sky-500/10 text-sky-200 rounded p-2 text-xs">
+              <div class="font-semibold mb-1">Provider rate limiting</div>
+              <div>
+                ${providerIssues.llm_rate_limit} recent event(s) were rate-limited by the model provider API.
+                This is provider throughput/quota pressure for the configured key rather than an internal stage crash.
+              </div>
+            </div>
+          `);
+        }
+
+        if (detail.metadata && detail.metadata.driver === 'ai' && providerIssues.llm_provider_auth > 0) {
+          alerts.push(`
+            <div class="border border-orange-400/40 bg-orange-500/10 text-orange-200 rounded p-2 text-xs">
+              <div class="font-semibold mb-1">Provider authentication/permissions issue</div>
+              <div>
+                ${providerIssues.llm_provider_auth} recent event(s) indicate the model provider rejected the configured API key or permissions.
+                Verify the key value and project access for this run environment.
+              </div>
+            </div>
+          `);
+        }
+
+        stageAlertsEl.innerHTML = alerts.join('');
       }
 
       async function refreshStageDetail() {

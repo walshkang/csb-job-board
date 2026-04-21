@@ -684,7 +684,11 @@ npm run pipeline -- --company=Acme,Bar
 npm run pipeline -- --dry-run --verbose
 ```
 
-Stages carry independent concurrency caps (discovery=15, fingerprint=5, scrape=8, extract=4, categorize=3) via `p-queue`. Crash-resume is automatic: on startup the orchestrator reads state from `companies.json` + `jobs.json` + artifacts and routes each company to its current stage.
+Stages carry independent concurrency caps (profile=6, discovery=12, fingerprint=4, scrape=5, extract=4, enrich=6, categorize=10) via `p-queue`. Crash-resume is automatic: on startup the orchestrator reads state from `companies.json` + `jobs.json` + artifacts and routes each company to its current stage.
+
+**Categorize gate.** Companies with no representative job AND a company profile description shorter than 80 chars are skipped at the categorize stage (`outcome: 'skipped', reason: 'insufficient_signal'`) rather than burning an LLM call that would return `"None"`.
+
+**Provider vs pipeline failure separation.** LLM provider errors (Gemini/Anthropic billing, auth, rate limit) are classified via `classifyLlmMessage` in `src/utils/pipeline-events.js` and stamped onto `no_result` events as `failure_class` + `error_origin: 'provider'`. The admin run panel surfaces these as distinct banners (billing/quota, rate limit, auth) on AI-driven stages so a depleted API key or rate-limit storm is instantly visible and not mistaken for a pipeline bug.
 
 Each stage has three outcomes: **success** (data actually advanced), **no_result** (ran cleanly but produced nothing — e.g., careers page not found, LLM returned "None"), **failure** (exception). Only success advances the company; no_result stays on the stage for next run to retry.
 
@@ -849,5 +853,6 @@ Never commit `.env.local`. It contains API keys and is gitignored by default.
 |---|---|
 | **[README.md](README.md)** (this file) | Pipeline overview, setup, CLI reference, troubleshooting |
 | **[agents.md](agents.md)** | Developer & AI assistant protocol — agent ownership table, data contracts, concurrency/scoping rules, standardized handoff format |
+| **[docs/pipeline-improvements-slices.md](docs/pipeline-improvements-slices.md)** | Planned resilience work: failure classification + retry, per-stage circuit breaker, batch categorize, adaptive concurrency. Sliced for parallel execution, red/green TDD. |
 
 If you're an AI assistant or developer working in this repo, read [agents.md](agents.md) before making changes. It defines which files each agent owns, the data contracts between stages, and the concurrency rules that prevent collisions in a multi-agent environment.

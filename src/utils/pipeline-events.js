@@ -28,6 +28,46 @@ function retentionCleanup() {
   }
 }
 
+function classifyLlmMessage(message) {
+  if (!message) return null;
+  const msg = String(message).toLowerCase();
+
+  const looksLikeLlmProviderError =
+    msg.includes('googlegenerativeai') ||
+    msg.includes('generativelanguage.googleapis.com') ||
+    msg.includes('anthropic') ||
+    msg.includes('gemini') ||
+    msg.includes('claude');
+  if (!looksLikeLlmProviderError) return null;
+
+  const isBilling =
+    msg.includes('prepayment') ||
+    msg.includes('credit') ||
+    msg.includes('billing') ||
+    msg.includes('payment') ||
+    msg.includes('balance') ||
+    msg.includes('quota exceeded');
+  if (isBilling) return 'llm_provider_billing';
+
+  const isAuth =
+    msg.includes('api key not valid') ||
+    msg.includes('invalid api key') ||
+    msg.includes('permission denied') ||
+    msg.includes('unauthorized') ||
+    msg.includes('forbidden') ||
+    /http\s*401|status\s*401/.test(msg) ||
+    /http\s*403|status\s*403/.test(msg);
+  if (isAuth) return 'llm_provider_auth';
+
+  const isRateLimited =
+    (msg.includes('rate') && msg.includes('limit')) ||
+    msg.includes('429') ||
+    msg.includes('too many requests');
+  if (isRateLimited) return 'llm_rate_limit';
+
+  return null;
+}
+
 // Classify errors/results into a coarse failure_class for dashboards.
 function classifyFailure(stage, err, result) {
   if (!err && (!result || result.skipped)) return 'skipped';
@@ -39,8 +79,8 @@ function classifyFailure(stage, err, result) {
   if (/http\s*5\d{2}|status\s*5\d{2}/.test(msg)) return 'http_5xx';
   if (msg.includes('blocked') || msg.includes('captcha') || msg.includes('cloudflare')) return 'blocked';
   if (msg.includes('json') && (msg.includes('parse') || msg.includes('unexpected'))) return 'llm_parse_fail';
-  if (msg.includes('rate') && msg.includes('limit')) return 'llm_rate_limit';
-  if (msg.includes('429')) return 'llm_rate_limit';
+  const llmClass = classifyLlmMessage(msg);
+  if (llmClass) return llmClass;
   if (stage === 'extract' && msg.includes('empty')) return 'empty_result';
   return 'unknown';
 }
@@ -100,6 +140,7 @@ module.exports = {
   clearSnapshot,
   writeLastRunSummary,
   classifyFailure,
+  classifyLlmMessage,
   newRunId,
   RUNS_DIR,
   SNAPSHOT_PATH,

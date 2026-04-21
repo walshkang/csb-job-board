@@ -1,58 +1,58 @@
 {
-  "run_id": "20260420-230519-cyzl",
-  "started_at": "2026-04-21T03:05:19.368Z",
-  "updated_at": "2026-04-21T03:07:17.720Z",
-  "uptime_sec": 118,
+  "run_id": "20260420-232140-222k",
+  "started_at": "2026-04-21T03:21:40.348Z",
+  "updated_at": "2026-04-21T03:25:29.382Z",
+  "uptime_sec": 229,
   "queue_depths": {
     "profile": 0,
-    "discovery": 43,
+    "discovery": 22,
     "fingerprint": 0,
     "scrape": 0,
     "extract": 0,
     "enrich": 0,
-    "categorize": 204
+    "categorize": 250
   },
   "in_flight": {
     "profile": 0,
-    "discovery": 8,
+    "discovery": 12,
     "fingerprint": 0,
     "scrape": 0,
     "extract": 0,
-    "enrich": 2,
-    "categorize": 3
+    "enrich": 5,
+    "categorize": 10
   },
   "stats": {
     "started": {
-      "profile": 70,
-      "discovery": 17,
-      "fingerprint": 24,
-      "scrape": 3,
-      "extract": 4,
-      "enrich": 427,
-      "categorize": 58
+      "profile": 2,
+      "discovery": 41,
+      "fingerprint": 21,
+      "scrape": 24,
+      "extract": 26,
+      "enrich": 52,
+      "categorize": 97
     },
     "completed": {
-      "profile": 2,
-      "discovery": 4,
-      "fingerprint": 3,
-      "scrape": 3,
-      "extract": 1,
-      "enrich": 425,
-      "categorize": 17
+      "profile": 0,
+      "discovery": 21,
+      "fingerprint": 21,
+      "scrape": 24,
+      "extract": 13,
+      "enrich": 47,
+      "categorize": 0
     },
     "no_result": {
       "profile": 0,
-      "discovery": 5,
+      "discovery": 8,
       "fingerprint": 0,
       "scrape": 0,
-      "extract": 3,
+      "extract": 13,
       "enrich": 0,
-      "categorize": 38
+      "categorize": 73
     },
     "failed": {
-      "profile": 68,
+      "profile": 2,
       "discovery": 0,
-      "fingerprint": 21,
+      "fingerprint": 0,
       "scrape": 0,
       "extract": 0,
       "enrich": 0,
@@ -65,20 +65,20 @@
       "scrape": 0,
       "extract": 0,
       "enrich": 0,
-      "categorize": 0
+      "categorize": 14
     }
   },
   "throughput_per_min": {
     "profile": 0,
-    "discovery": 9,
-    "fingerprint": 3,
-    "scrape": 3,
-    "extract": 3,
-    "enrich": 138,
-    "categorize": 17
+    "discovery": 0,
+    "fingerprint": 0,
+    "scrape": 2,
+    "extract": 2,
+    "enrich": 1,
+    "categorize": 24
   },
   "dry_run": false,
-  "finished_at": "2026-04-21T03:07:17.721Z",
+  "finished_at": "2026-04-21T03:25:29.383Z",
   "exit_reason": "SIGTERM",
-  "events_path": "/Users/walsh.kang/Documents/GitHub/csb-job-board/data/runs/pipeline-events-20260420-230519-cyzl.jsonl"
+  "events_path": "/Users/walsh.kang/Documents/GitHub/csb-job-board/data/runs/pipeline-events-20260420-232140-222k.jsonl"
 }

@@ -121,6 +121,7 @@ function print() {
     const byReason = {};
     for (const e of noResults) {
       const reason = e.reason
+        || (e.category_error && e.failure_class ? `category_error:${e.failure_class}` : null)
         || (e.category_error ? 'category_error' : null)
         || (e.status_code ? `http_${e.status_code}` : null)
         || (e.jobs === 0 ? 'zero_jobs' : null)
