@@ -1340,7 +1340,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biochar product development, biochar technology, carbon control, circular systems, conservation method, environmental assessment firm, fertilizer unit, monitoring data, water quality",
       "hq": "Ann Arbor, MI",
       "employees": 2
     },
@@ -1372,7 +1372,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biofuel, energy producer, energy production, green chemicals, synthetic biofuel, synthetic fuel",
       "hq": "Englewood, CO",
       "employees": 151,
       "scraped_description": "Gevo is looking for people with a passion for figuring out how to store and deliver renewable energy in new and innovative ways."
@@ -1408,7 +1408,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean power, energy fusion, energy infrastructure, energy power generator, fusion energy, fusion fuel, laser fusion",
       "hq": "San Francisco, CA",
       "employees": 15,
       "scraped_description": "Join our team and help us build the future of fusion energy."
@@ -1445,7 +1445,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "aviation fuel, circular economy, clean energy, clean fuel, fuel alternative, fuel technology company, sustainable fuel, waste to fuel",
       "hq": "Deerfield, IL",
       "employees": 116,
       "scraped_description": "Careers  Decarbonizing the planet takes a lot of work. Join our team of mission-driven doers."
@@ -1524,7 +1524,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean energy, clean energy generation, clean energy power, clean fuel, energy generation, energy transition, sustainability project, sustainable hydrogen",
       "hq": "Houston, TX",
       "employees": 92,
       "scraped_description": "Join Utility Global at H2Meet 2024 in Korea to explore how our H2Gen® technology is driving the global energy transition for hard-to-abate sectors."
@@ -1560,7 +1560,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "nuclear power company, nuclear power reactor, power generation, power generation unit, reliable energy, underground energy storage",
       "hq": "Berkeley, CA",
       "employees": 28,
       "scraped_description": "Careers. Sign up today and receive company updates straight to your inbox"
@@ -1597,7 +1597,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "ag biotech, agricultural innovation, biotechnology research, genetic engineering, genetic engineering technology, plant engineering, plant genetics services",
       "hq": "Raleigh, NC",
       "employees": 5,
       "scraped_description": "Shape the Future ofSustainable Supply Chains."
@@ -1633,7 +1633,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biodegradable filters, biodegradable materials, cigarettes butts, cigarettes filter, filter product, filters cartridge, production management, sustainability development",
       "hq": "San Diego, CA",
       "employees": 10,
       "scraped_description": "We designed a filter that is biodegradable, cost effective, and maintains the sensory experience that smokers expect."
@@ -1669,7 +1669,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "commercial waste management, enterprise resource planning, sustainable waste, sustainable waste management, waste management software, waste management tech",
       "hq": "San Diego, CA",
       "employees": 47,
       "scraped_description": "Learn about open Job positions at Hauler Hero. Become part of the next generation software revolutionising the waste management industry."
@@ -1706,7 +1706,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "automobile supplies, automotive industry, automotive market, electric car, electric vehicle, ev technology, two wheeler, vehicle electrification",
       "hq": "Portland, OR",
       "employees": 27,
       "scraped_description": "Lit Motors was founded to make personal transportation safer and more exciting. Combining the best of both worlds, Lit integrates the freedom of a motorcycle with the safety of a car."
@@ -1742,7 +1742,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "gallium nitride, quantum computing, semiconductor manufacturing company, semiconductor materials, semiconductor materials industry, semiconductor materials processing, semicond...",
       "hq": "Fremont, CA",
       "employees": 6
     },
@@ -1774,7 +1774,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "air decontamination, air quality control, air quality improver, air quality treatment, biological decontamination, healthy environment",
       "hq": "Albuquerque, NM",
       "employees": 6,
       "scraped_description": "Everybody talks about indoor air quality and healthy environments. For us, that means a space free of allergens, biological pathogens, and chemical toxins. We provide the highest level of air and surface decontamination for a broad range of industries and applications. Our automated dry mist systems can be portable or permanently installed, helping property owners, [&hellip;]"
@@ -1810,7 +1810,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy storage device, grid infrastructure, non-battery storage, renewable energy supply, solar energy, solar energy devices",
       "hq": "Newark, NJ",
       "employees": 6,
       "scraped_description": "Our mission is to help unlock the fossil fuel-less civilization.\n \nWith enough energy storage, humanity can fully transition to renewables and see the end of fossil fuels."
@@ -1846,7 +1846,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "alternative energy, intermittent renewable energy, machine learning, renewable energy, wind data, wind energy system, wind turbines",
       "hq": "Berkeley, CA",
       "employees": 4
     },
@@ -1878,7 +1878,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "marine environment monitoring, marine environment service, meteorological data, metocean monitoring, ocean data analysis, oceanographic data",
       "hq": "Raleigh, NC",
       "employees": 11
     },
@@ -1954,6 +1954,12 @@
         "deal_type": "Project Financing",
         "size_mm": 431,
         "total_raised_mm": 1031.49
+      },
+      {
+        "date": "29-Jan-2026",
+        "deal_type": "Project Financing",
+        "size_mm": 358.66,
+        "total_raised_mm": 959.15
       }
     ],
     "company_profile": {
@@ -1995,7 +2001,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clothing alteration, clothing repair, clothing service, fashion sustainability, garment services, garments fabrics, online clothing, online delivery space",
       "hq": "Rogers, AR",
       "employees": 5
     },
@@ -2030,7 +2036,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "automotive led, car led, led devices, road safety devices, roadway lighting, safety devices, solar device",
       "hq": "Littleton, CO",
       "employees": 4
     },
@@ -2062,7 +2068,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean energy product, dust control product, dust shield, electrostatic discharge, mitigation technology, panel tools, solar energy site, solar project owner",
       "hq": "Hurley, NY",
       "employees": 2,
       "scraped_description": "Software Intern\n\n\nCLEAR SOLARHome\nAbout Us\nClearAdvantage\nCareers\t\n\n\tSoftware Intern"
@@ -2098,7 +2104,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "agribusiness marketplace, carbon capture, carbon dioxide removal, carbon dioxide storage, carbon technology, climate change mitigation, climate change research, directing air capture, e...",
       "hq": "Princeton, NJ",
       "employees": 50,
       "scraped_description": "Our mission is to remove carbon permanently and at scale, with rigorous scientific verification, while providing economic and environmental benefits in rural areas."
@@ -2134,7 +2140,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy asset development, power company, power generation, power trading, renewable energy, renewable energy power generation",
       "hq": "New York, NY",
       "employees": 5,
       "scraped_description": "Access Google Docs with a personal Google account or Google Workspace account (for business use)."
@@ -2171,7 +2177,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "data center, electricity infrastructure, energy demand management, energy project manager, energy storage unit, renewable energy",
       "hq": "Scotts Valley, CA",
       "employees": 69,
       "scraped_description": "Careers. Product\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHeron Link for Solar &amp; Storage\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHeron Link for Data CentersProduct\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHeron Link for Solar &amp; StorageLearn More\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -2208,7 +2214,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cloud infrastructure optimization, cloud storages, data infrastructure and analytics, distributed computing, green computing, secure cloud network",
       "hq": "San Francisco, CA",
       "employees": 21
     },
@@ -2240,7 +2246,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "diesel generator, distributed energy solutions, distributing generation, energy storage, grid infrastructure, hybrid renewable energy, renewable energy, solar energy, solar power station",
       "hq": "Grass Valley, CA",
       "employees": 49,
       "scraped_description": "Join Our Team. We’re changing the narrative on rural energy by helping thousands gain access to renewable, cost-effective power. We’re putting technology to use for people alongside our planet. Join us!"
@@ -2276,7 +2282,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biotechnology research company, remediation service business, soil preparation service, sustainable agricultural, synthetic biology market, synthetic biology platform",
       "hq": "Baltimore, MD",
       "employees": 3
     },
@@ -2303,12 +2309,18 @@
         "deal_type": "Seed Round",
         "size_mm": 4,
         "total_raised_mm": 4
+      },
+      {
+        "date": "05-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 12,
+        "total_raised_mm": 24
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon capture, carbon footprint reduction, co2 capture, decarbonizing technology, energy consumption, power plant, storage technology",
       "hq": "Austin, TX",
       "employees": 9,
       "scraped_description": "Join the pHathom team"
@@ -2344,7 +2356,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "fda clearance, healthcare data analytics, monitoring equipment, proptech startup, radar data processing, radar detection system, radar sensors system, smart sensing technology",
       "hq": "New York, NY",
       "employees": 39,
       "scraped_description": "Welcome to Xandar Kardian. See how we’re helping to change the standard of care."
@@ -4314,7 +4326,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "alternative energy vehicles, commercial ev, electric vehicle, fleet electrification, low emissions vehicle, power electronics, sustainable transportation",
       "hq": "Livermore, CA",
       "employees": 12,
       "scraped_description": "ACCELERATING EV TECHNOLOGIES FOR THE COMMERCIAL VEHICLE MARKET. Join Our $51M Investment Round and Shape the Future Learn More"
@@ -4349,7 +4361,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cleantech device, environmental management, filtration system, green tech company, microplastic pollution, microplastics detection, water treatment tool",
       "hq": "Kearny, NJ",
       "employees": 8,
       "scraped_description": "Careers. Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n        .header-blur-background {\n            \n                -webkit-backdrop-filter: blur(12px);\n                backdrop-filter: blur(12px);\n            \n            \n        }\n    }\n\n      \n      \n      \n      \n        \n          \n        \n      \n\n      \n        \n        \n\n        \n          \n\n          \n\n          \n\n          \n\n          \n\n          \n          \n            \n"
@@ -4385,7 +4397,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "data analytics, data driven system, energy resiliency, precision agriculture, precision agriculture system, remote sensing, sustainable solutions, weather forecasting",
       "hq": "Norman, OK",
       "employees": 3
     },
@@ -4417,7 +4429,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "autonomous sensors, climate research, coral reef protection, marine research, ocean data analysis, ocean data management, ocean monitoring, weather forecasting",
       "hq": "Cambridge, MA",
       "employees": 10,
       "scraped_description": "Reimagining ocean monitoring.. 0\n              \n            \n          \n        \n      \n\n      \n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n  \n  \n  \n    \n  \n\n\n    \n\n\n    \n      \n      \n        Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n     "
@@ -4453,7 +4465,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "accessories maker, baby care product, baby products, clothing product, ecommerce platform, infant care products, infant products, online shopping",
       "hq": "Matthews, NC",
       "employees": 15
     },
@@ -4485,7 +4497,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon capture, clean energy, emissions-free power, gas turbine system, power generation, renewable energy technology",
       "hq": "Los Angeles, CA",
       "employees": 4,
       "scraped_description": "Clean and cheap power, from first principles."
@@ -4516,12 +4528,18 @@
         "deal_type": "Public Investment 2nd O…",
         "size_mm": 7,
         "total_raised_mm": 14.2
+      },
+      {
+        "date": "04-Feb-2026",
+        "deal_type": "Public Investment 2nd...",
+        "size_mm": 7,
+        "total_raised_mm": 14.2
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "container maker, marine industry product, operational support, packaging solutions, shipping container, transportation carrier",
       "hq": "Tooele, UT",
       "employees": 3
     },
@@ -4585,7 +4603,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "casual sneakers, shoe manufacturer, shoes design, shoes designer, shoes manufacturing, shoes site, sustainable fashion, sustainable shoes",
       "hq": "Grand Rapids, MI",
       "employees": 11,
       "scraped_description": "Be the first to hear about all of the latest drops, tips, and general fun happening."
@@ -4621,7 +4639,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery storage, battery systems, clean energy, electric futures, electrification technology, home battery systems, home electrification, reliable energy",
       "hq": "Mountain View, CA",
       "employees": 226,
       "scraped_description": "At Lunar, you have the power to be you. Lunar SystemLunar SystemLunar AppLunar AILunar VPPHomeownersCustomer StoriesLearnBlogInstallersBecome a Lunar PartnerDocumentation CenterGridshareGridshare for businessDesign your SystemAt Lunar, you have the power to be youIn a world where you can be anything, we just want you to be you. Join us and change the way we power our planet."
@@ -4657,7 +4675,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "electronics manufacturing, power converter, power modules, power stack, semiconductor packaging, subsystem design, subsystem module",
       "hq": "Plymouth, MI",
       "employees": 19,
       "scraped_description": "Join Our Team at Marel \r\n\r\nAs we accelerate our growth, we invite you to be a part of our compelling story. Discover the innovation behind Marel technology and its integration into a multitude of power electronics devices used across various sectors. See Current Opportunities    \r\n\r\nAt Marel, you can be a part of"
@@ -4693,7 +4711,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "advances air mobility, aviation company, electric aircraft, electric aviation, electric aviation technology, electric engine, electric jet, electric vehicle, ev battery, ev technology, evtol passenger ...",
       "hq": "Middletown, DE",
       "employees": 4,
       "scraped_description": "Submit your resume so we can keep it on file for reference should the right opportunity arise."
@@ -4730,7 +4748,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "alternative fuel product, clean fuel, garbage management, recyclable plastic, recycling polymer, waste to fuel",
       "hq": "Rohnert Park, CA",
       "employees": 17,
       "scraped_description": "About UsOur TechnologyNewsCommunity ResourcesGet in touch\n\n/* Set color style to inherit */\n.inherit-color * {\n    color: inherit;\n}\n\n/* Focus state style for keyboard navigation for the focusable elements */\n*[tabindex]:focus-visible,\n  input[type=\"file\"]:focus-visible {\n   outline: 0.125rem solid #4d65ff;\n   outline-offset: 0.125rem;\n}\n\n/* Get rid of top margin on first element in any rich text element */\n.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {\n  mar"
@@ -4761,12 +4779,18 @@
         "deal_type": "General Corporate Purp…",
         "size_mm": null,
         "total_raised_mm": null
+      },
+      {
+        "date": "03-Feb-2026",
+        "deal_type": "General Corporate Pu...",
+        "size_mm": null,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon negative solutions, co2 removal, emission reduction, greenhouse gas reduction, organic waste processing, sustainable economy",
       "hq": "New Castle, DE",
       "employees": 5
     },
@@ -4798,7 +4822,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "power systems, renewable energy, solar energy, solar energy cell, solar energy panel, solar system",
       "hq": "Mountain View, CA",
       "employees": 96,
       "scraped_description": "Learn how you can go green and save with solar. At Cobalt Power Systems Inc., our San Francisco Bay Area solar installers are dedicated to helping you."
@@ -4830,12 +4854,18 @@
         "deal_type": "Seed Round",
         "size_mm": 6.95,
         "total_raised_mm": 9.65
+      },
+      {
+        "date": "03-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 7,
+        "total_raised_mm": 9.7
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cloud computing, cost reduction, device integration, distributed energy, energy infrastructure, real time database, secure communication",
       "hq": "San Francisco, CA",
       "employees": 11
     },
@@ -4867,7 +4897,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "agriculture firm, bio chemicals, biobased fuel, biodegradable fuel, biopolymer manufacturing, biotechnology company, fermentation platform, polymer business",
       "hq": "Livonia, MI",
       "employees": 10,
       "scraped_description": "Reach out to Ecovia Bio in Livonia, MI for info on biodegradable polymer products, partnerships, or custom solutions."
@@ -4903,7 +4933,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "commercial vehicle, electric car, electric fleet, electric mobility, ev charging, fleet electrification, fleet management, renewable energy hub",
       "hq": "Los Angeles, CA",
       "employees": 14
     },
@@ -4935,7 +4965,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate data, connected agriculture, earthing data, environmental sensing, farm management software, weather monitoring",
       "hq": "Boston, MA",
       "employees": 218,
       "scraped_description": "Help us build a world where everyone has access to useful and life-saving weather insights"
@@ -4971,7 +5001,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "architecture and engineering, architecture company, architecture firm, architecture service, interior design firm, interior designer, sustainable architecture",
       "hq": "Ann Arbor, MI",
       "employees": 14
     },
@@ -5003,7 +5033,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon data, catalysis technology, chemical manufacture, renewable sourcing, sustainable chemicals, synthetic biology",
       "hq": "Portland, OR",
       "employees": 8,
       "scraped_description": "Pioneering.. 0\n              \n            \n          \n        \n      \n\n      \n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n  \n  \n  \n    \n  \n\n\n    \n\n\n    \n      \n      \n        Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n        .header-blur-ba"
@@ -5039,7 +5069,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cleantech company, energy generating facility, portable energy, power generation device, sustainable power, zero emission, zinc sheets",
       "hq": "Newark, NJ",
       "employees": 6
     },
@@ -5071,7 +5101,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "inventory lifecycle management, operational tools, retail logistics management, returns management, reverse logistics, supply chain optimization",
       "hq": "Gardena, CA",
       "employees": 90
     },
@@ -5098,12 +5128,18 @@
         "deal_type": "Public Investment 2nd O…",
         "size_mm": 7,
         "total_raised_mm": 110.54
+      },
+      {
+        "date": "02-Feb-2026",
+        "deal_type": "Public Investment 2nd...",
+        "size_mm": 7,
+        "total_raised_mm": 110.54
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy management, energy management firm, energy management product, energy management sector, energy management system, wireless control system",
       "hq": "Manitowoc, WI",
       "employees": 182,
       "scraped_description": "Want to join an innovative workforce to help customers throughout the U.S. keep the lights on while saving energy? Let us know and apply today!"
@@ -5139,7 +5175,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery technology, energy storage, energy storage firm, magnetic fields, magnetic flow meter, operations data",
       "hq": "Yuma, AZ",
       "employees": 10,
       "scraped_description": "0\n              \n            \n          \n        \n      \n\n      \n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n  \n  \n  \n    \n  \n\n\n    \n\n\n    \n      \n      \n        Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n        .header-blur-background {\n  "
@@ -5176,7 +5212,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon dioxide gas, circular economy model, climate change, methanol fuel, plasma technology, sustainable fuel",
       "hq": "San Francisco, CA",
       "employees": 2,
       "scraped_description": "Carbon capture is stuck in its punch-card era. CaptureBeam makes it seamless, factory-built, and scalable. Join us in scaling climate impact."
@@ -5212,7 +5248,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "magnesium alloy, magnesium ore, magnesium parts, magnesium production, sodium chloride producer, solar evaporation system",
       "hq": "Salt Lake City, UT",
       "employees": 79,
       "scraped_description": "HOMEABOUT USENVIRONMENTCOGENERATIONCONSERVATIONSOLAR ENERGYSTEWARDSHIPPRODUCTSCHEMICALSLITHIUMMAGNESIUM (ALLOY)MAGNESIUM (PURE)CAREERSCONTACT US\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\n\n\n\n\n\n\n\n\n\n\n\nCAREERS\n\n\nOur employees are dedicated to the success of the Company and have a clear understanding and interest in the products we produce. The work force is experienced with the majority having 15 or more years of service. Employees are involved in ongoing job training, education, skill improvement, and safety awareness"
@@ -5248,7 +5284,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon sequestration, ecological technology, environmental project, environmental recovery, mitigation strategy, remote sensing technology, restoration technology",
       "hq": "Huntingdon, PA",
       "employees": 4,
       "scraped_description": "VectOres&nbsp;"
@@ -5286,7 +5322,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "atmospheric water generation, atmospheric water system, clean water, drinkable water, moisture absorbent, water capturing",
       "hq": "Vista, CA",
       "employees": 8
     },
@@ -5318,7 +5354,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon management, carbon marketplace, carbon offset platform, emission monitoring, regulatory compliance, sustainability advisory",
       "hq": "New York, NY",
       "employees": 175,
       "scraped_description": "Learn about Carbon Direct job career benefits and corporate values, view open roles, and apply."
@@ -5388,7 +5424,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cleaning system, dry cleaning equipment, fabrication technology, fabrics machine, garments handles, laundry product, steam cleaning",
       "hq": "Sandy Springs, GA",
       "employees": 28,
       "scraped_description": "Learn about the energetic and positive work-life at Presso and help create a better and more sustainable future of clothing care."
@@ -5424,7 +5460,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "bacteria decontamination, food safety and quality, freshness control, molds remova, ozone generator, pest mitigation, purification system",
       "hq": "Bradenton, FL",
       "employees": 5
     },
@@ -5456,7 +5492,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "controlled-release fertilizers, fertilizer alternatives, fertilizer producer, fertilizer spray, fertilizers delivery, land use, plant biotech, plant biotechnology",
       "hq": "Sylacauga, AL",
       "employees": 60
     },
@@ -5488,7 +5524,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "consultant firm, contractor portal, reporting firm, streamline tools, tax incentive, web platform",
       "hq": "San Francisco, CA",
       "employees": 5
     },
@@ -5586,6 +5622,12 @@
       {
         "date": "01-Feb-2026",
         "deal_type": "Secondary Transaction - …",
+        "size_mm": null,
+        "total_raised_mm": 42.75
+      },
+      {
+        "date": "01-Feb-2026",
+        "deal_type": "Secondary Transactio...",
         "size_mm": null,
         "total_raised_mm": 42.75
       }
@@ -5688,6 +5730,12 @@
         "deal_type": "Secondary Transaction - …",
         "size_mm": 115.1,
         "total_raised_mm": null
+      },
+      {
+        "date": "30-Jan-2026",
+        "deal_type": "Secondary Transactio...",
+        "size_mm": 115.1,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
@@ -5718,6 +5766,12 @@
       {
         "date": "30-Jan-2026",
         "deal_type": "Public Investment 2nd O…",
+        "size_mm": 50,
+        "total_raised_mm": 151.94
+      },
+      {
+        "date": "30-Jan-2026",
+        "deal_type": "Public Investment 2nd...",
         "size_mm": 50,
         "total_raised_mm": 151.94
       }
@@ -6868,6 +6922,12 @@
         "deal_type": "Public Investment 2nd O…",
         "size_mm": 9,
         "total_raised_mm": 231.82
+      },
+      {
+        "date": "26-Jan-2026",
+        "deal_type": "Public Investment 2nd...",
+        "size_mm": 9,
+        "total_raised_mm": 231.82
       }
     ],
     "company_profile": {
@@ -7513,6 +7573,12 @@
         "deal_type": "Later Stage VC",
         "size_mm": 115,
         "total_raised_mm": 180.43
+      },
+      {
+        "date": "22-Jan-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 155,
+        "total_raised_mm": 220.43
       }
     ],
     "company_profile": {
@@ -7618,12 +7684,18 @@
         "deal_type": "Dividend Recapitalization",
         "size_mm": 425,
         "total_raised_mm": 1395.5
+      },
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Dividend Recapitalizati...",
+        "size_mm": 425,
+        "total_raised_mm": 1395.5
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "civil/energy, energy generation, facility operator, natural gas, power generation facility, power generation plant, renewable energy",
       "hq": "Silver Spring, MD",
       "employees": 180,
       "scraped_description": "Responsible EnergyStarts with Us With 25 years of unparalleled success, CPV has a history of applying our expertise to build the next generation of technologies while contributing to grid reliability through our existing fleet. We are committed to delivering low carbon power that helps drive our nation’s decarbonization goals forward. Who We Are Real People."
@@ -8069,6 +8141,12 @@
         "deal_type": "Public Investment 2nd O…",
         "size_mm": 20,
         "total_raised_mm": 112.1
+      },
+      {
+        "date": "15-Jan-2026",
+        "deal_type": "Public Investment 2nd...",
+        "size_mm": 20,
+        "total_raised_mm": 112.1
       }
     ],
     "company_profile": {
@@ -8244,6 +8322,12 @@
       {
         "date": "14-Jan-2026",
         "deal_type": "Secondary Transaction - …",
+        "size_mm": null,
+        "total_raised_mm": 101.02
+      },
+      {
+        "date": "14-Jan-2026",
+        "deal_type": "Secondary Transactio...",
         "size_mm": null,
         "total_raised_mm": 101.02
       }
@@ -8740,7 +8824,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon black, clean energy, greenhouse gas reduction, hydrogen production systems, pyrolysis technology, renewable eneregy",
       "hq": "Detroit, MI",
       "employees": 2
     },
@@ -8772,7 +8856,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "frac operations, oilfield service provider, oilfield services firm, pressure pump product, pressure pumping, pressure pumping equipment",
       "hq": "Houston, TX",
       "employees": 11,
       "scraped_description": "Regiment is always looking to add highly motivated self-starters to our team. Please apply by emailing your resume to info@regimentllc.com. If your qualifications are a fit for an open role, a member of our HR team will contact you."
@@ -8803,12 +8887,18 @@
         "deal_type": "General Corporate Purp…",
         "size_mm": 40,
         "total_raised_mm": 82.5
+      },
+      {
+        "date": "12-Jan-2026",
+        "deal_type": "General Corporate Pu...",
+        "size_mm": 40,
+        "total_raised_mm": 82.5
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "commercial solar energy, energy project design, energy project developer, energy project site, energy utility, solar energy, solar energy project, solar energy site, utility projects management",
       "hq": "San Francisco, CA",
       "employees": 33,
       "scraped_description": "We&#x27;re Hiring. Renewable Properties solves the world&#x27;s energy problems by putting more solar in the ground and on the grid - providing clean, reliable emission-free energy. The Renewable Properties team is comprised of experienced solar project development and investment professionals with deep expertise in the solar industry.We&#x27;re looking to bring on highly driven, innovative, and talented professionals passionate about getting more solar on the grid and transforming the energy la"
@@ -8844,7 +8934,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy costs, energy efficiency equipment, energy efficiency solutions, equipment maintenance service, lighting company, lighting installation, lighting installation & integration, lighting ins...",
       "hq": "Chino, CA",
       "employees": 16,
       "scraped_description": "Meet the dedicated Earth Savers team driving LED lighting innovation and sustainability. Discover the people behind our mission for a brighter, greener future."
@@ -8881,7 +8971,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "banking alternative, carbon offset, carbon trading, credit and banking, digital banking, financial product, fintech banking service, investing options, investment firm, sustainable investment",
       "hq": "San Francisco, CA",
       "employees": 423,
       "scraped_description": "Build the future of money. And help fix the planet while you’re at it."
@@ -8917,7 +9007,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "built environment, ecosystem development, green construction, ocean environment, reef restoration, sustainable building materials, sustainable concrete",
       "hq": "Charlottesville, VA",
       "employees": 3
     },
@@ -8949,7 +9039,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "bioengineering company, biofuel production, biological model, enzymes study, industrial microbiology, renewable transportation, sustainable fuel",
       "hq": "Lebanon, NH",
       "employees": 15,
       "scraped_description": "Join the team. 0\n              \n            \n          \n        \n      \n\n      \n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n  \n  \n  \n    \n  \n\n\n    \n\n\n    \n      \n      \n        Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n        .header-blur-"
@@ -8985,7 +9075,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "environment sustainability, gold mining, gold mining land, gold mining site, mining area, mining service",
       "hq": "Idaho Springs, CO",
       "employees": 2,
       "scraped_description": "Home"
@@ -9021,7 +9111,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean energy, clean energy assets, conventional energy asset, conventional energy services, infrastructure asset portfolio, renewable asset",
       "hq": "Princeton, NJ",
       "employees": 98,
       "scraped_description": "See open jobs across the US, explore best-in-class benefits, and learn why over 90% of employees say they are proud to work at Clearway."
@@ -9058,7 +9148,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy generation, energy production equipment, energy project, renewable energy plant, solar and wind energy, wind energy",
       "hq": "Redwood City, CA",
       "employees": 290,
       "scraped_description": "SB Energy is looking for dedicated individuals hoping to provide flexible renewable energy to benefit our planet, customers, and communities"
@@ -9095,7 +9185,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "maintenance services, panel cleaning, repair and maintenance, repair and maintenance service, solar panels cleaning, solar panels solutions, solar repair",
       "hq": "Sherman Oaks, CA",
       "employees": 11
     },
@@ -9159,7 +9249,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy efficiency, engineering design, engineering services, latest technology, natural refrigerants, refrigeration systems",
       "hq": "Portland, OR",
       "employees": 106,
       "scraped_description": "Information on our company culture, team approach, workplace benefits, NW living, and current job openings"
@@ -9195,7 +9285,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy distributor, energy production firm, green energy storage, intermittent renewable energy, wind generator system, wind turbine generator",
       "hq": "Boston, MA",
       "employees": 14
     },
@@ -9227,7 +9317,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "chip design, chip manufacturer, customized silicon devices, semiconductor tools, silicon solution, technology incubator",
       "hq": "San Jose, CA",
       "employees": 88,
       "scraped_description": "Chip DesignChip ManufacturingAdvanced Technology IncubationProductsCompanyAbout UsBoard of DirectorsManagementEventsNews &amp; UpdatesCareersContact UsMenu\r\n\n    \n        \n        \n        \n    \n\nHome ServicesChip DesignChip ManufacturingAdvanced Technology IncubationProductsCompanyAbout UsBoard of DirectorsManagementEventsNews &amp; UpdatesCareersContact UsClose\n    \n        \n    \n\nJOIN THE GSME TEAMDiscover your career path with GSME today!GSME is growing, and we&rsquo;re looking for talented "
@@ -9263,7 +9353,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon conversion technology, carbon tech, carbon technology, chemical production, energy innovation, reactor design, sustainable alternatives, sustainable aviation fuel, sustainable fuel",
       "hq": "Charlestown, MA",
       "employees": 32,
       "scraped_description": "The electricfuels company."
@@ -9300,7 +9390,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "beach towels, eco-friendly clothing, recycled clothing, recycled goods, towels manufacturer, towels product",
       "hq": "San Clemente, CA",
       "employees": 32
     },
@@ -9332,7 +9422,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon tech, climate change control, climate data, decarbonizing platform, industrial data analytics, sustainability platform, sustainability program",
       "hq": "San Francisco, CA",
       "employees": 400,
       "scraped_description": "Browse the latest remote and in-person job postings from Watershed, a startup building corporate climate software, dual-headquartered in San Francisco and London."
@@ -9368,7 +9458,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "activated carbon, activated carbon product, carbon solutions, cleantech company, environment safety, environment sector, environmental gas, environmental protection, mercury capture ...",
       "hq": "Gainesville, FL",
       "employees": 17
     },
@@ -9401,7 +9491,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon neutral fuel, clean energy fuel, clean fuel, climate technology, graphite exploration, graphite mine",
       "hq": "Oakland, CA",
       "employees": 8,
       "scraped_description": "graphite"
@@ -9438,7 +9528,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "bathing product, energy savings, hospitality application, industrial iot, showers device, smart shower product, utility savings, water saving systems",
       "hq": "Austin, TX",
       "employees": 6
     },
@@ -9470,7 +9560,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "electrical contracting, electrical design, electrical design drawing, electrical design service, energy efficiency, energy efficiency firm, value engineering, value engineering services",
       "hq": "Houston, TX",
       "employees": 218,
       "scraped_description": "Earn a living while making a difference. Employees are Trio’s number one asset and we are always looking for more."
@@ -9506,7 +9596,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "gas supplies, hydrocarbon gas, industrial gas, refrigerant supplier, semiconductor supplier, specialty gas",
       "hq": "Hopkinton, MA",
       "employees": 59,
       "scraped_description": "If you&#039;re a motivated self-starter, take a look at our current openings. Be part of our team and find a rewarding career with EFC Gases &amp; Advanced Materials today."
@@ -9542,7 +9632,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cobalt mining, digital exploration, geological data, green mining, industrial data analytics, mineral exploration, mining systems, natural resources site, vertical application",
       "hq": "Berkeley, CA",
       "employees": 200,
       "scraped_description": "Working at KoBold"
@@ -9579,7 +9669,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon conversion, carbon tech, carbon utilization, clean fuel, energy storage, gas transformation, waste conversion",
       "hq": "Richland, WA",
       "employees": 17
     },
@@ -9611,7 +9701,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean energy, green hydrogen, hydrogen infrastructure, hydrogen production, renewable energy, renewable natural gas, sustainable hydrogen",
       "hq": "Louisville, KY",
       "employees": 8
     },
@@ -9644,7 +9734,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy efficiency, environmental impact, industry product, metal 3d printing, printing equipment, sustainable manufacturing",
       "hq": "Cambridge, MA",
       "employees": 7,
       "scraped_description": "© 2024 3D Architech, Inc. All rights reserved."
@@ -9680,7 +9770,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "electric mobility system, electric truck, electric truck charging, electric vehicle, electric vehicle manufacturer, ev charging station",
       "hq": "Newport Coast, CA",
       "employees": 8
     },
@@ -9712,7 +9802,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy generation, industrial space, intermittent renewable energy, power generation, turbine operations, wind turbine, windmills property",
       "hq": "Laramie, WY",
       "employees": 21,
       "scraped_description": "Engineering"
@@ -9749,7 +9839,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean fuel, fuel cell components, fuel cell developer, fuel cell power, fuel cell product, fuel cell systems, hydrogen, hydrogen storage technology, industrial iot",
       "hq": "West Fargo, ND",
       "employees": 6,
       "scraped_description": "BWR Innovations job and career opportunities. Develop solutions for the future of construction, manufacturing, oil &amp; gas, agriculture and transportation."
@@ -9785,7 +9875,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "active ingredients, fermentation technology, fermented protein, industrial biotechnology, microbial study, novel ingredients, oil production, palm oil, precision fermentation",
       "hq": "New York, NY",
       "employees": 32,
       "scraped_description": "Let’s build the future.. We’re glass-half-full change-makers and we’re looking for mission-driven, collaborative individuals to join our team."
@@ -9822,7 +9912,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "children's nutrition, functional health food, gluten-free food, oil free food, organic snacks food, savory snacks",
       "hq": "Vauxhall, NJ",
       "employees": 4
     },
@@ -9854,7 +9944,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate tech company, commercial real estate, commercial solar services, energy services, financial platform, intermittent renewable energy, solar photovoltaic, tech-enabled services",
       "hq": "New York, NY",
       "employees": 27,
       "scraped_description": "Solving our climate means. ProductsFor NOI discovery"
@@ -9890,7 +9980,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "construction robotics, renewable energy, robotic device, robotic technology, solar community, solar farm development, solar hardware",
       "hq": "San Leandro, CA",
       "employees": 29,
       "scraped_description": "CareersContactAccelerating the transition to renewables by automating the most labor-intensive parts of construction.Learn More"
@@ -9927,7 +10017,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "commercial waste removal, recycling analytics, recycling services, smart waste management, sustainability reporting, waste audit, waste audits",
       "hq": "Addison, TX",
       "employees": 415,
       "scraped_description": "Join the team building the sustainability platform for enterprise operations. Browse open positions and apply today."
@@ -9963,7 +10053,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery storage, consumption monitoring, cost optimization, energy management, energy procurement, industrial energy",
       "hq": "Mountain View, CA",
       "employees": 3
     },
@@ -9995,7 +10085,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "broadband cable system, electric grid, grid infrastructure, tunnel boring, tunnel boring equipment, tunnel boring machines, tunneling machine",
       "hq": "Richmond, CA",
       "employees": 45
     },
@@ -10027,7 +10117,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biotechnology research, cellulosic material, durable nonwoven product, green chemistry techniques, nanotechnology system, petroleum trader, sustainable textile technologies, textile coa...",
       "hq": "Athens, GA",
       "employees": 7,
       "scraped_description": "Learn about Ecoatex, a team of material scientists, textile engineers, and design and fashion professionals who are revolutionizing the sustainable fashion industry"
@@ -10063,7 +10153,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "brines hauling, chemical manufacture, critical mineral, directing lithium extraction, electrochemical cell, electrochemical system, lithium mine, lithium recovery, mining technology",
       "hq": "San Carlos, CA",
       "employees": 7,
       "scraped_description": "Home"
@@ -10099,7 +10189,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery energy, energy management software, energy optimization, energy storage system, grid stability, renewable energy, technology developer",
       "hq": "San Francisco, CA",
       "employees": 2,
       "scraped_description": "0\n              \n            \n          \n        \n      \n\n      \n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n  \n  \n  \n    \n  \n\n\n    \n\n\n    \n      \n      \n        Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n        .header-blur-background {\n  "
@@ -10135,7 +10225,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "algorithmic underwriting platform, artificial intelligence, climate adaptation, climate risk, commercial property insurance, earthing data, financial system, insurance coverage, risk managem...",
       "hq": "San Diego, CA",
       "employees": 18,
       "scraped_description": "Operations Manager. Home"
@@ -10171,7 +10261,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "contaminated water, sustainable system, waste heat utilization, wastewater processing, water management, water treatment",
       "hq": "New York, NY",
       "employees": 2
     },
@@ -10203,7 +10293,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean fuel, electrochemical process, energy storage, energy storage system, fuel cell, green hydrogen, hydrogen storage, renewable energy, renewable energy funds, renewable power",
       "hq": "Berkeley, CA",
       "employees": 10
     },
@@ -10235,7 +10325,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "built environment, clean technology, climate tech company, heat control system, heating and cooling, heating system, reduce fuel consumption, steam heating system",
       "hq": "New York, NY",
       "employees": 44
     },
@@ -10267,7 +10357,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "dispatchable energy sources, energy development, energy research, fusion energy, fusion power, nuclear fusion, nuclear waste management, zero emission",
       "hq": "Middlesex, NJ",
       "employees": 3,
       "scraped_description": "Joint U.S., Iranian nuclear peace plan hatches - SmartPlanet."
@@ -10303,7 +10393,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "autonomous logistics, autonomous systems, control system device, defense technology systems, electric vehicle firm, industrial automation system, operational efficiency, safety enhance...",
       "hq": "Vancouver, WA",
       "employees": 10
     },
@@ -10335,7 +10425,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon accounting platform, climate data analytics, climate data tool, climate intelligence platform, data analytics, environmental data collection, esg impact, esg platform",
       "hq": "Acton, MA",
       "employees": 3,
       "scraped_description": "&lt;p&gt;We sweeten relationships between brands, platforms, and audiences. Nectar First is an In-House Media and Ad-Tech Agency. We help brands get closer to their most valuable audiences (the Nectar). Our model future proofs Fortune-500 companies, reducing platform dependencies, data fees, and ad-waste. We unlock the potential of big agencies, commerce media networks, and&amp;nbsp;walled&amp;nbsp;gardens. Or, as we say... Get Nectar, Make Honey.&lt;/p&gt;"
@@ -10367,12 +10457,18 @@
         "deal_type": "Secondary Transaction - …",
         "size_mm": 15,
         "total_raised_mm": null
+      },
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Secondary Transactio...",
+        "size_mm": 15,
+        "total_raised_mm": null
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "asset management firm, commodities investment, energy infrastructure, energy transition, investment capital, investment management",
       "hq": "Incline Village, NV",
       "employees": 22,
       "scraped_description": "Careers. Work with us"
@@ -10408,7 +10504,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "fuel cell power, fuel cell technology, fuel efficiency, power genration, power systems, solid oxide fuel cell",
       "hq": "Solon, OH",
       "employees": 14,
       "scraped_description": "jobs"
@@ -10444,7 +10540,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery storage, battery technology, clean energy supply, climate tech company, energy storage, energy storage technology, grid infrastructure, lithium batteries production, lithium-ion bat...",
       "hq": "Miami, FL",
       "employees": 10,
       "scraped_description": "CONTACT Careers Ready to revolutionize the future of transportation? Piersica is leading a new era in energy storage with their next-gen, lithium-metal solid state batteries - designed for better EV charging speed, longer range, greater safety and affordability. If you…"
@@ -10480,7 +10576,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "aquaculture tools, autonomous robots, energy harnesses, irrigation pumps, marine robotics, marine robotics vehicles, propulsion systems, robots developer, swarm robotics, swarm techn...",
       "hq": "New York, NY",
       "employees": 10
     },
@@ -10512,7 +10608,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "artificial intelligence, environmental services, recycling analytics, recycling systems, recycling technology, recycling tools, sustainable systems",
       "hq": "New York, NY",
       "employees": 14,
       "scraped_description": "Our simple recycling technology keeps plastic, metal, and glass out of landfills, while depositing monetary rewards directly into your personal account."
@@ -10548,7 +10644,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "clean fuel, emission reduction, environmental compliance, hydrogen production, plasma engineering, waste management",
       "hq": "Warminster, PA",
       "employees": 5
     },
@@ -10580,7 +10676,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "composite materials, composite materials manufacturer, composite structures, design flexibility, engineering materials, performance enhancement, reusable materials, sustainable compo...",
       "hq": "Bangor, ME",
       "employees": 7
     },
@@ -10612,7 +10708,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "ai infrastructure, cooling solutions, cooling technology systems, data center, data center ai, data center solutions, directing to chips cooling, gpu infrastructure, industrial cooling process, li...",
       "hq": "San Francisco, CA",
       "employees": 3
     },
@@ -10644,7 +10740,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "critical materials, e-waste management, e-waste solutions, materials recycling, metals-based powder, rare earth elements, recycling e-waste",
       "hq": "Austin, TX",
       "employees": 3
     },
@@ -10671,12 +10767,18 @@
         "deal_type": "Later Stage VC",
         "size_mm": null,
         "total_raised_mm": 0.1
+      },
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.1
       }
     ],
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "autonomous machine, autonomous systems, autonomous technologies, condition assessment, ocean data collection, smart water management, underwater equipment, underwater inspe...",
       "hq": "Del Valle, TX",
       "employees": 16,
       "scraped_description": "Be a part of our team."
@@ -10712,7 +10814,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "crystalline materials, intermittent renewable energy, photovoltaic devices, photovoltaics developer, solar module systems, solar panels, solar photovoltaic, solar technology, solar technolo...",
       "hq": "Fremont, CA",
       "employees": 39,
       "scraped_description": "Explore exciting job openings and career opportunities in solar energy solutions. Help us advance perovskite solar technology to accelerate the shift to net zero."
@@ -10748,7 +10850,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "circular economy platform, digital transformation, enterprise mobility, environmental services, management platform, waste management",
       "hq": "Walnut Creek, CA",
       "employees": 10,
       "scraped_description": "Careers. Waste is a sign of inefficiency. According to McKinsey, $2.6T worth of materials are generated every year only to be disposed of with very little or no use. Today commercial buildings operated by corporations, hospitals, universities, etc. are responsible for 40% of all waste going to landfills, but have no way to track, manage and measure waste stream contamination, hauling bills and invoices, or how they are doing against their Zero Waste Goals. This industry is ripe for disruption. ‍"
@@ -10784,7 +10886,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "advanced materials company, advances nanomaterials, ai software, material developer, material development company, molecule design, molecule development",
       "hq": "Berkeley, CA",
       "employees": 12,
       "scraped_description": "AIMATX is revolutionizing materials science by creating next-generation materials and molecules that power the future economy. Our AI-powered platform accelerates the discovery and development of sustainable, high-performance materials."
@@ -11777,6 +11879,12 @@
         "deal_type": "Bankruptcy: Admin/Re…",
         "size_mm": null,
         "total_raised_mm": 7.75
+      },
+      {
+        "date": "24-Dec-2025",
+        "deal_type": "Bankruptcy: Admin/Re...",
+        "size_mm": null,
+        "total_raised_mm": 7.75
       }
     ],
     "company_profile": {
@@ -12182,6 +12290,12 @@
         "deal_type": "Public Investment 2nd…",
         "size_mm": 20,
         "total_raised_mm": 398.5
+      },
+      {
+        "date": "12-Dec-2025",
+        "deal_type": "Public Investment 2nd...",
+        "size_mm": 20,
+        "total_raised_mm": 398.5
       }
     ],
     "company_profile": {
@@ -12250,6 +12364,12 @@
       {
         "date": "12-Dec-2025",
         "deal_type": "Secondary Transactio…",
+        "size_mm": null,
+        "total_raised_mm": 593
+      },
+      {
+        "date": "12-Dec-2025",
+        "deal_type": "Secondary Transactio...",
         "size_mm": null,
         "total_raised_mm": 593
       }
@@ -15917,6 +16037,12 @@
         "deal_type": "Secondary Transactio…",
         "size_mm": 13.2,
         "total_raised_mm": null
+      },
+      {
+        "date": "21-Nov-2025",
+        "deal_type": "Secondary Transactio...",
+        "size_mm": null,
+        "total_raised_mm": 13.2
       }
     ],
     "company_profile": {
@@ -16592,7 +16718,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "chemical technology, lignin based product, natural flavorings, petrochemical firm, recyclable composite materials, renewable chemicals, renewable polymer materials",
       "hq": "Goleta, CA",
       "employees": 5,
       "scraped_description": "Careers. HomeTechnologies Applications Resources About Contact CareersCareersInterested in joining our growing team?"
@@ -16628,7 +16754,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "absorption technology, carbon dioxide removal, carbon removal, carbon storage services, climate tech innovation, negative emission technology",
       "hq": "New York, NY",
       "employees": 5,
       "scraped_description": "Career. 0\n              \n            \n          \n        \n      \n\n      \n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n\n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n  \n  \n  \n    \n  \n  \n  \n    \n    \n  \n  \n  \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n    \n  \n\n  \n    \n  \n  \n  \n    \n  \n\n\n    \n\n\n    \n      \n      \n        Skip to Content\n      \n      \n\n\n\n    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {\n        .header-blur-backgro"
@@ -16664,7 +16790,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "agricultural waste, biology technology, bioproduction revolution, feedstock chemicals, feedstock mineral, feedstock processing",
       "hq": "Dublin, CA",
       "employees": 7
     },
@@ -16697,7 +16823,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery recycling, circular economy, energy storage, energy waste, lithium battery, materials engineering, renewable energy",
       "hq": "San Diego, CA",
       "employees": 7,
       "scraped_description": "HOME"
@@ -16733,7 +16859,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon capture equipment, carbon capture services, climate change control, decarbonised energy, directing air capture, renewable power",
       "hq": "Middletown, DE",
       "employees": 65,
       "scraped_description": "Open positions at Octavia Carbon"
@@ -16769,7 +16895,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "agricultural monitoring, data platform, market access, supply chain, sustainability standards, trade documentation",
       "hq": "Rockaway Park, NY",
       "employees": 8,
       "scraped_description": "Resilience starts at the root"
@@ -16805,7 +16931,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "animal feed seller, animal protein, biorefinery plant, environmental improvement, fertilizers producer, pet feed, plant feed, sustainable agriculture",
       "hq": "Albuquerque, NM",
       "employees": 6
     },
@@ -16838,7 +16964,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "condensing boilers, condensing vessels, fire tubes, fire-tube boiler, heating equipment, pressure vessels, surge tank, watertube boilers",
       "hq": "Hutchinson, KS",
       "employees": 112,
       "scraped_description": "Why Superior Boiler? When you join Superior Boiler, you’re joining a team of Problem Solvers dedicated&nbsp;to providing customers what they ..."
@@ -16874,7 +17000,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon chemicals, carbon processing, chemical manufacture, chemicals supply, low-carbon product, sustainable methods",
       "hq": "Somerville, MA",
       "employees": 5,
       "scraped_description": "Advanced chemistry\nto enable the earth\nas a chemical reactor"
@@ -16910,7 +17036,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "electricity energy, intermittent renewable energy, solar installer, solar maintenance services, thermal energy, thermal services",
       "hq": "Lindon, UT",
       "employees": 207,
       "scraped_description": "Join Ambia’s growing solar team and power the clean energy future. Apply today. Discover why homeowners trust Ambia Services today!"
@@ -16946,7 +17072,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "dashboard reporting, enterprise saas platform, internet of things, leak detection service, property technology, real estate technology platform, real estate technology services, real estate te...",
       "hq": "Santa Fe Springs, CA",
       "employees": 26,
       "scraped_description": "Join the Drizzlex team! Explore exciting career opportunities in water conservation and sustainability. Discover how you can contribute to our mission and grow your career with us."
@@ -16982,7 +17108,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "food processor, food upcycling, hemp processing, powder processing, protein powder, shelves life, waste removal",
       "hq": "Ada, MI",
       "employees": 8,
       "scraped_description": "Discover career opportunities at GTF Technologies. Join our innovative team to work on cutting-edge food technology solutions. Explore roles in engineering, research, and more."
@@ -17018,7 +17144,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "automotive technology, automotive technology company, automotive technology product, clean fuel, clean technology, sports car, zero emission",
       "hq": "Herndon, VA",
       "employees": 4
     },
@@ -17051,7 +17177,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "building energy efficiency, built environment, energy saving tech, house windows, renewable energy, smart window, window manufacturer, windows technology",
       "hq": "Boulder, CO",
       "employees": 19
     },
@@ -17084,7 +17210,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "chips and salty snacks, food producer, food products, natural snack food, pantry and specialty food, plant-based, plant-based food, superfoods snacks",
       "hq": "Bend, OR",
       "employees": 314
     },
@@ -17117,7 +17243,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "computer games company, ecosystem health and monitoring, environment conservation services, gaming content, gaming platform, gaming software, mobile games",
       "hq": "Cambridge, MA",
       "employees": 18
     },
@@ -17150,7 +17276,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "industrial artificial intelligence, modular data center, power generation unit, renewable energy exploration, renewable energy generation, solar thermal energy, solar thermal system, susta...",
       "hq": "Miami, FL",
       "employees": 76,
       "scraped_description": "Powering AI with 24-hour Solar. Modular, dispatchable energy systems, built for the demands of AI infrastructure."
@@ -17186,7 +17312,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "advanced systems, conventional energy resources, intermittent renewable energy, turbine oil, urban environmental management, wind turbine developer, wind turbine equipment, wind t...",
       "hq": "Salt Lake City, UT",
       "employees": 2
     },
@@ -17219,7 +17345,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biomaterials company, biomaterials developer, carbon negative, printing activities, printing needs, printing technology",
       "hq": "Berthoud, CO",
       "employees": 13,
       "scraped_description": "Living Ink joined The Understory’s  “Startups Driving Sustainability”  Read here about their article about “Making Black Ink Greener”."
@@ -17255,7 +17381,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biodegradable plastic, biorefinery technology, food production, green technology product, industrial engineering, sustainable materials, sustainable packaging, warehousing technology",
       "hq": "West Sacramento, CA",
       "employees": 91,
       "scraped_description": "Origin is a new kind of chemical company, focused on the future of materials science. We&#039;re on the leading edge of carbon-negative material technology. Join us today."
@@ -17291,7 +17417,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "built environment, emission reduction, environmental sustainability, green construction, hydrothermal processing, industrial decarbonization, low carbonation, sustainable practices",
       "hq": "Pine Brook, NJ",
       "employees": 21,
       "scraped_description": "Queens Carbon is pioneering breakthrough technology to efficiently produce carbon-neutral cementitious materials with no green premium."
@@ -17327,7 +17453,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy semiconductor, intermittent renewable energy, measurement technology, semiconductor manufacturing, solar panels, solar photovoltaic",
       "hq": "Austin, TX",
       "employees": 13,
       "scraped_description": "Atonometrics will be attending and presenting technical papers at PVSC in Portland, Oregon and PVSEC/Intersolar in Munich, Germany. Visit our booth and attend our technical posters at PVSC from June 5th to 10th in Portland, Oregon. Attend our technical posters at PVSEC from June 20th to 24th in Munich, Germany."
@@ -17363,7 +17489,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "ag biotech, agriculture technology, fertilizer alternatives, food waste disposal, food waste reducer, organic fertilizer, organic fertilizer producer, plant biotech, plant biotechnology, sustaina...",
       "hq": "Pittsburgh, PA",
       "employees": 26,
       "scraped_description": "Transform food waste into resources with ZEUS anaerobic digester and Soil Sauce organic fertilizer. Commercial composting solutions and plant nutrients from Pittsburgh."
@@ -17399,7 +17525,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate adaptation, electrochemical system, environmental sensing, environmental sustainability, plant intelligence, urban planning",
       "hq": "Detroit, MI",
       "employees": 7
     },
@@ -17432,7 +17558,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "renewable energy finance, renewable energy power, renewable energy producer, renewable power asset, renewable product, solar solution provider",
       "hq": "Waterbury, VT",
       "employees": 14,
       "scraped_description": "Green Lantern Solar is a renewable energy developer specializing in solar solutions for municipalities, education, and healthcare sectors."
@@ -17467,7 +17593,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery storage, energy service, energy storage, high voltage, power solutions, renewable energy",
       "hq": "San Diego, CA",
       "employees": 461,
       "scraped_description": "&lt;p&gt;At Maxwell, we believe now is the time to turn the tide of homeownership with the power of technology. In fact, since 2015, we&#x27;ve already done it for millions of homeowners across America, across hundreds of financial institutions that use our software and our services every day. It&#x27;s with this purpose in mind that our team of world-class software experts and mortgage experts join together. Come join a fast-moving team to build for the next era of homeownership.&lt;/p&gt;"
@@ -17504,7 +17630,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "abi custom application, climate data analytics, constellation platform, earthing data, environmental monitoring, geospatial intelligence, remote sensing, satellite data processing",
       "hq": "Mountain View, CA",
       "employees": 200,
       "scraped_description": "Join Us. Muon leads the world in designing, deploying and operating satellite constellations to help protect the Earth’s people and ecosystems."
@@ -17540,7 +17666,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "autonomous robotics, environmental impact, forest management, forest monitoring, green technology, precision forestry, reforestation",
       "hq": "Orlando, FL",
       "employees": 3
     },
@@ -17573,7 +17699,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "circular economy, electrochemical process, electrochemical technology, material recovery, sustainable development, wastewater treatment, water management",
       "hq": "Alameda, CA",
       "employees": 9
     },
@@ -17606,7 +17732,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "distributing energy management, distributing energy platform, electric distribution system, power distribution system, power flows control, renewable energy infrastructure",
       "hq": "Chicago, IL",
       "employees": 9,
       "scraped_description": "Switched Source is providing power-electronics solutions to increase reliability, efficiency, and renewable energy hosting capacity, on legacy grid infrastructure and in distributed energy system applications."
@@ -17642,7 +17768,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate change control, enterprise asset management, environment data, land management, land use, natural resource management, product experience, remote sensing, vision develop...",
       "hq": "Truckee, CA",
       "employees": 52,
       "scraped_description": "AboutAboutVibrant Planet Data CommonsPyrologixTeam and CareersPartnersPress RoomPlatformScience + DataScienceOpen DataSolutionsOverviewLandscape resilienceCommunity wildfire resilienceInsightsArticlesData StoriesCase StudiesPublicationsPress ReleasesContact UsContact UsOur team"
@@ -17678,10 +17804,9 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "bug fixing, data center efficiency, gpu resources, infrastructure software, performance optimization, resource management, roi analysis, software service",
       "hq": "Round Rock, TX",
-      "employees": 14,
-      "scraped_description": null
+      "employees": 14
     },
     "careers_page_url": "https://xperf.ai/careers",
     "ats_platform": "custom",
@@ -17714,7 +17839,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate data, climate risk modeling, earthing data, land use, risk prediction, weather forecast, weather forecasting tool",
       "hq": "Berkeley, CA",
       "employees": 6,
       "scraped_description": "Terrafuse AI builds actionable climate intelligence for a resilient Earth."
@@ -17750,7 +17875,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "assistive technology, companion robots, electric wheelchairs, modular battery systems, personal assistant robot, wheelchair manufacturer",
       "hq": "Dover, DE",
       "employees": 4
     },
@@ -17783,7 +17908,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biodiscovery product, diagnostic development, dna sequencing, fermented protein, gene editing, gene therapy, human diagnostic, protein production",
       "hq": "Cambridge, MA",
       "employees": 110,
       "scraped_description": "We envision a world free of disease by using genetic medicines to fundamentally shift the paradigm from treatment to functional cure, and ultimately to prevention."
@@ -17819,7 +17944,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "green energy, green energy systems, medical device tools, solar energy design, solar energy system, superhydrophobic coating",
       "hq": "New Providence, NJ",
       "employees": 5
     },
@@ -17852,7 +17977,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biodegradable product, eco-friendly cups, plant-based product, sustainable cups, sustainable product company, sustainable product design",
       "hq": "New York, NY",
       "employees": 10,
       "scraped_description": "Be part of the Earth Brands team and help us build a sustainable future. Explore career opportunities in a company driven by eco-conscious innovation."
@@ -17888,7 +18013,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate data, disaster management software, earthing data, flood data management, floodplain development, floodplain management, floodplain mapping, land use, natural disaster dete...",
       "hq": "New York, NY",
       "employees": 98,
       "scraped_description": "Build the system of record  forthe built environment.. PlatformFeatures\n\nGeospatial dataHarness geospatial insights"
@@ -17924,7 +18049,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "billing platform, clean energy facility, clean energy program, clean energy software, clean energy transition, utility billing",
       "hq": "Walnut Creek, CA",
       "employees": 110,
       "scraped_description": "The One True Rates Platform"
@@ -17960,7 +18085,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "gan semiconductor, intermittent renewable energy, power conversion system, power electronics, power systems, semiconductor materials, semiconductor systems, solar photovoltaic",
       "hq": "Torrance, CA",
       "employees": 190,
       "scraped_description": "Careers. by navadmin | Feb 12, 2019 | 0 comments"
@@ -17996,7 +18121,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon emission, carbon emission control, forest conservation, pollution control, precision agriculture, reforestation firm, reforestation technology",
       "hq": "San Francisco, CA",
       "employees": 90,
       "scraped_description": "Carbon Direct offers science-backed carbon management services, including carbon measurement, emissions reduction, and high-quality carbon removal solutions."
@@ -18031,7 +18156,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "battery storage, electrical energy storage, energy storage, energy storage system, grid application, grid infrastructure",
       "hq": "San Leandro, CA",
       "employees": 10
     },
@@ -18064,7 +18189,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy storage, renewable energy, renewable energy storage, solar energy, solar energy options, solar system provider",
       "hq": "San Francisco, CA",
       "employees": 5
     },
@@ -18097,7 +18222,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "community engagement, coupons redemption, food waste control, food waste reduction, sustainability platform, waste management",
       "hq": "Tampa, FL",
       "employees": 6
     },
@@ -18130,7 +18255,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "actionable insights, climate data analytics, maritime surveillance, monitoring tasks, threat hunt, weather conditions tracker, weather data application, weather measuring instruments",
       "hq": "El Segundo, CA",
       "employees": 10,
       "scraped_description": "Discover APOLLO"
@@ -18167,7 +18292,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "agentic ai, business tools, complex data, data management tool, geospatial intelligence service, swarm robotics, task management",
       "hq": "Boise, ID",
       "employees": 9,
       "scraped_description": "Kestrel Intelligence: autonomous ISR, AI-driven sensing, and scalable defense technology. See what&#x27;s happening anywhere on Earth without being a sensor expert."
@@ -18204,7 +18329,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "electric vehicle, environmental services, fleet management, remote sensing, soil moisture, telematics data, wireless service, wireless system",
       "hq": "Loveland, CO",
       "employees": 7
     },
@@ -18237,7 +18362,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "building integrated photovoltaics, clean solar energy, custom homebuilder, intermittent renewable energy, residential solar power, residential solar rooftop, solar electric energy, solar elec...",
       "hq": "Gilbert, AZ",
       "employees": 2
     },
@@ -18270,7 +18395,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "climate technology, energy systems, passive cooling, passive cooling technology, thermal control, thermal control system",
       "hq": "Somerville, MA",
       "employees": 2
     },
@@ -18303,7 +18428,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "air capture technology, carbon dioxide detection, clean air, directing air capture, field testing services, water detection",
       "hq": "Los Angeles, CA",
       "employees": 34,
       "scraped_description": "Carbon Capture Science &amp; Technology: Life cycle analysis of a hybrid direct air capture system enabling combined carbon dioxide and water extraction from ambient air. @media (max-width: 699px) { #nav-2 .wp-block-navigation__responsive-container-open:not(.always-shown) { display: flex !important; } #nav-2 .wp-block-navigation__responsive-container:not(.is-menu-open) { display: none !important; }  }\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\nAboutTechnologyNewsContact\n\n\n\n\t\t\t\t\t\t\t\tAboutTechnology"
@@ -18339,7 +18464,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "mobile energy, mobile energy storage, modular energy storage, sustainable travel, sustainable travel solution, trailer truck",
       "hq": "Los Angeles, CA",
       "employees": 40
     },
@@ -18372,7 +18497,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "circular economy, fiber clothing, polycarbonate material, textile fiber, textile services, waste reduction",
       "hq": "Knoxville, TN",
       "employees": 2
     },
@@ -18405,7 +18530,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cargo bikes, city bikes, e-bikes manufacturer, electric bicycle, electric mobility vehicles, electric vehicle, mobility system, mountain bike, sustainable project",
       "hq": "New York, NY",
       "employees": 187
     },
@@ -18438,7 +18563,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "adhesive materials, adhesive tapes products, adhesive tapes supplier, adhesives product, plant-based product, protective coating, sustainable materials provider, sustainable technology pl...",
       "hq": "Lafayette, IN",
       "employees": 10
     },
@@ -18471,7 +18596,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "alternative meat, alternative protein, cell culture media, cultivated meat, cultivated protein, food opinions, meat producer, sustainable beef production, sustainable meat",
       "hq": "Chicago, IL",
       "employees": 14,
       "scraped_description": "-->. Real Meat,  Happier Planet."
@@ -18506,7 +18631,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "energy storage firm, flow batteries production, flow batteries technology, grid energy storage, sustainable batteries, sustainable methods",
       "hq": "Madison, WI",
       "employees": 5
     },
@@ -18539,7 +18664,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "cannabinoids-based medicine, cannabis, cannabis space, hemp industry, hemp supplements, nutraceutical manufacturer, seeds genetics, tobacco",
       "hq": "West Hollywood, CA",
       "employees": 32
     },
@@ -18572,7 +18697,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "ag biotech, agricultural application, agriculture technology, crop growth, crop protection, fertilizer alternatives, impact investing vertical, land use, organic fertilizer, plant biotech, plant biot...",
       "hq": "Concord, CA",
       "employees": 7
     },
@@ -18605,7 +18730,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "biodegradable materials, biopolymer product, chitosan polymer, green chemistry, materials science, sustainable manufacturing, waste recycling",
       "hq": "Cambridge, MA",
       "employees": 2,
       "scraped_description": "Join Kykloris and help build sustainable materials from seafood shell waste. We are hiring scientists, engineers, and operators passionate about climate tech, green chemistry, and biotechnology."
@@ -18641,7 +18766,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "autonomous vessels, environmental robots, pollution detection, pollution mapping, real time sensing, remote operation, shoreline cleaning, water pollution, water quality",
       "hq": "Ann Arbor, MI",
       "employees": 2
     },
@@ -18674,7 +18799,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "carbon reduction, methane removal, recycling service, sustainable technology provider, waste reduction, waste reduction company",
       "hq": "Danbury, TX",
       "employees": 4
     },
@@ -18707,7 +18832,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "distillation technology, lithium mining, lithium producer, membrane distillation, reverse osmosis, water treatment work",
       "hq": "Sharon, CT",
       "employees": 21,
       "scraped_description": "Through our proprietary technology, KMX has changed how critical minerals and lithium are secured, and provides next generation water treatment opportunities."
@@ -18742,7 +18867,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "building product, civil construction, green home, house builder, house design, housing product",
       "hq": "Austin, TX",
       "employees": 7
     },
@@ -18807,7 +18932,7 @@
     "company_profile": {
       "sector": null,
       "description": null,
-      "keywords": null,
+      "keywords": "data marketplace, data science, data standardization, data structure platform, exploration area, geological data, geology analysis, geoscience data, mineral exploration",
       "hq": "Boulder, CO",
       "employees": 6,
       "scraped_description": "MinersAI joins the Creative Destruction Lab in Vancouver. ArticleMinersAI joins the Creative Destruction Lab in VancouverOctober 29, 2024MinersAI joins the 24/25 cohort of the Minerals stream in Vancouver, Canada."
@@ -24714,13 +24839,20 @@
     "id": "wwwactpowerservicescom",
     "name": "ACT Power Services",
     "domain": "www.actpowerservices.com",
-    "funding_signals": [],
+    "funding_signals": [
+      {
+        "date": "31-Jan-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
     "company_profile": {
       "sector": null,
       "description": null,
       "keywords": "drone inspection, energy facility, maintenance services, maintenance services firm, power service, renewable energy, renewable energy group, solar energy",
-      "hq": null,
-      "employees": null
+      "hq": "Morrisville, NC",
+      "employees": 110
     },
     "careers_page_url": null,
     "ats_platform": null,
@@ -24730,13 +24862,20 @@
     "id": "wwwelementenergycom",
     "name": "Element Energy",
     "domain": "www.elementenergy.com",
-    "funding_signals": [],
+    "funding_signals": [
+      {
+        "date": "28-Jan-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 126.2
+      }
+    ],
     "company_profile": {
       "sector": null,
       "description": null,
       "keywords": "battery management, cell management system, electric vehicle, energy managment, grid infrastructure, renewable energy power",
-      "hq": null,
-      "employees": null
+      "hq": "Menlo Park, CA",
+      "employees": 56
     },
     "careers_page_url": null,
     "ats_platform": null,
@@ -24746,13 +24885,20 @@
     "id": "wwwvalorinfrastructurepartners",
     "name": "Valor Infrastructure Partners",
     "domain": "www.valorinfrastructurepartners…",
-    "funding_signals": [],
+    "funding_signals": [
+      {
+        "date": "28-Jan-2026",
+        "deal_type": "General Corporate Pu...",
+        "size_mm": 3500,
+        "total_raised_mm": 3500
+      }
+    ],
     "company_profile": {
       "sector": null,
       "description": null,
       "keywords": "clean energy firm, energy project, renewable energy, renewable energy developer, solar infrastructure projects, solar project, wind project",
-      "hq": null,
-      "employees": null
+      "hq": "Palm Beach Gardens, FL",
+      "employees": 13
     },
     "careers_page_url": null,
     "ats_platform": null,
@@ -24762,13 +24908,20 @@
     "id": "wwweveryelectriccom",
     "name": "Every Electric",
     "domain": "www.everyelectric.com",
-    "funding_signals": [],
+    "funding_signals": [
+      {
+        "date": "21-Jan-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": null,
+        "total_raised_mm": 0.03
+      }
+    ],
     "company_profile": {
       "sector": null,
       "description": null,
       "keywords": "battery systems, distributed energy solutions, energy storages, grid storage, renewable integration, residential energy, sustainable technology, virtual power plant, virtual power plant servi…",
-      "hq": null,
-      "employees": null
+      "hq": "New York, NY",
+      "employees": 7
     },
     "careers_page_url": null,
     "ats_platform": null,
@@ -24778,13 +24931,20 @@
     "id": "wwwgreentallyai",
     "name": "GreenTally AI",
     "domain": "www.greentally.ai",
-    "funding_signals": [],
+    "funding_signals": [
+      {
+        "date": "14-Jan-2026",
+        "deal_type": "Seed Round",
+        "size_mm": null,
+        "total_raised_mm": 0.5
+      }
+    ],
     "company_profile": {
       "sector": null,
       "description": null,
       "keywords": "carbon accounting software, carbon data, carbon footprint reporting, category analysis, esg reporting, global transition",
-      "hq": null,
-      "employees": null
+      "hq": "San Mateo, CA",
+      "employees": 4
     },
     "careers_page_url": null,
     "ats_platform": null,
@@ -26249,6 +26409,719 @@
       "keywords": null,
       "hq": null,
       "employees": null
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwmazamaenergycom-wwwmonarchtractorcom",
+    "name": "Mazama Energy\r11Monarch",
+    "domain": "www.mazamaenergy.com\rwww.monarchtractor.com",
+    "funding_signals": [
+      {
+        "date": "15-Apr-2026\r15-Apr-2026",
+        "deal_type": "Later Stage VC\rMerger/Acquisition",
+        "size_mm": 100,
+        "total_raised_mm": 36.00251
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "electric power, electric power generation, geothermal electricity, geothermal energy, geothermal power, power generation\relectric automobile, farm tractor equipment, smart tractors, sustainable farming system, tractors sales, tractors supply",
+      "hq": "Frisco, TX\rLivermore, CA",
+      "employees": 22214
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwneifundorg",
+    "name": "NEIF",
+    "domain": "www.neifund.org",
+    "funding_signals": [
+      {
+        "date": "19-Feb-2026",
+        "deal_type": "Equity Crowdfunding",
+        "size_mm": null,
+        "total_raised_mm": 10.64
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "business energy, energy efficiency firm, energy financing, financing film, home improvement, lender firm, renewable energy finance, utilities sector",
+      "hq": "Allentown, PA",
+      "employees": 33
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwvelocigrocom",
+    "name": "VelociGro",
+    "domain": "www.velocigro.com",
+    "funding_signals": [
+      {
+        "date": "19-Feb-2026",
+        "deal_type": "Merger/Acquisition",
+        "size_mm": null,
+        "total_raised_mm": 1.64
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "agriculture activities, bioscience platform, environmental sustainability, farming technology, indoor farming, indoor farming components, industrial warehouse, vertical farming",
+      "hq": "Monrovia, CA",
+      "employees": 4
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwbrightwatertoolscom",
+    "name": "Brightwater Tools",
+    "domain": "www.brightwatertools.com",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": null,
+        "total_raised_mm": 0.13
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "fertilizer production, resource recovery services, sustainable sanitation, wastewater treatment, wastewater treatment product, wastewater treatment system",
+      "hq": "Brattleboro, VT",
+      "employees": 12
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwbrixraecom",
+    "name": "BrixRae",
+    "domain": "www.brixrae.com",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Angel (individual)",
+        "size_mm": 5,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "electric engine, green transportation, reducing carbon emission, steam engine, sustainable system, zero emission",
+      "hq": "Pensacola, FL",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwbuzzebiz",
+    "name": "Buzze",
+    "domain": "www.buzze.biz",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 0.23,
+        "total_raised_mm": 1.53
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "charger systems, charging network, charging network provider, charging solutions, charging station, electric vehicle, ev charger, ev charging",
+      "hq": "Phoenix, AZ",
+      "employees": 8
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwcalasystemscom",
+    "name": "Cala Systems",
+    "domain": "www.calasystems.com",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 8.05,
+        "total_raised_mm": 15.55
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "climate technology, energy resource exploration, energy resources services, heat pump development, heat pump servicer, residential heating",
+      "hq": "Somerville, MA",
+      "employees": 22
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwdgmatrixcom",
+    "name": "DG Matrix",
+    "domain": "www.dgmatrix.com",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 60,
+        "total_raised_mm": 80
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "charging service provider, electrical equipment compay, energy microgrids, equipment manufacturing, fast charging, fleet charging, power electronics",
+      "hq": "Morrisville, NC",
+      "employees": 185
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwefficientcomputer",
+    "name": "Efficient Computer",
+    "domain": "www.efficient.computer",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 60,
+        "total_raised_mm": 76.22
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "chips architecture, computer hardware, computing processor, microchip technology, processor architecture, semiconductors chips",
+      "hq": "Pittsburgh, PA",
+      "employees": 48
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwrealtafusioncom",
+    "name": "Realta Fusion",
+    "domain": "www.realtafusion.com",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Debt - General",
+        "size_mm": 9.5,
+        "total_raised_mm": 54.01
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "dispatchable energy sources, energy company marketing, energy processing, fusion energy creation, fusion energy production, industrial heating equipment",
+      "hq": "Madison, WI",
+      "employees": 40
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwsolsticeus",
+    "name": "Solstice Power Technologies",
+    "domain": "www.solstice.us",
+    "funding_signals": [
+      {
+        "date": "18-Feb-2026",
+        "deal_type": "Buyout/LBO",
+        "size_mm": null,
+        "total_raised_mm": 6.14
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean energy firm, community solar energy, energy management, solar energy product, solar photovoltaic, solar power energy",
+      "hq": "Cambridge, MA",
+      "employees": 55
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwcanyonmagnetenergy",
+    "name": "Canyon Magnet",
+    "domain": "www.canyonmagnet.energy",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Grant",
+        "size_mm": 0.2,
+        "total_raised_mm": 0.6
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "energy security, energy technology, environmental sustainability, fusion energy, power plant, superconducting magnets, sustainable energy",
+      "hq": "New York, NY",
+      "employees": 11
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "e-zrecyclingcom",
+    "name": "E-Z Recycling",
+    "domain": "e-zrecycling.com",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Buyout/LBO",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "destruction services, expired product identification, logistic services, product destruction, product destruction process, recycling services",
+      "hq": "Saint Paul, MN",
+      "employees": 32
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwenergyvaultcom",
+    "name": "Energy Vault Holdings (NYS: NRGV)",
+    "domain": "www.energyvault.com",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Debt Refinancing",
+        "size_mm": 140,
+        "total_raised_mm": 974.2
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean energy, climate tech company, energy storage firm, energy storage startups, energy storage system, energy storage tower, enterprise resource planning, erp, grid infrastructure, non-...",
+      "hq": "Westlake Village, CA",
+      "employees": 163
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwgaia-energy-research-instit",
+    "name": "Gaia Energy Research Institute",
+    "domain": "www.gaia-energy-research-instit...",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Grant",
+        "size_mm": 0.21,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "analytical services, energy research, performance testing, system modeling, technical analysis, thermodynamic energy",
+      "hq": "Alexandria, PA",
+      "employees": 7
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwhornetechnologiescom",
+    "name": "Horne Technologies",
+    "domain": "www.hornetechnologies.com",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 0.5,
+        "total_raised_mm": 2.15
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "dispatchable energy sources, electrostatic device, energy data, fusion energy, nuclear fusion, power generation work, research device",
+      "hq": "Longmont, CO",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwokeanosglobal",
+    "name": "Okèanos",
+    "domain": "www.okeanos.global",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 8.5,
+        "total_raised_mm": 12.32
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "biodegradable packaging, packaging material manufacturer, plastic alternative, plastic replacement, stone products, sustainable packaging",
+      "hq": "Miami, FL",
+      "employees": 70
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwrefiantai",
+    "name": "Refiant",
+    "domain": "www.refiant.ai",
+    "funding_signals": [
+      {
+        "date": "17-Feb-2026",
+        "deal_type": "Seed Round",
+        "size_mm": 4.89,
+        "total_raised_mm": 4.89
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "algorithm tools, artificial intelligence, cost reduction, cost saving, machine learning, model compression solutions, privacy service, sustainability tech",
+      "hq": "Dover, DE",
+      "employees": 4
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwkilipercorpcom",
+    "name": "Kiliper Corp",
+    "domain": "www.kilipercorp.com",
+    "funding_signals": [
+      {
+        "date": "13-Feb-2026",
+        "deal_type": "Buyout/LBO",
+        "size_mm": null,
+        "total_raised_mm": null
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "flexible packaging, flexible packaging product, flexible packaging service, flexo printing, lamination film, lamination service, managed inventory, stretch sleeves",
+      "hq": "Ames, IA",
+      "employees": 22
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwmesodynecom",
+    "name": "Mesodyne",
+    "domain": "www.mesodyne.com",
+    "funding_signals": [
+      {
+        "date": "13-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 2.8,
+        "total_raised_mm": 5.63
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "electricity generation technology, energy generation system, portable power, power generation company, power generation system, power generator",
+      "hq": "Somerville, MA",
+      "employees": 20
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwphoenixtailingscom",
+    "name": "Phoenix Tailings",
+    "domain": "www.phoenixtailings.com",
+    "funding_signals": [
+      {
+        "date": "13-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 116.6,
+        "total_raised_mm": 128.71
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "green mining, metal processing, metal production, metal refining service, mining technology, sustainable chemicals",
+      "hq": "Woburn, MA",
+      "employees": 115
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "ubiqdcom",
+    "name": "UbiQD",
+    "domain": "ubiqd.com",
+    "funding_signals": [
+      {
+        "date": "13-Feb-2026",
+        "deal_type": "Later Stage VC",
+        "size_mm": 8.29,
+        "total_raised_mm": 50.27
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "clean energy unit, clean energy utility, indoor farming, indoor farming components, light conversion, nano semiconductor, nanocrystals material, nanotechnology developer, quantum proc...",
+      "hq": "Los Alamos, NM",
+      "employees": 39
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwalvaenergyio",
+    "name": "Alva Energy (Energy Services)",
+    "domain": "www.alvaenergy.io",
+    "funding_signals": [
+      {
+        "date": "12-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 32.52,
+        "total_raised_mm": 32.52
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "energy deployment, nuclear energy, nuclear power, nuclear project, power development, project management",
+      "hq": "Cambridge, MA",
+      "employees": 10
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwffcom",
+    "name": "Faraday&Future (NAS: FFAI)",
+    "domain": "www.ff.com",
+    "funding_signals": [
+      {
+        "date": "04-Feb-2026",
+        "deal_type": "PIPE",
+        "size_mm": 12,
+        "total_raised_mm": 6023
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "autonomous vehicle, climate tech company, consumer battery electric vehicle, electric vehicle, electric vehicle manufacturer, electric vehicle manufacturing, electric vehicle models, electric ...",
+      "hq": "Gardena, CA",
+      "employees": 249
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwgreensteelenvironmentalc",
+    "name": "Green Steel Environmental",
+    "domain": "www.greensteelenvironmental.c...",
+    "funding_signals": [
+      {
+        "date": "04-Feb-2026",
+        "deal_type": "Early Stage VC",
+        "size_mm": 2.34,
+        "total_raised_mm": 3.44
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "biogas treatment, biogas treatment plant, commercial wastewater treatment, industrial wastewater treatment, sulfur removal, wastewater treatment plant",
+      "hq": "Boulder, CO",
+      "employees": 5
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwaimmlabscom",
+    "name": "Sec Recharging EVs",
+    "domain": "www.aimmlabs.com",
+    "funding_signals": [
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.02
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "antimicrobial material, carbon materials, carbon materials business, cleantech company, filtration technology, materials science research, water purification, water treatment",
+      "hq": "Dayton, OH",
+      "employees": 6
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwoceanstatesensingcom",
+    "name": "Nectar",
+    "domain": "www.oceanstatesensing.com",
+    "funding_signals": [
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.02
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "consulting services, consulting services firm, ocean engineering, ocean engineering service, thermal sensing, thermal system",
+      "hq": "McLean, VA",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwseeweedcamerascom",
+    "name": "Reliability Engine",
+    "domain": "www.seeweedcameras.com",
+    "funding_signals": [
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.02
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "artificial intelligence imaging, camera hardware, data recording system, marine technology product, monitoring device, remote video monitoring, underwater camera vision",
+      "hq": "Little Canada, MN",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwtensoraio",
+    "name": "Tandem PV",
+    "domain": "www.tensora.io",
+    "funding_signals": [
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.12
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "3d sensor, carbon storage, ccs technology, deformation monitoring, electronic equipment, geophysical data, motion measurement, sensors tech",
+      "hq": "Brooklyn, NY",
+      "employees": 2
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwvolticshippingcom",
+    "name": "Tensora",
+    "domain": "www.volticshipping.com",
+    "funding_signals": [
+      {
+        "date": "01-Jan-2026",
+        "deal_type": "Accelerator/Incubator",
+        "size_mm": 0.02,
+        "total_raised_mm": 0.52
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "cargo ship, cargo transport, green shipping, maritime transport, reduce greenhouse gas, solar vehicle",
+      "hq": "Boston, MA",
+      "employees": 7
+    },
+    "careers_page_url": null,
+    "ats_platform": null,
+    "ocr_uncertain": false
+  },
+  {
+    "id": "wwwdownstreamrentalscom",
+    "name": "nVolve Technologies",
+    "domain": "www.downstreamrentals.com",
+    "funding_signals": [
+      {
+        "date": "03-Nov-2025",
+        "deal_type": "Early Stage VC",
+        "size_mm": 8,
+        "total_raised_mm": 12.3
+      }
+    ],
+    "company_profile": {
+      "sector": null,
+      "description": null,
+      "keywords": "automated pricing, logistics coordination, operational efficiency, real time bookings, scrap recycling, vendor management, waste management platform",
+      "hq": "Frisco, TX",
+      "employees": 32
     },
     "careers_page_url": null,
     "ats_platform": null,

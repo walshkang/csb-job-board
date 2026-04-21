@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const STAGES = ['discovery', 'fingerprint', 'scrape', 'extract', 'categorize'];
+const STAGES = ['profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'categorize'];
 
 function isBlank(value) {
   return value === undefined || value === null || value === '';
@@ -9,6 +9,10 @@ function isBlank(value) {
 
 function getStage(company) {
   const c = company || {};
+
+  if (isBlank(c.profile_attempted_at)) {
+    return 'profile';
+  }
 
   if (isBlank(c.careers_page_discovery_method)) {
     return 'discovery';
@@ -69,6 +73,7 @@ if (require.main === module) {
   const companies = JSON.parse(raw);
 
   const tallies = {
+    profile: 0,
     discovery: 0,
     fingerprint: 0,
     scrape: 0,

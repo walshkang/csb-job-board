@@ -4,8 +4,9 @@
   Usage: node src/agents/discovery.js [--force] [--verbose]
 
   Reads data/companies.json and discovers careers page URLs using:
-    1) Standard URL patterns
-    2) Sitemap
+    1) Profile careers_hints (when company.careers_hints is present)
+    2) Standard URL patterns
+    3) ATS slug guesses, homepage link scan, sitemap
 
   Writes updates back to data/companies.json every 10 companies (atomic tmp-rename).
 */
@@ -272,6 +273,40 @@ async function tryAtsSlugs(company, verbose) {
   return null;
 }
 
+// Try absolute URLs from profile stage (company.careers_hints); first 200 OK wins.
+async function tryCareersHints(company, verbose) {
+  const hints = company.careers_hints;
+  if (!Array.isArray(hints) || hints.length === 0) return null;
+  for (const hint of hints) {
+    const urlRaw = typeof hint === 'string' ? hint : hint && hint.url;
+    if (!urlRaw || typeof urlRaw !== 'string') continue;
+    if (!/^https?:\/\//i.test(urlRaw)) continue;
+    let host;
+    try {
+      host = new URL(urlRaw).hostname;
+    } catch (_) {
+      continue;
+    }
+    const location =
+      hint && typeof hint === 'object' && hint.location != null && String(hint.location).trim()
+        ? String(hint.location).trim()
+        : 'unknown';
+    try {
+      const res = await tryHeadThenGet(urlRaw, host);
+      if (res && res.status === 200) {
+        verboseLog(verbose, `profile_hint hit (${location}): ${urlRaw}`);
+        return {
+          found: true,
+          url: res.url || urlRaw,
+          method: 'profile_hint',
+          profile_hint_location: location,
+        };
+      }
+    } catch (_) { /* try next */ }
+  }
+  return null;
+}
+
 // Fetch homepage once and scan <a href> tags for career-related links.
 const CAREER_LINK_RE = /\b(career|careers|job|jobs|join|join-?us|openings|positions|hiring|work-with-us|work_with_us)\b/i;
 
@@ -366,21 +401,38 @@ async function processCompany(company, opts) {
         company.careers_page_discovery_method = result.method;
         company.ats_platform = detectAtsPlatform(result.url);
         delete company.careers_page_failure_reason;
+        if (result.method === 'profile_hint' && result.profile_hint_location != null) {
+          company.careers_page_profile_hint_location = result.profile_hint_location;
+        } else {
+          delete company.careers_page_profile_hint_location;
+        }
       } else {
         company.careers_page_url = null;
         company.careers_page_reachable = false;
         company.careers_page_discovery_method = result.method || 'not_found';
         company.ats_platform = null;
         company.careers_page_failure_reason = classifyFailureReason(steps);
+        delete company.careers_page_profile_hint_location;
       }
     }
     return { ...result, steps, duration_ms: Date.now() - t0 };
   };
 
-  // Shared cache so homepage is only fetched once across steps 3 and 4.
+  // Shared cache so homepage is only fetched once across homepage scan and sitemap-adjacent flow.
   const homepageCache = {};
 
-  // 1) Standard paths — probe all in parallel, take first 200 OK
+  // 1) Profile careers_hints — sequential, first 200 OK
+  const hintResult = await tryCareersHints(company, verbose);
+  if (hintResult) {
+    const loc = hintResult.profile_hint_location || 'unknown';
+    steps.push(`profile_hint:hit:${loc}`);
+    return done(hintResult);
+  }
+  if (Array.isArray(company.careers_hints) && company.careers_hints.length > 0) {
+    steps.push('profile_hint:miss');
+  }
+
+  // 2) Standard paths — probe all in parallel, take first 200 OK
   try {
     const standardResult = await Promise.any(
       STANDARD_PATHS.map(p => {
@@ -405,7 +457,7 @@ async function processCompany(company, opts) {
     else steps.push('standard_paths:all_miss');
   }
 
-  // 2) ATS slug guessing (Greenhouse + Lever)
+  // 3) ATS slug guessing (Greenhouse + Lever)
   const atsResult = await tryAtsSlugs(company, false);
   if (atsResult) {
     steps.push(`ats_slug:hit`);
@@ -413,7 +465,7 @@ async function processCompany(company, opts) {
   }
   steps.push('ats_slug:miss');
 
-  // 3) Homepage link scan — one fetch, regex over <a href> tags
+  // 4) Homepage link scan — one fetch, regex over <a href> tags
   const linkResult = await scanHomepageLinks(domain, homepageCache, false, usePlaywright);
   if (linkResult) {
     steps.push(`homepage_link_scan:hit`);
@@ -421,7 +473,7 @@ async function processCompany(company, opts) {
   }
   steps.push(homepageCache.html ? 'homepage_link_scan:miss' : 'homepage_fetch:null');
 
-  // 4) Sitemap
+  // 5) Sitemap
   try {
     const candidates = await findSitemapCandidates(domain);
     let sitemapHit = false;
@@ -524,7 +576,7 @@ async function main() {
   let totalProcessed = 0;
   let foundCount = 0;
   let notFoundCount = 0;
-  const methodCounts = { standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, playwright_scan: 0, not_found: 0 };
+  const methodCounts = { profile_hint: 0, standard_pattern: 0, ats_slug: 0, homepage_link_scan: 0, sitemap: 0, playwright_scan: 0, not_found: 0 };
   const errorDomains = new Set();
 
   let writeQueue = Promise.resolve();
@@ -563,6 +615,7 @@ async function main() {
             found: !!result.found,
             method: result.method || null,
             url: result.url || null,
+            profile_hint_location: company.careers_page_profile_hint_location || null,
             failure_reason: company.careers_page_failure_reason || null,
             steps: result.steps || [],
             duration_ms: result.duration_ms || 0,

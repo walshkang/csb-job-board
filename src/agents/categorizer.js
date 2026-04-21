@@ -154,7 +154,9 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
   const climateReason = repJob.climate_relevance_reason || '';
   const descSummary = repJob.description_summary || '';
 
-  const companyProfile = (companyRecord.company_profile && companyRecord.company_profile.scraped_description) ? companyRecord.company_profile.scraped_description : null;
+  const rawDesc = companyRecord.company_profile && companyRecord.company_profile.description;
+  const trimmedDesc = rawDesc != null ? String(rawDesc).trim() : '';
+  const companyProfile = trimmedDesc || null;
   const pitchbookKeywords = (companyRecord.company_profile && companyRecord.company_profile.keywords) ? companyRecord.company_profile.keywords : null;
 
   if (!pitchbookKeywords) {

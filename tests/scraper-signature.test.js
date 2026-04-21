@@ -37,6 +37,7 @@ describe('Scraper signature helpers', () => {
 describe('Pipeline stage routing', () => {
   test('signature-matched scrape skips extract stage', () => {
     const company = {
+      profile_attempted_at: '2026-01-01T00:00:00.000Z',
       careers_page_discovery_method: 'manual',
       careers_page_reachable: true,
       fingerprint_attempted_at: '2026-01-01T00:00:00.000Z',

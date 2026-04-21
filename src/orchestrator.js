@@ -2,7 +2,7 @@
 /*
   Streaming pipeline orchestrator.
 
-  Runs discovery → fingerprint → scrape → extract → categorize concurrently,
+  Runs profile → discovery → fingerprint → scrape → extract → categorize concurrently,
   per-stage queues with independent concurrency caps. Companies flow through
   stages independently; one slow company doesn't block others.
 
@@ -22,6 +22,7 @@ const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categor
 const ARTIFACTS_DIR = path.join(REPO_ROOT, 'artifacts', 'html');
 
 const config = require('./config');
+const { profileCompany } = require('./agents/profile');
 const { processCompany } = require('./agents/discovery');
 const { fingerprintCompany } = require('./agents/fingerprinter');
 const { scrapeCompany } = require('./agents/scraper');
@@ -50,6 +51,7 @@ const DRY_RUN = flag('dry-run');
 const VERBOSE = flag('verbose');
 
 const CONCURRENCIES = {
+  profile: 6,
   discovery: 8,
   fingerprint: 4,
   scrape: 5,
@@ -139,6 +141,22 @@ const markDirty = () => { dirty = true; };
 // Each handler returns { outcome, extra } where outcome ∈ 'success' | 'no_result' | 'skipped'.
 // Exceptions -> 'failure' (handled by caller).
 async function runStage(stage, c) {
+  if (stage === 'profile') {
+    await profileCompany(c, { verbose: VERBOSE });
+    c.profile_attempted_at = new Date().toISOString();
+    const desc = (c.company_profile && String(c.company_profile.description).trim()) || '';
+    const hints = Array.isArray(c.careers_hints) ? c.careers_hints : [];
+    const hasSignal = desc.length > 0 || hints.length >= 1;
+    return {
+      outcome: hasSignal ? 'success' : 'no_result',
+      extra: {
+        description_present: desc.length > 0,
+        description_len: desc.length,
+        careers_hints_count: hints.length,
+      },
+    };
+  }
+
   if (stage === 'discovery') {
     await processCompany(c, {});
     if (c.careers_page_reachable === true) {
@@ -210,7 +228,7 @@ async function runStage(stage, c) {
     let rep = repJobByCompany.get(c.id);
     if (!rep) {
       const cp = c.company_profile || {};
-      const desc = (cp.description && String(cp.description).trim()) || cp.scraped_description || c.name || '';
+      const desc = (cp.description && String(cp.description).trim()) || c.name || '';
       rep = { job_title_normalized: '', job_function: '', description_summary: desc, climate_relevance_reason: '' };
     }
     const { provider, apiKey, model } = categorizerAgent;
@@ -263,9 +281,9 @@ function enqueue(c) {
         stats.no_result[stage]++;
         events.emit(stage, c, 'no_result', { duration_ms: ms, ...extra });
         log(stage, c, '∅', `${ms}ms ${JSON.stringify(extra)}`);
-        // For discovery/fingerprint, advance anyway — getStage handles skip-to-categorize
-        // and fingerprint is best-effort. For scrape/extract/categorize, don't advance.
-        shouldAdvance = stage === 'discovery' || stage === 'fingerprint';
+        // For discovery/fingerprint/profile, advance anyway — getStage handles skip-to-categorize
+        // and fingerprint/profile are best-effort. For scrape/extract/categorize, don't advance.
+        shouldAdvance = stage === 'discovery' || stage === 'fingerprint' || stage === 'profile';
       } else if (outcome === 'skipped') {
         stats.skipped[stage]++;
         events.emit(stage, c, 'skipped', { duration_ms: ms, ...extra });
@@ -392,7 +410,7 @@ process.on('SIGTERM', async () => { await shutdown('SIGTERM'); process.exit(143)
 
   for (const c of targets) enqueue(c);
 
-  await Promise.all(STAGES.map(s => queues[s].onIdle()));
+  for (const s of STAGES) await queues[s].onIdle();
   await shutdown('done');
   process.exit(0);
 })();
