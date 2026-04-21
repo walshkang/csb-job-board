@@ -46,6 +46,14 @@ function classifyShape(html) {
   return 'other';
 }
 
+function isWebflowHtml(html) {
+  const slice = html.length > 2000000 ? html.slice(0, 2000000) : html;
+  const metaGen = slice.match(/<meta[^>]*name\s*=\s*["']generator["'][^>]*content\s*=\s*["']([^"']*)["']/i);
+  const gen = metaGen ? metaGen[1].toLowerCase() : '';
+  if (gen.includes('webflow')) return true;
+  return /data-wf-domain|website-files\.com\/[^"']*\.webflow\./i.test(slice);
+}
+
 /**
  * Same intent as careers URL patterns used in audits — job posting links only.
  */
@@ -54,6 +62,36 @@ function isBareListingPath(pathname) {
   if (!pathname) return false;
   const p = pathname.replace(/\/+$/, '').toLowerCase();
   return /^\/(jobs?|careers|career|opportunities|openings|positions|vacancies)\/?$/.test(p);
+}
+
+const DENIED_PATH_SEGMENTS = new Set([
+  'privacy',
+  'privacy-policy',
+  'terms',
+  'terms-of-use',
+  'terms-and-conditions',
+  'contact'
+]);
+
+function isDeniedPolicyOrNavPath(pathname) {
+  if (!pathname) return false;
+  const segments = pathname
+    .toLowerCase()
+    .split('/')
+    .filter(Boolean)
+    .map(s => s.replace(/\.[a-z0-9]+$/i, ''));
+  if (!segments.length) return false;
+  for (let i = 0; i < segments.length; i++) {
+    if (DENIED_PATH_SEGMENTS.has(segments[i])) return true;
+    if (
+      i > 0 &&
+      /^(jobs?|careers|career|opportunities|openings|positions|vacancies)$/.test(segments[i - 1]) &&
+      DENIED_PATH_SEGMENTS.has(segments[i])
+    ) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function looksLikeJobHref(href) {
@@ -73,6 +111,34 @@ function looksLikeJobHref(href) {
   if (/\/jobs?[-_][a-z0-9]/i.test(u)) return true;
   if (/\/(jobs?|careers|career|opportunities|openings|positions|vacancies)(\/|$|\?)/i.test(u)) return true;
   if (/job-position\/|\/job-opening|\/jobposting/i.test(u)) return true;
+  return false;
+}
+
+function normalizeHrefForJobMatch(href) {
+  if (typeof href !== 'string') return '';
+  return href.trim().replace(/#.*/, '');
+}
+
+function isLikelyWebflowJobCardHref(href, resolved) {
+  const rawHref = typeof href === 'string' ? href.trim() : '';
+  const candidate = normalizeHrefForJobMatch(href || resolved);
+  if (!candidate) return false;
+  const lower = candidate.toLowerCase();
+  if (/^mailto:|^javascript:|^tel:/.test(lower)) return false;
+  if (/(^|\/)(about|contact|privacy|legal|terms|blog|resource|resources)(\/|$)/.test(lower)) return false;
+
+  try {
+    const u = new URL(resolved || candidate, resolved ? undefined : 'https://example.com');
+    const p = (u.pathname || '').toLowerCase().replace(/\/+$/, '');
+    const hasListingAnchor = /\/(jobs?|careers?)(\/)?#.+/i.test(rawHref);
+    if (!p || (isBareListingPath(p) && !hasListingAnchor)) return false;
+    if (isBareListingPath(p) && hasListingAnchor) return true;
+    if (/(^|\/)(about|contact|privacy|legal|terms|blog|resource|resources)(\/|$)/.test(p)) return false;
+    const segments = p.split('/').filter(Boolean);
+    if (segments.length >= 2 && /(jobs?|careers?|positions|openings|opportunities|vacancies)/.test(segments[0])) return true;
+  } catch {
+    return false;
+  }
   return false;
 }
 
@@ -99,7 +165,7 @@ function countJobLikeHrefs(html) {
   let n = 0;
   let m;
   while ((m = re.exec(slice))) {
-    if (looksLikeJobHref(m[1])) n++;
+    if (looksLikeJobHref(normalizeHrefForJobMatch(m[1]))) n++;
   }
   return n;
 }
@@ -125,15 +191,27 @@ function extractJobsFromAnchors(html, baseUrl) {
   const $ = cheerio.load(htmlSlice);
   const seen = new Set();
   const out = [];
+  const webflow = isWebflowHtml(htmlSlice);
 
   $('a[href]').each((_, el) => {
     const href = ($(el).attr('href') || '').trim();
-    if (!looksLikeJobHref(href)) return;
+    const hrefForMatch = normalizeHrefForJobMatch(href);
+    const inNavChrome = !!$(el).closest('header, footer, nav, [role="navigation"], .w-nav').length;
+    const inWebflowCard = webflow && !!$(el).closest('.w-dyn-item, .w-dyn-list').length;
+    const baseMatch = looksLikeJobHref(hrefForMatch);
+    if (webflow && inNavChrome && !inWebflowCard) return;
+
     const resolved = resolveUrl(href, baseUrl);
+    const webflowCardMatch = webflow && inWebflowCard && isLikelyWebflowJobCardHref(href, resolved);
+    if (!baseMatch && !webflowCardMatch) return;
     if (!resolved || !urlAppearsInHtml(resolved, htmlSlice)) return;
     try {
-      const { pathname } = new URL(resolved);
-      if (isBareListingPath(pathname)) return;
+      const parsed = new URL(resolved);
+      if (isDeniedPolicyOrNavPath(parsed.pathname)) return;
+      if (isBareListingPath(parsed.pathname)) {
+        const allowSectionAnchor = webflowCardMatch && !!parsed.hash && parsed.hash.length > 1;
+        if (!allowSectionAnchor) return;
+      }
     } catch {
       /* skip */
     }
@@ -158,34 +236,88 @@ function extractJobsFromAnchors(html, baseUrl) {
  */
 function extractJobsFromJsonLd(html, baseUrl) {
   const htmlSlice = html.length > ADAPTER_HTML_MAX ? html.slice(0, ADAPTER_HTML_MAX) : html;
-  const scriptRe = /<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  const $ = cheerio.load(htmlSlice);
   const out = [];
   const seen = new Set();
-  let m;
-  while ((m = scriptRe.exec(htmlSlice))) {
+  const normalizeJsonText = (raw) => {
+    if (!raw || typeof raw !== 'string') return '';
+    return raw
+      .trim()
+      .replace(/^<!\[CDATA\[/i, '')
+      .replace(/\]\]>$/i, '')
+      .trim();
+  };
+  const pickStringOrId = (value) => {
+    if (typeof value === 'string') return value;
+    if (value && typeof value === 'object') {
+      if (typeof value['@id'] === 'string') return value['@id'];
+      if (typeof value.url === 'string') return value.url;
+    }
+    return null;
+  };
+  const pickJobUrl = (node) => {
+    const direct = pickStringOrId(node.url);
+    if (direct) return direct;
+    const mainEntity = pickStringOrId(node.mainEntityOfPage);
+    if (mainEntity) return mainEntity;
+    const idUrl = pickStringOrId(node['@id']);
+    if (idUrl && /^https?:\/\//i.test(idUrl)) return idUrl;
+    if (Array.isArray(node.potentialAction)) {
+      for (const action of node.potentialAction) {
+        const actionUrl = pickStringOrId(action?.target) || pickStringOrId(action?.url);
+        if (actionUrl) return actionUrl;
+      }
+    } else if (node.potentialAction && typeof node.potentialAction === 'object') {
+      const actionUrl = pickStringOrId(node.potentialAction.target) || pickStringOrId(node.potentialAction.url);
+      if (actionUrl) return actionUrl;
+    }
+    return pickStringOrId(node.hiringOrganization?.sameAs);
+  };
+  const extractNodeCandidates = (data) => {
+    const candidates = [];
+    const queue = Array.isArray(data) ? [...data] : [data];
+    while (queue.length) {
+      const node = queue.shift();
+      if (!node || typeof node !== 'object') continue;
+      candidates.push(node);
+      if (Array.isArray(node['@graph'])) queue.push(...node['@graph']);
+      if (Array.isArray(node.itemListElement)) queue.push(...node.itemListElement);
+      if (node.item && typeof node.item === 'object') queue.push(node.item);
+      if (node.mainEntity && typeof node.mainEntity === 'object') queue.push(node.mainEntity);
+      if (Array.isArray(node.mainEntity)) queue.push(...node.mainEntity);
+    }
+    return candidates;
+  };
+
+  $('script[type="application/ld+json"]').each((_, el) => {
+    const jsonText = normalizeJsonText($(el).contents().text());
+    if (!jsonText) return;
     let data;
     try {
-      data = JSON.parse(m[1].trim());
+      data = JSON.parse(jsonText);
     } catch {
-      continue;
+      return;
     }
-    const candidates = [];
-    if (Array.isArray(data)) candidates.push(...data);
-    else candidates.push(data);
-    if (data && data['@graph'] && Array.isArray(data['@graph'])) candidates.push(...data['@graph']);
+    const candidates = extractNodeCandidates(data);
     for (const node of candidates) {
       if (!node || typeof node !== 'object') continue;
       const types = node['@type'];
       const tArr = Array.isArray(types) ? types : types ? [types] : [];
       const isJob = tArr.some(t => String(t).toLowerCase().includes('jobposting'));
       if (!isJob) continue;
-      let url = node.url || node.hiringOrganization?.sameAs || null;
-      if (typeof url === 'object' && url !== null) url = url['@id'] || null;
+      const url = pickJobUrl(node);
       const title = node.title || node.name || null;
       if (!url || typeof url !== 'string') continue;
       const resolved = resolveUrl(url, baseUrl);
       if (!resolved || seen.has(resolved)) continue;
-      if (!htmlSlice.includes(url) && !htmlSlice.includes(resolved)) continue;
+      if (!urlAppearsInHtml(resolved, htmlSlice) && !htmlSlice.includes(url)) continue;
+      try {
+        const { pathname } = new URL(resolved);
+        if (isBareListingPath(pathname)) continue;
+        if (isDeniedPolicyOrNavPath(pathname)) continue;
+      } catch {
+        continue;
+      }
       seen.add(resolved);
       out.push({
         job_title: title ? String(title).replace(/\s+/g, ' ').trim() : deriveTitleFromUrl(resolved),
@@ -195,7 +327,7 @@ function extractJobsFromJsonLd(html, baseUrl) {
         description: typeof node.description === 'string' ? node.description.slice(0, 500) : null
       });
     }
-  }
+  });
   return out;
 }
 
@@ -227,7 +359,9 @@ module.exports = {
   ADAPTER_HTML_MAX,
   isXmlSitemapOrNonHtml,
   classifyShape,
+  isWebflowHtml,
   isBareListingPath,
+  isDeniedPolicyOrNavPath,
   looksLikeJobHref,
   countJobLikeHrefs,
   extractJobsFromAnchors,

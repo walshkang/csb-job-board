@@ -10,6 +10,7 @@ const { isXmlSitemapOrNonHtml, classifyShape } = require('./extraction/html-adap
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
+const PROMPT_WARM_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction-warm.txt');
 const OUT_JOBS = path.join(REPO_ROOT, 'data', 'jobs.json');
 const ARTIFACTS_DIR = path.join(REPO_ROOT, 'artifacts', 'html');
 function readFileSafe(p) { try { return fs.readFileSync(p, 'utf8'); } catch (e) { return null; } }
@@ -177,18 +178,44 @@ function mapTeamtailor(json, company) {
 
 const BLOCKER_PATTERNS = [/captcha/i, /please enable cookies/i, /access denied/i, /cookie consent/i, /set your browser to accept cookies/i, /you are being redirected/i];
 
+function resolveExtractionPromptPath({ lane, existingJobUrls, promptPathOverride = null }) {
+  if (promptPathOverride) return promptPathOverride;
+  const isWarm = lane === 'warm';
+  const hasExistingUrls = Array.isArray(existingJobUrls) && existingJobUrls.length > 0;
+  return isWarm && hasExistingUrls ? PROMPT_WARM_PATH : PROMPT_PATH;
+}
+
 // runExtraction: calls LLM (or callFn override) on raw HTML, returns array of raw items.
 // Items have: { job_title, url, location, employment_type, description }
 // On blocker detection returns [{ error: 'page_blocked', detail: '...' }]
-async function runExtraction({ html, company, baseUrl, callFn = callGeminiExtraction, promptPath = PROMPT_PATH }) {
+async function runExtraction({ html, company, baseUrl, callFn = callGeminiExtraction, promptPath = PROMPT_PATH, existingJobUrls = [] }) {
   for (const re of BLOCKER_PATTERNS) {
     if (re.test(html)) return [{ error: 'page_blocked', detail: `Matched blocker pattern: ${re}` }];
   }
   const MAX_HTML_CHARS = 12000;
   const htmlForPrompt = html.length > MAX_HTML_CHARS ? html.slice(0, MAX_HTML_CHARS) : html;
   const promptTemplate = readFileSafe(promptPath) || 'Extract all job listings from this careers page HTML. Return a JSON array. {html}';
-  const prompt = enricher.renderPrompt(promptTemplate, { company_name: company, base_url: baseUrl, html: htmlForPrompt });
+  const promptVars = {
+    company_name: company,
+    base_url: baseUrl,
+    html: htmlForPrompt,
+    existing_job_urls: JSON.stringify(Array.isArray(existingJobUrls) ? existingJobUrls : []),
+  };
+  const prompt = enricher.renderPrompt(promptTemplate, promptVars);
   process.stderr.write('\n[extraction: ' + (company || 'unknown') + ']\n');
+  if (promptPath === PROMPT_WARM_PATH) {
+    const warmWithoutUrls = enricher.renderPrompt(promptTemplate, { ...promptVars, existing_job_urls: '[]' });
+    const coldTemplate = readFileSafe(PROMPT_PATH);
+    const coldPrompt = coldTemplate
+      ? enricher.renderPrompt(coldTemplate, { company_name: company, base_url: baseUrl, html: htmlForPrompt })
+      : '';
+    const withUrlsLen = prompt.length;
+    const noUrlsLen = warmWithoutUrls.length;
+    const coldLen = coldPrompt.length;
+    process.stderr.write(
+      `[extraction:warm-prompt-size] chars_with_urls=${withUrlsLen} (~${Math.ceil(withUrlsLen / 4)} tok) chars_without_urls=${noUrlsLen} (~${Math.ceil(noUrlsLen / 4)} tok) urls_context_delta_chars=${withUrlsLen - noUrlsLen} cold_chars=${coldLen}\n`
+    );
+  }
   const rawResponse = await callFn(prompt);
   const parsed = extractJSONFromText(rawResponse);
   const items = Array.isArray(parsed) ? parsed : [parsed];
@@ -376,10 +403,12 @@ async function extractCompanyJobs(company, opts = {}) {
   const {
     verbose = false,
     artifactsDir = ARTIFACTS_DIR,
-    promptPath = PROMPT_PATH,
+    promptPath = null,
     callFn = callGeminiExtraction,
     companyCategories = null,
-    extractStats = null
+    extractStats = null,
+    lane = null,
+    existingJobUrls = []
   } = opts;
 
   const htmlPath = path.join(artifactsDir, `${company.id}.html`);
@@ -453,7 +482,21 @@ async function extractCompanyJobs(company, opts = {}) {
           const shape = classifyShape(html);
           const llmEnabled = process.env.EXTRACTION_LLM_FALLBACK === '1';
           if (shape === 'other' && llmEnabled) {
-            items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn, promptPath });
+            const effectiveLane = lane || company.lane || 'cold';
+            const selectedPromptPath = resolveExtractionPromptPath({
+              lane: effectiveLane,
+              existingJobUrls,
+              promptPathOverride: promptPath,
+            });
+            const useWarmPrompt = selectedPromptPath === PROMPT_WARM_PATH;
+            items = await runExtraction({
+              html,
+              company: company.name || company.id,
+              baseUrl,
+              callFn,
+              promptPath: selectedPromptPath,
+              existingJobUrls: useWarmPrompt ? existingJobUrls : [],
+            });
             html_extract_path = 'llm';
             if (extractStats) extractStats.htmlLlmCompanies += 1;
             if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
@@ -615,6 +658,7 @@ module.exports = {
   normalizeEmploymentType,
   tryHtmlAdapters,
   runExtraction,
+  resolveExtractionPromptPath,
   mapGreenhouse,
   mapLever,
   mapAshby,

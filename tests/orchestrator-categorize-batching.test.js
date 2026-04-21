@@ -27,7 +27,7 @@ function mkCompany(id) {
 }
 
 function mkRep() {
-  return { job_title_normalized: 'Engineer', job_function: 'Engineering', description_summary: 'Builds things' };
+  return { job_title_normalized: 'Engineer', job_function: 'Engineering' };
 }
 
 describe('orchestrator categorize batching', () => {

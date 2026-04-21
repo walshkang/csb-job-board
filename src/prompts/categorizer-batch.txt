@@ -14,6 +14,7 @@ Task:
 - If no category fits, use "None".
 - Confidence must be a numeric score from 0.0 to 1.0.
 - Include a short reason for each decision.
+- Synthesize a 1-2 sentence "company_description" summarizing what the company does, based on its profile and keywords.
 
 Return ONLY:
 {
@@ -22,7 +23,8 @@ Return ONLY:
       "company_id": "string",
       "category": "string",
       "confidence": 0.0,
-      "reason": "string"
+      "reason": "string",
+      "company_description": "string"
     }
   ]
 }

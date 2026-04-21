@@ -259,6 +259,25 @@ function buildCompanyJobDiff(c, jobsNow = []) {
   };
 }
 
+function getCompanyActiveSourceUrls(companyId) {
+  const jobsById = new Map();
+  for (const job of initialJobs) {
+    if (!job || job.company_id !== companyId) continue;
+    jobsById.set(job.id, job);
+  }
+  for (const job of newJobsBuffer) {
+    if (!job || job.company_id !== companyId) continue;
+    jobsById.set(job.id, job);
+  }
+  const activeUrls = new Set();
+  for (const job of jobsById.values()) {
+    if (!job || job.removed_at) continue;
+    const normalized = normalizeJobUrl(job.source_url);
+    if (normalized) activeUrls.add(normalized);
+  }
+  return Array.from(activeUrls);
+}
+
 // ——————————————————————————————————————————————————————————————
 // Filtering target set
 // ——————————————————————————————————————————————————————————————
@@ -561,7 +580,8 @@ async function runStage(stage, c) {
 
   if (stage === 'extract') {
     if (!c.careers_page_reachable) return { outcome: 'skipped', extra: { reason: 'unreachable' } };
-    const res = await extractCompanyJobs(c, { verbose: VERBOSE });
+    const existingJobUrls = c.lane === 'warm' ? getCompanyActiveSourceUrls(c.id) : undefined;
+    const res = await extractCompanyJobs(c, { verbose: VERBOSE, existingJobUrls });
     c.last_extracted_at = new Date().toISOString();
     if (res && Array.isArray(res.jobs)) {
       for (const j of res.jobs) newJobsBuffer.push(j);
@@ -629,7 +649,7 @@ async function runStage(stage, c) {
       return { outcome: 'skipped', extra: { reason: 'insufficient_signal', description_len: profileDesc.length } };
     }
     if (!rep) {
-      rep = { job_title_normalized: '', job_function: '', description_summary: profileDesc || c.name || '', climate_relevance_reason: '' };
+      rep = { job_title_normalized: '', job_function: '', climate_relevance_reason: '' };
     }
     return categorizeBatcher.enqueue({ company: c, rep, samples: [] });
   }

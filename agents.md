@@ -51,7 +51,7 @@ id, company_id, job_title_raw, source_url, location_raw,
 employment_type, description_raw, description_hash,
 first_seen_at, last_seen_at, removed_at, days_live,
 job_title_normalized, job_function, seniority_level, location_type,
-mba_relevance, description_summary,
+mba_relevance,
 climate_relevance_confirmed, climate_relevance_reason,
 enrichment_prompt_version, enrichment_error
 ```

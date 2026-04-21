@@ -149,7 +149,7 @@ Per-slice agent tier is called out below under **Model tier**. Default is Haiku 
    - `seniority_level`: regex on `job_title_raw` — `/\b(intern|internship)\b/i` → `intern`; `/\b(VP|vice president)\b/i` → `vp`; `/\b(director)\b/i` → `director`; `/\b(senior|sr\.?|staff|principal|lead)\b/i` → `senior`; `/\b(junior|jr\.?|associate|entry)\b/i` → `entry`; else `null`.
    - `employment_type`: regex on title + description — `/\bintern(ship)?\b/i` → `intern`; `/\bcontract|contractor|consultant\b/i` → `contract`; `/\bpart[- ]time\b/i` → `part_time`; default `full_time`.
    - `location_type`: regex on `location_raw` — `/\bremote\b/i` → `remote`; `/\bhybrid\b/i` → `hybrid`; non-empty location → `on_site`; else `unknown`.
-2. Remove those three fields from `src/prompts/enrichment.txt`. Keep LLM output schema: `{ job_title_normalized, job_function, mba_relevance, description_summary, climate_relevance_confirmed, climate_relevance_reason }`.
+2. Remove those three fields from `src/prompts/enrichment.txt`. Keep LLM output schema: `{ job_title_normalized, job_function, mba_relevance, climate_relevance_confirmed, climate_relevance_reason }`.
 3. `job_function` stays in LLM — too fuzzy for regex. Revisit after measuring.
 4. Bump `ENRICHMENT_PROMPT_VERSION` (coordinate with Slice 0 to re-force once, not twice).
 

@@ -14,7 +14,6 @@ Return ONLY a single JSON object with these keys:
   "job_function": "engineering | product | design | operations | sales | marketing | finance | legal | hr | data_science | strategy | policy | supply_chain | customer_success | other",
   "seniority_level": "intern | entry | mid | senior | staff | director | vp | c_suite | unknown",
   "mba_relevance": "low | medium | high",
-  "description_summary": "2-3 sentence summary",
   "climate_relevance_confirmed": true/false,
   "climate_relevance_reason": "one sentence if false, else null"
 }

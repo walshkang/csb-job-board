@@ -26,4 +26,4 @@ If no category fits well (e.g. generic B2B SaaS, pure finance, professional serv
 Note: you are shown only the top-matched categories for this company, not the full taxonomy. If none fit well, return "None" — do not force a match.
 
 Return ONLY a JSON object:
-{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low"}
+{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low", "company_description": "A 1-2 sentence summary of what the company does, synthesized from its profile and keywords."}

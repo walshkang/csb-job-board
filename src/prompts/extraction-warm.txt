@@ -1,0 +1,34 @@
+Extract delta job listings from this careers page HTML. Return a JSON array of job objects.
+
+For each job found, return:
+{
+  "job_title": "exact title as displayed",
+  "url": "absolute URL to the individual job posting",
+  "location": "location text if shown, or null",
+  "employment_type": "full_time | part_time | contract | intern | null",
+  "description": "first 500 characters of job description text if available on this page, or null"
+}
+
+Company: {company_name}
+Base URL (for resolving relative links): {base_url}
+Existing job URLs (JSON array already known from prior runs): {existing_job_urls}
+
+Rules:
+- Return ONLY delta jobs for warm-lane fallback:
+  - Include jobs whose url is NOT in Existing job URLs.
+  - Include jobs whose title text or description text is materially different from what a full extract of this page would produce for that same url.
+  - Exclude unchanged jobs already present in Existing job URLs.
+- Do NOT infer removals. Removal detection is handled outside this prompt.
+- For url: use ONLY href attribute values that are literally present in the HTML. Resolve relative paths against the base URL. If only a fragment or anchor exists, combine with base URL. If no href link exists for a job, use null. NEVER construct, guess, or hallucinate URLs based on the job title. If the HTML does not contain a working link for the job, set url to null.
+- For employment_type: default to full_time. Only override to intern, part_time, or contract if the page explicitly states it. Do not infer from the title.
+- For description: copy VERBATIM text from the HTML only — up to 500 characters, stripped of tags, truncated at a word boundary. NEVER generate, infer, or paraphrase descriptions. If the description text is not literally present in the HTML provided, set to null.
+- For location: extract exactly as shown. Include parentheticals like "(Remote)" or "(Hybrid - NYC)". If multiple locations, join with " | ".
+- If the page contains department/team groupings, do NOT create a job for the department header — only for individual roles.
+- CRITICAL: If the HTML provided contains NO explicit job listings (e.g., it is just a generic "careers" landing page, or says "no open positions"), you MUST return an empty array: []. DO NOT hallucinate or invent job titles that might exist at the company. Only extract jobs that are explicitly visible in the text of the provided HTML.
+- If the page appears to be a redirect notice, cookie wall, or CAPTCHA, return: [{"error": "page_blocked", "detail": "brief description of what you see"}]
+
+Return ONLY the JSON array. No markdown fences, no explanation.
+
+---
+HTML (may be truncated):
+{html}

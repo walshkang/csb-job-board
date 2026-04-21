@@ -5,9 +5,10 @@ const shopify = require('./shopify');
 const greenhouse = require('./greenhouse');
 const lever = require('./lever');
 const notion = require('./notion');
+const wix = require('./wix');
 const anchorJobLinks = require('./anchor-job-links');
 
-const adapters = [shopify, greenhouse, lever, notion, anchorJobLinks];
+const adapters = [shopify, greenhouse, lever, notion, wix, anchorJobLinks];
 
 /**
  * @returns {{ adapterName: string, items: object[] } | null}

@@ -232,7 +232,10 @@ async function main() {
         const iso = d.toISOString().slice(0,10);
         return { date: { start: iso } };
       })(),
-      'Profile Description': c.company_profile && c.company_profile.description ? { rich_text: [{ text: { content: truncate(c.company_profile.description, 2000) } }] } : undefined,
+      'Profile Description': (() => {
+        const desc = c.short_description || (c.company_profile && c.company_profile.description);
+        return desc ? { rich_text: [{ text: { content: truncate(desc, 2000) } }] } : undefined;
+      })(),
       'Sector': c.company_profile && c.company_profile.sector ? { select: { name: normalizeSelectName(c.company_profile.sector) } } : undefined,
       'HQ': c.company_profile && c.company_profile.hq ? { rich_text: [{ text: { content: String(c.company_profile.hq) } }] } : undefined,
       'Employees': c.company_profile && typeof c.company_profile.employees === 'number' ? { number: c.company_profile.employees } : undefined,
@@ -336,9 +339,8 @@ async function main() {
       'Job Function': j.job_function ? { select: { name: String(j.job_function) } } : undefined,
       'Seniority Level': j.seniority_level ? { select: { name: String(j.seniority_level) } } : undefined,
       'Location Type': j.location_type ? { select: { name: String(j.location_type) } } : undefined,
-      'MBA Relevance': j.mba_relevance ? { select: { name: String(j.mba_relevance).toLowerCase() } } : undefined,
-      'Description Summary': j.description_summary ? { rich_text: [{ text: { content: truncate(j.description_summary, 2000) } }] } : undefined,
-      'Climate Relevance Confirmed': typeof j.climate_relevance_confirmed === 'boolean' ? { checkbox: j.climate_relevance_confirmed } : undefined,
+      'MBA Relevance': j.mba_relevance ? { select: { name: normalizeSelectName(j.mba_relevance) } } : undefined,
+      'Climate Relevance': typeof j.climate_relevance_confirmed === 'boolean' ? { checkbox: j.climate_relevance_confirmed } : undefined,
       'Climate Relevance Reason': j.climate_relevance_reason ? { rich_text: [{ text: { content: truncate(j.climate_relevance_reason, 2000) } }] } : undefined,
       'Enrichment Prompt Version': j.enrichment_prompt_version ? { rich_text: [{ text: { content: String(j.enrichment_prompt_version) } }] } : undefined,
     };

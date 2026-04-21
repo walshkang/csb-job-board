@@ -5,6 +5,8 @@ Collect and enrich job listings for climate / clean-tech companies and store str
 
 Pipeline (current architecture)
 
+Note: The pipeline distinguishes 'cold' and 'warm' lanes to optimize processing and token spend. See docs/lanes-slices.md for details and the slice breakdown.
+
 Slice 1 — Pitchbook OCR → companies.json
   npm run ocr -- data/images
   Input: directory of Pitchbook PDFs (primary) or screenshot images (fallback)
@@ -83,7 +85,7 @@ Utility scripts
 
 Data model
   companies.json: id, name, domain, funding_signals, company_profile, careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform, ats_slug, dormant, consecutive_empty_scrapes
-  jobs.json: id, company_id, job_title_raw, job_title_normalized, description_raw, source_url, location_raw, employment_type, job_function, seniority_level, location_type, mba_relevance, description_summary, climate_relevance_confirmed, climate_relevance_reason, first_seen_at, last_seen_at, removed_at, days_live, enrichment_prompt_version, enrichment_error
+  jobs.json: id, company_id, job_title_raw, job_title_normalized, description_raw, source_url, location_raw, employment_type, job_function, seniority_level, location_type, mba_relevance, climate_relevance_confirmed, climate_relevance_reason, first_seen_at, last_seen_at, removed_at, days_live, enrichment_prompt_version, enrichment_error
 
 Notion integration
   Jobs and Companies databases mirror the JSON schema
@@ -289,4 +291,4 @@ Parallelization plan:
 
 Decision needed: company summary source
 - Decision reached: Move generation to Categorization stage.
-- Current Path: Evaluating either a dedicated "About Page" crawler agent or deferring descriptions entirely until retrieval is high-confidence.
+- Current Path: Evaluating either a dedicated "About Page" crawler agent or deferring descriptions entirely until retrieval is high-confidence.ng descriptions entirely until retrieval is high-confidence.

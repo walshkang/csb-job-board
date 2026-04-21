@@ -153,10 +153,8 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
   const jobTitle = repJob.job_title_normalized || repJob.job_title_raw || '';
   const jobFunction = repJob.job_function || '';
   const climateReason = repJob.climate_relevance_reason || '';
-  const descSummary = repJob.description_summary || '';
 
-  const rawDesc = companyRecord.company_profile && companyRecord.company_profile.description;
-  const trimmedDesc = rawDesc != null ? String(rawDesc).trim() : '';
+  const rawDesc = companyRecord.company_profile && companyRecord.company_profile.description;  const trimmedDesc = rawDesc != null ? String(rawDesc).trim() : '';
   const companyProfile = trimmedDesc || null;
   const pitchbookKeywords = (companyRecord.company_profile && companyRecord.company_profile.keywords) ? companyRecord.company_profile.keywords : null;
 
@@ -313,7 +311,6 @@ async function batchCategorize(entries, taxonomy, llmConfig) {
       : [];
     const jobTitle = (rep && (rep.job_title_normalized || rep.job_title_raw)) || '';
     const jobFunction = (rep && rep.job_function) || '';
-    const descriptionSummary = (rep && rep.description_summary) || '';
     return {
       company_id: companyId,
       company_name: companyName,
@@ -321,7 +318,6 @@ async function batchCategorize(entries, taxonomy, llmConfig) {
       pitchbook_keywords: pitchbookKeywords,
       representative_job_title: jobTitle,
       representative_job_function: jobFunction,
-      representative_description_summary: descriptionSummary,
     };
   });
 
@@ -367,11 +363,12 @@ async function batchCategorize(entries, taxonomy, llmConfig) {
     const category = asStringOrNull(row.category);
     const confidence = asNumberOrNull(row.confidence);
     const reason = asStringOrNull(row.reason);
+    const company_description = asStringOrNull(row.company_description);
     if (!category || confidence == null) {
       results.set(company.id, { error: 'malformed_result', reason: reason || null });
       continue;
     }
-    results.set(company.id, { category, confidence, reason: reason || null });
+    results.set(company.id, { category, confidence, reason: reason || null, company_description });
   }
 
   return results;

@@ -18,7 +18,6 @@ function mkEntry(id) {
     rep: {
       job_title_normalized: 'Energy Analyst',
       job_function: 'Operations',
-      description_summary: 'Works on energy systems',
     },
   };
 }
@@ -41,13 +40,14 @@ describe('batchCategorize', () => {
         category: 'Solar PV',
         confidence: 0.9 - i * 0.1,
         reason: 'keyword match',
+        company_description: 'A test description',
       })),
     }));
 
     const map = await batchCategorize(entries, taxonomy, { provider: 'anthropic', apiKey: 'x', model: 'y' });
     expect(map.size).toBe(5);
-    expect(map.get('c1')).toEqual({ category: 'Solar PV', confidence: 0.9, reason: 'keyword match' });
-    expect(map.get('c5')).toEqual({ category: 'Solar PV', confidence: 0.5, reason: 'keyword match' });
+    expect(map.get('c1')).toEqual({ category: 'Solar PV', confidence: 0.9, reason: 'keyword match', company_description: 'A test description' });
+    expect(map.get('c5')).toEqual({ category: 'Solar PV', confidence: 0.5, reason: 'keyword match', company_description: 'A test description' });
   });
 
   test('marks missing company_id results as per-company failure', async () => {
@@ -55,12 +55,12 @@ describe('batchCategorize', () => {
     callLLM.mockResolvedValueOnce(JSON.stringify({
       results: entries
         .filter((e) => e.company.id !== 'c3')
-        .map((e) => ({ company_id: e.company.id, category: 'Solar PV', confidence: 0.7, reason: 'ok' })),
+        .map((e) => ({ company_id: e.company.id, category: 'Solar PV', confidence: 0.7, reason: 'ok', company_description: 'Test desc' })),
     }));
 
     const map = await batchCategorize(entries, taxonomy, { provider: 'anthropic', apiKey: 'x', model: 'y' });
     expect(map.get('c3')).toEqual({ error: 'missing_result' });
-    expect(map.get('c1')).toEqual({ category: 'Solar PV', confidence: 0.7, reason: 'ok' });
+    expect(map.get('c1')).toEqual({ category: 'Solar PV', confidence: 0.7, reason: 'ok', company_description: 'Test desc' });
   });
 
   test('throws on malformed json', async () => {

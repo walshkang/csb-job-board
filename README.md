@@ -8,11 +8,11 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 
 ## Two ways to run
 
-**Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500.
+**Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500. The pipeline recognizes 'cold' and 'warm' lanes to reduce LLM calls and enable targeted extraction; see docs/lanes-slices.md for details.
 
 ```bash
 npm run pipeline                  # full set
-npm run pipeline -- --limit 20    # first 20 companies
+npm run pipeline -- --limit=20    # first 20 companies (CLI accepts --limit=N form; don't pass a separate space-separated argument)
 ```
 
 **Step-by-step (classic).** Run each stage as its own CLI — useful when you're iterating on one stage (e.g. tweaking discovery heuristics) or just want tight control.
@@ -508,7 +508,6 @@ job_function            — engineering | product | design | operations | sales 
 seniority_level         — intern | entry | mid | senior | staff | director | vp | c_suite
 location_type           — remote | hybrid | on_site | unknown
 mba_relevance           — low | medium | high (see rubric below)
-description_summary     — 2–3 sentence summary
 climate_relevance_confirmed — true | false
 climate_relevance_reason    — one sentence explanation
 ```

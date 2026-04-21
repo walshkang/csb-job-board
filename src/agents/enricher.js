@@ -6,7 +6,7 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const JOBS_PATH = path.join(REPO_ROOT, 'data', 'jobs.json');
 const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categories.json');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
-const ENRICHMENT_PROMPT_VERSION = '1.3.3';
+const ENRICHMENT_PROMPT_VERSION = '1.3.4';
 
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
@@ -99,8 +99,6 @@ function sanitize(parsed) {
   let mbaRelevance = parsed.mba_relevance ? String(parsed.mba_relevance).toLowerCase().trim() : null;
   if (!MBA_RELEVANCE.has(mbaRelevance)) mbaRelevance = null;
   out.mba_relevance = mbaRelevance;
-
-  out.description_summary = parsed.description_summary ? String(parsed.description_summary).trim() : null;
 
   const cr = parsed.climate_relevance_confirmed;
   out.climate_relevance_confirmed = (cr === true || cr === 'true' || cr === 'True');
@@ -229,7 +227,6 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
   job.mba_relevance = deterministic.mba_relevance ??
     (MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : null) ??
     (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
-  job.description_summary = sanitized.description_summary || job.description_summary || null;
   job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
   job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
   if (job.climate_relevance_confirmed === true) job.climate_relevance_reason = null;
@@ -427,7 +424,7 @@ async function main() {
     for (const job of jobs) {
       const prevVersion = job.enrichment_prompt_version || null;
       const descHash = sha256(job.description_raw || '');
-      const requiredFields = ['job_title_normalized','job_function','seniority_level','employment_type','location_type','mba_relevance','description_summary','climate_relevance_confirmed'];
+      const requiredFields = ['job_title_normalized','job_function','seniority_level','employment_type','location_type','mba_relevance','climate_relevance_confirmed'];
       const missing = requiredFields.some(f => job[f] == null);
       const changed = job.description_raw_hash !== descHash;
       if (force || prevVersion !== ENRICHMENT_PROMPT_VERSION || changed || missing) toEnrich.push(job);
