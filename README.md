@@ -220,7 +220,7 @@ The pipeline is a linear DAG. Each step reads from files written by the previous
 flowchart TD
     SRC["📄 PitchBook PDFs / Screenshots\ndata/images/"]
 
-    SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ AI: ocr-pdf.txt / ocr.txt"]
+    SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ Tabula (PDF) / AI: ocr.txt (screenshots)"]
     S1 -->|"data/companies.json\n(id, name, domain, funding_signals, keywords)"| S2
 
     S2["Step 2 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\nRequires PitchBook keywords — run right after OCR"]
@@ -261,8 +261,7 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph Prompts ["src/prompts/"]
-        P1["ocr.txt\n(screenshot mode)"]
-        P2["ocr-pdf.txt\n(PDF mode)"]
+        P1["ocr.txt\n(screenshot mode only)"]
         P4["extraction.txt\n(HTML → job fields)"]
         P5["enrichment.txt\n(job classification)"]
     end
@@ -272,8 +271,12 @@ flowchart LR
         I2["Reviewer postmortem prompt\nlatest pipeline run + error samples"]
     end
 
+    subgraph NoAI ["No LLM (PDF mode)"]
+        T1["Tabula JAR\nstream-mode table extraction"]
+    end
+
     P1 --> OCR["OCR — Step 1\nscreenshot mode"]
-    P2 --> OCR
+    T1 --> OCR
     P4 --> EXT["Extract — Step 6\nHTML only; ATS JSON uses direct mappers"]
     P5 --> ENR["Enrich — Step 7"]
     I1 --> CAT["Categorize — Step 2"]
@@ -292,11 +295,9 @@ flowchart LR
 
 **Output:** `data/companies.json` — company list with identity, funding signals, HQ, headcount
 
-**Prompt injected:** `src/prompts/ocr-pdf.txt` (PDF mode) or `src/prompts/ocr.txt` (screenshot mode)
+**PDF mode (primary):** Uses [Tabula](https://tabula.technology/) (`tabula.jar`) — no LLM involved. Runs in stream mode (`-r`) since PitchBook exports have no visible grid lines. Processes each page individually, scans page 1 by text to find the column header row (skipping the PitchBook nav chrome above it), then maps data cells to columns geometrically by x-coordinate. PitchBook's row numbers prepended to company names (e.g. `"42Acme Corp"`) are stripped automatically.
 
-**Preflight:** Before any API calls, the agent extracts the header row from the first PDF page, detects which columns are present, and diffs them against the Gemini response schema (`SCHEMA_FIELDS` in `ocr.js`). Any column in the PDF that isn't in the schema is flagged as an error and the run aborts — preventing silent data loss.
-
-**PDF processing:** Each page is processed as its own LLM call (configurable via `PDF_CHUNK_SIZE` env var — default 1) to prevent hallucination from long context. A failure in one chunk doesn't lose the rest.
+**Screenshot mode (fallback):** Sends PNG/JPG images to the LLM using `src/prompts/ocr.txt`.
 
 ```bash
 # Recommended: point at the directory (handles both PDFs and screenshots)

@@ -71,284 +71,193 @@ async function listPDFs(dir) {
     .map(f => path.join(dir, f));
 }
 
-// Extract text per page from a PDF using pdftotext (poppler-utils).
-// Falls back to a single-chunk extraction if -f/-l flags are unavailable.
-async function extractPageTexts(pdfPath) {
+// Extract table data from a PitchBook PDF using Tabula (java-based).
+// Returns an array of objects mapping column headers to cell values.
+async function extractPitchbookTableTabula(pdfPath, verbose = false) {
   const { execFile } = require('child_process');
   const { promisify } = require('util');
   const exec = promisify(execFile);
+  const tabulaJar = 'tabula.jar';
 
-  // Get page count first
-  let nPages = 1;
-  try {
-    const { stdout } = await exec('pdfinfo', [pdfPath]);
-    const m = stdout.match(/Pages:\s+(\d+)/);
-    if (m) nPages = parseInt(m[1], 10);
-  } catch { /* pdfinfo unavailable, fall back to single chunk */ }
-
-  if (nPages === 1) {
-    // Single extraction, split on form feed
-    const { stdout } = await exec('pdftotext', ['-layout', pdfPath, '-']);
-    return stdout.split('\f').map(p => p.trim()).filter(Boolean);
-  }
-
-  // Extract page by page so chunks stay manageable for the LLM
-  const pages = [];
-  for (let i = 1; i <= nPages; i++) {
+  // Helper function to execute Tabula and parse the brittle JSON output
+  async function runTabula(pageRange, extraArgs = []) {
+    // Use stream mode (-r) — PitchBook PDFs have no visible grid lines, so lattice mode (-g) returns nothing
+    const args = ['-jar', tabulaJar, '-p', pageRange, '-f', 'JSON', '-r', ...extraArgs, pdfPath];
     try {
-      const { stdout } = await exec('pdftotext', ['-layout', '-f', String(i), '-l', String(i), pdfPath, '-']);
-      const text = stdout.trim();
-      if (text) pages.push(text);
+      const { stdout } = await exec('java', args);
+      
+      // Robust multi-block JSON recovery:
+      // Tabula output can be fragmented or contain JVM noise between page arrays.
+      // We find all top-level arrays/objects and merge them.
+      const pageBlocks = [];
+      let depth = 0;
+      let start = -1;
+
+      for (let i = 0; i < stdout.length; i++) {
+        if (stdout[i] === '[') {
+          if (depth === 0) start = i;
+          depth++;
+        } else if (stdout[i] === ']') {
+          depth--;
+          if (depth === 0 && start !== -1) {
+            try {
+              const block = JSON.parse(stdout.slice(start, i + 1));
+              if (Array.isArray(block)) {
+                // Tabula JSON is usually an array of page objects
+                pageBlocks.push(...block.filter(item => item && (item.data || item.page)));
+              } else if (block && (block.data || block.page)) {
+                pageBlocks.push(block);
+              }
+            } catch (e) { /* ignore fragmented/invalid blocks */ }
+            start = -1;
+          }
+        }
+      }
+
+      if (verbose && pageBlocks.length > 0) {
+        console.log(`    [Tabula] Recovered ${pageBlocks.length} page(s) for range ${pageRange}`);
+      }
+      return pageBlocks;
     } catch (err) {
-      console.warn(`  pdftotext failed on page ${i}: ${err.message}`);
+      return []; 
     }
   }
-  return pages;
-}
 
-// Send extracted page text to the configured provider for JSON parsing.
-// Retries up to 4 times with exponential backoff on transient errors.
-async function callTextModelOCR(pageText, headerHint = null) {
-  let promptText = fs.readFileSync(path.join(__dirname, '../prompts/ocr-pdf.txt'), 'utf8');
-
-  if (headerHint && headerHint.length > 0) {
-    promptText = promptText.replace(
-      '--- EXTRACTED PDF TEXT ---',
-      `Note: Column headers typically only appear on the first page. For this chunk, assume the following column order (detected from page 1) if headers are missing:\n${headerHint.join(', ')}\n\n--- EXTRACTED PDF TEXT ---`
-    );
-  }
-
-  const fullPrompt = promptText + '\n' + pageText;
-
-  const MAX_ATTEMPTS = 5;
-  const BASE_DELAY_MS = 2000;
-
-  function isRetryable(err) {
-    const msg = String(err && err.message ? err.message : err);
-    const status = err && err.status;
-    return (
-      /429|Too Many Requests/i.test(msg) ||
-      /503|SERVICE_UNAVAILABLE/i.test(msg) ||
-      /RESOURCE_EXHAUSTED/i.test(msg) ||
-      /overloaded_error/i.test(msg) ||
-      /rate_limit_error/i.test(msg) ||
-      status === 429 || status === 503 || status === 529
-    );
-  }
-
-  if (config.ocr.provider === 'anthropic' && config.ocr.anthropicKey) {
-    let Anthropic;
-    try { Anthropic = require('@anthropic-ai/sdk'); } catch {
-      throw new Error('Anthropic provider selected but @anthropic-ai/sdk is not installed. Run: npm install @anthropic-ai/sdk');
+  try {
+    // SEQUENTIAL PAGE EXTRACTION (stream mode, no coordinate cropping)
+    // Stream mode works for PitchBook PDFs which have no visible grid lines.
+    // We detect the header row by text scan and skip nav chrome by row index.
+    const pages = [];
+    let pIdx = 1;
+    while (true) {
+      const pageData = await runTabula(pIdx.toString());
+      if (!pageData || pageData.length === 0) break;
+      pages.push(...pageData);
+      pIdx++;
+      if (pIdx > 500) break;
     }
-    const client = new Anthropic({ apiKey: config.ocr.anthropicKey });
-    let lastErr;
-    for (let i = 0; i < MAX_ATTEMPTS; i++) {
-      try {
-        const msg = await client.messages.create({
-          model: config.ocr.anthropicModel,
-          max_tokens: 32000,
-          messages: [{ role: 'user', content: fullPrompt }],
-        });
-        return parseJSONResponse(msg.content[0].text);
-      } catch (err) {
-        lastErr = err;
-        if (!isRetryable(err) || i === MAX_ATTEMPTS - 1) throw err;
-        const waitMs = Math.min(120000, Math.ceil(BASE_DELAY_MS * Math.pow(2, i)));
-        console.warn(`  [callTextModelOCR] retrying after ${waitMs}ms (attempt ${i + 1}): ${err.message}`);
-        await new Promise(r => setTimeout(r, waitMs));
+
+    if (pages.length === 0) {
+      console.warn(`  [Tabula] No valid JSON extracted from ${path.basename(pdfPath)}.`);
+      return [];
+    }
+
+    // HEADER SCAN: find the header row on page 1 by text content, note its row index.
+    // PitchBook nav chrome sits above the table — we skip by row index, not coordinates.
+    let globalHeaders = null; // Array of { text, left }
+    let headerRowIndex = -1;  // row index within page 0's data array
+
+    if (pages[0] && pages[0].data) {
+      for (let i = 0; i < pages[0].data.length; i++) {
+        const row = pages[0].data[i];
+        const rowData = row.map(cell => (cell.text || '').trim());
+        const nonBlank = rowData.filter(Boolean);
+        if (nonBlank.length < 3) continue;
+
+        const hasWebsite = rowData.some(text => /\bwebsite\b/i.test(text));
+        const matchCount = [/\bwebsite\b/i, /\bhq\b/i, /companies/i, /\bemployees\b/i, /financing/i, /total raised/i]
+          .reduce((acc, re) => acc + (rowData.some(text => re.test(text)) ? 1 : 0), 0);
+
+        if (hasWebsite || matchCount >= 3) {
+          globalHeaders = row.map(cell => ({
+            text: (cell.text || '').trim(),
+            left: cell.left
+          })).filter(h => h.text);
+          headerRowIndex = i;
+          break;
+        }
       }
     }
-    throw lastErr;
-  }
 
-  // Default: Gemini — use responseSchema to enforce structured output and prevent truncation.
-  // Properties are derived from SCHEMA_FIELDS so adding a field there auto-updates the schema.
-  const { GoogleGenerativeAI, SchemaType } = require('@google/generative-ai');
-  const genAI = new GoogleGenerativeAI(config.ocr.geminiKey);
-  const geminiModel = genAI.getGenerativeModel({ model: config.ocr.model });
-  const schemaProperties = {};
-  for (const field of SCHEMA_FIELDS) {
-    schemaProperties[field] = { type: SchemaType.STRING, nullable: true };
-  }
-  const geminiRequest = {
-    contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
-    generationConfig: {
-      maxOutputTokens: 65536,
-      temperature: 0,
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: SchemaType.ARRAY,
-        items: { type: SchemaType.OBJECT, properties: schemaProperties },
-      },
-    },
-  };
-  let lastErr;
-  for (let i = 0; i < MAX_ATTEMPTS; i++) {
-    try {
-      const result = await geminiModel.generateContent(geminiRequest);
-      return parseJSONResponse(result.response.text().trim());
-    } catch (err) {
-      lastErr = err;
-      if (!isRetryable(err) || i === MAX_ATTEMPTS - 1) throw err;
-      const waitMs = Math.min(120000, Math.ceil(BASE_DELAY_MS * Math.pow(2, i)));
-      console.warn(`  [callTextModelOCR] retrying after ${waitMs}ms (attempt ${i + 1}): ${err.message}`);
-      await new Promise(r => setTimeout(r, waitMs));
+    if (verbose && globalHeaders) {
+      console.log(`    [Header] Found at page-1 row ${headerRowIndex}: ${globalHeaders.map(h => h.text).join(' | ').slice(0, 120)}`);
+    } else if (!globalHeaders) {
+      console.warn(`    [Header] Could not find column headers in ${path.basename(pdfPath)}.`);
     }
-  }
-  throw lastErr;
-}
 
-// Validate that PDF-parsed rows look like PitchBook data.
-function validatePDFRows(rows, label) {
-  const warnings = [];
-  if (!Array.isArray(rows) || rows.length === 0) return { warnings };
-  const keys = Object.keys(rows[0] || {}).map(k => k.toLowerCase());
-  if (!keys.some(k => k === 'company name' || k === 'name')) {
-    warnings.push(`[WARN] ${label}: no "Company Name" column — verify PDF format`);
-  }
-  if (!keys.some(k => k === 'website')) {
-    warnings.push(`[WARN] ${label}: no "Website" column — IDs will fall back to name-based hashes`);
-  }
-  return { warnings };
-}
+    // DATA MAPPING: skip nav chrome (everything up to and including the header row on page 1)
+    const allRows = [];
+    for (let pIdx = 0; pIdx < pages.length; pIdx++) {
+      const page = pages[pIdx];
+      if (!page.data || page.data.length === 0) continue;
 
-// Number of PDF pages to send per LLM call. Keeps prompts within token limits
-// for large PitchBook exports (500+ companies). Override with PDF_CHUNK_SIZE env var.
-const PDF_CHUNK_SIZE = parseInt(process.env.PDF_CHUNK_SIZE || '1', 10);
+      let pageRows = 0;
+      for (let rowI = 0; rowI < page.data.length; rowI++) {
+        // Skip nav chrome and the header row itself on page 1
+        if (pIdx === 0 && rowI <= headerRowIndex) continue;
+        const row = page.data[rowI];
 
-// Single source of truth: every field the Gemini responseSchema declares.
-// Adding a field here auto-updates both the schema sent to Gemini and the preflight check.
-const SCHEMA_FIELDS = new Set([
-  'Company Name',
-  'Website',
-  'Employees',
-  'Last Financing Date',
-  'Last Financing Deal Type',
-  'Last Financing Size',
-  'Total Raised',
-  'HQ Location',
-  'Keywords',
-]);
+        const nonBlank = row.filter(cell => (cell.text || '').trim());
+        if (nonBlank.length < 3) continue;
 
-// Each entry maps a canonical field name to regex patterns that identify it anywhere in the header area.
-// PitchBook headers sometimes span 2-3 lines (e.g. "Last Financing" on one line, "Deal Type" below),
-// so we pattern-match against a multi-line window rather than splitting a single line.
-const COLUMN_PATTERNS = [
-  { name: 'Company Name',             pattern: /companies\s*\(|company name/i },
-  { name: 'Website',                  pattern: /\bwebsite\b/i },
-  { name: 'HQ Location',              pattern: /\bhq location\b/i },
-  { name: 'Total Raised',             pattern: /\btotal raised\b/i },
-  { name: 'Last Financing Date',      pattern: /last financing date/i },
-  { name: 'Last Financing Size',      pattern: /financing size/i },
-  { name: 'Last Financing Deal Type', pattern: /deal type/i },
-  { name: 'Employees',                pattern: /\bemployees\b|\bheadcount\b/i },
-  { name: 'Keywords',                 pattern: /\bkeywords?\b/i },
-];
+        // Skip the header row itself if it appears on this page
+        const rowText = row.map(c => (c.text||'').trim()).join('');
+        if (globalHeaders && rowText === globalHeaders.map(h => h.text).join('')) continue;
 
-// Find which COLUMN_PATTERNS match within a 5-line window around the most anchor-dense line.
-// Returns an array of canonical column names present in the PDF, or null if no header found.
-function detectPDFColumns(pdfText) {
-  const lines = pdfText.split('\n');
-  const anchors = ['Website', 'Employees', 'Keywords', 'Companies', 'Location', 'Raised'];
+        const rowObj = {};
+        if (globalHeaders) {
+          // GEOMETRIC MAPPING: Map each cell to the closest header by 'left' coordinate
+          for (const cell of row) {
+            const cellText = (cell.text || '').trim();
+            if (!cellText) continue;
 
-  let bestIdx = -1, bestCount = 0;
-  lines.forEach((l, i) => {
-    const count = anchors.filter(a => new RegExp(a, 'i').test(l)).length;
-    if (count > bestCount) { bestCount = count; bestIdx = i; }
-  });
-  if (bestIdx === -1 || bestCount < 2) return null;
+            // Find the header with the closest 'left' coordinate
+            let closestHeader = null;
+            let minDistance = Infinity;
 
-  // Window: 2 lines above anchor through 2 lines below (covers PitchBook's split column headers)
-  const windowText = lines.slice(Math.max(0, bestIdx - 2), bestIdx + 3).join('\n');
-  return COLUMN_PATTERNS.filter(c => c.pattern.test(windowText)).map(c => c.name);
-}
+            for (const header of globalHeaders) {
+              const distance = Math.abs(header.left - cell.left);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestHeader = header;
+              }
+            }
 
-// Run before any LLM calls: detect PDF columns and diff against SCHEMA_FIELDS.
-// Aborts (throws) if any PDF column has no matching schema field — data would be silently dropped.
-async function preflightPDF(pdfPath) {
-  const { execFile } = require('child_process');
-  const { promisify } = require('util');
-  const exec = promisify(execFile);
-  const label = path.basename(pdfPath);
+            // Only map if the distance is reasonable (e.g., within 40 points)
+            // This prevents "floaters" from mapping to distant columns.
+            if (closestHeader && minDistance < 40) {
+              // If multiple cells map to the same header (e.g. multi-line), append them
+              if (rowObj[closestHeader.text]) {
+                rowObj[closestHeader.text] += ' ' + cellText;
+              } else {
+                rowObj[closestHeader.text] = cellText;
+              }
+            }
+          }
 
-  let page1Text;
-  try {
-    const { stdout } = await exec('pdftotext', ['-layout', '-f', '1', '-l', '1', pdfPath, '-']);
-    page1Text = stdout;
-  } catch {
-    console.warn(`  [preflight] pdftotext unavailable — skipping schema check for ${label}`);
-    return null;
-  }
+          const hasName = rowObj['Company Name'] || rowObj['name'] || Object.values(rowObj)[0];
+          const hasWebsite = rowObj['Website'] || rowObj['website'];
 
-  const detected = detectPDFColumns(page1Text);
-  if (!detected) {
-    console.warn(`  [preflight] Could not detect column headers in ${label} — verify this is a PitchBook company list`);
-    return null;
-  }
-
-  let allOk = true;
-  console.log(`  [preflight] ${label}: ${detected.length} column(s) detected`);
-  for (const col of detected) {
-    if (SCHEMA_FIELDS.has(col)) {
-      console.log(`    ✓ ${col}`);
-    } else {
-      console.error(`    ✗ ${col} — NOT in schema (data will be dropped)`);
-      allOk = false;
+          if ((hasName || hasWebsite) && Object.keys(rowObj).length >= 3) {
+            allRows.push(rowObj);
+            pageRows++;
+          }
+        }
+      }
+      
+      if (verbose && pageRows > 0) {
+        console.log(`    Page ${pIdx + 1}: ${pageRows} row(s)`);
+      }
     }
-  }
 
-  // Inform about schema fields absent from this PDF (expected for optional columns)
-  const detectedSet = new Set(detected);
-  for (const field of SCHEMA_FIELDS) {
-    if (!detectedSet.has(field)) {
-      console.warn(`    ~ ${field} — not in this PDF (will be null)`);
-    }
+    return allRows;
+  } catch (err) {
+    console.error(`  [Tabula] Failed to extract table from ${path.basename(pdfPath)}:`, err.message);
+    throw err;
   }
-
-  if (!allOk) {
-    throw new Error(`[preflight] ${label}: PDF has columns not in SCHEMA_FIELDS — add them before proceeding.`);
-  }
-
-  return detected;
 }
 
-async function processPDF(pdfPath, verbose = false, headerHint = null) {
+async function processPDF(pdfPath, verbose = false) {
   const label = path.basename(pdfPath);
   console.log(`Processing PDF: ${label}`);
-  const pages = await extractPageTexts(pdfPath);
 
-  // Split pages into chunks so each LLM call stays within output token limits.
-  const chunks = [];
-  for (let i = 0; i < pages.length; i += PDF_CHUNK_SIZE) {
-    chunks.push(pages.slice(i, i + PDF_CHUNK_SIZE));
+  try {
+    const allRows = await extractPitchbookTableTabula(pdfPath, verbose);
+    console.log(`  ${allRows.length} row(s) total extracted via Tabula`);
+    return { allRows, failures: [] };
+  } catch (err) {
+    return { allRows: [], failures: [{ pdf: pdfPath, error: err.message }] };
   }
-  console.log(`  ${pages.length} page(s) extracted — processing in ${chunks.length} chunk(s) of up to ${PDF_CHUNK_SIZE} page(s) each`);
-
-  const allRows = [];
-  const failures = [];
-
-  for (let ci = 0; ci < chunks.length; ci++) {
-    const chunkText = chunks[ci].join('\n\n--- PAGE BREAK ---\n\n');
-    try {
-      const rows = await callTextModelOCR(chunkText, headerHint);
-      const { warnings } = validatePDFRows(rows, `${label} chunk ${ci + 1}/${chunks.length}`);
-      for (const w of warnings) console.warn(w);
-      if (verbose && rows.length > 0) {
-        const preview = rows.slice(0, 3).map(r => r['Company Name'] || r['name'] || '?').join(', ');
-        console.log(`  chunk ${ci + 1}/${chunks.length}: ${rows.length} row(s) — ${preview}${rows.length > 3 ? '...' : ''}`);
-      } else {
-        console.log(`  chunk ${ci + 1}/${chunks.length}: ${rows.length} row(s)`);
-      }
-      allRows.push(...rows);
-    } catch (err) {
-      console.warn(`  chunk ${ci + 1}/${chunks.length} failed: ${err.message}`);
-      failures.push({ pdf: pdfPath, chunk: ci + 1, pages: `${ci * PDF_CHUNK_SIZE + 1}-${Math.min((ci + 1) * PDF_CHUNK_SIZE, pages.length)}`, error: err.message });
-    }
-  }
-
-  console.log(`  ${allRows.length} row(s) total (${failures.length} chunk failure(s))`);
-  return { allRows, failures };
 }
 
 async function listImages(dir) {
@@ -477,13 +386,21 @@ async function callAnthropicOCR(imagePath) {
 }
 
 // Resolve company name from Pitchbook column headers.
-// Pitchbook exports the column as "Companies (N,NNN)" with the count embedded.
+// Pitchbook Tabula output uses "#Companies (N,NNN)" as the column key,
+// and each cell value is prefixed with the row number e.g. "42Acme Corp".
 function resolveCompanyName(row) {
-  // Try exact key first, then fuzzy match for Pitchbook's count-suffixed header
-  if (row['Company Name']) return row['Company Name'];
-  if (row['name']) return row['name'];
-  const key = Object.keys(row).find(k => /^companies/i.test(k));
-  return key ? row[key] : 'unknown';
+  if (row['Company Name']) return stripRowNumber(row['Company Name']);
+  if (row['name']) return stripRowNumber(row['name']);
+  // PitchBook column key starts with "#" then "Companies (N)"
+  const key = Object.keys(row).find(k => /companies/i.test(k));
+  return key ? stripRowNumber(row[key]) : 'unknown';
+}
+
+// PitchBook Tabula rows prepend the 1-based row number directly to the company name:
+// "42Acme Corp" → "Acme Corp". Strip the leading digits.
+function stripRowNumber(val) {
+  if (typeof val !== 'string') return val;
+  return val.replace(/^\d+/, '').trim();
 }
 
 // Map a Pitchbook row to the Company schema.
@@ -728,8 +645,7 @@ async function main() {
     if (pdfs.length === 0) { console.log('No PDFs found in', inputPath); return; }
     console.log(`Found ${pdfs.length} PDF(s)`);
     for (const pdf of pdfs) {
-      const headerHint = await preflightPDF(pdf);
-      const { allRows, failures: pdfFailures } = await processPDF(pdf, verbose, headerHint);
+      const { allRows, failures: pdfFailures } = await processPDF(pdf, verbose);
       failures.push(...pdfFailures);
       extractedCompanies.push(...await rowsToCompanies(allRows, path.basename(pdf), failures));
     }
@@ -753,7 +669,17 @@ async function main() {
   console.log(JSON.stringify(merged.slice(0, 10), null, 2));
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(2);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(2);
+  });
+}
+
+module.exports = {
+  extractPitchbookTableTabula,
+  processPDF,
+  rowsToCompanies,
+  mergeCompanies,
+  mapRowToCompanySchema
+};

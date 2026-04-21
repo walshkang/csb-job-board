@@ -7,8 +7,11 @@ Pipeline (current architecture)
 
 Slice 1 — Pitchbook OCR → companies.json
   npm run ocr -- data/images
-  Input: directory of Pitchbook screenshot images
-  Gemini 2.5 Flash-Lite does vision OCR → extracts rows → maps to Company schema
+  Input: directory of Pitchbook PDFs (primary) or screenshot images (fallback)
+  PDF mode: Tabula (tabula.jar, stream mode) extracts table rows deterministically — no LLM.
+    Scans page 1 by text to locate the column header row (skipping PitchBook nav chrome above it),
+    maps cells to columns by x-coordinate, strips leading row numbers from company name cells.
+  Screenshot mode: LLM vision OCR via src/prompts/ocr.txt
   Output: data/companies.json with identity + funding signals + company_profile
 
 Slice 9 — Industry Categorization
@@ -190,6 +193,14 @@ Observability surfaces:
 
 Planned improvements (tracked here, not yet implemented)
 
+Company description source & timing (NEW)
+  - Objective: Move company description generation from job-level extraction to company-level categorization.
+  - Rationale: Job listings are often a poor source for general company summaries.
+  - Implementation options:
+    - Dedicated agent to crawl home/about pages (best coverage).
+    - No description until retrieval process is more robust (safety first).
+  - Status: Planned for Slice 9 integration.
+
 Categorization quality
   Problem: LLM frequently returns "None" / low confidence even when PitchBook keywords clearly signal a sector. Current smoke tests show >50% no_result rate on categorize.
   Hypotheses:
@@ -264,10 +275,5 @@ Parallelization plan:
   Independent medium-term: E
 
 Decision needed: company summary source
-- We currently lack reliable PitchBook-exported company descriptions in the screenshots. Need to decide the canonical source for company_profile.description (pick one):
-  1) PitchBook export/API (preferred if you have direct access — single definitive source)
-  2) Playwright crawl of company home/about pages (best for coverage but CPU/time intensive)
-  3) Google/SerpAPI knowledge snippets (requires API key and TOS compliance)
-  4) Third-party data (Crunchbase / LinkedIn licensed data)
-
-Action: record your preferred source and I will implement the prioritized retrieval path (caching, rate limits, and dry‑run before any writes).
+- Decision reached: Move generation to Categorization stage.
+- Current Path: Evaluating either a dedicated "About Page" crawler agent or deferring descriptions entirely until retrieval is high-confidence.
