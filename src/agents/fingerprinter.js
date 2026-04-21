@@ -74,6 +74,29 @@ function detectFromHtml(html) {
   return null;
 }
 
+const ATS_URL_PATTERNS = {
+  greenhouse: ['boards.greenhouse.io', 'greenhouse.io'],
+  lever: ['jobs.lever.co', 'lever.co'],
+  ashby: ['jobs.ashbyhq.com', 'ashbyhq.com'],
+  workday: ['myworkdayjobs.com'],
+  rippling: ['app.rippling.com'],
+  jobvite: ['jobs.jobvite.com'],
+  icims: ['icims.com'],
+  smartrecruiters: ['jobs.smartrecruiters.com', 'smartrecruiters.com'],
+  workable: ['apply.workable.com'],
+  recruitee: ['recruitee.com'],
+  teamtailor: ['teamtailor.com'],
+  bamboohr: ['bamboohr.com'],
+};
+
+function urlConfirmsplatform(url, platform) {
+  if (!url || !platform) return false;
+  const patterns = ATS_URL_PATTERNS[platform];
+  if (!patterns) return false;
+  const low = url.toLowerCase();
+  return patterns.some(p => low.includes(p));
+}
+
 function extractSlugFromUrl(u) {
   if (!u) return null;
   try {

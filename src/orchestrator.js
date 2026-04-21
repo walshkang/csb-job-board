@@ -27,9 +27,16 @@ const { processCompany } = require('./agents/discovery');
 const { fingerprintCompany } = require('./agents/fingerprinter');
 const { scrapeCompany } = require('./agents/scraper');
 const { extractCompanyJobs, mergeJobs } = require('./agents/extraction');
+const { enrichJob, ENRICHMENT_PROMPT_VERSION, PROMPT_PATH } = require('./agents/enricher');
 const { categorizeCompany } = require('./agents/categorizer');
 const { getStage, nextStage, STAGES } = require('./utils/pipeline-stages');
-const { EventSink, writeSnapshot, clearSnapshot, classifyFailure } = require('./utils/pipeline-events');
+const {
+  EventSink,
+  writeSnapshot,
+  clearSnapshot,
+  writeLastRunSummary,
+  classifyFailure,
+} = require('./utils/pipeline-events');
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -56,6 +63,7 @@ const CONCURRENCIES = {
   fingerprint: 4,
   scrape: 5,
   extract: 4,
+  enrich: 3,
   categorize: 3,
 };
 
@@ -89,6 +97,18 @@ const categorizerAgent = (() => {
   try { return config.resolveAgent('categorizer'); } catch (e) { return null; }
 })();
 
+const enricherAgent = (() => {
+  try { return config.resolveAgent('enrichment'); } catch (e) { return null; }
+})();
+
+const enrichPromptTemplate = (() => {
+  try { return fs.readFileSync(PROMPT_PATH, 'utf8'); } catch (e) { return null; }
+})();
+
+const enrichCategories = (() => {
+  return taxonomy.map(c => c['Tech Category Name'] || c['Tech category name'] || c.name).filter(Boolean);
+})();
+
 // Representative jobs for categorizer: seed from existing jobs.json, update as extract completes
 const repJobByCompany = new Map();
 for (const j of initialJobs) {
@@ -101,6 +121,9 @@ for (const j of initialJobs) {
 
 // Accumulate newly extracted jobs; flush to jobs.json on save
 const newJobsBuffer = [];
+
+// Track extracted jobs per company for inline enrich (same objects, mutations propagate to buffer)
+const companyExtractedJobs = new Map();
 
 // ——————————————————————————————————————————————————————————————
 // Filtering target set
@@ -209,6 +232,7 @@ async function runStage(stage, c) {
     c.last_extracted_at = new Date().toISOString();
     if (res && Array.isArray(res.jobs)) {
       for (const j of res.jobs) newJobsBuffer.push(j);
+      companyExtractedJobs.set(c.id, res.jobs);
       if (res.jobs.length && !repJobByCompany.has(c.id)) {
         repJobByCompany.set(c.id, res.jobs[0]);
       }
@@ -227,6 +251,39 @@ async function runStage(stage, c) {
       errors: res && res.errors && res.errors.length ? res.errors.length : 0,
       ...htmlExtra,
     }};
+  }
+
+  if (stage === 'enrich') {
+    if (!enricherAgent || !enrichPromptTemplate) throw new Error('enricher config or prompt unavailable');
+    // Jobs extracted this run are already in newJobsBuffer (same object refs); mutations persist.
+    // For companies extracted in a prior run, fall back to initialJobs.
+    const freshJobs = companyExtractedJobs.get(c.id) || [];
+    const freshIds = new Set(freshJobs.map(j => j.id));
+    const priorUnenriched = initialJobs.filter(
+      j => j.company_id === c.id && !j.last_enriched_at && !freshIds.has(j.id)
+    );
+    // prior unenriched jobs need to enter the buffer so mutations are saved
+    for (const j of priorUnenriched) newJobsBuffer.push(j);
+    const toEnrich = [...freshJobs, ...priorUnenriched].filter(j => !j.last_enriched_at);
+    const { provider, apiKey, model } = enricherAgent;
+    let enriched = 0;
+    let failed = 0;
+    for (const job of toEnrich) {
+      try {
+        await enrichJob(job, enrichCategories, enrichPromptTemplate, { provider, apiKey, model, stream: false, label: job.id });
+        enriched++;
+        if (!repJobByCompany.has(c.id) || job.last_enriched_at) repJobByCompany.set(c.id, job);
+      } catch (err) {
+        failed++;
+        job.enrichment_error = (err && err.message) ? err.message.slice(0, 200) : String(err);
+      }
+    }
+    c.last_enriched_at = new Date().toISOString();
+    markDirty();
+    return {
+      outcome: toEnrich.length === 0 || enriched > 0 ? 'success' : 'no_result',
+      extra: { total: toEnrich.length, enriched, failed },
+    };
   }
 
   if (stage === 'categorize') {
@@ -359,7 +416,7 @@ function snapshot() {
     inFlight[s] = queues[s].pending; // running
   }
 
-  writeSnapshot({
+  const payload = {
     run_id: events.runId,
     started_at: new Date(startedAt).toISOString(),
     updated_at: new Date().toISOString(),
@@ -369,7 +426,9 @@ function snapshot() {
     stats,
     throughput_per_min: throughputPerStage,
     dry_run: DRY_RUN,
-  });
+  };
+  writeSnapshot(payload);
+  return payload;
 }
 let snapshotTimer = setInterval(snapshot, 5000);
 
@@ -392,8 +451,14 @@ async function shutdown(reason = 'done') {
   clearInterval(saveTimer);
   clearInterval(snapshotTimer);
   await flushSave();
-  snapshot();
+  const finalSnapshot = snapshot();
   events.close();
+  writeLastRunSummary({
+    ...finalSnapshot,
+    finished_at: new Date().toISOString(),
+    exit_reason: reason,
+    events_path: events.path,
+  });
   clearSnapshot();
   printSummary();
   process.stderr.write(`orchestrator exit: ${reason}\n`);

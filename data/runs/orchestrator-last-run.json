@@ -1,0 +1,84 @@
+{
+  "run_id": "20260420-230519-cyzl",
+  "started_at": "2026-04-21T03:05:19.368Z",
+  "updated_at": "2026-04-21T03:07:17.720Z",
+  "uptime_sec": 118,
+  "queue_depths": {
+    "profile": 0,
+    "discovery": 43,
+    "fingerprint": 0,
+    "scrape": 0,
+    "extract": 0,
+    "enrich": 0,
+    "categorize": 204
+  },
+  "in_flight": {
+    "profile": 0,
+    "discovery": 8,
+    "fingerprint": 0,
+    "scrape": 0,
+    "extract": 0,
+    "enrich": 2,
+    "categorize": 3
+  },
+  "stats": {
+    "started": {
+      "profile": 70,
+      "discovery": 17,
+      "fingerprint": 24,
+      "scrape": 3,
+      "extract": 4,
+      "enrich": 427,
+      "categorize": 58
+    },
+    "completed": {
+      "profile": 2,
+      "discovery": 4,
+      "fingerprint": 3,
+      "scrape": 3,
+      "extract": 1,
+      "enrich": 425,
+      "categorize": 17
+    },
+    "no_result": {
+      "profile": 0,
+      "discovery": 5,
+      "fingerprint": 0,
+      "scrape": 0,
+      "extract": 3,
+      "enrich": 0,
+      "categorize": 38
+    },
+    "failed": {
+      "profile": 68,
+      "discovery": 0,
+      "fingerprint": 21,
+      "scrape": 0,
+      "extract": 0,
+      "enrich": 0,
+      "categorize": 0
+    },
+    "skipped": {
+      "profile": 0,
+      "discovery": 0,
+      "fingerprint": 0,
+      "scrape": 0,
+      "extract": 0,
+      "enrich": 0,
+      "categorize": 0
+    }
+  },
+  "throughput_per_min": {
+    "profile": 0,
+    "discovery": 9,
+    "fingerprint": 3,
+    "scrape": 3,
+    "extract": 3,
+    "enrich": 138,
+    "categorize": 17
+  },
+  "dry_run": false,
+  "finished_at": "2026-04-21T03:07:17.721Z",
+  "exit_reason": "SIGTERM",
+  "events_path": "/Users/walsh.kang/Documents/GitHub/csb-job-board/data/runs/pipeline-events-20260420-230519-cyzl.jsonl"
+}

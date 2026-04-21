@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSB Admin Run Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen">
+    <main class="max-w-6xl mx-auto p-6 space-y-6">
+      <header class="space-y-1">
+        <h1 class="text-3xl font-semibold">V1 Admin Run Panel</h1>
+        <p class="text-slate-400 text-sm">Run the orchestrator with CLI-equivalent options and monitor live pipeline telemetry.</p>
+      </header>
+
+      <section class="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-4">
+        <h2 class="font-semibold text-lg">Execution Controls</h2>
+        <form id="runForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="block">
+            <span class="text-sm text-slate-300">--limit</span>
+            <input id="limit" type="number" min="1" class="mt-1 w-full rounded bg-slate-950 border border-slate-700 px-3 py-2" placeholder="20" />
+          </label>
+          <label class="block">
+            <span class="text-sm text-slate-300">--company</span>
+            <input id="company" type="text" class="mt-1 w-full rounded bg-slate-950 border border-slate-700 px-3 py-2" placeholder="Acme, Example Inc" />
+          </label>
+          <div class="md:col-span-2 space-y-2">
+            <p class="text-sm text-slate-300">--stages (leave all selected for full pipeline)</p>
+            <div id="stageContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+          </div>
+          <label class="flex items-center gap-2">
+            <input id="dryRun" type="checkbox" class="rounded border-slate-600 bg-slate-950" checked />
+            <span>--dry-run</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input id="verbose" type="checkbox" class="rounded border-slate-600 bg-slate-950" />
+            <span>--verbose</span>
+          </label>
+          <div class="md:col-span-2 flex gap-3">
+            <button type="submit" class="bg-violet-600 hover:bg-violet-500 px-4 py-2 rounded font-medium">Run full pipeline</button>
+            <button type="button" id="stopBtn" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded font-medium">Stop run</button>
+          </div>
+        </form>
+        <p id="message" class="text-sm text-slate-300"></p>
+      </section>
+
+      <section class="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-2">
+        <h2 class="font-semibold text-lg">Run Status</h2>
+        <div class="text-sm text-slate-300 grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div><span class="text-slate-500">State:</span> <span id="state">Idle</span></div>
+          <div><span class="text-slate-500">Run ID:</span> <span id="runId">-</span></div>
+          <div><span class="text-slate-500">Uptime:</span> <span id="uptime">-</span></div>
+        </div>
+      </section>
+
+      <section class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <h2 class="font-semibold text-lg mb-3">Live Telemetry</h2>
+        <div id="telemetry" class="space-y-2 text-sm"></div>
+      </section>
+
+      <section class="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="font-semibold text-lg">Stage Audit Map</h2>
+          <span class="text-xs text-slate-400">Click a stage for summary, prompt, and recent step events.</span>
+        </div>
+        <div id="stageCards" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+      </section>
+
+      <section class="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-3">
+        <h2 class="font-semibold text-lg">Selected Step Detail</h2>
+        <div id="stageDetailHeader" class="text-sm text-slate-400">Select a stage above to inspect.</div>
+        <div id="stageAlerts" class="space-y-2"></div>
+        <div id="stageDetailMetrics" class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs"></div>
+        <div>
+          <h3 class="text-sm font-medium mb-2 text-slate-200">Failure Classes</h3>
+          <div id="failureChips" class="flex flex-wrap gap-2 text-xs"></div>
+        </div>
+        <div>
+          <h3 class="text-sm font-medium mb-2 text-slate-200">Stage Event Stream</h3>
+          <pre id="stageEvents" class="bg-slate-950 border border-slate-800 rounded p-3 text-xs text-slate-300 overflow-auto max-h-80"></pre>
+        </div>
+      </section>
+
+      <section class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <h2 class="font-semibold text-lg mb-3">Recent Orchestrator Output</h2>
+        <pre id="logs" class="bg-slate-950 border border-slate-800 rounded p-3 text-xs text-slate-300 overflow-auto max-h-80"></pre>
+      </section>
+    </main>
+
+    <script>
+      const runForm = document.getElementById('runForm');
+      const stageContainer = document.getElementById('stageContainer');
+      const message = document.getElementById('message');
+      const stateEl = document.getElementById('state');
+      const runIdEl = document.getElementById('runId');
+      const uptimeEl = document.getElementById('uptime');
+      const telemetryEl = document.getElementById('telemetry');
+      const logsEl = document.getElementById('logs');
+      const stopBtn = document.getElementById('stopBtn');
+      const stageCardsEl = document.getElementById('stageCards');
+      const stageDetailHeaderEl = document.getElementById('stageDetailHeader');
+      const stageAlertsEl = document.getElementById('stageAlerts');
+      const stageDetailMetricsEl = document.getElementById('stageDetailMetrics');
+      const failureChipsEl = document.getElementById('failureChips');
+      const stageEventsEl = document.getElementById('stageEvents');
+
+      const stages = ['profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'enrich', 'categorize'];
+      const driverStyle = {
+        ai: {
+          badge: 'bg-purple-500/20 text-purple-300 border-purple-400/30',
+          border: 'border-purple-500/30',
+          label: 'AI-driven',
+        },
+        code: {
+          badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30',
+          border: 'border-emerald-500/30',
+          label: 'Code-driven',
+        },
+      };
+      let selectedStage = stages[0];
+      let lastStatus = null;
+      const throughputHistory = Object.fromEntries(stages.map((stage) => [stage, []]));
+
+      for (const stage of stages) {
+        const label = document.createElement('label');
+        label.className = 'flex items-center gap-2 bg-slate-950 border border-slate-800 rounded px-2 py-1';
+        label.innerHTML = `<input type="checkbox" value="${stage}" checked class="rounded border-slate-700 bg-slate-950" /><span>${stage}</span>`;
+        stageContainer.appendChild(label);
+      }
+
+      function selectedStages() {
+        return [...stageContainer.querySelectorAll('input:checked')].map((el) => el.value);
+      }
+
+      function formatUptime(sec) {
+        if (!Number.isFinite(sec)) return '-';
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = sec % 60;
+        return [h, m, s].map((n) => String(n).padStart(2, '0')).join(':');
+      }
+
+      function renderTelemetry(snapshot) {
+        if (!snapshot) {
+          telemetryEl.innerHTML = '<p class="text-slate-500">No live telemetry.</p>';
+          return;
+        }
+        const stats = snapshot.stats || {};
+        const queueDepths = snapshot.queue_depths || {};
+        const inFlight = snapshot.in_flight || {};
+        const throughput = snapshot.throughput_per_min || {};
+        telemetryEl.innerHTML = stages.map((stage) => {
+          const started = (stats.started && stats.started[stage]) || 0;
+          const done = ((stats.completed && stats.completed[stage]) || 0) + ((stats.no_result && stats.no_result[stage]) || 0) + ((stats.failed && stats.failed[stage]) || 0) + ((stats.skipped && stats.skipped[stage]) || 0);
+          const pct = started > 0 ? Math.round((done / started) * 100) : 0;
+          return `
+            <div class="border border-slate-800 rounded p-2">
+              <div class="flex items-center justify-between">
+                <span class="font-medium">${stage}</span>
+                <span class="text-xs text-slate-400">throughput/min: ${throughput[stage] || 0}</span>
+              </div>
+              <div class="h-2 bg-slate-800 rounded mt-2 overflow-hidden">
+                <div class="h-full bg-violet-500" style="width:${pct}%"></div>
+              </div>
+              <div class="mt-2 text-xs text-slate-400 flex gap-3 flex-wrap">
+                <span>started: ${started}</span>
+                <span>ok: ${(stats.completed && stats.completed[stage]) || 0}</span>
+                <span>no_result: ${(stats.no_result && stats.no_result[stage]) || 0}</span>
+                <span>failed: ${(stats.failed && stats.failed[stage]) || 0}</span>
+                <span>skipped: ${(stats.skipped && stats.skipped[stage]) || 0}</span>
+                <span>queued: ${queueDepths[stage] || 0}</span>
+                <span>in_flight: ${inFlight[stage] || 0}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function promptHref(promptRelativePath) {
+        if (!promptRelativePath) return null;
+        return `/api/prompt?path=${encodeURIComponent(promptRelativePath)}`;
+      }
+
+      function stageStats(status, stage) {
+        const source = (status && (status.live || status.lastRun)) || {};
+        const stats = source.stats || {};
+        return {
+          started: (stats.started && stats.started[stage]) || 0,
+          completed: (stats.completed && stats.completed[stage]) || 0,
+          noResult: (stats.no_result && stats.no_result[stage]) || 0,
+          failed: (stats.failed && stats.failed[stage]) || 0,
+          skipped: (stats.skipped && stats.skipped[stage]) || 0,
+          queueDepth: (source.queue_depths && source.queue_depths[stage]) || 0,
+          inFlight: (source.in_flight && source.in_flight[stage]) || 0,
+          throughputPerMin: (source.throughput_per_min && source.throughput_per_min[stage]) || 0,
+        };
+      }
+
+      function pushThroughputSample(status) {
+        const source = (status && (status.live || status.lastRun)) || {};
+        const tpm = source.throughput_per_min || {};
+        for (const stage of stages) {
+          const val = Number(tpm[stage] || 0);
+          const arr = throughputHistory[stage];
+          arr.push(val);
+          if (arr.length > 24) arr.shift();
+        }
+      }
+
+      function toSparkline(values) {
+        if (!values || values.length === 0) return '·';
+        const blocks = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+        const max = Math.max(...values, 1);
+        return values.map((v) => {
+          const idx = Math.min(blocks.length - 1, Math.floor((v / max) * (blocks.length - 1)));
+          return blocks[idx];
+        }).join('');
+      }
+
+      function renderStageCards(status) {
+        const stageCatalog = (status && status.stageCatalog) || [];
+        if (!stageCatalog.length) {
+          stageCardsEl.innerHTML = '<p class="text-slate-500 text-sm">Stage catalog unavailable.</p>';
+          return;
+        }
+        stageCardsEl.innerHTML = stageCatalog.map((item) => {
+          const driver = driverStyle[item.driver] || driverStyle.code;
+          const stats = stageStats(status, item.stage);
+          const sparkline = toSparkline(throughputHistory[item.stage]);
+          const selected = selectedStage === item.stage;
+          return `
+            <button data-stage="${item.stage}" class="text-left border rounded p-3 transition ${driver.border} ${selected ? 'ring-2 ring-violet-400 bg-slate-800/70' : 'bg-slate-950 hover:bg-slate-800/60'}">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium">${item.stage}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded border ${driver.badge}">${driver.label}</span>
+              </div>
+              <p class="text-xs text-slate-400 mb-2">${item.summary}</p>
+              <div class="text-xs text-violet-300 mb-1 font-mono">${sparkline}</div>
+              <div class="text-[11px] text-slate-400 flex gap-2 flex-wrap">
+                <span>ok ${stats.completed}</span>
+                <span>fail ${stats.failed}</span>
+                <span>queue ${stats.queueDepth}</span>
+                <span>tpm ${stats.throughputPerMin}</span>
+              </div>
+            </button>
+          `;
+        }).join('');
+
+        stageCardsEl.querySelectorAll('button[data-stage]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            selectedStage = btn.getAttribute('data-stage');
+            renderStageCards(lastStatus);
+            await refreshStageDetail();
+          });
+        });
+      }
+
+      function renderStageMetrics(detail) {
+        const c = detail.counters || {};
+        stageDetailMetricsEl.innerHTML = [
+          ['started', c.started],
+          ['completed', c.completed],
+          ['no_result', c.noResult],
+          ['failed', c.failed],
+          ['skipped', c.skipped],
+          ['queue', c.queueDepth],
+          ['in_flight', c.inFlight],
+          ['throughput/min', c.throughputPerMin],
+        ].map(([k, v]) => `<div class="bg-slate-950 border border-slate-800 rounded px-2 py-2"><span class="text-slate-500">${k}</span><div class="text-slate-200 mt-1">${v}</div></div>`).join('');
+      }
+
+      function renderFailureChips(detail) {
+        const failures = {};
+        for (const event of (detail.events || [])) {
+          if ((event.outcome === 'failure' || event.failure_class) && event.failure_class) {
+            failures[event.failure_class] = (failures[event.failure_class] || 0) + 1;
+          }
+        }
+        const entries = Object.entries(failures).sort((a, b) => b[1] - a[1]);
+        if (!entries.length) {
+          failureChipsEl.innerHTML = '<span class="text-slate-500">No recent failure classes for this stage.</span>';
+          return;
+        }
+        failureChipsEl.innerHTML = entries.map(([name, count]) => (
+          `<span class="px-2 py-1 rounded border border-rose-400/40 bg-rose-500/10 text-rose-200">${name}: ${count}</span>`
+        )).join('');
+      }
+
+      function renderStageAlerts(detail) {
+        const events = detail.events || [];
+        const cfgPromptFailures = events.filter((event) => {
+          const err = String(event.error || '').toLowerCase();
+          return err.includes('config or prompt unavailable') || err.includes('unknown agent config block');
+        });
+        if (!cfgPromptFailures.length) {
+          stageAlertsEl.innerHTML = '';
+          return;
+        }
+        stageAlertsEl.innerHTML = `
+          <div class="border border-amber-400/40 bg-amber-500/10 text-amber-200 rounded p-2 text-xs">
+            <div class="font-semibold mb-1">Regression Alert: config/prompt unavailable</div>
+            <div>
+              ${cfgPromptFailures.length} recent event(s) indicate ${detail.stage} is failing before model execution.
+              Check agent config key mapping and prompt file path.
+            </div>
+          </div>
+        `;
+      }
+
+      async function refreshStageDetail() {
+        const res = await fetch(`/api/stage/${encodeURIComponent(selectedStage)}`);
+        const payload = await res.json();
+        if (!payload.ok) {
+          stageDetailHeaderEl.textContent = payload.error || 'Unable to load stage detail.';
+          stageDetailMetricsEl.innerHTML = '';
+          stageEventsEl.textContent = '';
+          return;
+        }
+        const detail = payload.detail;
+        const driver = driverStyle[detail.metadata.driver] || driverStyle.code;
+        const promptLink = detail.metadata.promptRelativePath
+          ? `<a class="underline text-violet-300" href="${promptHref(detail.metadata.promptRelativePath)}">${detail.metadata.promptRelativePath}</a>`
+          : '<span class="text-slate-500">No linked prompt (code stage)</span>';
+        stageDetailHeaderEl.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-slate-100">${detail.stage}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded border ${driver.badge}">${driver.label}</span>
+            </div>
+            <div class="text-slate-400">${detail.metadata.summary}</div>
+            <div class="text-xs">Prompt: ${promptLink}</div>
+            <div class="text-xs text-slate-500">Run source: ${detail.source || 'none'} ${detail.runId ? `(${detail.runId})` : ''}</div>
+          </div>
+        `;
+        renderStageAlerts(detail);
+        renderStageMetrics(detail);
+        renderFailureChips(detail);
+        const eventLines = (detail.events || []).map((e) => JSON.stringify(e));
+        const logLines = (detail.recentLog || []).map((line) => `[log] ${line}`);
+        const merged = [...eventLines, ...logLines];
+        stageEventsEl.textContent = merged.length ? merged.join('\n') : 'No stage-specific events yet.';
+      }
+
+      async function refreshStatus() {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        lastStatus = data;
+        pushThroughputSample(data);
+        const active = data.live || data.lastRun || null;
+        stateEl.textContent = data.panelChildRunning ? 'Running' : (data.live ? 'Running (external)' : 'Idle');
+        runIdEl.textContent = (active && active.run_id) || '-';
+        uptimeEl.textContent = formatUptime(active && active.uptime_sec);
+        renderTelemetry(data.live || null);
+        renderStageCards(data);
+        logsEl.textContent = (data.recentLog || []).join('\n');
+        await refreshStageDetail();
+      }
+
+      runForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const limitRaw = document.getElementById('limit').value.trim();
+        const stagesChosen = selectedStages();
+        const payload = {
+          limit: limitRaw ? Number(limitRaw) : null,
+          company: document.getElementById('company').value.trim(),
+          stages: stagesChosen,
+          dryRun: document.getElementById('dryRun').checked,
+          verbose: document.getElementById('verbose').checked,
+        };
+        const res = await fetch('/api/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        message.textContent = data.ok ? `Started run (pid ${data.pid}).` : data.error;
+        message.className = data.ok ? 'text-sm text-emerald-400' : 'text-sm text-rose-400';
+        await refreshStatus();
+      });
+
+      stopBtn.addEventListener('click', async () => {
+        const res = await fetch('/api/stop', { method: 'POST' });
+        const data = await res.json();
+        message.textContent = data.ok ? 'Stop signal sent (SIGTERM).' : data.error;
+        message.className = data.ok ? 'text-sm text-amber-300' : 'text-sm text-rose-400';
+        await refreshStatus();
+      });
+
+      refreshStatus().catch(() => {});
+      setInterval(() => refreshStatus().catch(() => {}), 2000);
+    </script>
+  </body>
+</html>

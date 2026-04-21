@@ -701,6 +701,27 @@ The orchestrator emits one JSONL event per stage attempt to `data/runs/pipeline-
 
 Enrichment (`npm run enrich`) is still per-job, not per-company, and stays separate from the orchestrator for now.
 
+### Admin run panel (v1)
+
+For a local UI wrapper around the orchestrator CLI:
+
+```bash
+npm run admin
+```
+
+Then open [http://127.0.0.1:3847](http://127.0.0.1:3847).
+
+The panel can start one orchestrator run at a time using the same options (`--limit`, `--company`, `--stages`, `--dry-run`, `--verbose`), and polls live telemetry from `data/runs/orchestrator-snapshot.json`.
+
+It also includes an auditable stage map:
+- Click any stage to view a summary, AI-vs-code driver label, and prompt link (when applicable)
+- Inspect per-stage counters and recent stage-specific event stream entries
+
+Constraints:
+- Localhost only (`127.0.0.1`)
+- Single-run guard to avoid overlapping writes to shared pipeline data
+- Intended as a convenience UI; CLI remains the source of truth
+
 ---
 
 ## Re-running Patterns

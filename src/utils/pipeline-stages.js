@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const STAGES = ['profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'categorize'];
+const STAGES = ['profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'enrich', 'categorize'];
 
 function isBlank(value) {
   return value === undefined || value === null || value === '';
@@ -44,6 +44,10 @@ function getStage(company) {
 
   if (isBlank(c.last_extracted_at)) {
     return 'extract';
+  }
+
+  if (isBlank(c.last_enriched_at)) {
+    return 'enrich';
   }
 
   if (isBlank(c.climate_tech_category) || c.climate_tech_category === 'None') {

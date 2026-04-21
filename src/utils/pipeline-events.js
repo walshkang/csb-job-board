@@ -4,6 +4,7 @@ const path = require('path');
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const RUNS_DIR = path.join(REPO_ROOT, 'data', 'runs');
 const SNAPSHOT_PATH = path.join(RUNS_DIR, 'orchestrator-snapshot.json');
+const LAST_RUN_SUMMARY_PATH = path.join(RUNS_DIR, 'orchestrator-last-run.json');
 const RETENTION = 30;
 
 function ensureDir(p) { try { fs.mkdirSync(p, { recursive: true }); } catch (e) {} }
@@ -84,4 +85,23 @@ function clearSnapshot() {
   try { fs.unlinkSync(SNAPSHOT_PATH); } catch (e) {}
 }
 
-module.exports = { EventSink, writeSnapshot, clearSnapshot, classifyFailure, newRunId, RUNS_DIR, SNAPSHOT_PATH };
+function writeLastRunSummary(summary) {
+  ensureDir(RUNS_DIR);
+  const tmp = LAST_RUN_SUMMARY_PATH + '.tmp';
+  try {
+    fs.writeFileSync(tmp, JSON.stringify(summary, null, 2), 'utf8');
+    fs.renameSync(tmp, LAST_RUN_SUMMARY_PATH);
+  } catch (e) {}
+}
+
+module.exports = {
+  EventSink,
+  writeSnapshot,
+  clearSnapshot,
+  writeLastRunSummary,
+  classifyFailure,
+  newRunId,
+  RUNS_DIR,
+  SNAPSHOT_PATH,
+  LAST_RUN_SUMMARY_PATH,
+};

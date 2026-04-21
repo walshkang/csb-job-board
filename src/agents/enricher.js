@@ -543,6 +543,8 @@ module.exports = {
   renderPrompt,
   chunkArray,
   ENRICHMENT_PROMPT_VERSION,
+  PROMPT_PATH,
+  enrichJob,
   enrichJobBatch
 };
 

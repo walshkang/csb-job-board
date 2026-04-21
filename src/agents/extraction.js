@@ -270,6 +270,7 @@ function mergeJobs(existingJobs, newJobs) {
     if (existing) {
       // preserve first_seen_at
       existing.last_seen_at = now;
+      delete existing.departed_at;
       // update fields from nj if missing
       existing.job_title_raw = existing.job_title_raw || nj.job_title_raw;
       existing.location_raw = existing.location_raw || nj.location_raw;
@@ -287,6 +288,7 @@ function mergeJobs(existingJobs, newJobs) {
       } else {
         // keep prev; but ensure prev.last_seen_at updated
         prev.last_seen_at = now;
+        delete prev.departed_at;
       }
     } else {
       // new unique
@@ -444,6 +446,7 @@ async function extractCompanyJobs(company, opts = {}) {
 }
 
 async function batchExtract({ companyFilter = null, dryRun = false, verbose = false }) {
+  const runStart = new Date().toISOString();
   const companiesRaw = readJsonSafe(path.join(REPO_ROOT, 'data', 'companies.json')) || [];
   let companies;
   try {
@@ -486,12 +489,26 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
   // Merge into single jobs.json
   const existing = readJsonSafe(OUT_JOBS) || [];
   const merged = mergeJobs(existing, extracted);
+
+  // Mark jobs as departed if their company was processed but they weren't seen this run
+  const processedSet = new Set(companiesProcessed);
+  let departedCount = 0;
+  for (const job of merged) {
+    if (!processedSet.has(job.company_id)) continue;
+    if (job.departed_at) continue;
+    if (job.last_seen_at < runStart) {
+      job.departed_at = runStart;
+      departedCount++;
+    }
+  }
+
   if (!dryRun) writeJSONAtomic(OUT_JOBS, merged);
 
-  if (verbose) console.log(`Extraction done: ${companiesProcessed.length} companies, ${extracted.length} jobs, ${errors.length} errors`);
+  if (verbose) console.log(`Extraction done: ${companiesProcessed.length} companies, ${extracted.length} jobs, ${departedCount} departed, ${errors.length} errors`);
   return {
     companiesProcessed,
     extractedCount: extracted.length,
+    departedCount,
     written: dryRun ? 0 : merged.length,
     errors,
     extractStats
@@ -532,6 +549,7 @@ async function main() {
   console.log('Extraction summary:');
   console.log('  companies processed:', res.companiesProcessed.length);
   console.log('  extracted items:', res.extractedCount);
+  console.log('  departed jobs:', res.departedCount);
   console.log('  jobs written:', res.written);
   console.log('  HTML adapter companies:', res.extractStats.htmlAdapterCompanies);
   console.log('  HTML LLM companies:', res.extractStats.htmlLlmCompanies);

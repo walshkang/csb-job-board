@@ -16,6 +16,7 @@
     "review": "node src/agents/reviewer.js",
     "categorize": "node src/agents/categorizer.js",
     "pipeline": "node --max-old-space-size=4096 src/orchestrator.js",
+    "admin": "ENABLE_ADMIN_PANEL=1 node admin/server.js",
     "backfill:profile": "node scripts/backfill-profile.js",
     "audit:html-shapes": "node scripts/audit-html-extract-shapes.js",
     "benchmark": "node scripts/benchmark.js",

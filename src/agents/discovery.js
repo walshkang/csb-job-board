@@ -384,14 +384,24 @@ async function processCompany(company, opts) {
   const steps = [];
   const t0 = Date.now();
 
-  if (!company || !company.domain) return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
+  if (!company || !company.domain) {
+    if (company) {
+      company.careers_page_reachable = false;
+      company.careers_page_discovery_method = 'skipped_no_domain';
+    }
+    return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
+  }
 
   if (!force && company.careers_page_url && company.careers_page_reachable) {
     return { skipped: true, reason: 'already-reachable', steps, duration_ms: 0 };
   }
 
   const domain = normalizeDomain(company.domain);
-  if (!domain) return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
+  if (!domain) {
+    company.careers_page_reachable = false;
+    company.careers_page_discovery_method = 'skipped_no_domain';
+    return { skipped: true, reason: 'no-domain', steps, duration_ms: 0 };
+  }
 
   const done = (result) => {
     if (!result.skipped) {

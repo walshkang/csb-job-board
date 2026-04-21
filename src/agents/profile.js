@@ -17,7 +17,7 @@ function resolveBaseUrl(company) {
     return `${parsed.origin}${path}/`;
   }
   if (!company || !company.domain) return null;
-  const host = String(company.domain).replace(/^https?:\/\//, '').split('/')[0];
+  const host = String(company.domain).replace(/^https?:\/\//, '').split(/[\/\s\n]/)[0];
   return `https://${host}/`;
 }
 
