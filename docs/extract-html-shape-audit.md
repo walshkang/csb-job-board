@@ -27,6 +27,8 @@ From one full artifact tree on this machine:
 
 **Top 3 shapes cumulative:** 249 / 302 (**82.5%**)
 
+Context and follow-up work (adapter-first extract, LLM fallback flag): [profile-stage-slice.md](./profile-stage-slice.md) (Slice 6b).
+
 ## Gate (from [shape-dehallucinate.md](./shape-dehallucinate.md))
 
 **Decision: GO** — The top three coarse buckets alone cover **≥50%** of LLM-eligible HTML artifacts, so implementing DOM-first extraction with LLM fallback is justified.
@@ -42,19 +44,32 @@ Live under [`src/agents/extraction/html-adapters/`](../src/agents/extraction/htm
 
 Non-HTML XML sitemaps saved as `.html` are detected and skipped without calling the LLM.
 
-## Measured LLM avoidance (same artifact set)
+## Measured extract path (HTML-only, same artifact set)
 
-Method: iterate validated `data/companies.json`, call `extractCompanyJobs` with a **no-op** `callFn` (no real LLM), using on-disk `artifacts/html/{id}.html`.
+Method: `node scripts/audit-html-extract-adapter-baseline.js` — iterate validated `data/companies.json`, call `extractCompanyJobs` with a **no-op** `callFn`, using on-disk `artifacts/html/{id}.html` (canonical `.html`, no sibling `.json`).
 
-**Snapshot:** `htmlAdapterCompanies` ≈ **92**, `htmlLlmCompanies` ≈ **209**, over **301** HTML-only rows (~**30.6%** fewer LLM invocations than an adapter-free run).
+**Snapshot (2026-04-20, default env — `EXTRACTION_LLM_FALLBACK` unset / off):**
 
-This is **below** the stretch acceptance of “≥50% reduction in extract LLM calls,” because a large fraction of artifacts have no stable job URLs in static HTML (SPAs, cookie walls, wrong page captured, etc.). The pipeline still meets the **gate** to ship adapters; the numeric target should be re-checked after scrape quality improvements.
+| Metric | Value |
+| --- | ---: |
+| HTML-only rows | **302** |
+| `htmlAdapterCompanies` (adapters returned ≥1 job) | **92** |
+| `htmlLlmCompanies` | **0** |
+| Adapter success **share of HTML-only artifacts** | **92 / 302 ≈ 30.5%** |
+| Remaining rows (no adapter jobs; `adapter_empty`, XML/sitemap, etc.) | **210** |
+
+With fallback **off**, the LLM is not invoked for HTML-only artifacts unless `EXTRACTION_LLM_FALLBACK=1` and the classified shape is `other` (see Slice 6b in [profile-stage-slice.md](./profile-stage-slice.md)).
+
+**Historical comparison (pre–Slice 6b, LLM always eligible after adapters):** `htmlAdapterCompanies` **92**, `htmlLlmCompanies` **209** over **301** HTML-only rows — adapter share of **(adapter + LLM)** ≈ **30.6%**.
+
+Adapter success share of artifacts is still **below** the stretch “≥50%” bar, because many pages have no stable job URLs in static HTML (SPAs, cookie walls, wrong page captured, etc.). The pipeline still meets the **gate** to ship adapters; re-check after scrape quality improvements or broader adapter coverage.
 
 ## How to reproduce
 
 ```bash
 node scripts/audit-html-extract-shapes.js
+node scripts/audit-html-extract-adapter-baseline.js
 npm run extract   # prints "HTML adapter companies" and "HTML LLM companies" at the end
 ```
 
-Optional: `EXTRACTION_ADAPTER_HTML_MAX` caps parsed HTML size (default 2_000_000 chars).
+Optional: `EXTRACTION_ADAPTER_HTML_MAX` caps parsed HTML size (default 2_000_000 chars). Set `EXTRACTION_LLM_FALLBACK=1` to allow the LLM for `other`-bucket HTML when adapters return no jobs.

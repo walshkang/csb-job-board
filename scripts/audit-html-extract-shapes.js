@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { classifyShape } = require('../src/agents/extraction/html-adapters/shared');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DEFAULT_ARTIFACTS = path.join(REPO_ROOT, 'artifacts', 'html');
@@ -33,35 +34,6 @@ function isCanonicalCompanyHtml(name) {
   if (!name.endsWith('.html') || isAuxiliaryArtifact(name)) return false;
   const base = name.slice(0, -'.html'.length);
   return !base.includes('.');
-}
-
-function classifyShape(html) {
-  const slice = html.length > 2000000 ? html.slice(0, 2000000) : html;
-  const lower = slice.toLowerCase();
-
-  if (/^\s*<\?xml\s/i.test(slice.trim().slice(0, 200)) || /<urlset[\s\n]/i.test(slice)) return 'xml-sitemap-not-html';
-
-  const metaGen = slice.match(/<meta[^>]*name\s*=\s*["']generator["'][^>]*content\s*=\s*["']([^"']*)["']/i);
-  const gen = metaGen ? metaGen[1].toLowerCase() : '';
-
-  if (gen.includes('notion')) return 'notion-generator-meta';
-  if (gen.includes('webflow')) return 'webflow-generator-meta';
-
-  if (/id\s*=\s*["']notion-app["']|notion\.site|notion\.so/i.test(slice)) return 'notion-dom';
-  if (/data-wf-domain|website-files\.com\/[^"']*\.webflow\./i.test(slice)) return 'webflow-dom';
-
-  if (/cdn\.shopify\.com|shopify\.theme/i.test(lower)) return 'shopify';
-
-  const jobHrefCount = (slice.match(/href\s*=\s*["'][^"']*\/(jobs?|careers)(\/|[-_]|["'])/gi) || []).length;
-  if (jobHrefCount >= 4) return 'many-career-path-hrefs';
-
-  if (/greenhouse\.io|boards\.greenhouse/i.test(lower)) return 'greenhouse-embed-snippet';
-  if (/lever\.co|jobs\.lever/i.test(lower)) return 'lever-embed-snippet';
-  if (/myworkdayjobs\.com|workday\.com\/wday/i.test(lower)) return 'workday-embed-snippet';
-
-  if (/wp-content|wordpress/i.test(lower) && jobHrefCount >= 2) return 'wordpress-careers-ish';
-
-  return 'other';
 }
 
 function main() {

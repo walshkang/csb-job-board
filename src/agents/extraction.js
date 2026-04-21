@@ -6,7 +6,7 @@ const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
 const { streamLLM } = require('../llm-client');
 const { tryHtmlAdapters } = require('./extraction/html-adapters');
-const { isXmlSitemapOrNonHtml } = require('./extraction/html-adapters/shared');
+const { isXmlSitemapOrNonHtml, classifyShape } = require('./extraction/html-adapters/shared');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'extraction.txt');
@@ -338,6 +338,10 @@ async function extractCompanyJobs(company, opts = {}) {
   const extracted = [];
   const errors = [];
   let processed = false;
+  /** @type {'json'|'adapter'|'llm'|'xml_or_sitemap'|'adapter_empty'|null} */
+  let html_extract_path = null;
+  let html_adapter_name = null;
+  let extract_failure_reason = null;
 
   if (fs.existsSync(jsonPath)) {
     try {
@@ -366,6 +370,7 @@ async function extractCompanyJobs(company, opts = {}) {
         }
       }
       if (verbose) console.log(`[${company.id}] json/${mapperName} → ${items.length} job(s)`);
+      html_extract_path = 'json';
       for (const it of items) {
         const normalized = normalizeExtractedItem(it, company.id, company.name, company.careers_page_url || company.domain || '', companyCategories);
         if (isPlaceholder(normalized)) continue;
@@ -384,20 +389,30 @@ async function extractCompanyJobs(company, opts = {}) {
 
       if (isXmlSitemapOrNonHtml(html)) {
         errors.push({ company: company.id, err: 'artifact_not_html_xml_or_sitemap' });
+        html_extract_path = 'xml_or_sitemap';
         processed = true;
       } else {
         let items = null;
         const adapted = tryHtmlAdapters(html, baseUrl);
         if (adapted && adapted.items.length) {
           items = adapted.items;
+          html_extract_path = 'adapter';
+          html_adapter_name = adapted.adapterName || null;
           if (extractStats) extractStats.htmlAdapterCompanies += 1;
           if (verbose) console.log(`[${company.id}] html/adapter:${adapted.adapterName} → ${items.length} item(s)`);
-        }
-
-        if (!items) {
-          items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn, promptPath });
-          if (extractStats) extractStats.htmlLlmCompanies += 1;
-          if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
+        } else {
+          const shape = classifyShape(html);
+          const llmEnabled = process.env.EXTRACTION_LLM_FALLBACK === '1';
+          if (shape === 'other' && llmEnabled) {
+            items = await runExtraction({ html, company: company.name || company.id, baseUrl, callFn, promptPath });
+            html_extract_path = 'llm';
+            if (extractStats) extractStats.htmlLlmCompanies += 1;
+            if (verbose) console.log(`[${company.id}] html/llm → ${items.length} item(s)${items[0] && items[0].error ? ` [${items[0].error}]` : ''}`);
+          } else {
+            html_extract_path = 'adapter_empty';
+            extract_failure_reason = 'adapter_empty';
+            if (verbose) console.log(`[${company.id}] html/adapter_empty (shape=${shape}, llm_fallback=${llmEnabled ? 'on' : 'off'})`);
+          }
         }
 
         if (Array.isArray(items) && items.length && items[0] && items[0].error === 'page_blocked') {
@@ -421,7 +436,10 @@ async function extractCompanyJobs(company, opts = {}) {
     companyId: company.id,
     processed,
     jobs: extracted,
-    errors
+    errors,
+    html_extract_path,
+    html_adapter_name,
+    extract_failure_reason
   };
 }
 

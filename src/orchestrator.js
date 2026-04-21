@@ -213,13 +213,19 @@ async function runStage(stage, c) {
         repJobByCompany.set(c.id, res.jobs[0]);
       }
     }
+    const htmlExtra = {
+      html_extract_path: res && res.html_extract_path != null ? res.html_extract_path : null,
+      html_adapter_name: res && res.html_adapter_name != null ? res.html_adapter_name : null,
+      extract_failure_reason: res && res.extract_failure_reason != null ? res.extract_failure_reason : null,
+    };
     if (res && res.processed && res.jobs.length > 0) {
-      return { outcome: 'success', extra: { jobs: res.jobs.length } };
+      return { outcome: 'success', extra: { jobs: res.jobs.length, ...htmlExtra } };
     }
     return { outcome: 'no_result', extra: {
       processed: !!(res && res.processed),
       jobs: res && res.jobs ? res.jobs.length : 0,
       errors: res && res.errors && res.errors.length ? res.errors.length : 0,
+      ...htmlExtra,
     }};
   }
 
