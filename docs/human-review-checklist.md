@@ -116,6 +116,7 @@ Run `node src/agents/notion-sync.js --dry-run` after pipeline changes to validat
 | Doc | Use |
 |-----|-----|
 | `docs/shape-dehallucinate.md` | Planned slices affecting prompts and categorizer |
+| `docs/archive/extract-html-shape-audit-2026-04-20.md`, `docs/archive/profile-stage-slice-2026-04-20.md` | Archived completed Slice 5/6 prompt writeups (shape audit + profile/extract code-ify) |
 | `README.md` | Operator docs, MBA table, versioning |
 | `context.md` | Backlog todos (PitchBook query definition, labeled MBA examples, categorizer dry-run JSON, etc.) |
 

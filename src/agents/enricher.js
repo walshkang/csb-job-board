@@ -6,7 +6,7 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const JOBS_PATH = path.join(REPO_ROOT, 'data', 'jobs.json');
 const TAX_PATH = path.join(REPO_ROOT, 'data', 'climate-tech-map-industry-categories.json');
 const PROMPT_PATH = path.join(REPO_ROOT, 'src', 'prompts', 'enrichment.txt');
-const ENRICHMENT_PROMPT_VERSION = '1.3.2';
+const ENRICHMENT_PROMPT_VERSION = '1.3.3';
 
 const config = require('../config');
 const { startRun, endRun } = require('../utils/run-log');
@@ -16,6 +16,10 @@ const Progress = require('../utils/progress');
 const JOB_FUNCTIONS = new Set(['engineering','product','design','operations','sales','marketing','finance','legal','hr','data_science','strategy','policy','supply_chain','customer_success','other']);
 const MBA_RELEVANCE = new Set(['low', 'medium', 'high']);
 const SENIORITY_LEVELS = new Set(['intern','entry','mid','senior','staff','director','vp','c_suite','unknown']);
+const MBA_HIGH_FUNCTIONS = new Set(['strategy', 'finance', 'product', 'legal', 'policy']);
+const MBA_HIGH_SENIORITIES = new Set(['mid', 'senior', 'staff', 'director', 'vp', 'c_suite']);
+const MBA_LOW_FUNCTIONS = new Set(['engineering', 'hr', 'customer_success']);
+const MBA_LOW_SENIORITIES = new Set(['intern', 'entry']);
 
 function readJSONSafe(p, fallback) {
   try {
@@ -93,7 +97,7 @@ function sanitize(parsed) {
   out.seniority_level = seniorityLevel;
 
   let mbaRelevance = parsed.mba_relevance ? String(parsed.mba_relevance).toLowerCase().trim() : null;
-  if (!MBA_RELEVANCE.has(mbaRelevance)) mbaRelevance = 'low';
+  if (!MBA_RELEVANCE.has(mbaRelevance)) mbaRelevance = null;
   out.mba_relevance = mbaRelevance;
 
   out.description_summary = parsed.description_summary ? String(parsed.description_summary).trim() : null;
@@ -105,18 +109,67 @@ function sanitize(parsed) {
   return out;
 }
 
+function normalizeJobTitleDeterministic(rawTitle) {
+  let normalized = String(rawTitle || '').replace(/\s+/g, ' ').trim();
+  if (!normalized) return '';
+
+  const replacements = [
+    [/\bSr\.?(?=\s|$)/gi, 'Senior'],
+    [/\bJr\.?(?=\s|$)/gi, 'Junior'],
+    [/\bEng\.?(?=\s|$)/gi, 'Engineer'],
+    [/\bMgr\.?(?=\s|$)/gi, 'Manager'],
+    [/\bDir\.?(?=\s|$)/gi, 'Director'],
+    [/\bAssoc\.?(?=\s|$)/gi, 'Associate']
+  ];
+
+  for (const [pattern, replacement] of replacements) {
+    normalized = normalized.replace(pattern, replacement);
+  }
+
+  normalized = normalized.replace(/ (I{1,3}|IV|VI{0,3}|IX|[1-9])$/i, '');
+  return normalized.replace(/\s+/g, ' ').trim();
+}
+
+function lookupDeterministicMbaRelevance(job_function, seniority_level) {
+  if (job_function == null || seniority_level == null || seniority_level === 'unknown') return null;
+  if (MBA_HIGH_FUNCTIONS.has(job_function) && MBA_HIGH_SENIORITIES.has(seniority_level)) return 'high';
+  if (seniority_level === 'intern') return 'low';
+  if (MBA_LOW_FUNCTIONS.has(job_function) && MBA_LOW_SENIORITIES.has(seniority_level)) return 'low';
+  return 'medium';
+}
+
 function resolveDeterministic(job) {
   const title = String(job.job_title_raw || job.title || '').trim();
   const description = String(job.description_raw || job.description || '').trim();
   const location = String(job.location_raw || job.location || '').trim();
   const titleAndDescription = `${title} ${description}`.trim();
+  const job_title_normalized = normalizeJobTitleDeterministic(title);
+  let job_function = null;
+  if (/\b(chief of staff|strategy\s*&?\s*ops|corporate strategy)\b/i.test(title)) job_function = 'strategy';
+  else if (/\bproduct manager\b|\btechnical product\b/i.test(title)) job_function = 'product';
+  else if (/\b(fp&a|financial planning|controller|treasurer|corporate accounting|finance manager|cfo)\b/i.test(title)) job_function = 'finance';
+  else if (/\b(general counsel|legal counsel|attorney|compliance officer)\b/i.test(title)) job_function = 'legal';
+  else if (/\b(data scientist|data analyst|analytics engineer|ml engineer)\b/i.test(title)) job_function = 'data_science';
+  else if (/\b(policy|government affairs|regulatory affairs|public affairs)\b/i.test(title)) job_function = 'policy';
+  else if (/\b(marketing|brand|content|communications|pr\b|public relations|growth)\b/i.test(title)) job_function = 'marketing';
+  else if (/\b(business development|bd\b|partnerships|sales ops|account executive|account manager|account rep)\b/i.test(title)) job_function = 'sales';
+  else if (/\b(procurement|logistics|materials|supply chain|planning)\b/i.test(title)) job_function = 'supply_chain';
+  else if (/\b(program manager|project manager|operations manager|ops manager)\b/i.test(title)) job_function = 'operations';
+  else if (/\b(people operations|recruiter|talent|hrbp|hr business|human resources)\b/i.test(title)) job_function = 'hr';
+  else if (/\b(customer success|customer support|renewals|implementation specialist)\b/i.test(title)) job_function = 'customer_success';
+  else if (/\b(product designer|ux|ui designer|visual designer|graphic designer)\b/i.test(title)) job_function = 'design';
+  else if (/\b(engineer|developer|architect|swe|sde|devops|sre|platform)\b/i.test(title)) job_function = 'engineering';
 
   let seniority_level = null;
   if (/\b(intern|internship)\b/i.test(title)) seniority_level = 'intern';
+  else if (/\b(ceo|cto|coo|cfo|cpo|chief\s+\w+\s+officer)\b/i.test(title)) seniority_level = 'c_suite';
   else if (/\b(vp|vice president)\b/i.test(title)) seniority_level = 'vp';
-  else if (/\b(director)\b/i.test(title)) seniority_level = 'director';
-  else if (/\b(senior|sr\.?|staff|principal|lead)\b/i.test(title)) seniority_level = 'senior';
+  else if (/\b(director|head of)\b/i.test(title)) seniority_level = 'director';
+  else if (/\b(staff|principal)\b/i.test(title)) seniority_level = 'staff';
+  else if (/\b(senior|sr\.?|lead)\b/i.test(title)) seniority_level = 'senior';
   else if (/\b(junior|jr\.?|associate|entry)\b/i.test(title)) seniority_level = 'entry';
+  else if (/\bmanager\b/i.test(title) && !/\b(people|engineering|product|program|project|general|senior)\s+manager\b/i.test(title)) seniority_level = 'mid';
+  else seniority_level = 'unknown';
 
   let employment_type = 'full_time';
   if (/\bintern(ship)?\b/i.test(titleAndDescription)) employment_type = 'intern';
@@ -128,7 +181,8 @@ function resolveDeterministic(job) {
   else if (/\bhybrid\b/i.test(location)) location_type = 'hybrid';
   else if (location.length > 0) location_type = 'on_site';
 
-  return { seniority_level, employment_type, location_type };
+  const mba_relevance = lookupDeterministicMbaRelevance(job_function, seniority_level);
+  return { job_title_normalized, job_function, seniority_level, employment_type, location_type, mba_relevance };
 }
 
 async function enrichJob(job, categories, promptTemplate, options = {}) {
@@ -136,12 +190,12 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
 
   // Skip LLM call when there's no description — apply null defaults and mark complete.
   if (!job.description_raw) {
-    job.job_title_normalized = job.job_title_normalized || job.job_title_raw || null;
-    job.job_function = job.job_function || 'other';
-    job.seniority_level = deterministic.seniority_level;
+    job.job_title_normalized = deterministic.job_title_normalized || job.job_title_normalized || null;
+    job.job_function = deterministic.job_function ?? job.job_function ?? 'other';
+    job.seniority_level = deterministic.seniority_level ?? 'unknown';
     job.employment_type = deterministic.employment_type;
     job.location_type = deterministic.location_type;
-    job.mba_relevance = MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low';
+    job.mba_relevance = deterministic.mba_relevance ?? (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
     job.description_summary = null;
     job.climate_relevance_confirmed = false;
     job.climate_relevance_reason = null;
@@ -167,12 +221,14 @@ async function enrichJob(job, categories, promptTemplate, options = {}) {
   const sanitized = sanitize(parsed);
 
   // assign fields to job
-  job.job_title_normalized = sanitized.job_title_normalized || job.job_title_normalized || null;
-  job.job_function = sanitized.job_function || job.job_function || 'other';
+  job.job_title_normalized = deterministic.job_title_normalized || job.job_title_normalized || null;
+  job.job_function = deterministic.job_function ?? sanitized.job_function ?? job.job_function ?? 'other';
   job.seniority_level = deterministic.seniority_level ?? sanitized.seniority_level ?? 'unknown';
   job.employment_type = deterministic.employment_type;
   job.location_type = deterministic.location_type;
-  job.mba_relevance = MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
+  job.mba_relevance = deterministic.mba_relevance ??
+    (MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : null) ??
+    (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
   job.description_summary = sanitized.description_summary || job.description_summary || null;
   job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
   job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;
@@ -274,12 +330,14 @@ async function enrichJobBatch(jobsArray, categories, promptTemplate, options = {
     job.last_enriched_at = now;
     if (res && typeof res === 'object') {
       const sanitized = sanitize(res);
-      job.job_title_normalized = sanitized.job_title_normalized || job.job_title_normalized || null;
-      job.job_function = sanitized.job_function || job.job_function || 'other';
+      job.job_title_normalized = deterministicByJob[i].job_title_normalized || job.job_title_normalized || null;
+      job.job_function = deterministicByJob[i].job_function ?? sanitized.job_function ?? job.job_function ?? 'other';
       job.seniority_level = deterministicByJob[i].seniority_level ?? sanitized.seniority_level ?? 'unknown';
       job.employment_type = deterministicByJob[i].employment_type;
       job.location_type = deterministicByJob[i].location_type;
-      job.mba_relevance = MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
+      job.mba_relevance = deterministicByJob[i].mba_relevance ??
+        (MBA_RELEVANCE.has(sanitized.mba_relevance) ? sanitized.mba_relevance : null) ??
+        (MBA_RELEVANCE.has(job.mba_relevance) ? job.mba_relevance : 'low');
       job.description_summary = sanitized.description_summary || job.description_summary || null;
       job.climate_relevance_confirmed = sanitized.climate_relevance_confirmed === true;
       job.climate_relevance_reason = sanitized.climate_relevance_reason || job.climate_relevance_reason || null;

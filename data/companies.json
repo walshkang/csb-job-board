@@ -30,7 +30,9 @@
     "opportunity_area": "Enhanced Transmission & Distribution",
     "category_confidence": "high",
     "llm_attempted": true,
-    "careers_page_failure_reason": "llm_not_found"
+    "careers_page_failure_reason": "llm_not_found",
+    "careers_hints": [],
+    "profile_attempted_at": "2026-04-21T01:55:30.133Z"
   },
   {
     "id": "wwwvaireco",
@@ -46,7 +48,7 @@
     ],
     "company_profile": {
       "sector": null,
-      "description": null,
+      "description": "Vaire’s leadership team combines novel compute research with decades of experience pioneering semiconductor design across industry giants. On the other side, we’ve led startups utilising the most cutting edge hardware in AI and defence tech. Our deep expertise in traditional computing architectures and their most demanding applications is what led us to work on reversible computing — we know a new approach is needed to take compute performance to the next level.",
       "keywords": "computing services, computing tools, energy consumption, energy efficien...",
       "hq": "Bellevue, WA",
       "employees": 21
@@ -64,7 +66,9 @@
     "category_confidence": "medium",
     "llm_attempted": true,
     "careers_page_failure_reason": "llm_not_found",
-    "category_error": "No JSON object found in LLM response"
+    "category_error": "No JSON object found in LLM response",
+    "careers_hints": [],
+    "profile_attempted_at": "2026-04-21T01:55:30.617Z"
   },
   {
     "id": "wwwstructurebotcom",
@@ -80,7 +84,7 @@
     ],
     "company_profile": {
       "sector": null,
-      "description": null,
+      "description": "StructureBot is a social impact company using Concrete 3D Printing to make housing affordable again. Learn about our company mission and vision.",
       "keywords": "3d concrete printer, 3d concrete structures, 3d printer, construction printi...",
       "hq": "Colorado Springs, CO",
       "employees": 6,
@@ -100,7 +104,15 @@
     "category_confidence": "high",
     "last_scraped_at": "2026-04-16T18:25:30.487Z",
     "last_extracted_at": "2026-04-16T18:25:30.487Z",
-    "fingerprint_attempted_at": "2026-04-17T14:14:53.828Z"
+    "fingerprint_attempted_at": "2026-04-17T14:14:53.828Z",
+    "careers_hints": [
+      {
+        "url": "https://www.structurebot.com/careers",
+        "text": "Careers",
+        "location": "nav"
+      }
+    ],
+    "profile_attempted_at": "2026-04-21T01:55:30.107Z"
   },
   {
     "id": "wwwbiomasscontrolscom",
@@ -116,7 +128,7 @@
     ],
     "company_profile": {
       "sector": null,
-      "description": null,
+      "description": "This page requires cookies to be enabled in your browser settings. Please check this setting and enable cookies (if disabled)",
       "keywords": "biochar technology, carbon dioxide removal, carbon removal technology, c...",
       "hq": "Woodstock, CT",
       "employees": 5
@@ -132,7 +144,9 @@
     "primary_sector": "GHG Removal",
     "opportunity_area": "Biological Carbon Removal",
     "category_confidence": "high",
-    "llm_attempted": true
+    "llm_attempted": true,
+    "careers_hints": [],
+    "profile_attempted_at": "2026-04-21T01:55:32.590Z"
   },
   {
     "id": "lionenergycom",
@@ -154,7 +168,7 @@
     ],
     "company_profile": {
       "sector": null,
-      "description": null,
+      "description": "Powered by our advanced LionESS™ technology, our systems put you in control, so you can store and use energy when and where you need it most.",
       "keywords": "customer safety, high reliability, outdoor adventures, portable power, port...",
       "hq": "American Fork, UT",
       "employees": 129,
@@ -174,7 +188,15 @@
     "category_confidence": "high",
     "last_scraped_at": "2026-04-16T18:25:30.579Z",
     "last_extracted_at": "2026-04-16T18:25:30.580Z",
-    "fingerprint_attempted_at": "2026-04-17T14:14:53.832Z"
+    "fingerprint_attempted_at": "2026-04-17T14:14:53.832Z",
+    "careers_hints": [
+      {
+        "url": "https://lionenergy.com/pages/careers",
+        "text": "Careers",
+        "location": "footer"
+      }
+    ],
+    "profile_attempted_at": "2026-04-21T01:55:30.597Z"
   },
   {
     "id": "dmri-inccom",

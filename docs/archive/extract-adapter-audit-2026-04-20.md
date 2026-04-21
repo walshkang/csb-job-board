@@ -1,6 +1,6 @@
 # Extract adapter vs LLM audit — 2026-04-20
 
-Snapshot for **Prompt 8** (extract call volume: adapter path vs LLM). Compare with [extract-html-shape-audit.md](../extract-html-shape-audit.md).
+Snapshot for **Prompt 8** (extract call volume: adapter path vs LLM). Compare with [extract-html-shape-audit-2026-04-20.md](./extract-html-shape-audit-2026-04-20.md).
 
 ## Instrumentation
 

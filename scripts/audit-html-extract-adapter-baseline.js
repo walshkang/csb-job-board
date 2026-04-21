@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Offline parity with docs/extract-html-shape-audit.md: for each validated company
+ * Offline parity with docs/archive/extract-html-shape-audit-2026-04-20.md: for each validated company
  * with artifacts/html/{id}.html and no sibling {id}.json, run extractCompanyJobs with
  * a no-op LLM so extractStats reflect adapter vs LLM path without API calls.
  *
@@ -66,7 +66,7 @@ async function main() {
   const denom = adapter + llm;
   const share = denom ? ((adapter / denom) * 100).toFixed(1) : '—';
 
-  console.log('HTML-only extract path (no-op LLM) — parity with extract-html-shape-audit.md');
+  console.log('HTML-only extract path (no-op LLM) — parity with docs/archive/extract-html-shape-audit-2026-04-20.md');
   console.log(`  HTML-only rows (canonical .html, no .json): ${htmlOnlyRows}`);
   console.log(`  htmlAdapterCompanies: ${adapter}`);
   console.log(`  htmlLlmCompanies: ${llm}`);

@@ -1,14 +1,16 @@
 # HTML extract shape audit (Slice 5 — gate for DOM adapters)
 
+**Archived:** 2026-04-20 — completed slice documentation (see also [profile-stage-slice-2026-04-20.md](./profile-stage-slice-2026-04-20.md)).
+
 **Run:** 2026-04-20  
 **Artifact root:** `artifacts/html/` (local scrape output; directory is gitignored)  
-**Script:** [`scripts/audit-html-extract-shapes.js`](../scripts/audit-html-extract-shapes.js)
+**Script:** [`scripts/audit-html-extract-shapes.js`](../../scripts/audit-html-extract-shapes.js)
 
 ## Population
 
 Files counted: canonical `{company_id}.html` where **no** sibling `{company_id}.json` exists. Auxiliary files (`*.playwright.html`, `*.homepage.html`, `*.careers.html`) are excluded.
 
-These files are the only ones that can reach the HTML branch in [`src/agents/extraction.js`](../src/agents/extraction.js) (JSON mappers take precedence when `.json` exists).
+These files are the only ones that can reach the HTML branch in [`src/agents/extraction.js`](../../src/agents/extraction.js) (JSON mappers take precedence when `.json` exists).
 
 ## Shape buckets (representative snapshot)
 
@@ -27,9 +29,9 @@ From one full artifact tree on this machine:
 
 **Top 3 shapes cumulative:** 249 / 302 (**82.5%**)
 
-Context and follow-up work (adapter-first extract, LLM fallback flag): [profile-stage-slice.md](./profile-stage-slice.md) (Slice 6b).
+Context and follow-up work (adapter-first extract, LLM fallback flag): [profile-stage-slice-2026-04-20.md](./profile-stage-slice-2026-04-20.md) (Slice 6b).
 
-## Gate (from [shape-dehallucinate.md](./shape-dehallucinate.md))
+## Gate (from [shape-dehallucinate.md](../shape-dehallucinate.md))
 
 **Decision: GO** — The top three coarse buckets alone cover **≥50%** of LLM-eligible HTML artifacts, so implementing DOM-first extraction with LLM fallback is justified.
 
@@ -37,7 +39,7 @@ The long-tail **`other`** bucket (many JS-rendered or non-listing pages) cannot 
 
 ## Implemented adapters
 
-Live under [`src/agents/extraction/html-adapters/`](../src/agents/extraction/html-adapters/):
+Live under [`src/agents/extraction/html-adapters/`](../../src/agents/extraction/html-adapters/):
 
 - **`anchor-job-links`** — Cheerio anchor walk for job-like URLs (full artifact up to 2MB cap; listings often appear below the LLM’s 12k truncation window). Merges **JSON-LD `JobPosting`** blocks when present. Skips bare `/careers`-style landing URLs as standalone “jobs.”
 - Base URL normalization: careers/domain strings without `https://` are prefixed so relative links resolve (`normalizeHtmlBaseUrl` in extraction agent).
@@ -58,7 +60,7 @@ Method: `node scripts/audit-html-extract-adapter-baseline.js` — iterate valida
 | Adapter success **share of HTML-only artifacts** | **92 / 302 ≈ 30.5%** |
 | Remaining rows (no adapter jobs; `adapter_empty`, XML/sitemap, etc.) | **210** |
 
-With fallback **off**, the LLM is not invoked for HTML-only artifacts unless `EXTRACTION_LLM_FALLBACK=1` and the classified shape is `other` (see Slice 6b in [profile-stage-slice.md](./profile-stage-slice.md)).
+With fallback **off**, the LLM is not invoked for HTML-only artifacts unless `EXTRACTION_LLM_FALLBACK=1` and the classified shape is `other` (see Slice 6b in [profile-stage-slice-2026-04-20.md](./profile-stage-slice-2026-04-20.md)).
 
 **Historical comparison (pre–Slice 6b, LLM always eligible after adapters):** `htmlAdapterCompanies` **92**, `htmlLlmCompanies` **209** over **301** HTML-only rows — adapter share of **(adapter + LLM)** ≈ **30.6%**.
 

@@ -1,13 +1,15 @@
 # Profile stage + extract code-ify (Slice 6)
 
-**Appetite:** ~1 day, two vertical slices
-**Status:** 🟡 Slice 6a implemented — Prompt 7 validation recorded in [Results](#results) (2026-04-20)
+**Archived:** 2026-04-20 — completed slice documentation.
+
+**Appetite:** ~1 day, two vertical slices  
+**Status:** ✅ Slice 6a + 6b shipped (2026-04-20)
 
 ## Problem
 
 1. Company description is collected as a side-effect of `fingerprintCompany` (homepage scrape for ATS detection). Description quality is inconsistent, and discovery has no signal about where the careers link lives.
 2. Discovery falls back to standard paths / sitemap only — no use of homepage/`about` nav hints, which is where weird-custom-careers-URL companies advertise their careers link.
-3. HTML→JSON in extract still calls the LLM for shapes already covered by adapters (see [extract-html-shape-audit.md](./extract-html-shape-audit.md)) and for deterministic JSON-LD.
+3. HTML→JSON in extract still calls the LLM for shapes already covered by adapters (see [extract-html-shape-audit-2026-04-20.md](./extract-html-shape-audit-2026-04-20.md)) and for deterministic JSON-LD.
 
 ## Goals
 
@@ -50,7 +52,7 @@
 
 ### Validation
 
-> **Prompt 7 (Haiku):** On 20 sampled companies (`--limit 20 --stages profile,discovery`), compare discovery success rate and method mix against Prompt 0's baseline. Update `docs/profile-stage-slice.md` with the numbers under a new `## Results` section. Ship only if `profile_hint` is non-trivial OR description quality on spot-check beats the old `scraped_description`.
+> **Prompt 7 (Haiku):** On 20 sampled companies (`--limit 20 --stages profile,discovery`), compare discovery success rate and method mix against Prompt 0's baseline. Update `docs/archive/profile-stage-slice-2026-04-20.md` with the numbers under a new `## Results` section. Ship only if `profile_hint` is non-trivial OR description quality on spot-check beats the old `scraped_description`.
 
 ---
 
@@ -64,7 +66,7 @@
 - To exercise **both** stages after the profile stage landed, profile and discovery fields were cleared for those 20 rows (including `profile_attempted_at`, prior discovery outputs, and `company_profile.description` so profile could refill).
 - **Orchestrator note:** On the first run, only **12** discovery events were written before shutdown while **8** companies were still between profile completion and discovery (`data/runs/pipeline-events-20260420-211855-fw18.jsonl`). A second pass completed the remaining discovery attempts (`pipeline-events-20260420-211909-f9mw.jsonl`). Totals below use the **combined outcome** for all 20 companies (final per-company state before restoring `companies.json` from backup).
 
-### Prompt 0 baseline (see [profile-slice-baseline-2026-04-20.md](./archive/profile-slice-baseline-2026-04-20.md))
+### Prompt 0 baseline (see [profile-slice-baseline-2026-04-20.md](./profile-slice-baseline-2026-04-20.md))
 
 | Metric | Baseline (historical JSONL) |
 | --- | ---: |
@@ -118,7 +120,7 @@ Compared backup `scraped_description` to post-profile `description` for the same
 
 ### Prompts
 
-> **Prompt 8 (Haiku):** Audit current extract call volume. On the latest events file, count extract outcomes where `htmlAdapterCompanies` handled it vs LLM. Today's baseline is ~30.6% adapter share over 301 HTML-only rows (see [extract-html-shape-audit.md](./extract-html-shape-audit.md)). Save current numbers.
+> **Prompt 8 (Haiku):** Audit current extract call volume. On the latest events file, count extract outcomes where `htmlAdapterCompanies` handled it vs LLM. Today's baseline is ~30.6% adapter share over 301 HTML-only rows (see [extract-html-shape-audit-2026-04-20.md](./extract-html-shape-audit-2026-04-20.md)). Save current numbers.
 
 > **Prompt 9 (Opus):** In `src/agents/extraction.js`, change the control flow so HTML adapters are tried first, and the LLM call is only invoked when every adapter returns zero jobs AND the shape bucket is `other`. Don't delete the LLM path — gate it behind `EXTRACTION_LLM_FALLBACK=1` (default off). Failed-adapter-known-shape rows become `no_result` with `extract_failure_reason = 'adapter_empty'`.
 
@@ -128,7 +130,7 @@ Compared backup `scraped_description` to post-profile `description` for the same
 
 ### Validation
 
-> **Prompt 12 (Haiku):** Update [extract-html-shape-audit.md](./extract-html-shape-audit.md) with the new coverage numbers and link this doc from it.
+> **Prompt 12 (Haiku):** Update [extract-html-shape-audit-2026-04-20.md](./extract-html-shape-audit-2026-04-20.md) with the new coverage numbers and link this doc from it.
 
 ---
 

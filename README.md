@@ -451,7 +451,7 @@ npm run scrape
 
 **What it does:** Converts raw artifacts into structured job records in `data/jobs.json`. Three-tier resolution:
 1. **ATS API JSON** → direct field mappers (no LLM).
-2. **HTML DOM adapters** → deterministic extractors for the top 3 shapes (anchor job-link lists, WordPress-ish, Webflow). Covers ~82% of HTML artifacts. See `src/agents/extraction/html-adapters/` and [the shape audit](docs/extract-html-shape-audit.md).
+2. **HTML DOM adapters** → deterministic extractors for the top 3 shapes (anchor job-link lists, WordPress-ish, Webflow). Covers ~82% of HTML artifacts. See `src/agents/extraction/html-adapters/` and [the shape audit](docs/archive/extract-html-shape-audit-2026-04-20.md).
 3. **LLM fallback** → only for the long-tail HTML that no adapter matches, via `extraction.txt`.
 
 **Prompt injected:** `src/prompts/extraction.txt` — LLM fallback only
