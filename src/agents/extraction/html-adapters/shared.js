@@ -177,13 +177,29 @@ function deriveTitleFromUrl(resolved) {
   }
 }
 
+function mergeByUrl(a, b) {
+  const seen = new Set();
+  const out = [];
+  for (const arr of [a, b]) {
+    for (const it of arr) {
+      if (!it || !it.url || seen.has(it.url)) continue;
+      seen.add(it.url);
+      out.push(it);
+    }
+  }
+  return out;
+}
+
 module.exports = {
   ADAPTER_HTML_MAX,
   isXmlSitemapOrNonHtml,
+  isBareListingPath,
   looksLikeJobHref,
   countJobLikeHrefs,
   extractJobsFromAnchors,
   extractJobsFromJsonLd,
   resolveUrl,
-  urlAppearsInHtml
+  urlAppearsInHtml,
+  deriveTitleFromUrl,
+  mergeByUrl
 };

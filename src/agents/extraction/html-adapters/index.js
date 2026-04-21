@@ -1,9 +1,10 @@
 /**
  * Single adapter tier: deterministic anchor extraction beats LLM when it yields postings.
  */
+const shopify = require('./shopify');
 const anchorJobLinks = require('./anchor-job-links');
 
-const adapters = [anchorJobLinks];
+const adapters = [shopify, anchorJobLinks];
 
 /**
  * @returns {{ adapterName: string, items: object[] } | null}

@@ -8,6 +8,7 @@ const {
   ADAPTER_HTML_MAX
 } = require('../src/agents/extraction/html-adapters/shared');
 const anchorAdapter = require('../src/agents/extraction/html-adapters/anchor-job-links');
+const shopifyAdapter = require('../src/agents/extraction/html-adapters/shopify');
 
 describe('html adapters shared', () => {
   test('isXmlSitemapOrNonHtml detects Yoast XML sitemap', () => {
@@ -46,6 +47,26 @@ describe('html adapters shared', () => {
 
   test('ADAPTER_HTML_MAX is bounded', () => {
     expect(ADAPTER_HTML_MAX).toBeGreaterThan(100000);
+  });
+});
+
+describe('shopify adapter', () => {
+  test('extracts /pages/ role links when Shopify fingerprint present', () => {
+    const html = `<html><head><script src="https://cdn.shopify.com/s/files/1/theme.js"></script></head>
+      <body>
+        <a href="/pages/senior-engineer-sf">Senior Engineer</a>
+        <a href="/pages/privacy-policy">Privacy</a>
+      </body></html>`;
+    expect(shopifyAdapter.match(html)).toBe(true);
+    const items = shopifyAdapter.extract(html, 'https://brand.example');
+    expect(items.length).toBe(1);
+    expect(items[0].url).toBe('https://brand.example/pages/senior-engineer-sf');
+    expect(items[0].job_title).toMatch(/Senior Engineer/i);
+  });
+
+  test('does not match without Shopify markers', () => {
+    const html = '<html><body><a href="/pages/role">X</a></body></html>';
+    expect(shopifyAdapter.match(html)).toBe(false);
   });
 });
 
