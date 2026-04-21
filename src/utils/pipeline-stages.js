@@ -57,6 +57,10 @@ function getStage(company) {
   return 'done';
 }
 
+function classifyLane(company) {
+  return isBlank(company?.profile_attempted_at) ? 'cold' : 'warm';
+}
+
 function nextStage(stage) {
   if (stage === 'done') return null;
   const idx = STAGES.indexOf(stage);
@@ -69,6 +73,7 @@ module.exports = {
   STAGES,
   getStage,
   nextStage,
+  classifyLane,
 };
 
 if (require.main === module) {

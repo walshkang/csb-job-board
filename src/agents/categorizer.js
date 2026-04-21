@@ -9,6 +9,7 @@ const COMPANIES_PATH = path.join(REPO_ROOT, 'data', 'companies.json');
 const config = require('../config');
 const { callLLM } = require('../llm-client');
 const { extractJSON } = require('./enricher');
+const BATCH_MAX = 10;
 
 function readJSONSafe(p, fallback) {
   try {
@@ -268,6 +269,114 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
   }
 }
 
+function asStringOrNull(value) {
+  if (value == null) return null;
+  const str = String(value).trim();
+  return str.length ? str : null;
+}
+
+function asNumberOrNull(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string' && value.trim()) {
+    const n = Number(value);
+    if (Number.isFinite(n)) return n;
+  }
+  return null;
+}
+
+async function batchCategorize(entries, taxonomy, llmConfig) {
+  if (!Array.isArray(entries) || entries.length < 1) {
+    throw new Error('batchCategorize requires at least one entry');
+  }
+  if (entries.length > BATCH_MAX) {
+    throw new Error(`batchCategorize supports at most ${BATCH_MAX} entries`);
+  }
+
+  const results = new Map();
+  const taxonomyList = Array.isArray(taxonomy) ? taxonomy : TAXONOMY_AT_LOAD;
+  const categoriesList = taxonomyList.map((c) => {
+    const name = getCategoryName(c);
+    const area = getOpportunityArea(c) || '';
+    const sector = getPrimarySector(c) || '';
+    const desc = c.short_description || '';
+    const kws = Array.isArray(c.keywords) && c.keywords.length ? c.keywords.join(', ') : '';
+    return `- Category: ${name}\n  Opportunity Area: ${area}\n  Primary Sector: ${sector}\n  Description: ${desc}${kws ? `\n  Keywords: ${kws}` : ''}`;
+  }).join('\n\n');
+
+  const requestEntries = entries.map(({ company, rep }) => {
+    const companyId = company.id;
+    const companyName = company.name || company.company || String(companyId);
+    const profileDesc = company && company.company_profile && company.company_profile.description;
+    const companyProfile = profileDesc == null ? '' : String(profileDesc).trim();
+    const pitchbookKeywords = company && company.company_profile && Array.isArray(company.company_profile.keywords)
+      ? company.company_profile.keywords
+      : [];
+    const jobTitle = (rep && (rep.job_title_normalized || rep.job_title_raw)) || '';
+    const jobFunction = (rep && rep.job_function) || '';
+    const descriptionSummary = (rep && rep.description_summary) || '';
+    return {
+      company_id: companyId,
+      company_name: companyName,
+      company_profile: companyProfile || null,
+      pitchbook_keywords: pitchbookKeywords,
+      representative_job_title: jobTitle,
+      representative_job_function: jobFunction,
+      representative_description_summary: descriptionSummary,
+    };
+  });
+
+  const promptTemplate = fs.readFileSync(path.join(__dirname, '../prompts/categorizer-batch.txt'), 'utf8');
+  const prompt = promptTemplate
+    .replace('{batch_entries}', JSON.stringify(requestEntries, null, 2))
+    .replace('{categories_list}', categoriesList);
+
+  const { provider, apiKey, model, dryRun } = llmConfig || {};
+  if (dryRun) {
+    for (const { company } of entries) {
+      results.set(company.id, { error: 'dry_run' });
+    }
+    return results;
+  }
+
+  const raw = await callLLM({ provider, apiKey, model, prompt, maxOutputTokens: 4096, _agent: 'categorizer' });
+  let parsed;
+  try {
+    parsed = extractJSON(raw);
+  } catch (err) {
+    throw new Error(`batchCategorize JSON parse failed: ${String(err.message || err)}`);
+  }
+
+  if (!parsed || !Array.isArray(parsed.results)) {
+    throw new Error('batchCategorize response missing results array');
+  }
+
+  const byId = new Map();
+  for (const row of parsed.results) {
+    if (!row || typeof row !== 'object') continue;
+    const companyId = asStringOrNull(row.company_id);
+    if (!companyId) continue;
+    byId.set(companyId, row);
+  }
+
+  for (const { company } of entries) {
+    const row = byId.get(String(company.id));
+    if (!row) {
+      results.set(company.id, { error: 'missing_result' });
+      continue;
+    }
+    const category = asStringOrNull(row.category);
+    const confidence = asNumberOrNull(row.confidence);
+    const reason = asStringOrNull(row.reason);
+    if (!category || confidence == null) {
+      results.set(company.id, { error: 'malformed_result', reason: reason || null });
+      continue;
+    }
+    results.set(company.id, { category, confidence, reason: reason || null });
+  }
+
+  return results;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const force = args.includes('--force');
@@ -367,6 +476,8 @@ async function main() {
 
 module.exports = {
   categorizeCompany,
+  batchCategorize,
+  BATCH_MAX,
   buildKeywordIndex,
   resolveByRule
 };

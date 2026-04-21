@@ -11,6 +11,7 @@ const {
   SNAPSHOT_PATH,
   LAST_RUN_SUMMARY_PATH,
 } = require('../src/utils/pipeline-events');
+const { queueCircuitResetCommand } = require('../src/utils/circuit-commands');
 
 const HOST = '127.0.0.1';
 const PORT = Number.parseInt(process.env.ADMIN_PORT || '3847', 10);
@@ -18,6 +19,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const INDEX_PATH = path.join(PUBLIC_DIR, 'index.html');
 const ORCHESTRATOR_PATH = path.join(REPO_ROOT, 'src', 'orchestrator.js');
+const BREAKER_COMMANDS_PATH = path.join(REPO_ROOT, 'data', 'runs', 'circuit-reset-commands.json');
 const PROMPTS_DIR = path.join(REPO_ROOT, 'src', 'prompts');
 
 const STAGE_METADATA = {
@@ -302,6 +304,15 @@ function handleStopRun(res) {
   return sendJSON(res, 200, { ok: true });
 }
 
+function handleCircuitReset(reqUrl, res) {
+  const stage = reqUrl.pathname.replace('/api/circuit/', '').replace('/reset', '');
+  if (!STAGES.includes(stage)) {
+    return sendJSON(res, 404, { ok: false, error: `Unknown stage: ${stage}` });
+  }
+  queueCircuitResetCommand(BREAKER_COMMANDS_PATH, stage);
+  return sendJSON(res, 200, { ok: true, stage });
+}
+
 const server = http.createServer((req, res) => {
   const reqUrl = new URL(req.url, `http://${req.headers.host || `${HOST}:${PORT}`}`);
 
@@ -347,6 +358,11 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'POST' && reqUrl.pathname === '/api/stop') {
     handleStopRun(res);
+    return;
+  }
+
+  if (req.method === 'POST' && reqUrl.pathname.startsWith('/api/circuit/') && reqUrl.pathname.endsWith('/reset')) {
+    handleCircuitReset(reqUrl, res);
     return;
   }
 

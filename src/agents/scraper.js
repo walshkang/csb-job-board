@@ -179,6 +179,12 @@ function getAtsProviderListUrls(providerKey, body, company, careersUrl) {
   return [];
 }
 
+function attachJobUrls(result, providerKey, body, company, careersUrl) {
+  if (!result || !body) return;
+  const urls = getAtsProviderListUrls(providerKey, body, company, careersUrl);
+  result.job_urls = buildSignature(urls).urls;
+}
+
 function extractGreenhouseToken(url) {
   try {
     const u = new URL(url);
@@ -498,6 +504,7 @@ async function scrapeCompany(company, opts = {}) {
                 result.skipped_signature_match = true;
                 result.last_scrape_signature = signature;
                 result.seen_urls = urls;
+                result.job_urls = urls;
                 result.job_count = urls.length;
                 await appendScrapeRun(result);
                 return result;
@@ -524,6 +531,7 @@ async function scrapeCompany(company, opts = {}) {
       } else {
         if (result.byte_length < 1024) console.warn(`[warn] greenhouse response small for ${companyId} (${result.byte_length} bytes)`);
         await saveArtifact(companyId, 'greenhouse_api', body, true);
+        attachJobUrls(result, providerKey, body, company, careersUrl);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
         if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -547,6 +555,7 @@ async function scrapeCompany(company, opts = {}) {
       } else {
         if (result.byte_length < 1024) console.warn(`[warn] lever response small for ${companyId} (${result.byte_length} bytes)`);
         await saveArtifact(companyId, 'lever_api', body, true);
+        attachJobUrls(result, providerKey, body, company, careersUrl);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
         if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -571,6 +580,7 @@ async function scrapeCompany(company, opts = {}) {
       } else {
         if (result.byte_length < 256) console.warn(`[warn] ashby response small for ${companyId} (${result.byte_length} bytes)`);
         await saveArtifact(companyId, 'ashby_api', body, true);
+        attachJobUrls(result, providerKey, body, company, careersUrl);
         result.success = res.ok;
         result.status = result.success ? 'success' : 'error';
         if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -598,6 +608,7 @@ async function scrapeCompany(company, opts = {}) {
         } else {
           if (result.byte_length < 256) console.warn(`[warn] workday response small for ${companyId} (${result.byte_length} bytes)`);
           await saveArtifact(companyId, 'workday_api', body, true);
+          attachJobUrls(result, providerKey, body, company, careersUrl);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
           if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -627,6 +638,7 @@ async function scrapeCompany(company, opts = {}) {
         } else {
           if (result.byte_length < 256) console.warn(`[warn] workable response small for ${companyId} (${result.byte_length} bytes)`);
           await saveArtifact(companyId, 'workable_api', body, true);
+          attachJobUrls(result, providerKey, body, company, careersUrl);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
           if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -655,6 +667,7 @@ async function scrapeCompany(company, opts = {}) {
         } else {
           if (result.byte_length < 256) console.warn(`[warn] recruitee response small for ${companyId} (${result.byte_length} bytes)`);
           await saveArtifact(companyId, 'recruitee_api', body, true);
+          attachJobUrls(result, providerKey, body, company, careersUrl);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
           if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -683,6 +696,7 @@ async function scrapeCompany(company, opts = {}) {
         } else {
           if (result.byte_length < 256) console.warn(`[warn] teamtailor response small for ${companyId} (${result.byte_length} bytes)`);
           await saveArtifact(companyId, 'teamtailor_api', body, true);
+          attachJobUrls(result, providerKey, body, company, careersUrl);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
           if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;
@@ -711,6 +725,7 @@ async function scrapeCompany(company, opts = {}) {
         } else {
           if (result.byte_length < 512) console.warn(`[warn] bamboohr response small for ${companyId} (${result.byte_length} bytes)`);
           await saveArtifact(companyId, 'bamboohr_html', body, false);
+          attachJobUrls(result, providerKey, body, company, careersUrl);
           result.success = res.ok;
           result.status = result.success ? 'success' : 'error';
           if (result.preflight_signature) result.last_scrape_signature = result.preflight_signature;

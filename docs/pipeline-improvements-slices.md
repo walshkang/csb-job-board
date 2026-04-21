@@ -61,12 +61,14 @@ TDD (RED → GREEN)
 1. Write Jest tests FIRST, confirm they fail:
    - tests/orchestrator-skipped-signature.test.js
      * Stub scrapeCompany to return { skipped_signature_match: true, method, status_code }
+     * This test is explicitly for normalization behavior (legacy producer value → canonical outcome).
      * Assert runStage('scrape', company) returns
          { outcome: 'skipped', extra: { reason: 'signature_match', ... } }
      * Assert stats.skipped increments and outcome emitted is 'skipped'
    - tests/progress-bar-math.test.js (or inline with jsdom if the suite supports)
      * Given stats.started[stage]=10, queue_depths[stage]=5, in_flight[stage]=2,
        done=3 (completed+no_result+failed+skipped), assert pct = round(3/17 * 100).
+     * Prefer testing a small pure helper/formula (done / (started+queued+in_flight)) rather than full DOM wiring.
 
 2. Run `npm test` — both must fail.
 
@@ -113,6 +115,10 @@ function isTransient(failureClass) { return TRANSIENT.has(failureClass); }
 
 Extend classifyFailure to return one of the FAILURE_CLASSES values based on
 err.code, err.status, and message patterns. Keep it pure/testable.
+
+Compatibility note:
+- This replaces legacy classes (e.g. dns/http_4xx/http_5xx/blocked/llm_parse_fail) with the new contract above.
+- Update tests/consumers in the same slice so emitted `failure_class` values are consistently from FAILURE_CLASSES.
 
 RETRY POLICY
 - Max attempts: 3 (configurable constant RETRY_MAX_ATTEMPTS in orchestrator.js)
@@ -290,7 +296,8 @@ TDD (RED → GREEN)
   * Stub LLM to return JSON missing one company_id → that company marked failed,
     others succeed
   * Stub LLM to return malformed JSON → function throws (caller retries)
-  * BATCH_MAX respected (calling with 11 throws or splits — pick one, document)
+  * BATCH_MAX respected (pick one behavior and lock it in tests)
+  * Chosen behavior for this slice: `batchCategorize` throws when called with > BATCH_MAX; orchestrator is responsible for chunking into <=10.
 - tests/orchestrator-categorize-batching.test.js
   * 5 companies enqueued within the wait window → single batchCategorize call
   * Each company receives its own success event with its own extra.category
@@ -378,5 +385,5 @@ HANDOFF: standard format.
 
 - **Wave A:** launch Slices 1 and 2 as two parallel agents — different files, no conflict.
 - Wait for Slice 2 to land and expose classification exports.
-- **Wave B:** launch Slices 3 and 4 in parallel — they touch different files (circuit-breaker utility + orchestrator vs categorizer agent + prompt + orchestrator). The overlap is `orchestrator.js`; if merges feel risky, serialize 3 then 4.
+- **Wave B:** launch Slices 3 and 4 in parallel only if `orchestrator.js` edits are pre-partitioned by section; otherwise serialize 3 then 4 to avoid conflict churn.
 - **Wave C:** Slice 5 solo.

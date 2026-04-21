@@ -6,6 +6,7 @@ const SCRAPE_FILE = path.join(DATA_DIR, 'scrape_runs.json');
 const COMPANIES_FILE = path.join(DATA_DIR, 'companies.json');
 const JOBS_FILE = path.join(DATA_DIR, 'jobs.json');
 const RUNS_DIR = path.join(DATA_DIR, 'runs');
+const LAST_RUN_SUMMARY_PATH = path.join(RUNS_DIR, 'orchestrator-last-run.json');
 const SMALL_BODY_THRESHOLD = 5120; // bytes (5 KB)
 
 async function safeReadJson(filePath) {
@@ -25,12 +26,70 @@ function round1(n) {
   return Math.round(n * 10) / 10;
 }
 
+async function safeReadObject(filePath) {
+  try {
+    const txt = await fs.readFile(filePath, 'utf8');
+    const parsed = JSON.parse(txt);
+    return parsed && typeof parsed === 'object' ? parsed : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+function toInt(value) {
+  if (!Number.isFinite(Number(value))) return 0;
+  return Number(value);
+}
+
+async function buildRunSummaryFromEventsPath(eventsPath) {
+  if (!eventsPath) return null;
+  let text;
+  try {
+    text = await fs.readFile(eventsPath, 'utf8');
+  } catch (err) {
+    return null;
+  }
+
+  const summary = {
+    jobs: { net_new: 0, existing: 0, removed: 0 },
+    companies: { cold_onboarded: 0, warm_refreshed: 0 },
+  };
+
+  const lines = text.split('\n').filter(Boolean);
+  for (const line of lines) {
+    let event;
+    try {
+      event = JSON.parse(line);
+    } catch (err) {
+      continue;
+    }
+    if (!event || typeof event !== 'object') continue;
+
+    if (event.stage === 'profile' && event.outcome === 'success' && event.lane === 'cold') {
+      summary.companies.cold_onboarded += 1;
+    }
+    if (event.stage === 'scrape' && event.outcome === 'success' && event.lane === 'warm') {
+      summary.companies.warm_refreshed += 1;
+    }
+
+    if (event.net_new != null || event.existing != null || event.removed != null) {
+      summary.jobs.net_new += toInt(event.net_new);
+      summary.jobs.existing += toInt(event.existing);
+      summary.jobs.removed += toInt(event.removed);
+    }
+  }
+
+  return summary;
+}
+
 async function main() {
   const [scrapes, companies, jobs] = await Promise.all([
     safeReadJson(SCRAPE_FILE),
     safeReadJson(COMPANIES_FILE),
     safeReadJson(JOBS_FILE),
   ]);
+  const lastRunSummary = await safeReadObject(LAST_RUN_SUMMARY_PATH);
+  const summary = await buildRunSummaryFromEventsPath(lastRunSummary && lastRunSummary.events_path);
 
   // --- Scrape summary ---
   const scrape = {
@@ -172,6 +231,7 @@ async function main() {
     discovery,
     extraction,
     enrichment,
+    summary,
   };
 
   // ensure runs dir exists
@@ -196,7 +256,13 @@ async function main() {
   console.log(`Wrote run summary to ${filePath} and ${latestPath}`);
 }
 
-main().catch(err => {
-  console.error('Reporter failed:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Reporter failed:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  buildRunSummaryFromEventsPath,
+};

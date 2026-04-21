@@ -6,6 +6,20 @@ const RUNS_DIR = path.join(REPO_ROOT, 'data', 'runs');
 const SNAPSHOT_PATH = path.join(RUNS_DIR, 'orchestrator-snapshot.json');
 const LAST_RUN_SUMMARY_PATH = path.join(RUNS_DIR, 'orchestrator-last-run.json');
 const RETENTION = 30;
+const FAILURE_CLASSES = Object.freeze({
+  TRANSIENT_NETWORK: 'transient_network',
+  RATE_LIMIT: 'rate_limit',
+  TIMEOUT: 'timeout',
+  AUTH: 'auth',
+  CONFIG: 'config',
+  BAD_DATA: 'bad_data',
+  UNKNOWN: 'unknown',
+});
+const TRANSIENT = new Set([
+  FAILURE_CLASSES.TRANSIENT_NETWORK,
+  FAILURE_CLASSES.RATE_LIMIT,
+  FAILURE_CLASSES.TIMEOUT,
+]);
 
 function ensureDir(p) { try { fs.mkdirSync(p, { recursive: true }); } catch (e) {} }
 
@@ -68,21 +82,65 @@ function classifyLlmMessage(message) {
   return null;
 }
 
+function isTransient(failureClass) {
+  return TRANSIENT.has(failureClass);
+}
+
+function getStatus(err) {
+  if (!err || typeof err !== 'object') return null;
+  const status = err.status || err.statusCode || err.code;
+  if (typeof status === 'number') return status;
+  if (typeof status === 'string' && /^\d+$/.test(status)) return Number(status);
+  return null;
+}
+
 // Classify errors/results into a coarse failure_class for dashboards.
 function classifyFailure(stage, err, result) {
   if (!err && (!result || result.skipped)) return 'skipped';
   if (!err) return null;
+  const status = getStatus(err);
   const msg = (err.message || String(err)).toLowerCase();
-  if (msg.includes('aborterror') || msg.includes('timeout') || msg.includes('timed out')) return 'timeout';
-  if (msg.includes('enotfound') || msg.includes('getaddrinfo') || msg.includes('dns')) return 'dns';
-  if (/http\s*4\d{2}|status\s*4\d{2}/.test(msg)) return 'http_4xx';
-  if (/http\s*5\d{2}|status\s*5\d{2}/.test(msg)) return 'http_5xx';
-  if (msg.includes('blocked') || msg.includes('captcha') || msg.includes('cloudflare')) return 'blocked';
-  if (msg.includes('json') && (msg.includes('parse') || msg.includes('unexpected'))) return 'llm_parse_fail';
+  if (status === 429 || msg.includes('rate limit') || msg.includes('too many requests')) {
+    return FAILURE_CLASSES.RATE_LIMIT;
+  }
+  if (status === 401 || status === 403 || msg.includes('unauthorized') || msg.includes('forbidden') || msg.includes('api key')) {
+    return FAILURE_CLASSES.AUTH;
+  }
+  if (msg.includes('aborterror') || msg.includes('timeout') || msg.includes('timed out')) return FAILURE_CLASSES.TIMEOUT;
+  if (
+    msg.includes('econnreset') ||
+    msg.includes('enotfound') ||
+    msg.includes('getaddrinfo') ||
+    msg.includes('dns') ||
+    msg.includes('network error') ||
+    msg.includes('socket hang up') ||
+    msg.includes('etimedout') ||
+    msg.includes('eai_again')
+  ) {
+    return FAILURE_CLASSES.TRANSIENT_NETWORK;
+  }
+  if (
+    msg.includes('prompt unavailable') ||
+    msg.includes('missing prompt') ||
+    msg.includes('config unavailable') ||
+    msg.includes('llm config unavailable') ||
+    msg.includes('api key not configured')
+  ) {
+    return FAILURE_CLASSES.CONFIG;
+  }
+  if (
+    msg.includes('json') && (msg.includes('parse') || msg.includes('unexpected')) ||
+    msg.includes('malformed html') ||
+    msg.includes('unparseable')
+  ) {
+    return FAILURE_CLASSES.BAD_DATA;
+  }
   const llmClass = classifyLlmMessage(msg);
-  if (llmClass) return llmClass;
-  if (stage === 'extract' && msg.includes('empty')) return 'empty_result';
-  return 'unknown';
+  if (llmClass === 'llm_provider_auth') return FAILURE_CLASSES.AUTH;
+  if (llmClass === 'llm_rate_limit') return FAILURE_CLASSES.RATE_LIMIT;
+  if (llmClass) return FAILURE_CLASSES.UNKNOWN;
+  if (stage === 'extract' && msg.includes('empty')) return FAILURE_CLASSES.BAD_DATA;
+  return FAILURE_CLASSES.UNKNOWN;
 }
 
 class EventSink {
@@ -100,6 +158,7 @@ class EventSink {
       run_id: this.runId,
       company_id: company && company.id,
       company_name: company && company.name,
+      lane: company?.lane ?? null,
       stage,
       outcome, // 'success' | 'failure' | 'skipped'
       ...extra,
@@ -139,6 +198,8 @@ module.exports = {
   writeSnapshot,
   clearSnapshot,
   writeLastRunSummary,
+  FAILURE_CLASSES,
+  isTransient,
   classifyFailure,
   classifyLlmMessage,
   newRunId,

@@ -25,11 +25,12 @@ const config = require('./config');
 const { profileCompany } = require('./agents/profile');
 const { processCompany } = require('./agents/discovery');
 const { fingerprintCompany } = require('./agents/fingerprinter');
-const { scrapeCompany } = require('./agents/scraper');
-const { extractCompanyJobs, mergeJobs } = require('./agents/extraction');
+const { scrapeCompany, normalizeJobUrl } = require('./agents/scraper');
+const { extractCompanyJobs, mergeJobs, descriptionHashesBySourceUrlFromArtifact } = require('./agents/extraction');
+const { diffScrapeUrls } = require('./utils/scrape-diff');
 const { enrichJob, ENRICHMENT_PROMPT_VERSION, PROMPT_PATH } = require('./agents/enricher');
-const { categorizeCompany } = require('./agents/categorizer');
-const { getStage, nextStage, STAGES } = require('./utils/pipeline-stages');
+const { categorizeCompany, batchCategorize, BATCH_MAX } = require('./agents/categorizer');
+const { getStage, nextStage, STAGES, classifyLane } = require('./utils/pipeline-stages');
 const {
   EventSink,
   writeSnapshot,
@@ -37,7 +38,15 @@ const {
   writeLastRunSummary,
   classifyFailure,
   classifyLlmMessage,
+  isTransient,
 } = require('./utils/pipeline-events');
+const { runWithRetry } = require('./utils/retry-policy');
+const { CircuitBreaker } = require('./utils/circuit-breaker');
+const { AdaptiveController } = require('./utils/adaptive-concurrency');
+const {
+  queueCircuitResetCommand,
+  consumeCircuitResetCommands,
+} = require('./utils/circuit-commands');
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -67,6 +76,31 @@ const CONCURRENCIES = {
   enrich: 6,
   categorize: 10,
 };
+const RETRY_MAX_ATTEMPTS = 3;
+const CATEGORIZE_BATCH_WAIT_MS = 2000;
+const BREAKER_COMMANDS_PATH = path.join(REPO_ROOT, 'data', 'runs', 'circuit-reset-commands.json');
+const BREAKER_DEFAULTS = Object.freeze({
+  windowSize: 20,
+  minSamples: 5,
+  threshold: 0.5,
+  cooldownMs: 60_000,
+});
+const ADAPTIVE_TARGETS = Object.freeze({
+  profile: { p95MaxMs: 3_000, queueDepthTrigger: 3 },
+  discovery: { p95MaxMs: 4_000, queueDepthTrigger: 5 },
+  fingerprint: { p95MaxMs: 3_000, queueDepthTrigger: 2 },
+  scrape: { p95MaxMs: 8_000, queueDepthTrigger: 2 },
+  extract: { p95MaxMs: 5_000, queueDepthTrigger: 2 },
+  enrich: { p95MaxMs: 12_000, queueDepthTrigger: 3 },
+  categorize: { p95MaxMs: 10_000, queueDepthTrigger: 4 },
+});
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+function computeRetryDelayMs(attempt) {
+  const base = 500 * Math.pow(2, attempt - 1);
+  const jitter = 0.8 + (Math.random() * 0.4);
+  return Math.max(0, Math.round(base * jitter));
+}
 
 function readJSON(p, fallback) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fallback; }
@@ -82,6 +116,78 @@ function log(stage, company, status, detail = '') {
   const name = company.name || company.id || '?';
   const line = `[${stage}] ${name} ${status}${detail ? ` ${detail}` : ''}`;
   process.stderr.write(line + '\n');
+}
+
+function computeDaysLive(firstSeenAt, removedAt) {
+  const first = Date.parse(firstSeenAt || 0);
+  const removed = Date.parse(removedAt || 0);
+  if (Number.isNaN(first) || Number.isNaN(removed) || removed < first) return 0;
+  return Math.floor((removed - first) / 86400000);
+}
+
+function buildWarmScrapeDecision(company, scrapeResult) {
+  const currentUrls = Array.isArray(scrapeResult && scrapeResult.job_urls)
+    ? scrapeResult.job_urls.map((u) => normalizeJobUrl(u)).filter(Boolean)
+    : [];
+  if (!currentUrls.length) return null;
+
+  const jobs = readJSON(JOBS_PATH, []);
+  const companyJobs = jobs.filter((job) => job && job.company_id === company.id);
+  const activeJobs = companyJobs.filter((job) => !job.removed_at);
+  const priorUrls = activeJobs
+    .map((job) => normalizeJobUrl(job.source_url))
+    .filter(Boolean);
+  const diff = diffScrapeUrls({ priorUrls, currentUrls });
+  const now = new Date().toISOString();
+
+  const byUrl = new Map();
+  for (const job of companyJobs) {
+    const normalized = normalizeJobUrl(job.source_url);
+    if (!normalized) continue;
+    if (!byUrl.has(normalized)) byUrl.set(normalized, []);
+    byUrl.get(normalized).push(job);
+  }
+
+  const touched = [];
+  for (const url of diff.existing) {
+    const entries = byUrl.get(url) || [];
+    for (const job of entries) {
+      job.last_seen_at = now;
+      if (job.removed_at) delete job.removed_at;
+      touched.push(job);
+    }
+  }
+  for (const url of diff.removed) {
+    const entries = byUrl.get(url) || [];
+    for (const job of entries) {
+      if (!job.removed_at) {
+        job.removed_at = now;
+        job.days_live = computeDaysLive(job.first_seen_at, job.removed_at);
+      }
+      touched.push(job);
+    }
+  }
+
+  const hashMap = descriptionHashesBySourceUrlFromArtifact(company, { artifactsDir: ARTIFACTS_DIR });
+  let hashChurn = true;
+  if (hashMap) {
+    hashChurn = false;
+    for (const url of diff.existing) {
+      const expectedHash = hashMap.get(url);
+      const existingJobs = (byUrl.get(url) || []).filter((job) => !job.removed_at || diff.existing.has(url));
+      if (!expectedHash || existingJobs.length === 0 || existingJobs.some((job) => job.description_hash !== expectedHash)) {
+        hashChurn = true;
+        break;
+      }
+    }
+  }
+
+  return {
+    now,
+    diff,
+    touched,
+    noDelta: diff.netNew.size === 0 && !hashChurn,
+  };
 }
 
 // ——————————————————————————————————————————————————————————————
@@ -126,6 +232,33 @@ const newJobsBuffer = [];
 // Track extracted jobs per company for inline enrich (same objects, mutations propagate to buffer)
 const companyExtractedJobs = new Map();
 
+function buildCompanyJobDiff(c, jobsNow = []) {
+  const jobsById = new Map();
+  for (const job of initialJobs) {
+    if (!job || job.company_id !== c.id) continue;
+    jobsById.set(job.id, job);
+  }
+  for (const job of newJobsBuffer) {
+    if (!job || job.company_id !== c.id) continue;
+    jobsById.set(job.id, job);
+  }
+  const priorUrls = [];
+  for (const job of jobsById.values()) {
+    if (job.removed_at) continue;
+    const normalized = normalizeJobUrl(job.source_url);
+    if (normalized) priorUrls.push(normalized);
+  }
+  const currentUrls = Array.isArray(jobsNow)
+    ? jobsNow.map((job) => normalizeJobUrl(job && job.source_url)).filter(Boolean)
+    : [];
+  const diff = diffScrapeUrls({ priorUrls, currentUrls });
+  return {
+    net_new: diff.netNew.size,
+    existing: diff.existing.size,
+    removed: diff.removed.size,
+  };
+}
+
 // ——————————————————————————————————————————————————————————————
 // Filtering target set
 // ——————————————————————————————————————————————————————————————
@@ -145,10 +278,47 @@ const stageFilterSet = STAGES_FILTER ? new Set(STAGES_FILTER) : null;
 
 const queues = {};
 for (const s of STAGES) queues[s] = new PQueue({ concurrency: CONCURRENCIES[s] });
+const breakers = Object.fromEntries(
+  STAGES.map((stage) => [stage, new CircuitBreaker(BREAKER_DEFAULTS)])
+);
+const adaptiveControllers = Object.fromEntries(
+  STAGES.map((stage) => {
+    const current = CONCURRENCIES[stage];
+    return [stage, new AdaptiveController({
+      stage,
+      min: Math.max(1, Math.floor(current / 2)),
+      max: current * 2,
+      target: ADAPTIVE_TARGETS[stage],
+      breaker: breakers[stage],
+      queue: queues[stage],
+      getQueueDepth: () => queues[stage].size,
+    })];
+  })
+);
 
 const stats = { started: {}, completed: {}, no_result: {}, failed: {}, skipped: {} };
 for (const s of STAGES) {
   stats.started[s] = 0; stats.completed[s] = 0; stats.no_result[s] = 0; stats.failed[s] = 0; stats.skipped[s] = 0;
+}
+const statsByLane = {
+  cold: { started: {}, completed: {}, no_result: {}, failed: {}, skipped: {} },
+  warm: { started: {}, completed: {}, no_result: {}, failed: {}, skipped: {} },
+};
+for (const lane of ['cold', 'warm']) {
+  for (const s of STAGES) {
+    statsByLane[lane].started[s] = 0;
+    statsByLane[lane].completed[s] = 0;
+    statsByLane[lane].no_result[s] = 0;
+    statsByLane[lane].failed[s] = 0;
+    statsByLane[lane].skipped[s] = 0;
+  }
+}
+
+function bumpLaneStat(lane, kind, stage) {
+  if (!statsByLane[lane] || !statsByLane[lane][kind] || !Object.prototype.hasOwnProperty.call(statsByLane[lane][kind], stage)) {
+    return;
+  }
+  statsByLane[lane][kind][stage]++;
 }
 
 const events = new EventSink();
@@ -164,6 +334,162 @@ const markDirty = () => { dirty = true; };
 
 // Each handler returns { outcome, extra } where outcome ∈ 'success' | 'no_result' | 'skipped'.
 // Exceptions -> 'failure' (handled by caller).
+function normalizeScrapeStageResult(result) {
+  if (result && result.skipped_signature_match) {
+    return {
+      outcome: 'skipped',
+      extra: {
+        reason: 'signature_match',
+        method: result.method,
+        status_code: result.status_code,
+        preflight_url_count: result.preflight_url_count || result.job_count || 0,
+      },
+      companyOutcome: 'skipped_signature_match',
+    };
+  }
+  if (result && result.success) {
+    return {
+      outcome: 'success',
+      extra: {
+        method: result.method,
+        status_code: result.status_code,
+        byte_length: result.byte_length,
+      },
+      companyOutcome: 'success',
+    };
+  }
+  return {
+    outcome: 'no_result',
+    extra: {
+      method: result && result.method,
+      status_code: result && result.status_code,
+      error: result && result.error,
+    },
+    companyOutcome: 'no_result',
+  };
+}
+
+function buildCategorizeOutcome(c) {
+  if (c.climate_tech_category && c.climate_tech_category !== 'None') {
+    return {
+      outcome: 'success',
+      extra: {
+        category: c.climate_tech_category,
+        confidence: c.category_confidence,
+        resolver: c.category_resolver || 'llm',
+      },
+    };
+  }
+  const failureClass = c.category_error ? classifyLlmMessage(c.category_error) : null;
+  return {
+    outcome: 'no_result',
+    extra: {
+      category: c.climate_tech_category || null,
+      category_error: c.category_error || null,
+      resolver: c.category_resolver || null,
+      failure_class: failureClass || null,
+      error_origin: failureClass ? 'provider' : null,
+    },
+  };
+}
+
+function applyBatchCategorizeResult(c, row) {
+  c.climate_tech_category = row.category;
+  c.primary_sector = null;
+  c.opportunity_area = null;
+  c.category_confidence = row.confidence;
+  c.category_resolver = 'llm_batch';
+  delete c.category_error;
+}
+
+function createCategorizeBatcher({ waitMs, maxBatchSize, dryRun, categorizerAgent, taxonomy }) {
+  let pending = [];
+  let timer = null;
+  let flushInFlight = null;
+
+  const clearTimer = () => {
+    if (timer) clearTimeout(timer);
+    timer = null;
+  };
+
+  async function flush(reason = 'manual') {
+    if (flushInFlight) {
+      await flushInFlight;
+      if (!pending.length) return;
+    }
+    if (!pending.length) return;
+
+    clearTimer();
+    const entries = pending;
+    pending = [];
+
+    flushInFlight = (async () => {
+      const { provider, apiKey, model } = categorizerAgent;
+      try {
+        const map = await batchCategorize(
+          entries.map((e) => ({ company: e.company, rep: e.rep })),
+          taxonomy,
+          { provider, apiKey, model, dryRun }
+        );
+        process.stderr.write(`[categorize-batch] flushed=${entries.length} trigger=${reason} est_calls_saved=${Math.max(0, entries.length - 1)}\n`);
+
+        for (const entry of entries) {
+          const batchResult = map.get(entry.company.id);
+          if (batchResult && !batchResult.error) {
+            applyBatchCategorizeResult(entry.company, batchResult);
+            entry.resolve(buildCategorizeOutcome(entry.company));
+            continue;
+          }
+
+          try {
+            await categorizeCompany(entry.company, entry.rep, taxonomy, { provider, apiKey, model, dryRun }, entry.samples || []);
+            entry.resolve(buildCategorizeOutcome(entry.company));
+          } catch (err) {
+            entry.reject(err);
+          }
+        }
+      } catch (err) {
+        for (const entry of entries) entry.reject(err);
+      }
+    })();
+
+    try {
+      await flushInFlight;
+    } finally {
+      flushInFlight = null;
+      if (pending.length >= maxBatchSize) {
+        await flush('size');
+      }
+    }
+  }
+
+  function enqueue({ company, rep, samples }) {
+    return new Promise((resolve, reject) => {
+      pending.push({ company, rep, samples, resolve, reject });
+      if (pending.length === 1) {
+        timer = setTimeout(() => {
+          flush('timeout').catch(() => {});
+        }, waitMs);
+      }
+      if (pending.length >= maxBatchSize) {
+        flush('size').catch(() => {});
+      }
+    });
+  }
+
+  return { enqueue, flush };
+}
+
+const categorizeBatcher = categorizerAgent
+  ? createCategorizeBatcher({
+    waitMs: CATEGORIZE_BATCH_WAIT_MS,
+    maxBatchSize: BATCH_MAX,
+    dryRun: DRY_RUN,
+    categorizerAgent,
+    taxonomy,
+  })
+  : null;
+
 async function runStage(stage, c) {
   if (stage === 'profile') {
     await profileCompany(c, { verbose: VERBOSE });
@@ -207,24 +533,30 @@ async function runStage(stage, c) {
     const result = await scrapeCompany(c, { verbose: VERBOSE });
     c.last_scraped_at = new Date().toISOString();
     if (result && result.last_scrape_signature) c.last_scrape_signature = result.last_scrape_signature;
-    if (result && result.skipped_signature_match) {
-      c.last_scrape_outcome = 'skipped_signature_match';
-      return { outcome: 'skipped_signature_match', extra: {
-        method: result.method,
-        status_code: result.status_code,
-        preflight_url_count: result.preflight_url_count || result.job_count || 0,
-      }};
+    const normalized = normalizeScrapeStageResult(result);
+    c.last_scrape_outcome = normalized.companyOutcome;
+    if (normalized.outcome === 'success' && c.lane === 'warm') {
+      const decision = buildWarmScrapeDecision(c, result);
+      if (decision) {
+        if (decision.touched.length) {
+          for (const job of decision.touched) newJobsBuffer.push(job);
+        }
+        if (decision.noDelta) {
+          c.last_extracted_at = decision.now;
+          c.last_enriched_at = decision.now;
+          c.last_scrape_outcome = 'no_delta';
+          stats.skipped.extract++;
+          bumpLaneStat(c.lane, 'skipped', 'extract');
+          events.emit('extract', c, 'skipped', {
+            reason: 'no_delta',
+            existing: decision.diff.existing.size,
+            net_new: decision.diff.netNew.size,
+            removed: decision.diff.removed.size,
+          });
+        }
+      }
     }
-    c.last_scrape_outcome = (result && result.success) ? 'success' : 'no_result';
-    if (result && result.success) {
-      return { outcome: 'success', extra: {
-        method: result.method, status_code: result.status_code, byte_length: result.byte_length,
-      }};
-    }
-    return { outcome: 'no_result', extra: {
-      method: result && result.method, status_code: result && result.status_code,
-      error: result && result.error,
-    }};
+    return { outcome: normalized.outcome, extra: normalized.extra };
   }
 
   if (stage === 'extract') {
@@ -243,13 +575,15 @@ async function runStage(stage, c) {
       html_adapter_name: res && res.html_adapter_name != null ? res.html_adapter_name : null,
       extract_failure_reason: res && res.extract_failure_reason != null ? res.extract_failure_reason : null,
     };
+    const diffExtra = buildCompanyJobDiff(c, res && res.jobs);
     if (res && res.processed && res.jobs.length > 0) {
-      return { outcome: 'success', extra: { jobs: res.jobs.length, ...htmlExtra } };
+      return { outcome: 'success', extra: { jobs: res.jobs.length, ...diffExtra, ...htmlExtra } };
     }
     return { outcome: 'no_result', extra: {
       processed: !!(res && res.processed),
       jobs: res && res.jobs ? res.jobs.length : 0,
       errors: res && res.errors && res.errors.length ? res.errors.length : 0,
+      ...diffExtra,
       ...htmlExtra,
     }};
   }
@@ -297,21 +631,7 @@ async function runStage(stage, c) {
     if (!rep) {
       rep = { job_title_normalized: '', job_function: '', description_summary: profileDesc || c.name || '', climate_relevance_reason: '' };
     }
-    const { provider, apiKey, model } = categorizerAgent;
-    await categorizeCompany(c, rep, taxonomy, { provider, apiKey, model, dryRun: DRY_RUN }, []);
-    if (c.climate_tech_category && c.climate_tech_category !== 'None') {
-      return { outcome: 'success', extra: {
-        category: c.climate_tech_category, confidence: c.category_confidence, resolver: c.category_resolver || 'llm',
-      }};
-    }
-    const failureClass = c.category_error ? classifyLlmMessage(c.category_error) : null;
-    return { outcome: 'no_result', extra: {
-      category: c.climate_tech_category || null,
-      category_error: c.category_error || null,
-      resolver: c.category_resolver || null,
-      failure_class: failureClass || null,
-      error_origin: failureClass ? 'provider' : null,
-    }};
+    return categorizeBatcher.enqueue({ company: c, rep, samples: [] });
   }
 
   throw new Error(`unknown stage: ${stage}`);
@@ -322,19 +642,44 @@ async function runStage(stage, c) {
 // ——————————————————————————————————————————————————————————————
 
 function enqueue(c) {
+  c.lane = classifyLane(c);
   const stage = getStage(c);
   if (stage === 'done') return;
   if (stageFilterSet && !stageFilterSet.has(stage)) return;
+  const breaker = breakers[stage];
+  if (breaker && !breaker.allow()) {
+    return;
+  }
 
   queues[stage].add(async () => {
     stats.started[stage]++;
+    bumpLaneStat(c.lane, 'started', stage);
     const t0 = Date.now();
     let outcome = 'failure';
     let extra = {};
     let shouldAdvance = false;
 
-    try {
-      const res = await runStage(stage, c);
+    const retryResult = await runWithRetry({
+      maxAttempts: RETRY_MAX_ATTEMPTS,
+      run: () => runStage(stage, c),
+      classifyFailure: (err) => classifyFailure(stage, err, null),
+      isTransient,
+      computeDelayMs: computeRetryDelayMs,
+      onRetry: async ({ attempt, failure_class, next_delay_ms, err }) => {
+        events.emit(stage, c, 'retry', {
+          attempt,
+          failure_class,
+          next_delay_ms,
+          error: (err && err.message) ? err.message.slice(0, 500) : String(err),
+        });
+        log(stage, c, '↻', `attempt=${attempt} class=${failure_class} next=${next_delay_ms}ms`);
+      },
+      onFinalFailure: async () => {},
+      sleep,
+    });
+
+    if (retryResult.status === 'success') {
+      const res = retryResult.result;
       outcome = res.outcome;
       extra = res.extra || {};
       const ms = Date.now() - t0;
@@ -342,33 +687,39 @@ function enqueue(c) {
       recentCompletions.push({ ts: Date.now(), stage });
 
       if (outcome === 'success') {
+        if (breaker) breaker.record('success');
+        adaptiveControllers[stage].recordOutcome({ duration_ms: ms, outcome: 'success' });
         stats.completed[stage]++;
+        bumpLaneStat(c.lane, 'completed', stage);
         events.emit(stage, c, 'success', { duration_ms: ms, ...extra });
         log(stage, c, '✓', `${ms}ms`);
         shouldAdvance = true;
       } else if (outcome === 'no_result') {
+        adaptiveControllers[stage].recordOutcome({ duration_ms: ms, outcome: 'success' });
         stats.no_result[stage]++;
+        bumpLaneStat(c.lane, 'no_result', stage);
         events.emit(stage, c, 'no_result', { duration_ms: ms, ...extra });
         log(stage, c, '∅', `${ms}ms ${JSON.stringify(extra)}`);
         // For discovery/fingerprint/profile, advance anyway — getStage handles skip-to-categorize
         // and fingerprint/profile are best-effort. For scrape/extract/categorize, don't advance.
         shouldAdvance = stage === 'discovery' || stage === 'fingerprint' || stage === 'profile';
       } else if (outcome === 'skipped') {
+        adaptiveControllers[stage].recordOutcome({ duration_ms: ms, outcome: 'success' });
         stats.skipped[stage]++;
+        bumpLaneStat(c.lane, 'skipped', stage);
         events.emit(stage, c, 'skipped', { duration_ms: ms, ...extra });
         log(stage, c, '⊘', JSON.stringify(extra));
         // Skipped stages should advance so getStage re-evaluates (categorize still runs).
         shouldAdvance = true;
-      } else if (outcome === 'skipped_signature_match') {
-        stats.skipped[stage]++;
-        events.emit(stage, c, 'skipped_signature_match', { duration_ms: ms, ...extra });
-        log(stage, c, '⊘', `${ms}ms signature-match`);
-        shouldAdvance = true;
       }
-    } catch (err) {
+    } else {
+      if (breaker) breaker.record('failure');
+      const err = retryResult.err;
       const ms = Date.now() - t0;
+      adaptiveControllers[stage].recordOutcome({ duration_ms: ms, outcome: 'failure' });
       stats.failed[stage]++;
-      const failure_class = classifyFailure(stage, err, null);
+      bumpLaneStat(c.lane, 'failed', stage);
+      const failure_class = retryResult.failure_class;
       events.emit(stage, c, 'failure', {
         duration_ms: ms,
         failure_class,
@@ -405,9 +756,21 @@ async function flushSave() {
   }
 }
 
-let saveTimer = setInterval(flushSave, 5000);
+let saveTimer = null;
+
+function processCircuitResetCommands() {
+  const commands = consumeCircuitResetCommands(BREAKER_COMMANDS_PATH, STAGES);
+  for (const command of commands) {
+    const breaker = breakers[command.stage];
+    if (!breaker) continue;
+    breaker.reset();
+    log(command.stage, { name: 'circuit-breaker' }, '↺', 'manual reset');
+  }
+}
 
 function snapshot() {
+  processCircuitResetCommands();
+  for (const s of STAGES) adaptiveControllers[s].tick();
   // Trim recentCompletions to last 60s
   const cutoff = Date.now() - 60000;
   while (recentCompletions.length && recentCompletions[0].ts < cutoff) recentCompletions.shift();
@@ -421,6 +784,14 @@ function snapshot() {
     queueDepths[s] = queues[s].size; // waiting
     inFlight[s] = queues[s].pending; // running
   }
+  const breakerSnapshots = {};
+  const adaptiveSnapshots = {};
+  const concurrencyCurrent = {};
+  for (const s of STAGES) {
+    breakerSnapshots[s] = breakers[s].snapshot();
+    adaptiveSnapshots[s] = adaptiveControllers[s].snapshot();
+    concurrencyCurrent[s] = queues[s].concurrency;
+  }
 
   const payload = {
     run_id: events.runId,
@@ -430,13 +801,17 @@ function snapshot() {
     queue_depths: queueDepths,
     in_flight: inFlight,
     stats,
+    stats_by_lane: statsByLane,
     throughput_per_min: throughputPerStage,
+    breakers: breakerSnapshots,
+    adaptive_concurrency: adaptiveSnapshots,
+    concurrency_current: concurrencyCurrent,
     dry_run: DRY_RUN,
   };
   writeSnapshot(payload);
   return payload;
 }
-let snapshotTimer = setInterval(snapshot, 5000);
+let snapshotTimer = null;
 
 // ——————————————————————————————————————————————————————————————
 // Bootstrap + shutdown
@@ -454,8 +829,9 @@ let shuttingDown = false;
 async function shutdown(reason = 'done') {
   if (shuttingDown) return;
   shuttingDown = true;
-  clearInterval(saveTimer);
-  clearInterval(snapshotTimer);
+  if (saveTimer) clearInterval(saveTimer);
+  if (snapshotTimer) clearInterval(snapshotTimer);
+  if (categorizeBatcher) await categorizeBatcher.flush('onIdle');
   await flushSave();
   const finalSnapshot = snapshot();
   events.close();
@@ -474,7 +850,9 @@ async function shutdown(reason = 'done') {
 process.on('SIGINT', async () => { await shutdown('SIGINT'); process.exit(130); });
 process.on('SIGTERM', async () => { await shutdown('SIGTERM'); process.exit(143); });
 
-(async function main() {
+async function main() {
+  saveTimer = setInterval(flushSave, 5000);
+  snapshotTimer = setInterval(snapshot, 5000);
   process.stderr.write(`Pipeline: ${targets.length} companies, concurrencies=${JSON.stringify(CONCURRENCIES)}${DRY_RUN ? ' [dry-run]' : ''}\n`);
 
   // Initial stage tally
@@ -488,6 +866,22 @@ process.on('SIGTERM', async () => { await shutdown('SIGTERM'); process.exit(143)
   for (const c of targets) enqueue(c);
 
   for (const s of STAGES) await queues[s].onIdle();
+  if (categorizeBatcher) await categorizeBatcher.flush('onIdle');
   await shutdown('done');
   process.exit(0);
-})();
+}
+
+if (require.main === module) {
+  main();
+}
+
+module.exports = {
+  runStage,
+  normalizeScrapeStageResult,
+  createCategorizeBatcher,
+  queueCircuitReset: (stage) => queueCircuitResetCommand(BREAKER_COMMANDS_PATH, stage),
+  breakers,
+  snapshot,
+  queues,
+  adaptiveControllers,
+};

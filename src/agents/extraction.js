@@ -270,7 +270,7 @@ function mergeJobs(existingJobs, newJobs) {
     if (existing) {
       // preserve first_seen_at
       existing.last_seen_at = now;
-      delete existing.departed_at;
+      delete existing.removed_at;
       // update fields from nj if missing
       existing.job_title_raw = existing.job_title_raw || nj.job_title_raw;
       existing.location_raw = existing.location_raw || nj.location_raw;
@@ -288,7 +288,7 @@ function mergeJobs(existingJobs, newJobs) {
       } else {
         // keep prev; but ensure prev.last_seen_at updated
         prev.last_seen_at = now;
-        delete prev.departed_at;
+        delete prev.removed_at;
       }
     } else {
       // new unique
@@ -323,6 +323,53 @@ function mergeJobs(existingJobs, newJobs) {
   }
 
   return merged;
+}
+
+function mapRawArtifactItems(raw, company) {
+  const platform = (company && company.ats_platform ? String(company.ats_platform).toLowerCase() : '');
+  if (platform === 'workable' || (raw && Array.isArray(raw.results))) return mapWorkable(raw, company);
+  if (platform === 'teamtailor' || (raw && Array.isArray(raw.data))) return mapTeamtailor(raw, company);
+  if (platform === 'recruitee') return mapRecruitee(raw, company);
+  if (raw && Array.isArray(raw.jobs) && raw.jobs.length > 0 && raw.jobs[0] && raw.jobs[0].jobUrl !== undefined) return mapAshby(raw, company);
+  if (raw && Array.isArray(raw.jobPostings)) return mapWorkday(raw, company);
+  if (raw && Array.isArray(raw.jobs)) return mapGreenhouse(raw, company);
+  if (Array.isArray(raw)) {
+    if (raw.length > 0 && raw[0] && (raw[0].kind !== undefined || raw[0].country_code !== undefined || raw[0].remote !== undefined)) {
+      return mapRecruitee(raw, company);
+    }
+    return mapLever(raw, company);
+  }
+  return [];
+}
+
+function descriptionHashesBySourceUrlFromArtifact(company, opts = {}) {
+  const artifactsDir = opts.artifactsDir || ARTIFACTS_DIR;
+  const htmlPath = path.join(artifactsDir, `${company.id}.html`);
+  const jsonPath = path.join(artifactsDir, `${company.id}.json`);
+  const baseUrl = normalizeHtmlBaseUrl(company.careers_page_url || company.domain || '');
+  const bySource = new Map();
+
+  let items = null;
+  if (fs.existsSync(jsonPath)) {
+    const raw = readJsonSafe(jsonPath);
+    items = mapRawArtifactItems(raw, company);
+  } else if (fs.existsSync(htmlPath)) {
+    const html = readFileSafe(htmlPath) || '';
+    if (isXmlSitemapOrNonHtml(html)) return null;
+    const adapted = tryHtmlAdapters(html, baseUrl);
+    if (!adapted || !adapted.items || adapted.items.length === 0) return null;
+    items = adapted.items;
+  } else {
+    return null;
+  }
+
+  if (!Array.isArray(items)) return null;
+  for (const it of items) {
+    const normalized = normalizeExtractedItem(it, company.id, company.name, baseUrl, null);
+    if (!normalized.source_url) continue;
+    bySource.set(normalized.source_url, normalized.description_hash);
+  }
+  return bySource;
 }
 
 async function extractCompanyJobs(company, opts = {}) {
@@ -490,25 +537,30 @@ async function batchExtract({ companyFilter = null, dryRun = false, verbose = fa
   const existing = readJsonSafe(OUT_JOBS) || [];
   const merged = mergeJobs(existing, extracted);
 
-  // Mark jobs as departed if their company was processed but they weren't seen this run
+  // Mark jobs as removed if their company was processed but they weren't seen this run
   const processedSet = new Set(companiesProcessed);
-  let departedCount = 0;
+  let removedCount = 0;
   for (const job of merged) {
     if (!processedSet.has(job.company_id)) continue;
-    if (job.departed_at) continue;
+    if (job.removed_at) continue;
     if (job.last_seen_at < runStart) {
-      job.departed_at = runStart;
-      departedCount++;
+      job.removed_at = runStart;
+      const first = Date.parse(job.first_seen_at || 0);
+      const removed = Date.parse(job.removed_at || 0);
+      if (!Number.isNaN(first) && !Number.isNaN(removed) && removed >= first) {
+        job.days_live = Math.floor((removed - first) / 86400000);
+      }
+      removedCount++;
     }
   }
 
   if (!dryRun) writeJSONAtomic(OUT_JOBS, merged);
 
-  if (verbose) console.log(`Extraction done: ${companiesProcessed.length} companies, ${extracted.length} jobs, ${departedCount} departed, ${errors.length} errors`);
+  if (verbose) console.log(`Extraction done: ${companiesProcessed.length} companies, ${extracted.length} jobs, ${removedCount} removed, ${errors.length} errors`);
   return {
     companiesProcessed,
     extractedCount: extracted.length,
-    departedCount,
+    removedCount,
     written: dryRun ? 0 : merged.length,
     errors,
     extractStats
@@ -572,6 +624,7 @@ module.exports = {
   mapTeamtailor,
   normalizeExtractedItem,
   mergeJobs,
+  descriptionHashesBySourceUrlFromArtifact,
   extractCompanyJobs,
   batchExtract
 };
