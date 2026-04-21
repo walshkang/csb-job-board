@@ -11,6 +11,7 @@ const anchorAdapter = require('../src/agents/extraction/html-adapters/anchor-job
 const shopifyAdapter = require('../src/agents/extraction/html-adapters/shopify');
 const greenhouseAdapter = require('../src/agents/extraction/html-adapters/greenhouse');
 const leverAdapter = require('../src/agents/extraction/html-adapters/lever');
+const notionAdapter = require('../src/agents/extraction/html-adapters/notion');
 
 describe('html adapters shared', () => {
   test('isXmlSitemapOrNonHtml detects Yoast XML sitemap', () => {
@@ -99,6 +100,21 @@ describe('lever adapter', () => {
     const urls = items.map(i => i.url).sort();
     expect(urls[0]).toContain('1111-2222');
     expect(urls[1]).toContain('aaaa-bbbb');
+  });
+});
+
+describe('notion adapter', () => {
+  test('extracts notion.site links without /jobs in path', () => {
+    const html = `<!doctype html><html><head><meta name="generator" content="Notion Site" /></head>
+      <body>
+      <a href="https://climateco.notion.site/Senior-PM-8f2a1b3c">Senior PM</a>
+      <a href="https://climateco.notion.site/privacy">Privacy</a>
+      </body></html>`;
+    expect(notionAdapter.match(html)).toBe(true);
+    const items = notionAdapter.extract(html, 'https://climateco.notion.site');
+    expect(items.length).toBe(1);
+    expect(items[0].url).toBe('https://climateco.notion.site/Senior-PM-8f2a1b3c');
+    expect(items[0].job_title).toMatch(/Senior PM/i);
   });
 });
 
