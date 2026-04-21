@@ -9,6 +9,7 @@ const {
 } = require('../src/agents/extraction/html-adapters/shared');
 const anchorAdapter = require('../src/agents/extraction/html-adapters/anchor-job-links');
 const shopifyAdapter = require('../src/agents/extraction/html-adapters/shopify');
+const greenhouseAdapter = require('../src/agents/extraction/html-adapters/greenhouse');
 
 describe('html adapters shared', () => {
   test('isXmlSitemapOrNonHtml detects Yoast XML sitemap', () => {
@@ -67,6 +68,21 @@ describe('shopify adapter', () => {
   test('does not match without Shopify markers', () => {
     const html = '<html><body><a href="/pages/role">X</a></body></html>';
     expect(shopifyAdapter.match(html)).toBe(false);
+  });
+});
+
+describe('greenhouse adapter', () => {
+  test('extracts job anchors and script JSON with absolute_url', () => {
+    const html = `<!doctype html><html><body>
+      <a href="https://boards.greenhouse.io/acmeco/jobs/999999?gh_jid=999999">Staff Engineer</a>
+      <script type="application/json">{"absolute_url":"https://boards.greenhouse.io/acmeco/jobs/888888","title":"Designer"}</script>
+      </body></html>`;
+    expect(greenhouseAdapter.match(html)).toBe(true);
+    const items = greenhouseAdapter.extract(html, 'https://acme.com');
+    expect(items.length).toBe(2);
+    const urls = items.map(i => i.url).sort();
+    expect(urls[0]).toContain('888888');
+    expect(urls[1]).toContain('999999');
   });
 });
 
