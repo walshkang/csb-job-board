@@ -3,9 +3,10 @@
  */
 const shopify = require('./shopify');
 const greenhouse = require('./greenhouse');
+const lever = require('./lever');
 const anchorJobLinks = require('./anchor-job-links');
 
-const adapters = [shopify, greenhouse, anchorJobLinks];
+const adapters = [shopify, greenhouse, lever, anchorJobLinks];
 
 /**
  * @returns {{ adapterName: string, items: object[] } | null}

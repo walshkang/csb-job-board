@@ -10,6 +10,7 @@ const {
 const anchorAdapter = require('../src/agents/extraction/html-adapters/anchor-job-links');
 const shopifyAdapter = require('../src/agents/extraction/html-adapters/shopify');
 const greenhouseAdapter = require('../src/agents/extraction/html-adapters/greenhouse');
+const leverAdapter = require('../src/agents/extraction/html-adapters/lever');
 
 describe('html adapters shared', () => {
   test('isXmlSitemapOrNonHtml detects Yoast XML sitemap', () => {
@@ -83,6 +84,21 @@ describe('greenhouse adapter', () => {
     const urls = items.map(i => i.url).sort();
     expect(urls[0]).toContain('888888');
     expect(urls[1]).toContain('999999');
+  });
+});
+
+describe('lever adapter', () => {
+  test('extracts job anchors and script JSON with hostedUrl', () => {
+    const html = `<!doctype html><html><body>
+      <a href="https://jobs.lever.co/acmeco/aaaa-bbbb-cccc">Product</a>
+      <script type="application/json">{"hostedUrl":"https://jobs.lever.co/acmeco/1111-2222-3333","text":"Analyst"}</script>
+      </body></html>`;
+    expect(leverAdapter.match(html)).toBe(true);
+    const items = leverAdapter.extract(html, 'https://acme.com');
+    expect(items.length).toBe(2);
+    const urls = items.map(i => i.url).sort();
+    expect(urls[0]).toContain('1111-2222');
+    expect(urls[1]).toContain('aaaa-bbbb');
   });
 });
 
