@@ -5,7 +5,7 @@ Collect and enrich job listings for climate / clean-tech companies and store str
 
 Pipeline (current architecture)
 
-Note: The pipeline distinguishes 'cold' and 'warm' lanes to optimize processing and token spend. See docs/archive/lanes-slices-2026-04-21.md for details and the slice breakdown.
+Cold vs warm (streaming / npm run pipeline only): src/utils/pipeline-stages.js::classifyLane — cold when profile_attempted_at is blank, else warm. Lane is recomputed on every orchestrator enqueue (src/orchestrator.js). Warm path after scrape can skip extract+enrich when job URLs + description hashes show no delta (buildWarmScrapeDecision); warm extract passes existing_job_urls into extraction-warm.txt when EXTRACTION_LLM_FALLBACK=1. Full narrative: [README.md — Cold vs warm](README.md#cold-vs-warm-streaming-pipeline). Historical slice prompts: docs/archive/lanes-slices-2026-04-21.md.
 
 Slice 1 — Pitchbook OCR → companies.json
   npm run ocr -- data/images
@@ -28,7 +28,7 @@ Slice 9 — Industry Categorization
 Slice 2 — Careers Page Discovery
   npm run discovery
   Input: data/companies.json
-  Step order: standard paths (/careers, /jobs, 8 total, probed in parallel via Promise.any) → ATS slug guesses → homepage link scan → sitemap → LLM fallback (fires even without homepage HTML — uses company name + domain + derived slugs; capped at 3 concurrent)
+  Step order (src/agents/discovery.js): profile careers_hints (if present) → standard path probes (parallel) → ATS slug guesses → homepage link scan → sitemap. No LLM in discovery (legacy "LLM fallback" references in old notes are obsolete).
   Output: companies.json updated with careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform
 
 Slice 3 — ATS Fingerprinting
@@ -51,7 +51,8 @@ Slice 4 — Scrape / Fetch
 Slice 5 — Extraction
   npm run extract
   Input: artifacts per company
-  LLM extracts jobs into Job schema; dedupes by source_url + description_hash
+  Resolution order (src/agents/extraction.js): (1) ATS API JSON → direct mappers, no LLM. (2) HTML DOM adapters (src/agents/extraction/html-adapters/) for common shapes. (3) LLM only if EXTRACTION_LLM_FALLBACK=1 and shape is other — extraction.txt or extraction-warm.txt when warm lane + existing URLs.
+  Dedupes by source_url + description_hash (mergeJobs).
   Output: data/jobs.json with identity + role details
 
 Slice 6 — LLM Enrichment
@@ -102,18 +103,13 @@ Config / env
   Per-agent model overrides (Anthropic, default claude-haiku-4-5-20251001): OCR_ANTHROPIC_MODEL, DISCOVERY_ANTHROPIC_MODEL, EXTRACTION_ANTHROPIC_MODEL, ENRICHMENT_ANTHROPIC_MODEL, CATEGORIZER_ANTHROPIC_MODEL, REVIEWER_ANTHROPIC_MODEL
   Per-agent provider overrides: OCR_PROVIDER, DISCOVERY_PROVIDER, EXTRACTION_PROVIDER, ENRICHMENT_PROVIDER, CATEGORIZER_PROVIDER, REVIEWER_PROVIDER
 
-Current status (as of 2026-04-14)
-  - 10 slices implemented and running end-to-end
-  - 102 companies in companies.json; 19 reachable careers pages; 65 have domains but haven't been through discovery yet
-  - 15 companies blocked by CAPTCHA/JS rendering — no jobs extractable without browser fingerprint spoofing
-  - Jobs extracted from API adapters (Greenhouse, Lever, Ashby, Workday) and direct HTML where accessible
-  - Enrichment, categorization, and observability working with gemini-2.5-flash (paid tier)
-  - Key bug fixed: gemini-2.5-flash thinking tokens consume maxOutputTokens budget — all agents now use 4096+
-  - Extraction prompt hardened: no hallucination of URLs or descriptions not present in HTML
-  - Industry categorization (Slice 9): one LLM call per company, result applied to all jobs; scraped_description + job-samples now passed as context
-  - Slice 9 fields (climate_tech_category, primary_sector, opportunity_area, category_confidence) synced to Notion Companies DB
-  - Notion setup + sync alias tables updated for Slice 9 fields
-  - Fingerprinter (Slice 3): now fetches and caches careers page HTML in addition to homepage; extracts scraped_description from both
+Current status (rolling — do not treat row counts as authoritative)
+  - Pipeline stages and orchestrator are implemented end-to-end; use node scripts/pipeline-status.js for live stage distribution.
+  - OCR: Tabula for PDFs; LLM only for screenshot/image mode.
+  - Discovery: heuristic-only (no LLM).
+  - Extract: adapters + ATS JSON by default; LLM fallback opt-in via EXTRACTION_LLM_FALLBACK=1.
+  - Streaming pipeline: profile → … → enrich → categorize in src/orchestrator.js; warm no-delta can skip extract/enrich.
+  - Categorize / enrich / reviewer still LLM-driven; multi-provider via src/llm-client.js.
 
 Next meaningful work
   1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed; target selection bug now fixed
@@ -122,7 +118,7 @@ Next meaningful work
 
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
-  - Discovery LLM fallback: how often does the no-HTML path fire vs. return NOT_FOUND? (llm_attempted now persisted to companies.json — check after next discovery run)
+  - Discovery yield: careers_hints from profile vs. slug guesses — which branch saves the most failed discoveries?
   - Enrichment quality at scale: spot-check mba_relevance and climate_relevance_confirmed on 20+ jobs once enrichment runs cleanly
 
 Postmortem — 2026-04-13
@@ -148,7 +144,6 @@ Resolved since postmortem:
   - Ashby + Workday adapters added; provider-keyed concurrency
   - ATS fingerprinting slice added (Slice 3)
   - QA spot-check slice added (Slice 7)
-  - Discovery LLM fallback: now fires even without homepage HTML (name+domain+slugs); tracks attempted vs. succeeded; llm_attempted persisted to companies.json
 
 Still open (medium-term):
   - End-to-end smoke tests and CI
@@ -162,7 +157,7 @@ src/llm-client.js is the single dispatch layer for all text agents. callLLM/stre
 
 Project todos (session DB):
 1. define-pitchbook-query — Define Pitchbook query: Decide and document exact PitchBook filters that define "climate company" (NAICS, keywords, investor tags). Produce reproducible query and example export.
-2. [DONE] careers-page-discovery — Slice 2 implemented with heuristics, ATS slug guesses, LLM fallback, and reachable flag.
+2. [DONE] careers-page-discovery — Slice 2 implemented with heuristics, ATS slug guesses, and reachable flag (no LLM).
 3. [DONE] ats-priority-adapters — Greenhouse, Lever, Ashby, Workday adapters implemented with provider-keyed concurrency.
 4. categorizer-dry-run-review — Run TF‑IDF + LLM dry-run, review /tmp/tfidf_proposed_categories.json, and mark taxonomy entries needing human edits.
 5. taxonomy-human-review — Coordinate human review of data/climate-tech-map-industry-categories.json; do not auto-apply changes until approved.
@@ -174,20 +169,21 @@ Project todos (session DB):
 
 Streaming orchestrator (concurrent pipeline)
 
-The linear per-stage CLIs above each iterate all 551 companies before the next CLI starts; one slow company blocks the rest. The orchestrator at src/orchestrator.js (npm run pipeline) instead runs all five stages (discovery → fingerprint → scrape → extract → categorize) concurrently with per-stage p-queue caps, so each company flows through independently and head-of-line blocking is gone. Enrichment stays separate (per-job, not per-company) for now.
+The linear per-stage CLIs iterate the full company list per stage; one slow company blocks that stage for everyone. The orchestrator at src/orchestrator.js (npm run pipeline) runs STAGES from src/utils/pipeline-stages.js — profile → discovery → fingerprint → scrape → extract → enrich → categorize — with per-stage p-queue caps (CONCURRENCIES in orchestrator.js), so each company advances independently. Inline enrich (runStage enrich) uses enrichJob on jobs missing last_enriched_at for that company; standalone npm run enrich is still used for whole-file batch/retry.
 
-Per-stage concurrency caps: profile=6, discovery=12, fingerprint=4, scrape=5, extract=4, enrich=6, categorize=10. (Bumped from discovery=8/enrich=3/categorize=3 on 2026-04-20 after observing LLM-stage backpressure — categorize had 229 queued mid-run. Earlier reduction from 15/5/8 on 2026-04-17 was to prevent OOM; LLM stages are not memory-bound and can scale higher.) The individual `npm run <stage>` scripts still work unchanged; the orchestrator just composes them.
+Per-stage concurrency caps: profile=6, discovery=12, fingerprint=4, scrape=5, extract=4, enrich=6, categorize=10. (Bumped from discovery=8/enrich=3/categorize=3 on 2026-04-20 after observing LLM-stage backpressure — categorize had 229 queued mid-run. Earlier reduction from 15/5/8 on 2026-04-17 was to prevent OOM; LLM stages are not memory-bound and can scale higher.) The individual `npm run <stage>` scripts still work unchanged; the orchestrator composes the same agents with lane-aware scrape/extract behavior.
 
 Categorize gate (2026-04-20): companies reaching the categorize stage with no rep job AND a company_profile.description shorter than 80 chars are skipped (`outcome: 'skipped', extra.reason: 'insufficient_signal'`) rather than burning an LLM call that returns "None". Drops no_result rate and token spend on hopeless inputs.
 
 Provider vs pipeline failure separation (2026-04-20): src/utils/pipeline-events.js::classifyLlmMessage pattern-matches LLM provider error strings (Gemini/Anthropic/Claude) and returns one of llm_provider_billing | llm_provider_auth | llm_rate_limit. Categorize no_result events now carry failure_class + error_origin: 'provider' when the cause is a provider response. The admin stage-detail panel stacks new banners (rose for billing/quota, sky for rate limits, orange for auth) on AI-driven stages so provider outages are visible instantly and not mistaken for pipeline bugs. pipeline-report.js aggregates no_result reasons as category_error:{failure_class} so provider issues show up by class in the dashboards.
 
-Stage state is derived, not stamped as a new field, so agents and orchestrator stay coherent. src/utils/pipeline-stages.js::getStage inspects the company record (careers_page_discovery_method, careers_page_reachable, ats_platform, fingerprint_attempted_at, last_scraped_at, last_extracted_at, climate_tech_category) and returns which stage should run next. Companies with careers_page_reachable === false skip straight to categorize. Crash-resume is automatic — startup calls getStage for every company and enqueues it into the matching queue.
+Stage state is derived, not stamped as a dedicated "current_stage" field. src/utils/pipeline-stages.js::getStage inspects profile_attempted_at, careers_page_discovery_method, careers_page_reachable, fingerprint_attempted_at, last_scraped_at, last_scrape_outcome (e.g. skipped_signature_match short-circuits to categorize/done), last_extracted_at, last_enriched_at, climate_tech_category, etc. Companies with careers_page_reachable === false skip fingerprint/scrape/extract and go to categorize when uncategorized. Crash-resume: enqueue uses getStage per company.
 
-Three-state outcomes per stage (not binary):
-  success    — data advanced (e.g. careers_page_reachable flipped true; ats_platform detected; jobs.length > 0; climate_tech_category set and not "None")
-  no_result  — stage ran cleanly but produced nothing (discovery found nothing, LLM returned "None", extract got 0 jobs). Discovery and fingerprint still advance on no_result; scrape/extract/categorize stay put for the next run to retry.
-  failure    — exception thrown. Company does not advance.
+Orchestrator outcomes (per stage attempt):
+  success    — data advanced per stage rules
+  no_result  — ran cleanly but nothing useful; advance rules vary by stage (see orchestrator.js / README)
+  skipped    — intentional bypass (e.g. categorize insufficient_signal; extract no_delta)
+  failure    — exception; company does not advance until retry
 
 The orchestrator emits these as JSONL events with the classifier from src/utils/pipeline-events.js (classes: timeout, dns, http_4xx, http_5xx, blocked, llm_parse_fail, llm_rate_limit, empty_result, unknown) and writes live queue depths + throughput to data/runs/orchestrator-snapshot.json every 5s. Event files are at data/runs/pipeline-events-{run_id}.jsonl with retention=30.
 
@@ -291,4 +287,32 @@ Parallelization plan:
 
 Decision needed: company summary source
 - Decision reached: Move generation to Categorization stage.
-- Current Path: Evaluating either a dedicated "About Page" crawler agent or deferring descriptions entirely until retrieval is high-confidence.ng descriptions entirely until retrieval is high-confidence.
+- Current path: Dedicated profile agent (src/agents/profile.js) already crawls root/about/about-us for description + careers_hints; categorizer consumes company + rep job context.
+
+LLM inventory and reduction (code-rooted)
+
+Where LLMs still run:
+  - OCR: screenshot path only (src/agents/ocr.js + ocr.txt).
+  - Categorize: one call per company (or batch path in orchestrator categorize batcher) — src/agents/categorizer.js.
+  - Extract: only when EXTRACTION_LLM_FALLBACK=1 and adapters fail — src/agents/extraction.js::runExtraction.
+  - Enrich: per job (batch-mode optional) — src/agents/enricher.js.
+  - Reviewer: optional post-run — src/agents/reviewer.js.
+
+Already eliminating or cutting calls:
+  - PDF OCR via Tabula (no vision model).
+  - ATS JSON → mappers (no extract LLM).
+  - HTML adapters before any extract LLM.
+  - Scraper signature preflight (src/agents/scraper.js) skips full re-scrape when job-id set unchanged.
+  - Warm no_delta (orchestrator) skips extract+enrich when URLs and description hashes stable.
+  - Categorize gate skips LLM when no rep job and description < 80 chars.
+  - enrich --batch-mode: 5 jobs per call.
+
+Recommendations (highest leverage first):
+  1. Keep EXTRACTION_LLM_FALLBACK off unless auditing long-tail HTML; expand html-adapters coverage (fixtures + tryHtmlAdapters) to shrink the "other" bucket.
+  2. Prefer PitchBook PDF export over screenshots to avoid OCR LLM entirely.
+  3. Categorizer: shortlist taxonomy with TF-IDF/keywords before LLM (see "Categorization quality" below); optional batch categorize slice in pipeline-improvements doc.
+  4. Enrich: widen batch-mode; add deterministic rules for easy fields (e.g. location_type from remote keywords in title/body) only where tests prove safe; consider skipping enrich for jobs already structured from ATS if all target fields derivable.
+  5. Reviewer: run on schedule or --sample instead of every run.
+  6. Raise adapter/ATS coverage (fingerprint + scraper) so fewer companies sit on raw HTML that might trigger LLM fallback.
+
+Tradeoff: raising MAX_HTML_CHARS in extraction.js increases token cost for the LLM fallback path — prefer windowed/chunked adapter strategies over huge single prompts where possible.

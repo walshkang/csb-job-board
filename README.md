@@ -8,7 +8,7 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 
 ## Two ways to run
 
-**Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500. The pipeline recognizes 'cold' and 'warm' lanes to reduce LLM calls and enable targeted extraction; see [docs/archive/lanes-slices-2026-04-21.md](docs/archive/lanes-slices-2026-04-21.md) for the slice writeup.
+**Streaming pipeline (recommended).** One command runs every stage (**profile → discovery → fingerprint → scrape → extract → enrich → categorize**) concurrently per company (`src/orchestrator.js`). Each company flows through independently, so one slow company can't block the rest. Companies are tagged **cold** or **warm** on each enqueue so the orchestrator can skip redundant extract/enrich work and use a smaller extraction prompt when the LLM fallback runs — see [Cold vs warm (streaming pipeline)](#cold-vs-warm-streaming-pipeline). Historical implementation slices: [docs/archive/lanes-slices-2026-04-21.md](docs/archive/lanes-slices-2026-04-21.md).
 
 ```bash
 npm run pipeline                  # full set
@@ -60,6 +60,7 @@ Details in [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
    - [Step 10 — Notion Sync: Push to Notion](#step-10--notion-sync-push-to-notion)
    - [Observability: Reporter + Reviewer](#observability-reporter--reviewer)
 6. [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
+   - [Cold vs warm (streaming pipeline)](#cold-vs-warm-streaming-pipeline)
 7. [Prompt Reference](#prompt-reference)
 8. [Re-running Patterns](#re-running-patterns)
 9. [Reading Results in Notion](#reading-results-in-notion)
@@ -452,9 +453,9 @@ npm run scrape
 **What it does:** Converts raw artifacts into structured job records in `data/jobs.json`. Three-tier resolution:
 1. **ATS API JSON** → direct field mappers (no LLM).
 2. **HTML DOM adapters** → deterministic extractors for the top 3 shapes (anchor job-link lists, WordPress-ish, Webflow). Covers ~82% of HTML artifacts. See `src/agents/extraction/html-adapters/` and [the shape audit](docs/archive/extract-html-shape-audit-2026-04-20.md).
-3. **LLM fallback** → only for the long-tail HTML that no adapter matches, via `extraction.txt`.
+3. **LLM fallback** → only when `EXTRACTION_LLM_FALLBACK=1` and the HTML shape is `other` (`src/agents/extraction.js`). Uses `src/prompts/extraction.txt` by default; if the company is on the **warm** lane and there are existing job URLs (as passed from the orchestrator), `resolveExtractionPromptPath` switches to `src/prompts/extraction-warm.txt` so the model sees known URLs and focuses on new or changed rows.
 
-**Prompt injected:** `src/prompts/extraction.txt` — LLM fallback only
+**Prompt injected:** `src/prompts/extraction.txt` for cold / no known URLs; `src/prompts/extraction-warm.txt` when the orchestrator passes existing job URLs on the warm lane — LLM fallback only (`EXTRACTION_LLM_FALLBACK=1`).
 
 **Input:** `artifacts/html/` — all artifacts from Step 4
 
@@ -673,7 +674,7 @@ PDF_CHUNK_SIZE=8
 
 ## Streaming Pipeline (orchestrator)
 
-Instead of running each stage sequentially across all companies, you can run them concurrently per-company. Each company flows through discovery → fingerprint → scrape → extract → categorize independently; a slow company no longer blocks the other 500.
+Instead of running each stage sequentially across all companies, you can run them concurrently per-company. Each company flows through **profile → discovery → fingerprint → scrape → extract → enrich → categorize** independently (`STAGES` in `src/utils/pipeline-stages.js`); a slow company no longer blocks the other 500.
 
 ```bash
 npm run pipeline                         # full set, all stages
@@ -682,6 +683,29 @@ npm run pipeline -- --stages=discovery,scrape
 npm run pipeline -- --company=Acme,Bar
 npm run pipeline -- --dry-run --verbose
 ```
+
+### Cold vs warm (streaming pipeline)
+
+These labels are **not** PitchBook concepts — they come from `classifyLane()` in `src/utils/pipeline-stages.js`:
+
+| Lane | Rule in code | Plain language |
+|------|----------------|----------------|
+| **Cold** | `profile_attempted_at` is missing or empty | This company has not finished the **profile** stage yet (first-time site fetch for description + careers hints). |
+| **Warm** | `profile_attempted_at` is set | Profile has run at least once; later work is mostly “refresh what we already know.” |
+
+On every stage handoff the orchestrator recomputes the lane (`enqueue()` in `src/orchestrator.js`). So the **profile** step runs under **cold**; as soon as `runStage('profile', …)` writes `profile_attempted_at`, the next enqueue sees **warm** for discovery through categorize in that same run.
+
+**What warm changes in behavior (code paths):**
+
+1. **Scrape → job URL diff.** After a successful scrape, if the lane is warm, `buildWarmScrapeDecision()` in `src/orchestrator.js` compares the scraped `job_urls` list to active rows in `data/jobs.json` for that company (`diffScrapeUrls()` in `src/utils/scrape-diff.js`). It bumps `last_seen_at` for URLs still on the page and sets `removed_at` / `days_live` for URLs that disappeared. If there are **no** net-new URLs and **no** description-hash churn on existing postings (checked against the latest artifact via `descriptionHashesBySourceUrlFromArtifact()` in `src/agents/extraction.js`), the orchestrator treats the company as **no delta**: it stamps `last_extracted_at` and `last_enriched_at` without running extract or enrich, and emits an extract-stage event with `outcome: 'skipped'` and `reason: 'no_delta'`.
+
+2. **Extract.** When extract does run, warm companies get `existingJobUrls` from live jobs in `jobs.json` (`getCompanyActiveSourceUrls` in `src/orchestrator.js`). That list is what unlocks the warm extraction prompt when the LLM fallback is used (see Step 6 above). ATS JSON and HTML adapters behave the same regardless of lane.
+
+3. **Telemetry.** Each pipeline event carries `lane` (`src/utils/pipeline-events.js`). `src/agents/reporter.js` increments `cold_onboarded` when `stage === 'profile'` succeeds on a cold lane, and `warm_refreshed` when `stage === 'scrape'` succeeds on a warm lane.
+
+**Related (not the same as lane):** ATS companies can still hit the **signature gate** during scrape (`src/agents/scraper.js`): unchanged job-ID lists skip a full re-scrape. That optimization applies by platform rules; cold/warm is about profile completion and warm URL diffing after scrape.
+
+Step-by-step CLIs (`npm run discovery`, `npm run extract`, …) use the same agents; lane tagging and `no_delta` skipping are specific to `npm run pipeline` unless you mirror that logic yourself.
 
 Stages carry independent concurrency caps (profile=6, discovery=12, fingerprint=4, scrape=5, extract=4, enrich=6, categorize=10) via `p-queue`. Crash-resume is automatic: on startup the orchestrator reads state from `companies.json` + `jobs.json` + artifacts and routes each company to its current stage.
 
@@ -702,7 +726,7 @@ node scripts/pipeline-report.js --company=acme
 
 The orchestrator emits one JSONL event per stage attempt to `data/runs/pipeline-events-{run_id}.jsonl` (retention: last 30 runs). Events carry `duration_ms`, `failure_class` (timeout/dns/http_4xx/http_5xx/blocked/llm_parse_fail/llm_rate_limit/empty_result/unknown), and stage-specific extras. Live queue depths sit in `data/runs/orchestrator-snapshot.json` (removed on exit).
 
-Enrichment (`npm run enrich`) is still per-job, not per-company, and stays separate from the orchestrator for now.
+The orchestrator runs **enrich** as its own stage after extract (`runStage('enrich', …)` in `src/orchestrator.js`): it classifies jobs for that company that still lack `last_enriched_at` using the same `enrichJob` path as Step 7. You can still run `npm run enrich` afterward for whole-file batching, `--retry-errors`, or when you used the step-by-step CLIs without the orchestrator.
 
 ### Admin run panel (v1)
 
