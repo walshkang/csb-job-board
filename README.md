@@ -8,7 +8,7 @@ Automatically finds and tracks job listings at climate-tech companies — pulled
 
 ## Two ways to run
 
-**Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500. The pipeline recognizes 'cold' and 'warm' lanes to reduce LLM calls and enable targeted extraction; see docs/lanes-slices.md for details.
+**Streaming pipeline (recommended).** One command runs every stage (discovery → fingerprint → scrape → extract → categorize) concurrently. Each company flows through independently, so one slow company can't block the other 500. The pipeline recognizes 'cold' and 'warm' lanes to reduce LLM calls and enable targeted extraction; see [docs/archive/lanes-slices-2026-04-21.md](docs/archive/lanes-slices-2026-04-21.md) for the slice writeup.
 
 ```bash
 npm run pipeline                  # full set
@@ -852,6 +852,6 @@ Never commit `.env.local`. It contains API keys and is gitignored by default.
 |---|---|
 | **[README.md](README.md)** (this file) | Pipeline overview, setup, CLI reference, troubleshooting |
 | **[agents.md](agents.md)** | Developer & AI assistant protocol — agent ownership table, data contracts, concurrency/scoping rules, standardized handoff format |
-| **[docs/pipeline-improvements-slices.md](docs/pipeline-improvements-slices.md)** | Planned resilience work: failure classification + retry, per-stage circuit breaker, batch categorize, adaptive concurrency. Sliced for parallel execution, red/green TDD. |
+| **Archived planning** | Slice prompts (lanes, extract adapters, pipeline resilience, shape de-hallucinate): [docs/archive/](docs/archive/) (e.g. `lanes-slices-2026-04-21.md`, `pipeline-improvements-slices-2026-04-21.md`, `shape-dehallucinate-2026-04-21.md`, `extract-adapter-lanes-slices-2026-04-21.md`). |
 
 If you're an AI assistant or developer working in this repo, read [agents.md](agents.md) before making changes. It defines which files each agent owns, the data contracts between stages, and the concurrency rules that prevent collisions in a multi-agent environment.

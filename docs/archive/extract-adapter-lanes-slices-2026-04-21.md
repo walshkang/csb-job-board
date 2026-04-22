@@ -200,7 +200,7 @@ SCOPE
 
 FILES IN SCOPE
 - scripts/audit-html-extract-adapter-headroom.js (reuse/extend)
-- docs/archive/extract-adapter-expansion-audit-2026-04-21.md (new report)
+- extract-adapter-expansion-audit-2026-04-21.md (new report, same folder)
 
 OUT OF SCOPE
 - Additional adapter coding

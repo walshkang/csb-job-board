@@ -2,7 +2,7 @@
 
 Slices for splitting the pipeline into two explicit flows: **cold lane** (net-new companies from PitchBook OCR, full research funnel) and **warm lane** (already in `companies.json`, just diff the known careers page). Mirrored on the jobs side as a tri-state per scrape: **existing / net-new / removed**.
 
-Run **after** `docs/pipeline-improvements-slices.md` lands. Each slice is self-contained, TDD-driven (red → green), and follows the agents.md handoff protocol.
+Run **after** `docs/archive/pipeline-improvements-slices-2026-04-21.md` lands. Each slice is self-contained, TDD-driven (red → green), and follows the agents.md handoff protocol.
 
 ## Framing
 

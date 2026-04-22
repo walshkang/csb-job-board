@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Groups artifacts/html/{id}.html files that would hit LLM extraction (no sibling .json)
- * into coarse DOM/platform shapes. Gate for html-adapters work (shape-dehallucinate Slice 5).
+ * into coarse DOM/platform shapes. Gate for html-adapters work (archived: docs/archive/shape-dehallucinate-2026-04-21.md, Slice 5).
  *
  * Usage: node scripts/audit-html-extract-shapes.js [--artifacts=path]
  */

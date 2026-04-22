@@ -70,7 +70,10 @@ const DENIED_PATH_SEGMENTS = new Set([
   'terms',
   'terms-of-use',
   'terms-and-conditions',
-  'contact'
+  'contact',
+  'blog',
+  'press',
+  'legal'
 ]);
 
 function isDeniedPolicyOrNavPath(pathname) {
@@ -119,13 +122,38 @@ function normalizeHrefForJobMatch(href) {
   return href.trim().replace(/#.*/, '');
 }
 
+/** First path segment: company/marketing pages, not postings (Webflow card context). */
+const WEBFLOW_NON_JOB_FIRST_SEGMENTS = new Set([
+  'about',
+  'about-us',
+  'contact',
+  'company',
+  'team',
+  'culture',
+  'blog',
+  'news',
+  'press',
+  'events',
+  'resources',
+  'resource',
+  'pricing',
+  'faq',
+  'login',
+  'sign-in',
+  'signup',
+  'sign-up',
+  'legal',
+  'privacy',
+  'terms',
+]);
+
 function isLikelyWebflowJobCardHref(href, resolved) {
   const rawHref = typeof href === 'string' ? href.trim() : '';
   const candidate = normalizeHrefForJobMatch(href || resolved);
   if (!candidate) return false;
   const lower = candidate.toLowerCase();
   if (/^mailto:|^javascript:|^tel:/.test(lower)) return false;
-  if (/(^|\/)(about|contact|privacy|legal|terms|blog|resource|resources)(\/|$)/.test(lower)) return false;
+  if (/(^|\/)(about|contact|privacy|legal|terms|blog|resource|resources|company)(\/|$)/.test(lower)) return false;
 
   try {
     const u = new URL(resolved || candidate, resolved ? undefined : 'https://example.com');
@@ -133,9 +161,20 @@ function isLikelyWebflowJobCardHref(href, resolved) {
     const hasListingAnchor = /\/(jobs?|careers?)(\/)?#.+/i.test(rawHref);
     if (!p || (isBareListingPath(p) && !hasListingAnchor)) return false;
     if (isBareListingPath(p) && hasListingAnchor) return true;
-    if (/(^|\/)(about|contact|privacy|legal|terms|blog|resource|resources)(\/|$)/.test(p)) return false;
+    if (/(^|\/)(about|contact|privacy|legal|terms|blog|resource|resources|company)(\/|$)/.test(p)) return false;
     const segments = p.split('/').filter(Boolean);
-    if (segments.length >= 2 && /(jobs?|careers?|positions|openings|opportunities|vacancies)/.test(segments[0])) return true;
+    if (segments.length >= 2) {
+      const first = segments[0];
+      if (WEBFLOW_NON_JOB_FIRST_SEGMENTS.has(first)) return false;
+      if (/(jobs?|careers?|positions|openings|opportunities|vacancies)/.test(first)) return true;
+      if (first === 'job' || /^(roles?|postings?)$/.test(first)) return true;
+    }
+    if (segments.length === 1) {
+      const s = segments[0];
+      if (WEBFLOW_NON_JOB_FIRST_SEGMENTS.has(s)) return false;
+      if (isBareListingPath(`/${s}`)) return false;
+      if (/^[a-z0-9]+(?:-[a-z0-9]+)+$/i.test(s)) return true;
+    }
   } catch {
     return false;
   }
@@ -184,50 +223,125 @@ function urlAppearsInHtml(resolved, htmlSlice) {
 }
 
 /**
+ * Main/article/section cluster gating for generic high-signal pages only.
+ * many-career-path-hrefs keeps nav-stripped extraction without cluster (avoids corpus regressions).
+ */
+function shouldApplyDenseClusterPass(html) {
+  return classifyShape(html) === 'other' && countJobLikeHrefs(html) >= 3;
+}
+
+/** Nearest semantic block used for cluster counting (null = no usable root). */
+function denseListingClusterRoot($, el) {
+  const $el = $(el);
+  const mainish = $el.closest('main, article, [role="main"]');
+  if (mainish.length) return mainish.get(0);
+  const block = $el.closest('section, ul, ol');
+  return block.length ? block.get(0) : null;
+}
+
+function isMainLikeClusterRoot($, root) {
+  if (!root) return false;
+  const tag = String(root.tagName || '').toLowerCase();
+  if (tag === 'main' || tag === 'article') return true;
+  const role = String($(root).attr('role') || '').toLowerCase();
+  return role === 'main';
+}
+
+/** @param {{ el: unknown, resolved: string, job_title: string | null }[]} rows */
+function filterDenseListingClusterRows($, rows) {
+  const rootToUrls = new Map();
+  for (const row of rows) {
+    const root = denseListingClusterRoot($, row.el);
+    if (!root) continue;
+    if (!rootToUrls.has(root)) rootToUrls.set(root, new Set());
+    rootToUrls.get(root).add(row.resolved);
+  }
+  return rows.filter(row => {
+    const root = denseListingClusterRoot($, row.el);
+    if (!root) return false;
+    const urlSet = rootToUrls.get(root);
+    const distinct = urlSet ? urlSet.size : 0;
+    return isMainLikeClusterRoot($, root) || distinct >= 2;
+  });
+}
+
+/**
  * Parse anchors with cheerio; dedupe by resolved URL; attach titles.
  */
 function extractJobsFromAnchors(html, baseUrl) {
   const htmlSlice = html.length > ADAPTER_HTML_MAX ? html.slice(0, ADAPTER_HTML_MAX) : html;
   const $ = cheerio.load(htmlSlice);
-  const seen = new Set();
-  const out = [];
   const webflow = isWebflowHtml(htmlSlice);
+  const denseCluster = shouldApplyDenseClusterPass(htmlSlice);
 
-  $('a[href]').each((_, el) => {
-    const href = ($(el).attr('href') || '').trim();
-    const hrefForMatch = normalizeHrefForJobMatch(href);
-    const inNavChrome = !!$(el).closest('header, footer, nav, [role="navigation"], .w-nav').length;
-    const inWebflowCard = webflow && !!$(el).closest('.w-dyn-item, .w-dyn-list').length;
-    const baseMatch = looksLikeJobHref(hrefForMatch);
-    if (webflow && inNavChrome && !inWebflowCard) return;
-
-    const resolved = resolveUrl(href, baseUrl);
-    const webflowCardMatch = webflow && inWebflowCard && isLikelyWebflowJobCardHref(href, resolved);
-    if (!baseMatch && !webflowCardMatch) return;
-    if (!resolved || !urlAppearsInHtml(resolved, htmlSlice)) return;
-    try {
-      const parsed = new URL(resolved);
-      if (isDeniedPolicyOrNavPath(parsed.pathname)) return;
-      if (isBareListingPath(parsed.pathname)) {
-        const allowSectionAnchor = webflowCardMatch && !!parsed.hash && parsed.hash.length > 1;
-        if (!allowSectionAnchor) return;
+  /**
+   * @param {boolean} stripNonWebflowNav - When true, ignore header/footer/nav/banner
+   *   unless Webflow in-collection. When false, only the legacy Webflow chrome guard applies.
+   * @returns {{ el: unknown, resolved: string, job_title: string | null }[]}
+   */
+  const collectAnchorRows = stripNonWebflowNav => {
+    const seen = new Set();
+    const rows = [];
+    $('a[href]').each((_, el) => {
+      const href = ($(el).attr('href') || '').trim();
+      const hrefForMatch = normalizeHrefForJobMatch(href);
+      const inNavChrome = !!$(el).closest(
+        'header, footer, nav, [role="navigation"], [role="banner"], [role="contentinfo"], .w-nav'
+      ).length;
+      const inWebflowCard =
+        webflow && !!$(el).closest('.w-dyn-item, .w-dyn-list, .w-dyn-items').length;
+      const baseMatch = looksLikeJobHref(hrefForMatch);
+      if (stripNonWebflowNav) {
+        if (inNavChrome && (!webflow || !inWebflowCard)) return;
+      } else if (webflow && inNavChrome && !inWebflowCard) {
+        return;
       }
-    } catch {
-      /* skip */
-    }
-    if (seen.has(resolved)) return;
-    seen.add(resolved);
-    const title = anchorText($(el));
-    const job_title = title && title.length > 120 ? title.slice(0, 117) + '...' : title;
-    out.push({
-      job_title: job_title || deriveTitleFromUrl(resolved),
-      url: resolved,
+
+      const resolved = resolveUrl(href, baseUrl);
+      const webflowCardMatch = webflow && inWebflowCard && isLikelyWebflowJobCardHref(href, resolved);
+      if (!baseMatch && !webflowCardMatch) return;
+      if (!resolved || !urlAppearsInHtml(resolved, htmlSlice)) return;
+      try {
+        const parsed = new URL(resolved);
+        if (isDeniedPolicyOrNavPath(parsed.pathname)) return;
+        if (isBareListingPath(parsed.pathname)) {
+          const allowSectionAnchor = webflowCardMatch && !!parsed.hash && parsed.hash.length > 1;
+          if (!allowSectionAnchor) return;
+        }
+      } catch {
+        /* skip */
+      }
+      if (seen.has(resolved)) return;
+      seen.add(resolved);
+      const title = anchorText($(el));
+      const job_title = title && title.length > 120 ? title.slice(0, 117) + '...' : title;
+      rows.push({
+        el,
+        resolved,
+        job_title: job_title || deriveTitleFromUrl(resolved)
+      });
+    });
+    return rows;
+  };
+
+  const rowsToItems = rows =>
+    rows.map(r => ({
+      job_title: r.job_title,
+      url: r.resolved,
       location: null,
       employment_type: null,
       description: null
-    });
-  });
+    }));
 
+  let rows = collectAnchorRows(true);
+  if (denseCluster) {
+    rows = filterDenseListingClusterRows($, rows);
+  }
+  let out = rowsToItems(rows);
+  const wpish = /wp-content|wordpress/i.test(htmlSlice);
+  if (out.length === 0 && !webflow && (countJobLikeHrefs(htmlSlice) < 3 || wpish)) {
+    out = rowsToItems(collectAnchorRows(false));
+  }
   return out;
 }
 
@@ -255,9 +369,38 @@ function extractJobsFromJsonLd(html, baseUrl) {
     }
     return null;
   };
+  /** JobPosting.identifier as URL string, PropertyValue, or array (WordPress / SEO plugins). */
+  const pickIdentifierUrl = (identifier) => {
+    if (identifier == null) return null;
+    if (typeof identifier === 'string') {
+      const t = identifier.trim();
+      if (/^https?:\/\//i.test(t) || t.startsWith('/')) return t;
+      return null;
+    }
+    if (Array.isArray(identifier)) {
+      for (const item of identifier) {
+        const u = pickIdentifierUrl(item);
+        if (u) return u;
+      }
+      return null;
+    }
+    if (typeof identifier === 'object') {
+      if (typeof identifier.value === 'string') {
+        const v = identifier.value.trim();
+        if (/^https?:\/\//i.test(v) || v.startsWith('/')) return v;
+      }
+      if (typeof identifier['@id'] === 'string') {
+        const id = identifier['@id'].trim();
+        if (/^https?:\/\//i.test(id) || id.startsWith('/')) return id;
+      }
+    }
+    return null;
+  };
   const pickJobUrl = (node) => {
     const direct = pickStringOrId(node.url);
     if (direct) return direct;
+    const fromIdentifier = pickIdentifierUrl(node.identifier);
+    if (fromIdentifier) return fromIdentifier;
     const mainEntity = pickStringOrId(node.mainEntityOfPage);
     if (mainEntity) return mainEntity;
     const idUrl = pickStringOrId(node['@id']);

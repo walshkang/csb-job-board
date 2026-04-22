@@ -5,7 +5,7 @@ Collect and enrich job listings for climate / clean-tech companies and store str
 
 Pipeline (current architecture)
 
-Note: The pipeline distinguishes 'cold' and 'warm' lanes to optimize processing and token spend. See docs/lanes-slices.md for details and the slice breakdown.
+Note: The pipeline distinguishes 'cold' and 'warm' lanes to optimize processing and token spend. See docs/archive/lanes-slices-2026-04-21.md for details and the slice breakdown.
 
 Slice 1 — Pitchbook OCR → companies.json
   npm run ocr -- data/images
@@ -199,7 +199,7 @@ Observability surfaces:
 
 Planned improvements (tracked here, not yet implemented)
 
-Orchestrator resilience (2026-04-20) — see docs/pipeline-improvements-slices.md
+Orchestrator resilience (2026-04-20) — see docs/archive/pipeline-improvements-slices-2026-04-21.md
   Sliced prompts for red/green TDD execution. Dependency graph:
     Slice 1 (telemetry bug fixes: progress-bar math, skipped_signature_match unification) — parallelizable
     Slice 2 (failure-class vocabulary + retry with exponential backoff for transient classes) — foundation

@@ -1,0 +1,10 @@
+{
+  "htmlAdapterCompanies": 147,
+  "headroom": {
+    "totalHtmlOnly": 457,
+    "adapterHit": 147,
+    "misses": 310,
+    "adapterCoveragePct": 32.2,
+    "byShape": []
+  }
+}

@@ -1,6 +1,6 @@
 # Extract adapter expansion — outcome audit (2026-04-21)
 
-Post-change summary for **Slice 4** ([extract-adapter-lanes-slices.md](../extract-adapter-lanes-slices.md)): compare adapter coverage on the **HTML-only** artifact population against the pre-expansion baseline recorded in the lanes doc, and apply the **ship / no-ship** gate.
+Post-change summary for **Slice 4** ([extract-adapter-lanes-slices-2026-04-21.md](extract-adapter-lanes-slices-2026-04-21.md)): compare adapter coverage on the **HTML-only** artifact population against the pre-expansion baseline recorded in the lanes doc, and apply the **ship / no-ship** gate.
 
 ## Methodology
 

@@ -31,7 +31,7 @@ From one full artifact tree on this machine:
 
 Context and follow-up work (adapter-first extract, LLM fallback flag): [profile-stage-slice-2026-04-20.md](./profile-stage-slice-2026-04-20.md) (Slice 6b).
 
-## Gate (from [shape-dehallucinate.md](../shape-dehallucinate.md))
+## Gate (from [shape-dehallucinate-2026-04-21.md](shape-dehallucinate-2026-04-21.md))
 
 **Decision: GO** — The top three coarse buckets alone cover **≥50%** of LLM-eligible HTML artifacts, so implementing DOM-first extraction with LLM fallback is justified.
 

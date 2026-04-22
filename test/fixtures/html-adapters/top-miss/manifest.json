@@ -1,0 +1,36 @@
+{
+  "fixtures": [
+    {
+      "id": "tm-wordpress-bare-careers",
+      "shape": "wordpress-careers-ish",
+      "base_url": "https://example.com",
+      "expected_min_jobs": 0,
+      "must_not_match": ["/privacy", "/terms", "/contact"],
+      "require_high_signal": false
+    },
+    {
+      "id": "tm-webflow-empty",
+      "shape": "webflow-dom",
+      "base_url": "https://example.com",
+      "expected_min_jobs": 0,
+      "must_not_match": ["/privacy", "/terms", "/contact"],
+      "require_high_signal": false
+    },
+    {
+      "id": "tm-many-career-path-hrefs",
+      "shape": "many-career-path-hrefs",
+      "base_url": "https://example.com",
+      "expected_min_jobs": 0,
+      "must_not_match": ["/privacy", "/terms", "/contact"],
+      "require_high_signal": false
+    },
+    {
+      "id": "tm-other-high-signal",
+      "shape": "other",
+      "base_url": "https://example.com",
+      "expected_min_jobs": 0,
+      "must_not_match": ["/privacy", "/terms", "/contact"],
+      "require_high_signal": true
+    }
+  ]
+}
