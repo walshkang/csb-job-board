@@ -221,7 +221,7 @@ The pipeline is a linear DAG. Each step reads from files written by the previous
 flowchart TD
     SRC["📄 PitchBook PDFs / Screenshots\ndata/images/"]
 
-    SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ Tabula (PDF) / AI: ocr.txt (screenshots)"]
+    SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ Tabula or LiteParse (PDF) / AI: ocr.txt (screenshots)"]
     S1 -->|"data/companies.json\n(id, name, domain, funding_signals, keywords)"| S2
 
     S2["Step 2 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\nRequires PitchBook keywords — run right after OCR"]
@@ -273,7 +273,7 @@ flowchart LR
     end
 
     subgraph NoAI ["No LLM (PDF mode)"]
-        T1["Tabula JAR\nstream-mode table extraction"]
+        T1["Tabula JAR or LiteParse CLI\nstream/coordinate table extraction"]
     end
 
     P1 --> OCR["OCR — Step 1\nscreenshot mode"]
@@ -296,7 +296,9 @@ flowchart LR
 
 **Output:** `data/companies.json` — company list with identity, funding signals, HQ, headcount
 
-**PDF mode (primary):** Uses [Tabula](https://tabula.technology/) (`tabula.jar`) — no LLM involved. Runs in stream mode (`-r`) since PitchBook exports have no visible grid lines. Processes each page individually, scans page 1 by text to find the column header row (skipping the PitchBook nav chrome above it), then maps data cells to columns geometrically by x-coordinate. PitchBook's row numbers prepended to company names (e.g. `"42Acme Corp"`) are stripped automatically.
+**PDF mode (primary):** Uses [Tabula](https://tabula.technology/) (`tabula.jar`) by default — no LLM involved. Runs in stream mode (`-r`) since PitchBook exports have no visible grid lines. Processes each page individually, scans page 1 by text to find the column header row (skipping the PitchBook nav chrome above it), then maps data cells to columns geometrically by x-coordinate. PitchBook's row numbers prepended to company names (e.g. `"42Acme Corp"`) are stripped automatically.
+
+**Optional PDF backend:** Set `OCR_PDF_BACKEND=liteparse` to use [LiteParse](https://developers.llamaindex.ai/liteparse/) instead of Tabula. Install the CLI first (`npm install -g @llamaindex/liteparse`). Override the executable name/path with `LITEPARSE_COMMAND` if needed.
 
 **Screenshot mode (fallback):** Sends PNG/JPG images to the LLM using `src/prompts/ocr.txt`.
 
@@ -659,6 +661,10 @@ OCR_MODEL=gemini-2.5-flash-lite
 EXTRACTION_MODEL=gemini-2.5-flash
 ENRICHMENT_MODEL=gemini-2.5-flash
 
+# OCR PDF backend
+OCR_PDF_BACKEND=tabula       # or: liteparse
+LITEPARSE_COMMAND=lit        # optional override, default "lit"
+
 # Per-agent model overrides (Anthropic)
 OCR_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
 EXTRACTION_ANTHROPIC_MODEL=claude-haiku-4-5-20251001
@@ -827,7 +833,8 @@ npm run enrich -- --retry-errors
 | Problem | Fix |
 |---|---|
 | `Missing GEMINI_API_KEY` | Add key to `.env.local`; paid tier required |
-| `pdftotext: command not found` | `brew install poppler` (macOS) or `apt install poppler-utils` (Linux) |
+| `tabula.jar` errors in OCR | Ensure Java is installed and `tabula.jar` is present in repo root |
+| `LiteParse CLI not found` | `npm install -g @llamaindex/liteparse` (or set `LITEPARSE_COMMAND` to the full binary path) |
 | OCR returns 0 rows | Check PDF is a PitchBook "Companies & Deals Screener" export; try `--dry-run` to inspect raw output |
 | OCR response truncated | Reduce `PDF_CHUNK_SIZE` (default 8) in `.env.local` |
 | Enrichment errors on many jobs | Run `npm run enrich -- --retry-errors` |

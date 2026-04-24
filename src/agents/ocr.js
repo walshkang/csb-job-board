@@ -71,6 +71,202 @@ async function listPDFs(dir) {
     .map(f => path.join(dir, f));
 }
 
+function toFiniteNumber(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function groupLiteparseItemsIntoRows(items = [], rowTolerance = 2.5) {
+  const rows = [];
+  const sorted = [...items].sort((a, b) => (a.top - b.top) || (a.left - b.left));
+
+  for (const cell of sorted) {
+    const lastRow = rows[rows.length - 1];
+    if (lastRow && Math.abs(lastRow._topRef - cell.top) <= rowTolerance) {
+      lastRow.cells.push({ text: cell.text, left: cell.left });
+      continue;
+    }
+    rows.push({ _topRef: cell.top, cells: [{ text: cell.text, left: cell.left }] });
+  }
+
+  return rows.map(r => r.cells.sort((a, b) => a.left - b.left));
+}
+
+function collectCoordinateTextItems(node, pageHint, out) {
+  if (!node) return;
+  if (Array.isArray(node)) {
+    for (const item of node) collectCoordinateTextItems(item, pageHint, out);
+    return;
+  }
+  if (typeof node !== 'object') return;
+
+  const hintedPage = toFiniteNumber(node.pageNum ?? node.page ?? node.page_number ?? node.pageIndex) ?? pageHint;
+  const text = typeof node.text === 'string'
+    ? node.text
+    : (typeof node.content === 'string' ? node.content : (typeof node.value === 'string' ? node.value : null));
+  const left = toFiniteNumber(node.x ?? node.left);
+  const top = toFiniteNumber(node.y ?? node.top);
+  if (text && left != null && top != null) {
+    out.push({ page: hintedPage || 1, text: text.trim(), left, top });
+  }
+
+  for (const value of Object.values(node)) {
+    if (value && typeof value === 'object') collectCoordinateTextItems(value, hintedPage, out);
+  }
+}
+
+function liteparseJsonToTabulaPages(parsed) {
+  const pages = [];
+  const pagesRaw = Array.isArray(parsed?.pages) ? parsed.pages : null;
+
+  if (pagesRaw) {
+    for (let i = 0; i < pagesRaw.length; i++) {
+      const page = pagesRaw[i];
+      const pageNum = toFiniteNumber(page?.pageNum ?? page?.page ?? page?.page_number ?? i + 1) || (i + 1);
+      const textItems = Array.isArray(page?.textItems) ? page.textItems : [];
+      const normalized = textItems
+        .map(item => ({
+          text: (item?.text || '').trim(),
+          left: toFiniteNumber(item?.x ?? item?.left),
+          top: toFiniteNumber(item?.y ?? item?.top),
+        }))
+        .filter(item => item.text && item.left != null && item.top != null);
+      if (normalized.length === 0) continue;
+      pages.push({ page: pageNum, data: groupLiteparseItemsIntoRows(normalized) });
+    }
+    if (pages.length > 0) return pages.sort((a, b) => (a.page || 0) - (b.page || 0));
+  }
+
+  // Fallback for schema drift: recursively discover coordinate-based text items.
+  const discovered = [];
+  collectCoordinateTextItems(parsed, 1, discovered);
+  const uniq = new Map();
+  for (const item of discovered) {
+    const key = `${item.page}|${item.left}|${item.top}|${item.text}`;
+    if (!uniq.has(key)) uniq.set(key, item);
+  }
+
+  const byPage = new Map();
+  for (const item of uniq.values()) {
+    const arr = byPage.get(item.page) || [];
+    arr.push(item);
+    byPage.set(item.page, arr);
+  }
+
+  for (const [pageNum, items] of byPage.entries()) {
+    if (items.length === 0) continue;
+    pages.push({ page: pageNum, data: groupLiteparseItemsIntoRows(items) });
+  }
+  return pages.sort((a, b) => (a.page || 0) - (b.page || 0));
+}
+
+function extractPitchbookRowsFromPages(pages, pdfPath, verbose = false, source = 'Tabula') {
+  if (!pages || pages.length === 0) {
+    console.warn(`  [${source}] No structured pages extracted from ${path.basename(pdfPath)}.`);
+    return [];
+  }
+
+  // HEADER SCAN: find the header row on page 1 by text content, note its row index.
+  // PitchBook nav chrome sits above the table — we skip by row index, not coordinates.
+  let globalHeaders = null; // Array of { text, left }
+  let headerRowIndex = -1;  // row index within page 0's data array
+
+  if (pages[0] && pages[0].data) {
+    for (let i = 0; i < pages[0].data.length; i++) {
+      const row = pages[0].data[i];
+      const rowData = row.map(cell => (cell.text || '').trim());
+      const nonBlank = rowData.filter(Boolean);
+      if (nonBlank.length < 3) continue;
+
+      const hasWebsite = rowData.some(text => /\bwebsite\b/i.test(text));
+      const matchCount = [/\bwebsite\b/i, /\bhq\b/i, /companies/i, /\bemployees\b/i, /financing/i, /total raised/i]
+        .reduce((acc, re) => acc + (rowData.some(text => re.test(text)) ? 1 : 0), 0);
+
+      if (hasWebsite || matchCount >= 3) {
+        globalHeaders = row.map(cell => ({
+          text: (cell.text || '').trim(),
+          left: cell.left
+        })).filter(h => h.text);
+        headerRowIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (verbose && globalHeaders) {
+    console.log(`    [Header] Found at page-1 row ${headerRowIndex}: ${globalHeaders.map(h => h.text).join(' | ').slice(0, 120)}`);
+  } else if (!globalHeaders) {
+    console.warn(`    [Header] Could not find column headers in ${path.basename(pdfPath)}.`);
+  }
+
+  // DATA MAPPING: skip nav chrome (everything up to and including the header row on page 1)
+  const allRows = [];
+  for (let pIdx = 0; pIdx < pages.length; pIdx++) {
+    const page = pages[pIdx];
+    if (!page.data || page.data.length === 0) continue;
+
+    let pageRows = 0;
+    for (let rowI = 0; rowI < page.data.length; rowI++) {
+      // Skip nav chrome and the header row itself on page 1
+      if (pIdx === 0 && rowI <= headerRowIndex) continue;
+      const row = page.data[rowI];
+
+      const nonBlank = row.filter(cell => (cell.text || '').trim());
+      if (nonBlank.length < 3) continue;
+
+      // Skip the header row itself if it appears on this page
+      const rowText = row.map(c => (c.text || '').trim()).join('');
+      if (globalHeaders && rowText === globalHeaders.map(h => h.text).join('')) continue;
+
+      const rowObj = {};
+      if (globalHeaders) {
+        // GEOMETRIC MAPPING: Map each cell to the closest header by 'left' coordinate
+        for (const cell of row) {
+          const cellText = (cell.text || '').trim();
+          if (!cellText) continue;
+
+          // Find the header with the closest 'left' coordinate
+          let closestHeader = null;
+          let minDistance = Infinity;
+
+          for (const header of globalHeaders) {
+            const distance = Math.abs(header.left - cell.left);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestHeader = header;
+            }
+          }
+
+          // Only map if the distance is reasonable (e.g., within 40 points)
+          // This prevents "floaters" from mapping to distant columns.
+          if (closestHeader && minDistance < 40) {
+            // If multiple cells map to the same header (e.g. multi-line), append them
+            if (rowObj[closestHeader.text]) {
+              rowObj[closestHeader.text] += ' ' + cellText;
+            } else {
+              rowObj[closestHeader.text] = cellText;
+            }
+          }
+        }
+
+        const hasName = rowObj['Company Name'] || rowObj['name'] || Object.values(rowObj)[0];
+        const hasWebsite = rowObj['Website'] || rowObj['website'];
+
+        if ((hasName || hasWebsite) && Object.keys(rowObj).length >= 3) {
+          allRows.push(rowObj);
+          pageRows++;
+        }
+      }
+    }
+
+    if (verbose && pageRows > 0) {
+      console.log(`    Page ${pIdx + 1}: ${pageRows} row(s)`);
+    }
+  }
+
+  return allRows;
+}
+
 // Extract table data from a PitchBook PDF using Tabula (java-based).
 // Returns an array of objects mapping column headers to cell values.
 async function extractPitchbookTableTabula(pdfPath, verbose = false) {
@@ -137,112 +333,36 @@ async function extractPitchbookTableTabula(pdfPath, verbose = false) {
       if (pIdx > 500) break;
     }
 
-    if (pages.length === 0) {
-      console.warn(`  [Tabula] No valid JSON extracted from ${path.basename(pdfPath)}.`);
-      return [];
-    }
-
-    // HEADER SCAN: find the header row on page 1 by text content, note its row index.
-    // PitchBook nav chrome sits above the table — we skip by row index, not coordinates.
-    let globalHeaders = null; // Array of { text, left }
-    let headerRowIndex = -1;  // row index within page 0's data array
-
-    if (pages[0] && pages[0].data) {
-      for (let i = 0; i < pages[0].data.length; i++) {
-        const row = pages[0].data[i];
-        const rowData = row.map(cell => (cell.text || '').trim());
-        const nonBlank = rowData.filter(Boolean);
-        if (nonBlank.length < 3) continue;
-
-        const hasWebsite = rowData.some(text => /\bwebsite\b/i.test(text));
-        const matchCount = [/\bwebsite\b/i, /\bhq\b/i, /companies/i, /\bemployees\b/i, /financing/i, /total raised/i]
-          .reduce((acc, re) => acc + (rowData.some(text => re.test(text)) ? 1 : 0), 0);
-
-        if (hasWebsite || matchCount >= 3) {
-          globalHeaders = row.map(cell => ({
-            text: (cell.text || '').trim(),
-            left: cell.left
-          })).filter(h => h.text);
-          headerRowIndex = i;
-          break;
-        }
-      }
-    }
-
-    if (verbose && globalHeaders) {
-      console.log(`    [Header] Found at page-1 row ${headerRowIndex}: ${globalHeaders.map(h => h.text).join(' | ').slice(0, 120)}`);
-    } else if (!globalHeaders) {
-      console.warn(`    [Header] Could not find column headers in ${path.basename(pdfPath)}.`);
-    }
-
-    // DATA MAPPING: skip nav chrome (everything up to and including the header row on page 1)
-    const allRows = [];
-    for (let pIdx = 0; pIdx < pages.length; pIdx++) {
-      const page = pages[pIdx];
-      if (!page.data || page.data.length === 0) continue;
-
-      let pageRows = 0;
-      for (let rowI = 0; rowI < page.data.length; rowI++) {
-        // Skip nav chrome and the header row itself on page 1
-        if (pIdx === 0 && rowI <= headerRowIndex) continue;
-        const row = page.data[rowI];
-
-        const nonBlank = row.filter(cell => (cell.text || '').trim());
-        if (nonBlank.length < 3) continue;
-
-        // Skip the header row itself if it appears on this page
-        const rowText = row.map(c => (c.text||'').trim()).join('');
-        if (globalHeaders && rowText === globalHeaders.map(h => h.text).join('')) continue;
-
-        const rowObj = {};
-        if (globalHeaders) {
-          // GEOMETRIC MAPPING: Map each cell to the closest header by 'left' coordinate
-          for (const cell of row) {
-            const cellText = (cell.text || '').trim();
-            if (!cellText) continue;
-
-            // Find the header with the closest 'left' coordinate
-            let closestHeader = null;
-            let minDistance = Infinity;
-
-            for (const header of globalHeaders) {
-              const distance = Math.abs(header.left - cell.left);
-              if (distance < minDistance) {
-                minDistance = distance;
-                closestHeader = header;
-              }
-            }
-
-            // Only map if the distance is reasonable (e.g., within 40 points)
-            // This prevents "floaters" from mapping to distant columns.
-            if (closestHeader && minDistance < 40) {
-              // If multiple cells map to the same header (e.g. multi-line), append them
-              if (rowObj[closestHeader.text]) {
-                rowObj[closestHeader.text] += ' ' + cellText;
-              } else {
-                rowObj[closestHeader.text] = cellText;
-              }
-            }
-          }
-
-          const hasName = rowObj['Company Name'] || rowObj['name'] || Object.values(rowObj)[0];
-          const hasWebsite = rowObj['Website'] || rowObj['website'];
-
-          if ((hasName || hasWebsite) && Object.keys(rowObj).length >= 3) {
-            allRows.push(rowObj);
-            pageRows++;
-          }
-        }
-      }
-      
-      if (verbose && pageRows > 0) {
-        console.log(`    Page ${pIdx + 1}: ${pageRows} row(s)`);
-      }
-    }
-
-    return allRows;
+    return extractPitchbookRowsFromPages(pages, pdfPath, verbose, 'Tabula');
   } catch (err) {
     console.error(`  [Tabula] Failed to extract table from ${path.basename(pdfPath)}:`, err.message);
+    throw err;
+  }
+}
+
+async function extractPitchbookTableLiteparse(pdfPath, verbose = false) {
+  const { execFile } = require('child_process');
+  const { promisify } = require('util');
+  const exec = promisify(execFile);
+  const liteparseCmd = config.ocr.liteparseCommand || 'lit';
+  const args = ['parse', '--format', 'json', '-q', pdfPath];
+
+  try {
+    const { stdout } = await exec(liteparseCmd, args, { maxBuffer: 20 * 1024 * 1024 });
+    const parsed = JSON.parse(stdout);
+    const pages = liteparseJsonToTabulaPages(parsed);
+    if (verbose) {
+      const pageCount = pages.length;
+      const rowCount = pages.reduce((acc, p) => acc + (Array.isArray(p.data) ? p.data.length : 0), 0);
+      console.log(`    [LiteParse] Parsed ${pageCount} page(s), ${rowCount} row-group(s) before header mapping`);
+    }
+    return extractPitchbookRowsFromPages(pages, pdfPath, verbose, 'LiteParse');
+  } catch (err) {
+    const msg = String(err && err.message ? err.message : err);
+    if (/ENOENT|not found/i.test(msg)) {
+      throw new Error(`LiteParse CLI not found (${liteparseCmd}). Install with: npm install -g @llamaindex/liteparse`);
+    }
+    console.error(`  [LiteParse] Failed to extract table from ${path.basename(pdfPath)}:`, err.message);
     throw err;
   }
 }
@@ -250,10 +370,13 @@ async function extractPitchbookTableTabula(pdfPath, verbose = false) {
 async function processPDF(pdfPath, verbose = false) {
   const label = path.basename(pdfPath);
   console.log(`Processing PDF: ${label}`);
+  const backend = String(config.ocr.pdfBackend || 'tabula').toLowerCase();
 
   try {
-    const allRows = await extractPitchbookTableTabula(pdfPath, verbose);
-    console.log(`  ${allRows.length} row(s) total extracted via Tabula`);
+    const allRows = backend === 'liteparse'
+      ? await extractPitchbookTableLiteparse(pdfPath, verbose)
+      : await extractPitchbookTableTabula(pdfPath, verbose);
+    console.log(`  ${allRows.length} row(s) total extracted via ${backend === 'liteparse' ? 'LiteParse' : 'Tabula'}`);
     return { allRows, failures: [] };
   } catch (err) {
     return { allRows: [], failures: [{ pdf: pdfPath, error: err.message }] };
@@ -614,6 +737,9 @@ async function main() {
   const { inputPath, dryRun, verbose } = readArgs();
   const mode = await detectInputMode(inputPath);
   console.log(`Mode: ${mode} | Provider: ${config.ocr.provider} | Model: ${mode === 'images' ? config.ocr.model : (config.ocr.provider === 'anthropic' ? config.ocr.anthropicModel : config.ocr.model)}`);
+  if (mode !== 'images') {
+    console.log(`PDF backend: ${String(config.ocr.pdfBackend || 'tabula').toLowerCase()}`);
+  }
 
   const extractedCompanies = [];
   const failures = [];
@@ -677,7 +803,10 @@ if (require.main === module) {
 }
 
 module.exports = {
+  liteparseJsonToTabulaPages,
+  extractPitchbookRowsFromPages,
   extractPitchbookTableTabula,
+  extractPitchbookTableLiteparse,
   processPDF,
   rowsToCompanies,
   mergeCompanies,

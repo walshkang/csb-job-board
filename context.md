@@ -13,6 +13,9 @@ Slice 1 — Pitchbook OCR → companies.json
   PDF mode: Tabula (tabula.jar, stream mode) extracts table rows deterministically — no LLM.
     Scans page 1 by text to locate the column header row (skipping PitchBook nav chrome above it),
     maps cells to columns by x-coordinate, strips leading row numbers from company name cells.
+  Experimental: optional LiteParse backend behind OCR_PDF_BACKEND=liteparse (default remains tabula).
+    Current benchmark on local PitchBook PDFs: faster parse wall-clock, but lower quality due to row-index/noise
+    leaking into website/company fields (e.g., numeric prefixes in domains). Keep Tabula as default for now.
   Screenshot mode: LLM vision OCR via src/prompts/ocr.txt
   Output: data/companies.json with identity + funding signals + company_profile
 
@@ -102,10 +105,13 @@ Config / env
   Per-agent model overrides (Gemini): OCR_MODEL, DISCOVERY_MODEL, EXTRACTION_MODEL, ENRICHMENT_MODEL
   Per-agent model overrides (Anthropic, default claude-haiku-4-5-20251001): OCR_ANTHROPIC_MODEL, DISCOVERY_ANTHROPIC_MODEL, EXTRACTION_ANTHROPIC_MODEL, ENRICHMENT_ANTHROPIC_MODEL, CATEGORIZER_ANTHROPIC_MODEL, REVIEWER_ANTHROPIC_MODEL
   Per-agent provider overrides: OCR_PROVIDER, DISCOVERY_PROVIDER, EXTRACTION_PROVIDER, ENRICHMENT_PROVIDER, CATEGORIZER_PROVIDER, REVIEWER_PROVIDER
+  OCR_PDF_BACKEND — "tabula" (default) | "liteparse" (experimental)
+  LITEPARSE_COMMAND — optional CLI path override for LiteParse (default: lit)
 
 Current status (rolling — do not treat row counts as authoritative)
   - Pipeline stages and orchestrator are implemented end-to-end; use node scripts/pipeline-status.js for live stage distribution.
-  - OCR: Tabula for PDFs; LLM only for screenshot/image mode.
+  - OCR: Tabula for PDFs by default; LiteParse backend exists behind OCR_PDF_BACKEND for ongoing evaluation.
+  - LiteParse experiment status: promising speed, currently worse field cleanliness on PitchBook exports; not default.
   - Discovery: heuristic-only (no LLM).
   - Extract: adapters + ATS JSON by default; LLM fallback opt-in via EXTRACTION_LLM_FALLBACK=1.
   - Streaming pipeline: profile → … → enrich → categorize in src/orchestrator.js; warm no-delta can skip extract/enrich.

@@ -15,6 +15,8 @@
 //   OCR_MODEL                — default: gemini-2.5-flash-lite  (Gemini provider)
 //   OCR_ANTHROPIC_MODEL      — default: claude-haiku-4-5-20251001 (Anthropic provider)
 //   OCR_PROVIDER             — "gemini" (default) | "anthropic"; auto-detects from available keys
+//   OCR_PDF_BACKEND          — "tabula" (default) | "liteparse" (for Step 1 PDF parsing)
+//   LITEPARSE_COMMAND        — default: lit (CLI name; override if installed elsewhere)
 //   EXTRACTION_MODEL         — default: gemini-2.5-flash
 //   EXTRACTION_ANTHROPIC_MODEL — default: claude-haiku-4-5-20251001
 //   ENRICHMENT_MODEL         — default: gemini-2.5-flash
@@ -67,6 +69,8 @@ const cfg = {
     provider: process.env.OCR_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : process.env.ANTHROPIC_API_KEY ? 'anthropic' : 'gemini'),
     model: process.env.OCR_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
     anthropicModel: process.env.OCR_ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+    pdfBackend: process.env.OCR_PDF_BACKEND || 'tabula',
+    liteparseCommand: process.env.LITEPARSE_COMMAND || 'lit',
     // keep legacy apiKey alias so existing image OCR path still works
     get apiKey() { return this.geminiKey; },
   },
