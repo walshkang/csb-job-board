@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Intelligence | MBA Job Discovery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar: Filters -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <a href="index.html" style="text-decoration: none; color: inherit;">Executive Intelligence</a>
+      </div>
+      
+      <div class="filter-section">
+        <div class="nav-label">Climate Filter</div>
+        <div class="filter-group">
+          <label class="checkbox-container">
+            <input type="checkbox" id="filter-climate" checked>
+            <span class="checkmark"></span>
+            Climate Relevance Confirmed
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="nav-label">Job Function</div>
+        <div class="chips-container" id="filter-functions">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="nav-label">Seniority</div>
+        <div class="chips-container" id="filter-seniority">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header-section">
+        <div>
+          <h1 class="page-title">MBA Job Discovery</h1>
+          <div class="page-subtitle" id="job-count-subtitle">Loading opportunities...</div>
+        </div>
+        
+        <div class="search-container">
+          <input type="text" id="search-input" class="ghost-input" placeholder="Search titles or companies...">
+        </div>
+      </header>
+
+      <!-- Job Feed -->
+      <section class="job-feed" id="job-feed">
+        <!-- Populated via JS -->
+      </section>
+      
+    </main>
+  </div>
+
+  <script src="jobs.js"></script>
+</body>
+</html>

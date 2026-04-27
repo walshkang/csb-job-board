@@ -38,6 +38,10 @@ async function connect() {
             if (lower.includes('password')) {
               return wrds.password;
             }
+            if (lower.includes('passcode') || lower.includes('option') || lower.includes('duo')) {
+              console.log('[wrds-ingest] Waiting for Duo MFA approval on your phone...');
+              return '1'; // Typically '1' triggers the Duo Push
+            }
             return '';
           });
           finish(responses);

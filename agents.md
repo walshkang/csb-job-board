@@ -27,6 +27,10 @@ One agent per slice. All agents are idempotent, log outputs, and write artifacts
 | 11 | Reporter | `src/agents/reporter.js` | `data/runs/*.json` | `data/scrape_runs.json`, `data/companies.json`, `data/jobs.json` |
 | 12 | Reviewer | `src/agents/reviewer.js` | `data/postmortems/*.md` | `data/runs/latest.json`, `data/scrape_runs.json`, `data/jobs.json` |
 
+**Execution Boundaries:**
+- The streaming orchestrator (`npm run pipeline`) exclusively handles the data ingestion and enrichment loop (Agents 0–7).
+- Post-processing, auditing, syncing, and observability (Agents 8–12) run sequentially *after* the orchestrator finishes. Notion will not reflect new data until Agent 10 runs.
+
 **Utility scripts:**
 - `node src/agents/notion-setup.js` — provision all DB properties (safe to re-run)
 - `node src/agents/notion-clear.js` — archive all pages in both DBs (destructive)

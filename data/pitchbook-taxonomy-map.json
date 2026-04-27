@@ -36,24 +36,13 @@
     "Electric Vehicles": "Battery EVs",
     "Carbon Capture & Storage": "Carbon Capture / Utilization / Storage",
     "Hydrogen Economy": "Hydrogen & Derivatives",
-    "Sustainable Agriculture": "Regenerative Agriculture",
-    "Climate Tech": null,
-    "CleanTech": null,
-    "AgTech": null,
-    "FoodTech": null,
-    "Mobility Tech": null,
-    "Supply Chain Tech": null,
-    "PropTech": null,
-    "Advanced Materials": null,
-    "Manufacturing Tech": null
+    "Sustainable Agriculture": "Regenerative Agriculture"
   },
   "industry_codes": {
-    "Clean Technology": null,
     "Solar": "Solar",
     "Wind": "Wind",
     "Fuel Cells": "Hydrogen & Derivatives",
     "Biofuels / Biochemicals": "Biofuels",
-    "Alternative Energy Equipment": null,
     "Energy Efficiency": "Energy Efficiency & Process Optimization",
     "Environmental Services": "Waste & Recycling",
     "Recycling": "Waste & Recycling",
@@ -67,27 +56,6 @@
     "Nuclear": "Fission",
     "Battery Technology": "Advanced Battery Technologies"
   },
-  "industry_groups": {
-    "Energy Equipment & Services": null,
-    "Independent Power Producers": null,
-    "Electrical Equipment": null,
-    "Renewable Energy": null,
-    "Environmental & Facilities Services": null,
-    "Machinery": null,
-    "Automobiles": null,
-    "Auto Components": null,
-    "Chemicals": null,
-    "Building Products": null,
-    "Construction & Engineering": null,
-    "Semiconductors & Semiconductor Equipment": null
-  },
-  "industry_sectors": {
-    "Energy": null,
-    "Utilities": null,
-    "Industrials": null,
-    "Materials": null,
-    "Information Technology": null,
-    "Consumer Discretionary": null,
-    "Consumer Staples": null
-  }
+  "industry_groups": {},
+  "industry_sectors": {}
 }

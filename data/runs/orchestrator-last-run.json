@@ -1,62 +1,62 @@
 {
-  "run_id": "20260427-153959-2w8s",
-  "started_at": "2026-04-27T19:39:59.716Z",
-  "updated_at": "2026-04-27T19:43:31.348Z",
-  "uptime_sec": 212,
+  "run_id": "20260427-180752-erwh",
+  "started_at": "2026-04-27T22:07:52.418Z",
+  "updated_at": "2026-04-27T22:17:36.004Z",
+  "uptime_sec": 584,
   "queue_depths": {
     "wrds_ingest": 0,
-    "profile": 0,
-    "discovery": 16,
+    "profile": 423,
+    "discovery": 1000,
     "fingerprint": 0,
     "scrape": 0,
     "extract": 0,
     "enrich": 0,
-    "categorize": 191
+    "categorize": 0
   },
   "in_flight": {
     "wrds_ingest": 0,
-    "profile": 0,
-    "discovery": 8,
+    "profile": 3,
+    "discovery": 6,
     "fingerprint": 0,
     "scrape": 0,
     "extract": 0,
     "enrich": 0,
-    "categorize": 5
+    "categorize": 1
   },
   "stats": {
     "started": {
-      "wrds_ingest": 2,
-      "profile": 2,
-      "discovery": 18,
-      "fingerprint": 1,
-      "scrape": 1,
-      "extract": 1,
-      "enrich": 17,
-      "categorize": 185
+      "wrds_ingest": 0,
+      "profile": 1077,
+      "discovery": 74,
+      "fingerprint": 38,
+      "scrape": 38,
+      "extract": 38,
+      "enrich": 7,
+      "categorize": 37
     },
     "completed": {
-      "wrds_ingest": 2,
-      "profile": 0,
-      "discovery": 1,
-      "fingerprint": 1,
-      "scrape": 1,
-      "extract": 0,
-      "enrich": 17,
-      "categorize": 105
+      "wrds_ingest": 0,
+      "profile": 1074,
+      "discovery": 38,
+      "fingerprint": 38,
+      "scrape": 38,
+      "extract": 7,
+      "enrich": 7,
+      "categorize": 32
     },
     "no_result": {
       "wrds_ingest": 0,
       "profile": 0,
-      "discovery": 9,
+      "discovery": 30,
       "fingerprint": 0,
       "scrape": 0,
-      "extract": 1,
+      "extract": 31,
       "enrich": 0,
-      "categorize": 53
+      "categorize": 4
     },
     "failed": {
       "wrds_ingest": 0,
-      "profile": 2,
+      "profile": 0,
       "discovery": 0,
       "fingerprint": 0,
       "scrape": 0,
@@ -72,14 +72,14 @@
       "scrape": 0,
       "extract": 0,
       "enrich": 0,
-      "categorize": 22
+      "categorize": 0
     }
   },
   "stats_by_lane": {
     "cold": {
       "started": {
-        "wrds_ingest": 2,
-        "profile": 2,
+        "wrds_ingest": 0,
+        "profile": 1077,
         "discovery": 0,
         "fingerprint": 0,
         "scrape": 0,
@@ -88,8 +88,8 @@
         "categorize": 0
       },
       "completed": {
-        "wrds_ingest": 2,
-        "profile": 0,
+        "wrds_ingest": 0,
+        "profile": 1074,
         "discovery": 0,
         "fingerprint": 0,
         "scrape": 0,
@@ -109,7 +109,7 @@
       },
       "failed": {
         "wrds_ingest": 0,
-        "profile": 2,
+        "profile": 0,
         "discovery": 0,
         "fingerprint": 0,
         "scrape": 0,
@@ -132,32 +132,32 @@
       "started": {
         "wrds_ingest": 0,
         "profile": 0,
-        "discovery": 18,
-        "fingerprint": 1,
-        "scrape": 1,
-        "extract": 1,
-        "enrich": 17,
-        "categorize": 185
+        "discovery": 74,
+        "fingerprint": 38,
+        "scrape": 38,
+        "extract": 38,
+        "enrich": 7,
+        "categorize": 37
       },
       "completed": {
         "wrds_ingest": 0,
         "profile": 0,
-        "discovery": 1,
-        "fingerprint": 1,
-        "scrape": 1,
-        "extract": 0,
-        "enrich": 17,
-        "categorize": 105
+        "discovery": 38,
+        "fingerprint": 38,
+        "scrape": 38,
+        "extract": 7,
+        "enrich": 7,
+        "categorize": 32
       },
       "no_result": {
         "wrds_ingest": 0,
         "profile": 0,
-        "discovery": 9,
+        "discovery": 30,
         "fingerprint": 0,
         "scrape": 0,
-        "extract": 1,
+        "extract": 31,
         "enrich": 0,
-        "categorize": 53
+        "categorize": 4
       },
       "failed": {
         "wrds_ingest": 0,
@@ -177,67 +177,67 @@
         "scrape": 0,
         "extract": 0,
         "enrich": 0,
-        "categorize": 22
+        "categorize": 0
       }
     }
   },
   "throughput_per_min": {
     "wrds_ingest": 0,
-    "profile": 0,
-    "discovery": 9,
-    "fingerprint": 0,
-    "scrape": 0,
-    "extract": 0,
+    "profile": 95,
+    "discovery": 3,
+    "fingerprint": 1,
+    "scrape": 1,
+    "extract": 1,
     "enrich": 0,
-    "categorize": 30
+    "categorize": 1
   },
   "breakers": {
     "wrds_ingest": {
-      "state": "closed",
-      "failureRate": 0,
-      "samples": 2,
-      "openedAt": null,
-      "nextProbeAt": null
-    },
-    "profile": {
-      "state": "closed",
-      "failureRate": 1,
-      "samples": 2,
-      "openedAt": null,
-      "nextProbeAt": null
-    },
-    "discovery": {
-      "state": "closed",
-      "failureRate": 0,
-      "samples": 1,
-      "openedAt": null,
-      "nextProbeAt": null
-    },
-    "fingerprint": {
-      "state": "closed",
-      "failureRate": 0,
-      "samples": 1,
-      "openedAt": null,
-      "nextProbeAt": null
-    },
-    "scrape": {
-      "state": "closed",
-      "failureRate": 0,
-      "samples": 1,
-      "openedAt": null,
-      "nextProbeAt": null
-    },
-    "extract": {
       "state": "closed",
       "failureRate": 0,
       "samples": 0,
       "openedAt": null,
       "nextProbeAt": null
     },
+    "profile": {
+      "state": "closed",
+      "failureRate": 0,
+      "samples": 20,
+      "openedAt": null,
+      "nextProbeAt": null
+    },
+    "discovery": {
+      "state": "closed",
+      "failureRate": 0,
+      "samples": 20,
+      "openedAt": null,
+      "nextProbeAt": null
+    },
+    "fingerprint": {
+      "state": "closed",
+      "failureRate": 0,
+      "samples": 20,
+      "openedAt": null,
+      "nextProbeAt": null
+    },
+    "scrape": {
+      "state": "closed",
+      "failureRate": 0,
+      "samples": 20,
+      "openedAt": null,
+      "nextProbeAt": null
+    },
+    "extract": {
+      "state": "closed",
+      "failureRate": 0,
+      "samples": 7,
+      "openedAt": null,
+      "nextProbeAt": null
+    },
     "enrich": {
       "state": "closed",
       "failureRate": 0,
-      "samples": 17,
+      "samples": 7,
       "openedAt": null,
       "nextProbeAt": null
     },
@@ -261,39 +261,39 @@
       "current": 3,
       "min": 3,
       "max": 12,
-      "p95Ms": null,
+      "p95Ms": 6274,
       "errorRate": 0
     },
     "discovery": {
       "current": 6,
       "min": 6,
       "max": 24,
-      "p95Ms": 169035,
+      "p95Ms": 188529,
       "errorRate": 0
     },
     "fingerprint": {
       "current": 4,
       "min": 2,
       "max": 8,
-      "p95Ms": null,
+      "p95Ms": 351,
       "errorRate": 0
     },
     "scrape": {
       "current": 5,
       "min": 2,
       "max": 10,
-      "p95Ms": null,
+      "p95Ms": 178,
       "errorRate": 0
     },
     "extract": {
       "current": 4,
       "min": 2,
       "max": 8,
-      "p95Ms": null,
+      "p95Ms": 44,
       "errorRate": 0
     },
     "enrich": {
-      "current": 3,
+      "current": 6,
       "min": 3,
       "max": 12,
       "p95Ms": null,
@@ -303,7 +303,7 @@
       "current": 5,
       "min": 5,
       "max": 20,
-      "p95Ms": 19667,
+      "p95Ms": 10847,
       "errorRate": 0
     }
   },
@@ -314,11 +314,11 @@
     "fingerprint": 4,
     "scrape": 5,
     "extract": 4,
-    "enrich": 3,
+    "enrich": 6,
     "categorize": 5
   },
   "dry_run": false,
-  "finished_at": "2026-04-27T19:43:31.348Z",
+  "finished_at": "2026-04-27T22:17:36.004Z",
   "exit_reason": "SIGINT",
-  "events_path": "/Users/walsh.kang/Documents/GitHub/csb-job-board/data/runs/pipeline-events-20260427-153959-2w8s.jsonl"
+  "events_path": "/Users/walsh.kang/Documents/GitHub/csb-job-board/data/runs/pipeline-events-20260427-180752-erwh.jsonl"
 }

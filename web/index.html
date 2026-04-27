@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Intelligence | Agent Pipeline Monitor</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">Executive Intelligence</div>
+      
+      <nav class="nav-group">
+        <div class="nav-label">Navigation</div>
+        <a href="#" class="nav-item">Dashboard</a>
+        <a href="#" class="nav-item">Agent Flows</a>
+        <a href="#" class="nav-item active">Pipelines</a>
+        <a href="#" class="nav-item">Logs</a>
+      </nav>
+
+      <nav class="nav-group" style="margin-top: 1rem;">
+        <div class="nav-label">AI Intelligence</div>
+        <a href="#" class="nav-item">Active Monitor</a>
+        <a href="#" class="nav-item">Agent Clusters</a>
+        <a href="#" class="nav-item">Historical Data</a>
+        <a href="#" class="nav-item">Resource Usage</a>
+        <a href="#" class="nav-item">System Health</a>
+      </nav>
+      
+      <div style="flex: 1;"></div>
+      
+      <nav class="nav-group">
+        <a href="#" class="nav-item">Documentation</a>
+        <a href="#" class="nav-item">Support</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header-section">
+        <div>
+          <div class="intelligence-badge">
+            <div class="intelligence-dot"></div>
+            Operational Overview
+          </div>
+          <h1 class="page-title">Real-time Agent Pipeline</h1>
+        </div>
+        <button class="btn-primary" id="btn-refresh">Refresh Pipeline</button>
+      </header>
+
+      <!-- Top Metrics -->
+      <section class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Throughput</span>
+          <span class="metric-value" id="metric-throughput">-- comp/min</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Active Slices</span>
+          <span class="metric-value" id="metric-slices">--</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Processed Companies</span>
+          <span class="metric-value" id="metric-processed">--</span>
+        </div>
+      </section>
+
+      <!-- Dashboard Body -->
+      <section class="dashboard-body">
+        
+        <!-- Left Column: Pipeline List -->
+        <div class="section-card">
+          <h2 class="section-title">Active Clusters</h2>
+          <div class="pipeline-list" id="pipeline-list">
+            <!-- Populated via JS -->
+            <div class="pipeline-item" style="opacity: 0.5;">
+              <div class="pipeline-info">
+                <h4>Loading clusters...</h4>
+                <div class="pipeline-meta">Connecting to data source</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Terminal Logs -->
+        <div class="section-card">
+          <h2 class="section-title">Live Execution Log</h2>
+          <div class="terminal" id="terminal-log">
+            <!-- Populated via JS -->
+            <div class="log-line">
+              <span class="log-time">00:00:00</span>
+              <span class="log-level">[SYS]</span>
+              <span class="log-msg">Initializing pipeline monitor...</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>

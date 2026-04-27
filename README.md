@@ -73,12 +73,12 @@ Details in [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
 
 ## Prerequisites
 
-- **PitchBook access** — to export company lists as PDFs or screenshots
-- **Gemini API key** (paid tier) — powers OCR and job classification. Get one at [aistudio.google.com](https://aistudio.google.com). Alternatively, an **Anthropic API key** runs all LLM-powered agents through Claude Haiku (see [Config / Multi-provider](#config--multi-provider))
+- **WRDS account** — for automated PitchBook database access via `wrds-ingest`. Requires IP whitelisting through your institution. Get access at [wrds-web.wharton.upenn.edu](https://wrds-web.wharton.upenn.edu)
+- **Gemini API key** (paid tier) — powers job classification. Get one at [aistudio.google.com](https://aistudio.google.com). Alternatively, an **Anthropic API key** runs all LLM-powered agents through Claude Haiku (see [Config / Multi-provider](#config--multi-provider))
 - **Notion account** — two databases: one for Companies, one for Jobs. Run the setup script once to provision them (see Setup below)
 - **Node.js 18+** — check with `node --version`
-- **WRDS account** (optional) — for direct PitchBook database access via `wrds-ingest`. Requires IP whitelisting through your institution. Get access at [wrds-web.wharton.upenn.edu](https://wrds-web.wharton.upenn.edu)
-- **poppler-utils** — for PDF text extraction (`brew install poppler` on macOS)
+- **PitchBook web access** (optional fallback) — to manually export company lists as PDFs or screenshots if WRDS is unavailable
+- **poppler-utils** (optional fallback) — for PDF text extraction (`brew install poppler` on macOS)
 
 ---
 
@@ -97,8 +97,8 @@ GEMINI_API_KEY=your-gemini-key
 NOTION_API_KEY=your-notion-integration-key
 NOTION_COMPANIES_DB_ID=your-companies-db-id
 NOTION_JOBS_DB_ID=your-jobs-db-id
-WRDS_USERNAME=your-wharton-username       # optional — only for wrds-ingest
-WRDS_PASSWORD=your-wharton-password       # optional — only for wrds-ingest
+WRDS_USERNAME=your-wharton-username       # required for automated ingest
+WRDS_PASSWORD=your-wharton-password       # required for automated ingest
 ```
 
 To get Notion credentials: create an internal integration at [notion.so/my-integrations](https://notion.so/my-integrations), share both databases with it, and copy the database IDs from the page URLs.
@@ -111,9 +111,9 @@ Adds all required properties to your Notion databases. Safe to re-run.
 
 ---
 
-## Exporting from PitchBook
+## Alternative: Exporting from PitchBook (Fallback)
 
-Before running the pipeline, you need a PitchBook company list exported as a PDF. Here's how to configure the list view and export it correctly so the OCR agent can parse it.
+If WRDS access is unavailable, you can manually export a PitchBook company list as a PDF. Here's how to configure the list view and export it correctly so the fallback OCR agent can parse it.
 
 ### Step 1 — Apply screener filters
 
@@ -222,10 +222,14 @@ The pipeline is a linear DAG. Each step reads from files written by the previous
 
 ```mermaid
 flowchart TD
-    SRC["📄 PitchBook PDFs / Screenshots\ndata/images/"]
+    WRDS["🐘 WRDS PostgreSQL\nPitchBook Database"]
+    SRC["📄 PitchBook PDFs / Screenshots\n(Fallback via data/images/)"]
 
-    SRC --> S1["Step 1 — OCR\nnpm run ocr -- data/images\n⚙ Tabula or LiteParse (PDF) / AI: ocr.txt (screenshots)"]
-    S1 -->|"data/companies.json\n(id, name, domain, funding_signals, keywords)"| S2
+    WRDS --> S0["Step 0 — WRDS Ingest\nnpm run wrds-ingest\n(No AI — Direct SQL)"]
+    SRC -.-> S1["Step 1 — OCR\nnpm run ocr\n(Fallback)"]
+    
+    S0 -->|"companies.json\n(id, domain, classifications)"| S2
+    S1 -.->|"companies.json\n(id, domain, funding_signals, keywords)"| S2
 
     S2["Step 2 — Categorize\nnpm run categorize\n⚙ AI: inline taxonomy prompt\nRequires PitchBook keywords — run right after OCR"]
     S2 -->|"companies.json\n(+ climate_tech_category, primary_sector)"| S3
@@ -275,12 +279,14 @@ flowchart LR
         I2["Reviewer postmortem prompt\nlatest pipeline run + error samples"]
     end
 
-    subgraph NoAI ["No LLM (PDF mode)"]
+    subgraph NoAI ["No LLM"]
+        W1["WRDS Ingest\nDirect PostgreSQL connection"]
         T1["Tabula JAR or LiteParse CLI\nstream/coordinate table extraction"]
     end
 
+    W1 --> ING["Ingest — Step 0"]
     P1 --> OCR["OCR — Step 1\nscreenshot mode"]
-    T1 --> OCR
+    T1 -.-> OCR
     P4 --> EXT["Extract — Step 6\nHTML only; ATS JSON uses direct mappers"]
     P5 --> ENR["Enrich — Step 7"]
     I1 --> CAT["Categorize — Step 2"]
@@ -291,7 +297,7 @@ flowchart LR
 
 ## Step-by-Step Reference
 
-### Step 0 — WRDS Ingest: Import companies from PitchBook database (optional)
+### Step 0 — WRDS Ingest: Import companies from PitchBook database
 
 **What it does:** Connects directly to the WRDS PitchBook PostgreSQL database and extracts company profiles and funding signals. An alternative to the PDF export → OCR workflow. Both can run — records merge by domain.
 
@@ -323,7 +329,7 @@ npm run wrds-ingest -- --dry-run --verbose
 
 ---
 
-### Step 1 — OCR: Import companies from PitchBook
+### Step 1 — OCR: Import companies from PitchBook (Fallback)
 
 **What it does:** Reads PitchBook exports (PDFs or screenshots) and extracts structured company records into `data/companies.json`. Re-running merges new companies with existing ones by domain — no duplicates.
 
