@@ -118,8 +118,13 @@ const cfg = {
     jobsDbId: process.env.NOTION_JOBS_DB_ID || null,
   },
   wrds: {
-    host: 'wrds-pgdata.wharton.upenn.edu',
-    port: 9737,
+    // SSH tunnel (layer 1): wrds-cloud.wharton.upenn.edu:22
+    sshHost: process.env.WRDS_SSH_HOST || 'wrds-cloud.wharton.upenn.edu',
+    sshPort: parseInt(process.env.WRDS_SSH_PORT || '22', 10),
+    // PostgreSQL (layer 2, via tunnel): wrds-pgdata.wharton.upenn.edu:9737
+    pgHost: process.env.WRDS_PG_HOST || 'wrds-pgdata.wharton.upenn.edu',
+    pgPort: parseInt(process.env.WRDS_PG_PORT || '9737', 10),
+    // Credentials (same for SSH and PostgreSQL)
     username: process.env.WRDS_USERNAME || null,
     password: process.env.WRDS_PASSWORD || null,
     database: process.env.WRDS_DATABASE || 'wrds',

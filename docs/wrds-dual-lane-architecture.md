@@ -77,12 +77,23 @@ These constraints are **non-negotiable** and shape every query pattern:
 
 | Constraint | Detail | Mitigation |
 |---|---|---|
-| **Connection** | `wrds-pgdata.wharton.upenn.edu:9737`, strict SSL | `ssl: { rejectUnauthorized: true }` in `pg.Pool` — already in `config.js:121-127` |
+| **SSH required** | WRDS PostgreSQL is only reachable from inside the WRDS Cloud | SSH tunnel through `wrds-cloud.wharton.upenn.edu:22`, then forward to `wrds-pgdata.wharton.upenn.edu:9737` |
+| **Two-layer connection** | SSH → TCP tunnel → PostgreSQL | `ssh2` npm package creates tunnel; `pg` connects through it |
 | **Statement timeout** | WRDS kills long queries | `statement_timeout: 30000` on pool; no `OFFSET` pagination |
 | **No OFFSET pagination** | Forbidden by timeout policy | **High-water mark** delta: `WHERE lastupdated > $hwm ORDER BY lastupdated ASC LIMIT 500` |
 | **Rate/connection limits** | Shared academic resource | `max: 2` pool connections; single-query-at-a-time pattern |
 
+```
+┌─────────────────┐     SSH (port 22)     ┌─────────────────────────┐    TCP (port 9737)    ┌─────────────────┐
+│  Node.js agent  │ ───────────────► │  wrds-cloud.wharton.  │ ───────────────► │  wrds-pgdata.    │
+│  (wrds-ingest)  │   ssh2 tunnel    │  upenn.edu (Cloud)   │   forwardOut()    │  wharton.upenn.  │
+│                 │ ◄──────────────── │  (login node)         │ ◄──────────────── │  edu (PostgreSQL)│
+└─────────────────┘                  └─────────────────────────┘                    └─────────────────┘
+```
+
 > **Schema status (resolved 2026-04-27):** Column names are **not obfuscated** — the [WRDS PitchBook variable reference](https://wrds-www.wharton.upenn.edu/pages/support/manuals-and-overviews/pitchbook/wrds-pitchbook-overview-new/#database-notes) documents plain-English column names. The `wrds-schema-scout.js` script and `artifacts/wrds-column-map.json` indirection layer are **no longer needed**. Column names can be hardcoded directly.
+
+> **Connection note (resolved 2026-04-27):** WRDS PostgreSQL (`wrds-pgdata:9737`) is **not directly reachable** from external networks. All access must go through the [WRDS Cloud](https://wrds-www.wharton.upenn.edu/pages/support/the-wrds-cloud/using-ssh-connect-wrds-cloud/) via SSH (`wrds-cloud.wharton.upenn.edu:22`). This eliminates the IP whitelisting blocker — any WRDS account holder can connect. The `ssh2` npm package handles the tunnel transparently.
 
 ### Confirmed Schema: `pitchbk.company`
 
@@ -115,9 +126,9 @@ These constraints are **non-negotiable** and shape every query pattern:
 
 Already implemented and tested:
 
-- **Config block:** `src/config.js:120-127` — `wrds.host`, `wrds.port`, `wrds.username`, `wrds.password`, `wrds.database`, `wrds.schema`
-- **npm scripts:** `wrds-ingest` and `wrds-scout` registered in `package.json:34-35`
-- **Dependency:** `pg@^8.20.0` already in `package.json:47`
+- **Config block:** `src/config.js` — `wrds.sshHost`, `wrds.pgHost`, `wrds.pgPort`, `wrds.username`, `wrds.password`, `wrds.database`, `wrds.schema`, `wrds.table`
+- **npm scripts:** `wrds-ingest` and `wrds-scout` registered in `package.json`
+- **Dependencies:** `pg@^8.20.0`, `ssh2` (to be added)
 - **Update frequency:** Weekly (per WRDS docs, last updated 2026-04-24)
 
 ---
@@ -335,37 +346,81 @@ Each slice is atomic, testable, and independently mergeable.
 3. Scout outputs distinct values for `emergingspaces`, `verticals`, `primaryindustrycode`, `primaryindustrygroup`, `primaryindustrysector`.
 4. Use the distinct tag values to populate `data/pitchbook-taxonomy-map.json` (Slice 2).
 
-**Test:** Scout connects, returns distinct tag values, exits 0.
+**Test:** Scout connects via SSH tunnel, returns distinct tag values, exits 0.
 
-**Blocker:** Requires WRDS account approval + IP whitelisting.
+**Blocker:** Requires WRDS account credentials (same username/password used for SSH and PostgreSQL).
 
 > **Schema note (resolved):** Column names are plain English per the [WRDS variable reference](https://wrds-www.wharton.upenn.edu/pages/support/manuals-and-overviews/pitchbook/wrds-pitchbook-overview-new/#database-notes). The `artifacts/wrds-column-map.json` indirection layer is **eliminated** — column names are hardcoded in the ingest agent. `wrds-schema-scout.js` is repurposed for tag enumeration only.
 
 ---
 
-### Slice 1: WRDS Connection Utility
+### Slice 1: WRDS SSH Tunnel + Connection Utility
 
-**Goal:** Extract reusable WRDS connection pool into `src/utils/wrds-pool.js`.
+**Goal:** Build reusable WRDS connection module: SSH tunnel through WRDS Cloud, then PostgreSQL queries through the tunnel.
 
 **Files:**
 - `src/utils/wrds-pool.js` — [NEW]
 - `tests/wrds-pool.test.js` — [NEW]
 
+**New dependency:** `ssh2` (npm package for SSH connections)
+
 **Contract:**
 ```javascript
 // src/utils/wrds-pool.js
 module.exports = {
-  getPool,      // () => pg.Pool (singleton, lazy-init)
-  closePool,    // () => Promise<void>
-  queryWrds,    // (sql, params) => Promise<{rows}>  (wraps pool.query with timeout guard)
+  connect,     // () => Promise<void> (establishes SSH tunnel + pg client)
+  query,       // (sql, params) => Promise<{rows}> (wraps pg.query with timeout guard)
+  close,       // () => Promise<void> (tears down pg client + SSH tunnel)
 };
 ```
 
-**Test (unit, mocked pg):**
-- `getPool()` returns same instance on repeated calls.
-- `queryWrds()` passes `statement_timeout` in pool config.
-- `closePool()` is idempotent.
-- Pool config uses `ssl: { rejectUnauthorized: true }`, port `9737`.
+**Connection flow:**
+```javascript
+const { Client: SSHClient } = require('ssh2');
+const { Client: PGClient } = require('pg');
+
+async function connect() {
+  // 1. SSH into WRDS Cloud
+  const ssh = new SSHClient();
+  await new Promise((resolve, reject) => {
+    ssh.on('ready', resolve).on('error', reject).connect({
+      host: 'wrds-cloud.wharton.upenn.edu',
+      port: 22,
+      username: cfg.wrds.username,
+      password: cfg.wrds.password,
+    });
+  });
+
+  // 2. Open TCP tunnel from SSH server to PostgreSQL
+  const stream = await new Promise((resolve, reject) => {
+    ssh.forwardOut(
+      '127.0.0.1', 0,                         // source (arbitrary)
+      'wrds-pgdata.wharton.upenn.edu', 9737,   // destination (PostgreSQL)
+      (err, stream) => err ? reject(err) : resolve(stream)
+    );
+  });
+
+  // 3. Connect pg through the tunnel stream
+  const pg = new PGClient({
+    user: cfg.wrds.username,
+    password: cfg.wrds.password,
+    database: cfg.wrds.database,
+    ssl: { rejectUnauthorized: true },
+    stream,                                    // pg Client accepts a pre-established stream
+    statement_timeout: 30000,
+  });
+  await pg.connect();
+}
+```
+
+> **Note:** Uses `pg.Client` (not `pg.Pool`) because the SSH tunnel provides a single TCP stream. For our use case (sequential queries, max 2-3 per run), a single client is sufficient. The `query()` wrapper serializes calls.
+
+**Tests (unit, mocked ssh2 + pg):**
+- `connect()` establishes SSH first, then pg through the tunnel stream.
+- `query()` passes results through; enforces `statement_timeout`.
+- `close()` tears down pg client, then SSH connection. Idempotent.
+- SSH error during connect surfaces as a descriptive error message.
+- Missing credentials throw before attempting SSH.
 
 ---
 

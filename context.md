@@ -10,8 +10,8 @@ Cold vs warm (streaming / npm run pipeline only): src/utils/pipeline-stages.js::
 Slice 0 — WRDS PitchBook Ingest → companies.json (optional, supplements OCR)
   npm run wrds-ingest [--dry-run] [--verbose] [--full]
   Input: WRDS PostgreSQL database (`pitchbk.company` table)
-  Connection: wrds-pgdata.wharton.upenn.edu:9737, strict SSL, credentials from WRDS_USERNAME/WRDS_PASSWORD
-  Requires: pg npm package (npm install pg)
+  Connection: SSH tunnel — wrds-cloud.wharton.upenn.edu:22 → wrds-pgdata.wharton.upenn.edu:9737 (uses ssh2 + pg)
+  Requires: pg + ssh2 npm packages (npm install pg ssh2)
   Schema: columns are plain English per WRDS variable reference (no obfuscation). wrds-scout repurposed for tag enumeration.
   Delta updates: high-water mark on `lastupdated` column — only queries records newer than max date in existing companies.json
   Full extraction: --full flag ignores high-water mark
@@ -150,7 +150,7 @@ Current status (rolling — do not treat row counts as authoritative)
   - Categorize / enrich / reviewer still LLM-driven; multi-provider via src/llm-client.js.
 
 Next meaningful work
-  0. WRDS account approval — pending institutional IP whitelisting; once approved, run wrds-scout → create column map → build ingest agent.
+  0. WRDS account approval — SSH access via wrds-cloud.wharton.upenn.edu (no IP whitelisting needed); once approved, run wrds-scout → enumerate tags → build ingest agent.
   1. Dual-Lane implementation — 7 slices defined in docs/wrds-dual-lane-architecture.md:
      Slice 0: Schema discovery + column map. Slice 1: wrds-pool.js connection utility.
      Slice 2: pitchbook-taxonomy-map.json + cascadeLookup(). Slice 3: wrds-ingest agent.

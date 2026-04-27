@@ -886,9 +886,11 @@ npm run enrich -- --retry-errors
 | Scrape returns empty for a company | May use CAPTCHA or JS rendering — check `data/scrape_runs.json`; Playwright fallback fires automatically |
 | Notion sync fails with property errors | Re-run `node src/agents/notion-setup.js` to re-provision schema |
 | Gemini daily quota hit mid-run | Discovery and enrichment save progress; re-run the same command tomorrow to continue |
-| WRDS connection refused | Check `WRDS_USERNAME`/`WRDS_PASSWORD` in `.env.local`; verify IP is whitelisted at wrds-web.wharton.upenn.edu |
+| WRDS connection refused | Check `WRDS_USERNAME`/`WRDS_PASSWORD` in `.env.local`; connection is SSH tunnel via `wrds-cloud.wharton.upenn.edu:22` → `wrds-pgdata:9737` |
+| WRDS SSH timeout | Verify WRDS account is active at wrds-web.wharton.upenn.edu; `ssh2` handles tunnel automatically |
 | WRDS statement timeout | Use `--full` with caution; WRDS enforces strict query limits |
-| `pg module not installed` | Run `npm install pg` — it's an optional dependency for WRDS ingest only |
+| `ssh2 module not installed` | Run `npm install ssh2` — required for WRDS SSH tunnel |
+| `pg module not installed` | Run `npm install pg` — required for WRDS PostgreSQL queries |
 
 ---
 
