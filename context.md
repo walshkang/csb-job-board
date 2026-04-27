@@ -17,10 +17,11 @@ Slice 0 — WRDS PitchBook Ingest → companies.json (optional, supplements OCR)
   Full extraction: --full flag ignores high-water mark
   Transform: maps WRDS rows to identical companies.json schema using shared slugify/deterministicId from ocr-utils.js
   Merge: uses mergeCompanies() from ocr-utils.js — dedup by domain, then id; prefers existing non-null fields
-  Note: WRDS likely lacks PitchBook keywords field; companies ingested via WRDS alone may get weaker categorization.
-    Run OCR afterward to backfill keywords if needed.
-  Output: data/companies.json with identity + funding signals + company_profile (same schema as OCR)
-  Status: Schema scout script + config block implemented (Slice 1 of build). Ingest agent pending WRDS account approval.
+  PitchBook classification fields pulled: emerging_spaces[], pitchbook_verticals[], pitchbook_industry_code,
+    pitchbook_industry_group, pitchbook_industry_sector, pitchbook_description. These feed the taxonomy-mapper’s
+    deterministic cascade (Lane 1) — see docs/wrds-dual-lane-architecture.md.
+  Output: data/companies.json with identity + funding signals + company_profile + PitchBook classifications
+  Status: Schema scout script + config block implemented. Ingest agent pending WRDS account approval.
 
 Slice 1 — Pitchbook OCR → companies.json
   npm run ocr -- data/images
@@ -34,12 +35,16 @@ Slice 1 — Pitchbook OCR → companies.json
   Screenshot mode: LLM vision OCR via src/prompts/ocr.txt
   Output: data/companies.json with identity + funding signals + company_profile
 
-Slice 9 — Industry Categorization
+Slice 9 — Industry Categorization (Dual-Lane — see docs/wrds-dual-lane-architecture.md)
   npm run categorize [--force] [--dry-run]
-  Input: data/companies.json (+ optional data/jobs.json) + data/climate-tech-map-industry-categories.json
-  One LLM call per unique company (not per job) — result applied to all jobs for that company
-  Writes: climate_tech_category, primary_sector, opportunity_area, category_confidence onto each company and its jobs
-  Can be run immediately after OCR — uses PitchBook keywords, HQ, and company metadata; jobs.json is optional
+  Input: data/companies.json + data/climate-tech-map-industry-categories.json + data/pitchbook-taxonomy-map.json (+ optional data/jobs.json)
+  Three-lane routing via src/agents/taxonomy-mapper.js:
+    Lane 1 (Fast): Deterministic cascade — checks PitchBook Emerging Spaces → Verticals → Industry Code →
+      Industry Group → keyword resolveByRule() against data/pitchbook-taxonomy-map.json. No LLM. Confidence: high→low.
+    Lane 2 (Medium): LLM on PitchBook description + classifications when no deterministic match but WRDS data exists.
+      Broad map matches (null category) pass climate_relevant_hint to narrow the LLM prompt.
+    Lane 3 (Cold): Full LLM with PitchBook keywords + scraped metadata (legacy categorizer.js path).
+  Writes: climate_tech_category, primary_sector, opportunity_area, category_confidence, category_resolver, category_source
   Skips companies already categorized unless --force; rate-limited pool (concurrency=3, delay=1000ms)
   Note: requires maxOutputTokens >= 4096 when using gemini-2.5-flash (thinking tokens consume budget)
 
@@ -103,8 +108,15 @@ Utility scripts
   node src/agents/notion-clear.js  # archive all pages in both DBs (destructive)
 
 Data model
-  companies.json: id, name, domain, funding_signals, company_profile, careers_page_url, careers_page_reachable, careers_page_discovery_method, ats_platform, ats_slug, dormant, consecutive_empty_scrapes
+  companies.json: id, name, domain, funding_signals, company_profile,
+    wrds_company_id, emerging_spaces, pitchbook_verticals, pitchbook_industry_code,
+    pitchbook_industry_group, pitchbook_industry_sector, pitchbook_description,
+    wrds_last_updated, category_source, category_resolver,
+    careers_page_url, careers_page_reachable, careers_page_discovery_method,
+    ats_platform, ats_slug, climate_tech_category, primary_sector, opportunity_area,
+    category_confidence, dormant, consecutive_empty_scrapes
   jobs.json: id, company_id, job_title_raw, job_title_normalized, description_raw, source_url, location_raw, employment_type, job_function, seniority_level, location_type, mba_relevance, climate_relevance_confirmed, climate_relevance_reason, first_seen_at, last_seen_at, removed_at, days_live, enrichment_prompt_version, enrichment_error
+  pitchbook-taxonomy-map.json: Multi-layer PitchBook classification → taxonomy mapping (emerging_spaces, verticals, industry_codes, industry_groups, industry_sectors). Values of null = climate-relevant but too broad for direct category assignment.
 
 Notion integration
   Jobs and Companies databases mirror the JSON schema
@@ -129,18 +141,26 @@ Config / env
 
 Current status (rolling — do not treat row counts as authoritative)
   - Pipeline stages and orchestrator are implemented end-to-end; use node scripts/pipeline-status.js for live stage distribution.
+  - Orchestrator Resilience (Slices 1–5): [DONE] implemented with adaptive concurrency, circuit breakers, and transient retry policies.
   - OCR: Tabula for PDFs by default; LiteParse backend exists behind OCR_PDF_BACKEND for ongoing evaluation.
   - LiteParse experiment status: promising speed, currently worse field cleanliness on PitchBook exports; not default.
-  - Discovery: heuristic-only (no LLM).
+  - Discovery: heuristic-only (no LLM); Profile agent (Slice 9) integrated for description + careers_hints.
   - Extract: adapters + ATS JSON by default; LLM fallback opt-in via EXTRACTION_LLM_FALLBACK=1.
   - Streaming pipeline: profile → … → enrich → categorize in src/orchestrator.js; warm no-delta can skip extract/enrich.
   - Categorize / enrich / reviewer still LLM-driven; multi-provider via src/llm-client.js.
 
 Next meaningful work
-  0. WRDS account approval — pending institutional IP whitelisting; once approved, run wrds-scout → create column map → build ingest agent (Slices 2+3 of WRDS build)
-  1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed; target selection bug now fixed
-  2. Add more Pitchbook PDFs → re-run OCR → re-run categorize → run discovery through sync. (Or use WRDS ingest for automated delta updates once account is live.)
-  3. Run npm run reporter + npm run review after each full pipeline run
+  0. WRDS account approval — pending institutional IP whitelisting; once approved, run wrds-scout → create column map → build ingest agent.
+  1. Dual-Lane implementation — 7 slices defined in docs/wrds-dual-lane-architecture.md:
+     Slice 0: Schema discovery + column map. Slice 1: wrds-pool.js connection utility.
+     Slice 2: pitchbook-taxonomy-map.json + cascadeLookup(). Slice 3: wrds-ingest agent.
+     Slice 4: taxonomy-mapper.js (three-lane router). Slice 5: orchestrator integration.
+     Slice 6: observability (lane distribution metrics). Slice 7: E2E integration test.
+     Slices 1, 2, 4 are parallelizable with mocks (no WRDS access needed).
+  2. Scale Categorization — Lane 1 deterministic matching expected to handle 30-50% of companies without LLM calls.
+  3. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed.
+  4. Add more Pitchbook PDFs → re-run OCR → run pipeline.
+  5. Run npm run reporter + npm run review after each full pipeline run.
 
 Open questions
   - ATS fingerprinting yield: will it meaningfully reduce "custom" classifications?
@@ -170,6 +190,7 @@ Resolved since postmortem:
   - Ashby + Workday adapters added; provider-keyed concurrency
   - ATS fingerprinting slice added (Slice 3)
   - QA spot-check slice added (Slice 7)
+  - Orchestrator resilience (Slices 1–5): telemetry, retries, circuit breakers, batch categorization, and adaptive concurrency implemented.
 
 Still open (medium-term):
   - End-to-end smoke tests and CI
@@ -221,14 +242,13 @@ Observability surfaces:
 
 Planned improvements (tracked here, not yet implemented)
 
-Orchestrator resilience (2026-04-20) — see docs/archive/pipeline-improvements-slices-2026-04-21.md
-  Sliced prompts for red/green TDD execution. Dependency graph:
-    Slice 1 (telemetry bug fixes: progress-bar math, skipped_signature_match unification) — parallelizable
-    Slice 2 (failure-class vocabulary + retry with exponential backoff for transient classes) — foundation
-    Slice 3 (per-stage circuit breaker with manual reset, admin UI banner) — after Slice 2
-    Slice 4 (batch categorize: 5–10 companies per LLM call, partial-failure fallback) — after Slice 2, parallel with Slice 3
-    Slice 5 (adaptive concurrency: auto-tune within [min,max] based on p95 + error rate) — after 2 + 3
-  All sized for Sonnet. Wave A = {1, 2} parallel; Wave B = {3, 4} parallel; Wave C = 5.
+Orchestrator resilience (2026-04-20) — [DONE]
+  - Slice 1 (telemetry bug fixes: progress-bar math, skipped_signature_match unification) — DONE
+  - Slice 2 (failure-class vocabulary + retry with exponential backoff for transient classes) — DONE
+  - Slice 3 (per-stage circuit breaker with manual reset, admin UI banner) — DONE
+  - Slice 4 (batch categorize: 5–10 companies per LLM call, partial-failure fallback) — DONE
+  - Slice 5 (adaptive concurrency: auto-tune within [min,max] based on p95 + error rate) — DONE
+  - Wave A = {1, 2} parallel; Wave B = {3, 4} parallel; Wave C = 5. All integrated.
 
 Company description source & timing (NEW)
   - Objective: Move company description generation from job-level extraction to company-level categorization.

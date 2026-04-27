@@ -12,9 +12,10 @@ One agent per slice. All agents are idempotent, log outputs, and write artifacts
 
 | # | Agent | File | Owns (writes to) | Reads from |
 |---|---|---|---|---|
-| 0 | WRDS Ingest | `src/agents/wrds-ingest.js` | `data/companies.json` | WRDS PostgreSQL (`pitchbk_companies_deals`) |
+| 0 | WRDS Ingest | `src/agents/wrds-ingest.js` | `data/companies.json` (WRDS fields) | WRDS PostgreSQL (`pitchbk_companies_deals`) |
+| 0b | Taxonomy Mapper | `src/agents/taxonomy-mapper.js` | `data/companies.json` (category fields) | `data/companies.json`, `data/pitchbook-taxonomy-map.json`, taxonomy JSON |
 | 1 | OCR | `src/agents/ocr.js` | `data/companies.json` | `data/images/` (PDFs/screenshots) |
-| 2 | Categorizer | `src/agents/categorizer.js` | `data/companies.json` (category fields) | `data/companies.json`, taxonomy JSON |
+| 2 | Categorizer | `src/agents/categorizer.js` | `data/companies.json` (category fields — Lane 3 fallback) | `data/companies.json`, taxonomy JSON |
 | 3 | Discovery | `src/agents/discovery.js` | `data/companies.json` (careers fields) | `data/companies.json` |
 | 4 | Fingerprinter | `src/agents/fingerprinter.js` | `data/companies.json` (ats_platform, ats_slug) | `data/companies.json` |
 | 5 | Scraper | `src/agents/scraper.js` | `artifacts/html/{id}.*`, `data/scrape_runs.json` | `data/companies.json` |
@@ -42,7 +43,12 @@ id, name, domain, careers_page_url, careers_page_reachable,
 careers_page_discovery_method, ats_platform, ats_slug,
 last_scrape_signature, last_scrape_outcome, last_scraped_at,
 funding_signals, company_profile,
-climate_tech_category, primary_sector, opportunity_area, category_confidence,
+wrds_company_id, emerging_spaces, pitchbook_verticals,
+pitchbook_industry_code, pitchbook_industry_group,
+pitchbook_industry_sector, pitchbook_description,
+wrds_last_updated, category_source,
+climate_tech_category, primary_sector, opportunity_area,
+category_confidence, category_resolver,
 consecutive_empty_scrapes, dormant
 ```
 
@@ -122,3 +128,5 @@ Report status in this exact format:
 - **Secrets**: use `.env.local` locally, GitHub Secrets in CI; never commit keys
 - **Tests**: `npm test` (Jest, `--runInBand`)
 - **Prompts**: `src/prompts/` — `extraction.txt`, `enrichment.txt`, `ocr.txt`, `ocr-pdf.txt`, `categorizer.txt`; edit to tune LLM behavior; bump `ENRICHMENT_PROMPT_VERSION` after changing `enrichment.txt` to force re-enrichment
+- **Taxonomy maps**: `data/climate-tech-map-industry-categories.json` (canonical taxonomy), `data/pitchbook-taxonomy-map.json` (PitchBook classification → taxonomy mapping, multi-layer: emerging_spaces → verticals → industry_codes → industry_groups)
+- **Architecture docs**: `docs/wrds-dual-lane-architecture.md` — Dual-Lane API-First categorization design (Lane 1: deterministic PitchBook cascade, Lane 2: LLM on API data, Lane 3: legacy cold scrape)

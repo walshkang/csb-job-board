@@ -317,9 +317,9 @@ npm run wrds-ingest
 npm run wrds-ingest -- --dry-run --verbose
 ```
 
-**Schema fields produced:** Same as Step 1 (OCR) — `id`, `name`, `domain`, `funding_signals`, `company_profile`. Companies ingested via WRDS may lack `keywords` (PitchBook keywords come from the screener UI, not the raw database). Run OCR afterward to backfill keywords if needed.
+**Schema fields produced:** Same as Step 1 (OCR) — `id`, `name`, `domain`, `funding_signals`, `company_profile` — plus PitchBook classification fields used by the taxonomy mapper: `wrds_company_id`, `emerging_spaces`, `pitchbook_verticals`, `pitchbook_industry_code`, `pitchbook_industry_group`, `pitchbook_industry_sector`, `pitchbook_description`. These structured classifications enable deterministic categorization (Lane 1) without LLM calls — see [Dual-Lane Architecture](docs/wrds-dual-lane-architecture.md).
 
-> **When to use WRDS vs OCR:** Use WRDS for automated, repeatable delta updates without manual PDF exports. Use OCR when you need PitchBook keywords for categorization or when WRDS access is unavailable.
+> **When to use WRDS vs OCR:** Use WRDS for automated, repeatable delta updates with rich PitchBook classifications (Emerging Spaces, Verticals, Industry Codes). Use OCR when you need PitchBook keywords from the screener UI or when WRDS access is unavailable. Both sources merge cleanly by domain.
 
 ---
 
@@ -361,11 +361,19 @@ company_profile     — { sector, hq, employees, keywords }
 
 ### Step 2 — Categorize: Tag companies by climate sector
 
-**What it does:** Assigns each company a climate-tech industry category from `data/climate-tech-map-industry-categories.json`. Makes one LLM call per unique company — PitchBook keywords, HQ, and company metadata are sufficient input. `data/jobs.json` is optional; run this immediately after OCR so category fields are available throughout the rest of the pipeline.
+**What it does:** Assigns each company a climate-tech industry category from `data/climate-tech-map-industry-categories.json`. Uses a **three-lane routing strategy** (via `src/agents/taxonomy-mapper.js`):
 
-**Prompt injected:** Built inline — taxonomy categories + company name + sector + PitchBook keywords + scraped description
+| Lane | Trigger | Method | LLM? |
+|---|---|---|---|
+| **1 — Fast** | Company has PitchBook Emerging Space, Vertical, or Industry Code matching `data/pitchbook-taxonomy-map.json` | Deterministic dictionary cascade | No |
+| **2 — Medium** | Company in WRDS with description but no deterministic match | LLM on PitchBook description + classifications | Yes (lightweight) |
+| **3 — Cold** | Company not in WRDS or description too short | Full LLM with PitchBook keywords + company metadata | Yes |
 
-**Input:** `data/companies.json` + `data/climate-tech-map-industry-categories.json` (jobs.json optional)
+See [docs/wrds-dual-lane-architecture.md](docs/wrds-dual-lane-architecture.md) for full routing logic and the PitchBook classification cascade.
+
+**Prompt injected:** Built inline — taxonomy categories + company context (Lane 2: PitchBook description + classifications; Lane 3: PitchBook keywords + scraped metadata)
+
+**Input:** `data/companies.json` + `data/climate-tech-map-industry-categories.json` + `data/pitchbook-taxonomy-map.json` (jobs.json optional)
 
 **Output:** `data/companies.json` updated with:
 ```
@@ -373,20 +381,11 @@ climate_tech_category   — e.g. "Solar Energy", "Grid Infrastructure"
 primary_sector          — e.g. "Clean Power"
 opportunity_area        — e.g. "Generation"
 category_confidence     — high | medium | low
-```
-Category fields are also stamped onto jobs at extraction time (Step 6).
-
-```bash
-npm run categorize
-
-# Re-categorize all (including already-tagged)
-npm run categorize -- --force
-
-# Preview without writing
-npm run categorize -- --dry-run
+category_resolver       — emerging_space | vertical | industry_code | rule | llm_wrds | llm
+category_source         — wrds_fast | wrds_medium | cold
 ```
 
-> **Taxonomy note:** `data/climate-tech-map-industry-categories.json` is the canonical taxonomy file. Do not auto-apply changes to it — any edits require human review.
+> **Taxonomy note:** `data/climate-tech-map-industry-categories.json` is the canonical taxonomy file. `data/pitchbook-taxonomy-map.json` maps PitchBook classifications to it. Do not auto-apply changes to either — edits require human review.
 
 ---
 
@@ -933,6 +932,7 @@ Never commit `.env.local`. It contains API keys and is gitignored by default.
 |---|---|
 | **[README.md](README.md)** (this file) | Pipeline overview, setup, CLI reference, troubleshooting |
 | **[agents.md](agents.md)** | Developer & AI assistant protocol — agent ownership table, data contracts, concurrency/scoping rules, standardized handoff format |
-| **Archived planning** | Slice prompts (lanes, extract adapters, pipeline resilience, shape de-hallucinate): [docs/archive/](docs/archive/) (e.g. `lanes-slices-2026-04-21.md`, `pipeline-improvements-slices-2026-04-21.md`, `shape-dehallucinate-2026-04-21.md`, `extract-adapter-lanes-slices-2026-04-21.md`). |
+| **[docs/wrds-dual-lane-architecture.md](docs/wrds-dual-lane-architecture.md)** | Dual-Lane API-First categorization design — WRDS constraints, three-lane routing, PitchBook classification cascade, implementation slices |
+| **Archived planning** | Slice prompts (lanes, extract adapters, pipeline resilience, shape de-hallucinate): [docs/archive/](docs/archive/) |
 
 If you're an AI assistant or developer working in this repo, read [agents.md](agents.md) before making changes. It defines which files each agent owns, the data contracts between stages, and the concurrency rules that prevent collisions in a multi-agent environment.
