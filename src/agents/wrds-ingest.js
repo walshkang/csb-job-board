@@ -388,7 +388,7 @@ async function run(opts = {}) {
     console.log('[wrds-ingest] Wrote data/companies.json');
   }
 
-  return { fetched: totalFetched, added, updated };
+  return { fetched: totalFetched, added, updated, merged };
 }
 
 // ---------------------------------------------------------------------------

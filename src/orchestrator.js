@@ -525,6 +525,34 @@ async function runStage(stage, c) {
     }
     const result = await wrdsIngestPromise;
     c.wrds_last_updated = new Date().toISOString(); // prevent looping
+
+    // Sync memory from WRDS ingest results to prevent data loss on flushSave
+    // and ensure subsequent stages have the fresh data (Lane 1/2 routing).
+    if (result.merged && result.merged.length > 0) {
+      companies.splice(0, companies.length, ...result.merged);
+      
+      for (const target of targets) {
+        const fresh = companies.find(comp => comp.id === target.id);
+        if (fresh) Object.assign(target, fresh);
+      }
+      
+      // Auto-enqueue newly discovered companies if running without filters
+      if (!COMPANY_FILTER && !LIMIT) {
+        const targetIds = new Set(targets.map(t => t.id));
+        let newEnqueued = 0;
+        for (const fresh of companies) {
+          if (!targetIds.has(fresh.id)) {
+            targets.push(fresh);
+            enqueue(fresh);
+            newEnqueued++;
+          }
+        }
+        if (newEnqueued > 0) {
+          process.stderr.write(`\n[orchestrator] Auto-enqueued ${newEnqueued} new companies from WRDS ingestion.\n`);
+        }
+      }
+    }
+
     if (result.skipped) return { outcome: 'skipped', extra: { reason: result.reason } };
     return { outcome: 'success', extra: { fetched: result.fetched, added: result.added, updated: result.updated } };
   }
