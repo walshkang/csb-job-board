@@ -12,6 +12,7 @@ One agent per slice. All agents are idempotent, log outputs, and write artifacts
 
 | # | Agent | File | Owns (writes to) | Reads from |
 |---|---|---|---|---|
+| 0 | WRDS Ingest | `src/agents/wrds-ingest.js` | `data/companies.json` | WRDS PostgreSQL (`pitchbk_companies_deals`) |
 | 1 | OCR | `src/agents/ocr.js` | `data/companies.json` | `data/images/` (PDFs/screenshots) |
 | 2 | Categorizer | `src/agents/categorizer.js` | `data/companies.json` (category fields) | `data/companies.json`, taxonomy JSON |
 | 3 | Discovery | `src/agents/discovery.js` | `data/companies.json` (careers fields) | `data/companies.json` |

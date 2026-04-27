@@ -1,11 +1,26 @@
 Project context — CSB Job Board
 
 Purpose
-Collect and enrich job listings for climate / clean-tech companies and store structured records in Notion as the system of record. Data originates from OCRed Pitchbook screenshots, company websites, ATS APIs (Greenhouse, Lever, Ashby, Workday), and plain HTML scraping. Work is organized into discrete slices that form a DAG and can be run independently.
+Collect and enrich job listings for climate / clean-tech companies and store structured records in Notion as the system of record. Data originates from WRDS PitchBook database queries, OCRed Pitchbook screenshots, company websites, ATS APIs (Greenhouse, Lever, Ashby, Workday), and plain HTML scraping. Work is organized into discrete slices that form a DAG and can be run independently.
 
 Pipeline (current architecture)
 
 Cold vs warm (streaming / npm run pipeline only): src/utils/pipeline-stages.js::classifyLane — cold when profile_attempted_at is blank, else warm. Lane is recomputed on every orchestrator enqueue (src/orchestrator.js). Warm path after scrape can skip extract+enrich when job URLs + description hashes show no delta (buildWarmScrapeDecision); warm extract passes existing_job_urls into extraction-warm.txt when EXTRACTION_LLM_FALLBACK=1. Full narrative: [README.md — Cold vs warm](README.md#cold-vs-warm-streaming-pipeline). Historical slice prompts: docs/archive/lanes-slices-2026-04-21.md.
+
+Slice 0 — WRDS PitchBook Ingest → companies.json (optional, supplements OCR)
+  npm run wrds-ingest [--dry-run] [--verbose] [--full]
+  Input: WRDS PostgreSQL database (pitchbk_companies_deals schema)
+  Connection: wrds-pgdata.wharton.upenn.edu:9737, strict SSL, credentials from WRDS_USERNAME/WRDS_PASSWORD
+  Requires: pg npm package (npm install pg), column map at artifacts/wrds-column-map.json
+  Schema discovery: npm run wrds-scout → artifacts/wrds-schema-map.json (run first to map obfuscated WRDS column names)
+  Delta updates: high-water mark on deal date — only queries deals newer than max date in existing companies.json
+  Full extraction: --full flag ignores high-water mark
+  Transform: maps WRDS rows to identical companies.json schema using shared slugify/deterministicId from ocr-utils.js
+  Merge: uses mergeCompanies() from ocr-utils.js — dedup by domain, then id; prefers existing non-null fields
+  Note: WRDS likely lacks PitchBook keywords field; companies ingested via WRDS alone may get weaker categorization.
+    Run OCR afterward to backfill keywords if needed.
+  Output: data/companies.json with identity + funding signals + company_profile (same schema as OCR)
+  Status: Schema scout script + config block implemented (Slice 1 of build). Ingest agent pending WRDS account approval.
 
 Slice 1 — Pitchbook OCR → companies.json
   npm run ocr -- data/images
@@ -107,6 +122,10 @@ Config / env
   Per-agent provider overrides: OCR_PROVIDER, DISCOVERY_PROVIDER, EXTRACTION_PROVIDER, ENRICHMENT_PROVIDER, CATEGORIZER_PROVIDER, REVIEWER_PROVIDER
   OCR_PDF_BACKEND — "tabula" (default) | "liteparse" (experimental)
   LITEPARSE_COMMAND — optional CLI path override for LiteParse (default: lit)
+  WRDS_USERNAME — Wharton WRDS account username (optional — only for wrds-ingest/wrds-scout)
+  WRDS_PASSWORD — Wharton WRDS account password (optional — only for wrds-ingest/wrds-scout)
+  WRDS_DATABASE — WRDS database name (default: wrds)
+  WRDS_SCHEMA — WRDS PitchBook schema (default: pitchbk_companies_deals)
 
 Current status (rolling — do not treat row counts as authoritative)
   - Pipeline stages and orchestrator are implemented end-to-end; use node scripts/pipeline-status.js for live stage distribution.
@@ -118,8 +137,9 @@ Current status (rolling — do not treat row counts as authoritative)
   - Categorize / enrich / reviewer still LLM-driven; multi-provider via src/llm-client.js.
 
 Next meaningful work
+  0. WRDS account approval — pending institutional IP whitelisting; once approved, run wrds-scout → create column map → build ingest agent (Slices 2+3 of WRDS build)
   1. Re-run discovery (npm run discovery) — 65 companies with domains have never been processed; target selection bug now fixed
-  2. Add more Pitchbook PDFs → re-run OCR → re-run categorize → run discovery through sync.
+  2. Add more Pitchbook PDFs → re-run OCR → re-run categorize → run discovery through sync. (Or use WRDS ingest for automated delta updates once account is live.)
   3. Run npm run reporter + npm run review after each full pipeline run
 
 Open questions

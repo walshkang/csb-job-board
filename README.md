@@ -77,6 +77,7 @@ Details in [Streaming Pipeline (orchestrator)](#streaming-pipeline-orchestrator)
 - **Gemini API key** (paid tier) — powers OCR and job classification. Get one at [aistudio.google.com](https://aistudio.google.com). Alternatively, an **Anthropic API key** runs all LLM-powered agents through Claude Haiku (see [Config / Multi-provider](#config--multi-provider))
 - **Notion account** — two databases: one for Companies, one for Jobs. Run the setup script once to provision them (see Setup below)
 - **Node.js 18+** — check with `node --version`
+- **WRDS account** (optional) — for direct PitchBook database access via `wrds-ingest`. Requires IP whitelisting through your institution. Get access at [wrds-web.wharton.upenn.edu](https://wrds-web.wharton.upenn.edu)
 - **poppler-utils** — for PDF text extraction (`brew install poppler` on macOS)
 
 ---
@@ -96,6 +97,8 @@ GEMINI_API_KEY=your-gemini-key
 NOTION_API_KEY=your-notion-integration-key
 NOTION_COMPANIES_DB_ID=your-companies-db-id
 NOTION_JOBS_DB_ID=your-jobs-db-id
+WRDS_USERNAME=your-wharton-username       # optional — only for wrds-ingest
+WRDS_PASSWORD=your-wharton-password       # optional — only for wrds-ingest
 ```
 
 To get Notion credentials: create an internal integration at [notion.so/my-integrations](https://notion.so/my-integrations), share both databases with it, and copy the database IDs from the page URLs.
@@ -287,6 +290,38 @@ flowchart LR
 ---
 
 ## Step-by-Step Reference
+
+### Step 0 — WRDS Ingest: Import companies from PitchBook database (optional)
+
+**What it does:** Connects directly to the WRDS PitchBook PostgreSQL database and extracts company profiles and funding signals. An alternative to the PDF export → OCR workflow. Both can run — records merge by domain.
+
+**No AI involved** — direct SQL queries against WRDS PostgreSQL.
+
+**Prerequisites:** WRDS account with IP whitelisting, `pg` npm package (`npm install pg`), column map at `artifacts/wrds-column-map.json` (run `npm run wrds-scout` first to discover schema).
+
+**Input:** WRDS PostgreSQL database (`pitchbk_companies_deals` schema)
+
+**Output:** `data/companies.json` — same schema as OCR output, merged with existing records
+
+```bash
+# First time: discover the WRDS schema and create column map
+npm run wrds-scout
+
+# Full extraction (first run or reset)
+npm run wrds-ingest -- --full
+
+# Delta update (only new deals since last extraction)
+npm run wrds-ingest
+
+# Preview without writing
+npm run wrds-ingest -- --dry-run --verbose
+```
+
+**Schema fields produced:** Same as Step 1 (OCR) — `id`, `name`, `domain`, `funding_signals`, `company_profile`. Companies ingested via WRDS may lack `keywords` (PitchBook keywords come from the screener UI, not the raw database). Run OCR afterward to backfill keywords if needed.
+
+> **When to use WRDS vs OCR:** Use WRDS for automated, repeatable delta updates without manual PDF exports. Use OCR when you need PitchBook keywords for categorization or when WRDS access is unavailable.
+
+---
 
 ### Step 1 — OCR: Import companies from PitchBook
 
@@ -761,6 +796,16 @@ Constraints:
 
 **Add new companies from PitchBook exports** — drop new PDFs or screenshots into `data/images/`, then either:
 
+*From WRDS (no PDF export needed):*
+```bash
+npm run wrds-ingest
+npm run pipeline
+npm run enrich -- --batch-mode
+node src/agents/temporal.js
+node src/agents/notion-sync.js
+npm run reporter && npm run review
+```
+
 *One-shot streaming (preferred):*
 ```bash
 npm run ocr -- data/images
@@ -842,6 +887,9 @@ npm run enrich -- --retry-errors
 | Scrape returns empty for a company | May use CAPTCHA or JS rendering — check `data/scrape_runs.json`; Playwright fallback fires automatically |
 | Notion sync fails with property errors | Re-run `node src/agents/notion-setup.js` to re-provision schema |
 | Gemini daily quota hit mid-run | Discovery and enrichment save progress; re-run the same command tomorrow to continue |
+| WRDS connection refused | Check `WRDS_USERNAME`/`WRDS_PASSWORD` in `.env.local`; verify IP is whitelisted at wrds-web.wharton.upenn.edu |
+| WRDS statement timeout | Use `--full` with caution; WRDS enforces strict query limits |
+| `pg module not installed` | Run `npm install pg` — it's an optional dependency for WRDS ingest only |
 
 ---
 
@@ -861,6 +909,8 @@ artifacts/
     {company_id}.json         structured jobs from ATS API
     {company_id}.html         raw HTML from direct scrape
     {company_id}.playwright.html   Playwright-rendered fallback
+  wrds-schema-map.json          WRDS schema discovery output (from wrds-scout)
+  wrds-column-map.json          logical→physical column mapping for WRDS ingest (user-created)
 
 src/
   agents/                     one file per pipeline step

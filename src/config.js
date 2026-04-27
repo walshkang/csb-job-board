@@ -117,6 +117,14 @@ const cfg = {
     companiesDbId: process.env.NOTION_COMPANIES_DB_ID || null,
     jobsDbId: process.env.NOTION_JOBS_DB_ID || null,
   },
+  wrds: {
+    host: 'wrds-pgdata.wharton.upenn.edu',
+    port: 9737,
+    username: process.env.WRDS_USERNAME || null,
+    password: process.env.WRDS_PASSWORD || null,
+    database: process.env.WRDS_DATABASE || 'wrds',
+    schema: process.env.WRDS_SCHEMA || 'pitchbk_companies_deals',
+  },
 };
 
 /**

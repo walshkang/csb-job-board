@@ -30,7 +30,9 @@
     "notion-sync:companies": "node src/agents/notion-sync.js --companies-only --verbose",
     "notion-sync:jobs": "node src/agents/notion-sync.js --jobs-only --verbose",
     "notion-setup": "node src/agents/notion-setup.js",
-    "notion-clear": "node src/agents/notion-clear.js"
+    "notion-clear": "node src/agents/notion-clear.js",
+    "wrds-ingest": "node src/agents/wrds-ingest.js",
+    "wrds-scout": "node scripts/wrds-schema-scout.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"
@@ -42,6 +44,7 @@
     "cheerio": "^1.0.0-rc.12",
     "node-fetch": "^2.6.7",
     "p-queue": "^7.4.1",
+    "pg": "^8.20.0",
     "playwright": "^1.59.1"
   }
 }
