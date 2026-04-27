@@ -189,7 +189,7 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
     companyProfile || '',
     Array.isArray(pitchbookKeywords) ? pitchbookKeywords.join(' ') : (pitchbookKeywords || ''),
     jobTitle,
-    descSummary,
+    repJob.description_summary || '',
   ].join(' ').toLowerCase();
   const signalTokens = new Set(signalStr.split(/\W+/).filter(Boolean));
 
@@ -230,7 +230,7 @@ async function categorizeCompany(companyRecord, repJob, taxonomy, opts, samples)
     .replace('{sample_roles}', samplesText)
     .replace('{job_title}', jobTitle)
     .replace('{job_function}', jobFunction)
-    .replace('{description_summary}', descSummary)
+    .replace('{description_summary}', repJob.description_summary || 'N/A')
     .replace('{categories_list}', categoriesList);
 
   try {

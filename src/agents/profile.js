@@ -9,16 +9,20 @@ const { fetchRenderedHtml } = require('../utils/browser');
 const CAREERS_HINT_RE = /careers?|jobs?|join[- ]us|work[- ]with[- ]us|hiring|open[- ]roles/i;
 
 function resolveBaseUrl(company) {
-  if (company && company.url && String(company.url).trim()) {
-    let u = String(company.url).trim();
-    if (!/^https?:\/\//i.test(u)) u = `https://${u}`;
-    const parsed = new URL(u);
-    const path = parsed.pathname.replace(/\/+$/, '') || '';
-    return `${parsed.origin}${path}/`;
+  try {
+    if (company && company.url && String(company.url).trim()) {
+      let u = String(company.url).trim();
+      if (!/^https?:\/\//i.test(u)) u = `https://${u}`;
+      const parsed = new URL(u);
+      const path = parsed.pathname.replace(/\/+$/, '') || '';
+      return `${parsed.origin}${path}/`;
+    }
+    if (!company || !company.domain) return null;
+    const host = String(company.domain).replace(/^https?:\/\//, '').split(/[\/\s\n]/)[0];
+    return `https://${host}/`;
+  } catch (e) {
+    return null;
   }
-  if (!company || !company.domain) return null;
-  const host = String(company.domain).replace(/^https?:\/\//, '').split(/[\/\s\n]/)[0];
-  return `https://${host}/`;
 }
 
 function buildProfileUrls(baseUrl) {
