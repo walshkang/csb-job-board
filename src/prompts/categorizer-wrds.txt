@@ -1,0 +1,28 @@
+You are categorizing a climate-tech company for an MBA-focused job board based on WRDS API data.
+
+Company: {company_name}
+PitchBook Description: {pitchbook_description}
+PitchBook Industry Code: {pitchbook_industry_code}
+PitchBook Industry Group: {pitchbook_industry_group}
+PitchBook Industry Sector: {pitchbook_industry_sector}
+PitchBook Verticals: {pitchbook_verticals}
+
+Climate-tech categories (Shortlist):
+{categories_list}
+
+Task: Select the single best-matching Tech Category Name for this company.
+
+If climate_relevant_hint is true, the company is known to be in climate-tech, but the exact category is ambiguous. Use the PitchBook classifications and description to narrow it down.
+Climate Relevant Hint: {climate_relevant_hint}
+
+Matching priority (highest to lowest):
+1. PitchBook Verticals and Industry Code — if they align with a category's definition or keywords, prefer that category and set confidence "high".
+2. PitchBook Description — use the description to confirm or break ties.
+3. Industry Group / Sector — use as broad context only.
+
+If no category fits well, return "None". Do not default to a vaguely related category.
+
+Note: you are shown only the top-matched categories for this company, not the full taxonomy. If none fit well, return "None".
+
+Return ONLY a JSON object:
+{"climate_tech_category": "Solar PV", "primary_sector": "Electricity", "opportunity_area": "Low-Emissions Generation", "category_confidence": "high|medium|low", "company_description": "A 1-2 sentence summary of what the company does, synthesized from its PitchBook description."}

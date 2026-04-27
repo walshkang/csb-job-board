@@ -1,0 +1,7 @@
+{
+  "last_financing_date_min": "2025-04-01",
+  "ownership_status": ["Privately Held (backing)", "Privately Held (no backing)", "In IPO Registration"],
+  "hq_country": ["United States"],
+  "verticals_contains": ["Climate Tech", "CleanTech"],
+  "max_employees": 600
+}

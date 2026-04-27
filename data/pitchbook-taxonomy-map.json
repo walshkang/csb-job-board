@@ -1,0 +1,38 @@
+{
+  "emerging_spaces": {
+    "CleanTech / Solar": "Solar",
+    "CleanTech / Wind Energy": "Wind",
+    "CleanTech / Battery Tech": "Electrochemical",
+    "AgTech / Precision Ag": "Precision Agriculture",
+    "Carbon Capture": "Engineered Carbon Removal",
+    "Electric Vehicles": "Battery EVs"
+  },
+  "verticals": {
+    "Renewable Energy": "Solar",
+    "Energy Storage": "Electrochemical",
+    "Electric Vehicles": "Battery EVs",
+    "Carbon Capture & Storage": "Fossil Fuels with CCUS",
+    "Hydrogen Economy": "Hydrogen & Derivatives",
+    "Sustainable Agriculture": "Regenerative Agriculture",
+    "Climate Tech": null,
+    "CleanTech": null
+  },
+  "industry_codes": {
+    "Clean Technology": null,
+    "Solar": "Solar",
+    "Wind": "Wind",
+    "Fuel Cells": "Hydrogen & Derivatives",
+    "Biofuels / Biochemicals": "Biofuels",
+    "Alternative Energy Equipment": null
+  },
+  "industry_groups": {
+    "Energy Equipment & Services": null,
+    "Independent Power Producers": null,
+    "Electrical Equipment": null,
+    "Renewable Energy": null
+  },
+  "industry_sectors": {
+    "Energy": null,
+    "Utilities": null
+  }
+}

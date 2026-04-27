@@ -7,6 +7,8 @@ artifacts/html/
 # Runtime data artifacts — not source controlled
 data/*.json
 !data/climate-tech-map-industry-categories.json
+!data/pitchbook-taxonomy-map.json
+!data/wrds-filters.json
 
 # Per-run orchestrator logs (retention handled by src/utils/pipeline-events.js)
 data/runs/pipeline-events-*.jsonl

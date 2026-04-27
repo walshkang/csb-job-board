@@ -1,0 +1,30 @@
+[
+  {
+    "id": "solar-corp",
+    "name": "Solar Corp",
+    "domain": "solarcorp.com",
+    "wrds_company_id": "WRDS001",
+    "emerging_spaces": ["CleanTech / Solar"],
+    "pitchbook_verticals": ["Renewable Energy"],
+    "pitchbook_industry_code": "Solar",
+    "pitchbook_description": "We build solar panels and sustainable energy solutions."
+  },
+  {
+    "id": "battery-tech",
+    "name": "Battery Tech",
+    "domain": "batterytech.com",
+    "wrds_company_id": "WRDS002",
+    "emerging_spaces": null,
+    "pitchbook_verticals": ["Advanced Hardware"],
+    "pitchbook_industry_code": "Unknown",
+    "pitchbook_description": "We are pioneering next-generation solid state battery technology for electric vehicles and grid storage. Our batteries are 10x more efficient than current lithium-ion models."
+  },
+  {
+    "id": "legacy-industries",
+    "name": "Legacy Industries",
+    "domain": "legacy.com",
+    "wrds_company_id": null,
+    "emerging_spaces": null,
+    "pitchbook_description": null
+  }
+]

@@ -68,6 +68,7 @@ const DRY_RUN = flag('dry-run');
 const VERBOSE = flag('verbose');
 
 const CONCURRENCIES = {
+  wrds_ingest: 1,
   profile: 6,
   discovery: 12,
   fingerprint: 4,
@@ -86,6 +87,7 @@ const BREAKER_DEFAULTS = Object.freeze({
   cooldownMs: 60_000,
 });
 const ADAPTIVE_TARGETS = Object.freeze({
+  wrds_ingest: { p95MaxMs: 60000, queueDepthTrigger: 1 },
   profile: { p95MaxMs: 3_000, queueDepthTrigger: 3 },
   discovery: { p95MaxMs: 4_000, queueDepthTrigger: 5 },
   fingerprint: { p95MaxMs: 3_000, queueDepthTrigger: 2 },
@@ -396,6 +398,7 @@ function buildCategorizeOutcome(c) {
         category: c.climate_tech_category,
         confidence: c.category_confidence,
         resolver: c.category_resolver || 'llm',
+        category_source: c.category_source || null,
       },
     };
   }
@@ -406,6 +409,7 @@ function buildCategorizeOutcome(c) {
       category: c.climate_tech_category || null,
       category_error: c.category_error || null,
       resolver: c.category_resolver || null,
+      category_source: c.category_source || null,
       failure_class: failureClass || null,
       error_origin: failureClass ? 'provider' : null,
     },
@@ -509,7 +513,22 @@ const categorizeBatcher = categorizerAgent
   })
   : null;
 
+let wrdsIngestPromise = null;
+
 async function runStage(stage, c) {
+  if (stage === 'wrds_ingest') {
+    const { run: runWrds } = require('./agents/wrds-ingest');
+    if (!wrdsIngestPromise) {
+      wrdsIngestPromise = runWrds({ verbose: VERBOSE, dryRun: DRY_RUN }).finally(() => {
+        wrdsIngestPromise = null;
+      });
+    }
+    const result = await wrdsIngestPromise;
+    c.wrds_last_updated = new Date().toISOString(); // prevent looping
+    if (result.skipped) return { outcome: 'skipped', extra: { reason: result.reason } };
+    return { outcome: 'success', extra: { fetched: result.fetched, added: result.added, updated: result.updated } };
+  }
+
   if (stage === 'profile') {
     await profileCompany(c, { verbose: VERBOSE });
     c.profile_attempted_at = new Date().toISOString();
@@ -651,7 +670,10 @@ async function runStage(stage, c) {
     if (!rep) {
       rep = { job_title_normalized: '', job_function: '', climate_relevance_reason: '' };
     }
-    return categorizeBatcher.enqueue({ company: c, rep, samples: [] });
+    const { mapCategory } = require('./agents/taxonomy-mapper');
+    const { provider, apiKey, model } = categorizerAgent;
+    await mapCategory(c, rep, taxonomy, { provider, apiKey, model, dryRun: DRY_RUN });
+    return buildCategorizeOutcome(c);
   }
 
   throw new Error(`unknown stage: ${stage}`);

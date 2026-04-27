@@ -85,13 +85,32 @@ async function main() {
           resolve();
         })
         .on('error', (err) => reject(new Error(`SSH connection failed: ${err.message}`)))
+        .on('keyboard-interactive', (name, instructions, instructionsLang, prompts, finish) => {
+          console.log(`SSH Keyboard Interactive: name="${name}", instructions="${instructions}"`);
+          prompts.forEach((p, i) => console.log(`  Prompt ${i}: "${p.prompt}" (echo=${p.echo})`));
+
+          const responses = prompts.map(p => {
+            const lower = p.prompt.toLowerCase();
+            if (lower.includes('password')) {
+              console.log('  -> Responding with password');
+              return wrds.password;
+            }
+            console.log(`  -> Responding with empty string for prompt: "${p.prompt}"`);
+            return '';
+          });
+          finish(responses);
+        })
         .connect({
           host: wrds.sshHost,
           port: wrds.sshPort,
           username: wrds.username,
           password: wrds.password,
+          agent: process.env.SSH_AUTH_SOCK,
+          tryKeyboard: true,
+          debug: (msg) => console.log(`[SSH Debug] ${msg}`),
           readyTimeout: 15000,
         });
+      console.log('  ... Connect call initiated.');
     });
 
     // ── Step 2: TCP tunnel to PostgreSQL ─────────────────────────────────
@@ -105,12 +124,28 @@ async function main() {
     });
     console.log('SSH tunnel open.');
 
+    // Add dummy methods because the pg client expects a net.Socket
+    if (typeof stream.setNoDelay !== 'function') {
+      stream.setNoDelay = function () {};
+    }
+    if (typeof stream.setKeepAlive !== 'function') {
+      stream.setKeepAlive = function () {};
+    }
+    if (typeof stream.connect !== 'function') {
+      stream.connect = function () {
+        process.nextTick(() => stream.emit('connect'));
+      };
+    }
+    if (typeof stream.destroy !== 'function') {
+      stream.destroy = function () {};
+    }
+
     // ── Step 3: Connect pg through tunnel ───────────────────────────────
     pgClient = new PGClient({
       user: wrds.username,
       password: wrds.password,
       database: wrds.database,
-      ssl: { rejectUnauthorized: true },
+      ssl: { rejectUnauthorized: false }, // WRDS requires SSL, allow self-signed over tunnel
       stream,
       statement_timeout: 30000,
     });
@@ -196,7 +231,9 @@ async function main() {
   } finally {
     // Teardown: pg first, then SSH
     if (pgClient) {
-      try { await pgClient.end(); } catch (err) {
+      try { 
+        pgClient.end(); // Do not await to prevent hanging if connection never finished
+      } catch (err) {
         console.error(`Failed to close pg: ${err.message}`);
       }
     }

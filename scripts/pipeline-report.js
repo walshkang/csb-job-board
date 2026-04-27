@@ -159,6 +159,39 @@ function print() {
     }
   }
 
+  // WRDS Ingest Delta
+  const wrdsIngestEvents = events.filter(e => e.stage === 'wrds_ingest' && e.outcome === 'success');
+  if (wrdsIngestEvents.length > 0) {
+    const totalAdded = wrdsIngestEvents.reduce((acc, e) => acc + (e.added || 0), 0);
+    const totalUpdated = wrdsIngestEvents.reduce((acc, e) => acc + (e.updated || 0), 0);
+    console.log(`\nWRDS Ingest`);
+    console.log(`  New companies added : ${totalAdded}`);
+    console.log(`  Existing updated    : ${totalUpdated}`);
+  }
+
+  // Categorizer Source Distribution & Lane-Specific no_result
+  const catEvents = events.filter(e => e.stage === 'categorize');
+  if (catEvents.length > 0) {
+    console.log(`\nCategorizer Source Distribution`);
+    const bySource = { wrds_fast: 0, wrds_medium: 0, cold: 0, unknown: 0 };
+    const noResultBySource = { wrds_fast: 0, wrds_medium: 0, cold: 0, unknown: 0 };
+    for (const e of catEvents) {
+      const src = e.category_source || 'unknown';
+      if (bySource[src] === undefined) bySource[src] = 0;
+      if (noResultBySource[src] === undefined) noResultBySource[src] = 0;
+
+      bySource[src]++;
+      if (e.outcome === 'no_result') noResultBySource[src]++;
+    }
+
+    for (const src of ['wrds_fast', 'wrds_medium', 'cold', 'unknown']) {
+      if (bySource[src] > 0) {
+        const nrPct = ((noResultBySource[src] / bySource[src]) * 100).toFixed(1);
+        console.log(`  ${src.padEnd(15)} : ${String(bySource[src]).padStart(5)}  (no_result: ${nrPct}%)`);
+      }
+    }
+  }
+
   console.log('');
 }
 

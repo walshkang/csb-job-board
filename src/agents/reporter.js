@@ -52,7 +52,7 @@ async function buildRunSummaryFromEventsPath(eventsPath) {
 
   const summary = {
     jobs: { net_new: 0, existing: 0, removed: 0 },
-    companies: { cold_onboarded: 0, warm_refreshed: 0 },
+    companies: { cold_onboarded: 0, warm_refreshed: 0, wrds_ingested: 0, wrds_updated: 0 },
   };
 
   const lines = text.split('\n').filter(Boolean);
@@ -70,6 +70,11 @@ async function buildRunSummaryFromEventsPath(eventsPath) {
     }
     if (event.stage === 'scrape' && event.outcome === 'success' && event.lane === 'warm') {
       summary.companies.warm_refreshed += 1;
+    }
+    if (event.stage === 'wrds_ingest' && event.outcome === 'success') {
+      // Because wrds_ingest is run as a singleton per orchestrator run, it will only emit success once with the full batch
+      summary.companies.wrds_ingested += toInt(event.added);
+      summary.companies.wrds_updated += toInt(event.updated);
     }
 
     if (event.net_new != null || event.existing != null || event.removed != null) {
@@ -231,8 +236,29 @@ async function main() {
     discovery,
     extraction,
     enrichment,
+    categorizer: {
+      category_source_distribution: {
+        wrds_fast: 0,
+        wrds_medium: 0,
+        cold: 0,
+        unknown: 0,
+      },
+      emerging_space_coverage_pct: 0,
+    },
     summary,
   };
+
+  let emergingSpaceCount = 0;
+  for (const c of Array.isArray(companies) ? companies : []) {
+    const src = c.category_source || 'unknown';
+    if (!out.categorizer.category_source_distribution[src]) out.categorizer.category_source_distribution[src] = 0;
+    out.categorizer.category_source_distribution[src] += 1;
+
+    if (c.emerging_spaces && c.emerging_spaces.length > 0) {
+      emergingSpaceCount++;
+    }
+  }
+  out.categorizer.emerging_space_coverage_pct = discovery.total_companies === 0 ? 0 : round1((emergingSpaceCount / discovery.total_companies) * 100);
 
   // ensure runs dir exists
   try {

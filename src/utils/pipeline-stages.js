@@ -1,7 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 
-const STAGES = ['profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'enrich', 'categorize'];
+const WRDS_ENABLED = !!(require('../config').wrds.username && require('../config').wrds.password);
+
+const STAGES = WRDS_ENABLED
+  ? ['wrds_ingest', 'profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'enrich', 'categorize']
+  : ['profile', 'discovery', 'fingerprint', 'scrape', 'extract', 'enrich', 'categorize'];
 
 function isBlank(value) {
   return value === undefined || value === null || value === '';
@@ -9,6 +13,10 @@ function isBlank(value) {
 
 function getStage(company) {
   const c = company || {};
+
+  if (WRDS_ENABLED && isBlank(c.wrds_last_updated) && isBlank(c.profile_attempted_at)) {
+    return 'wrds_ingest';
+  }
 
   if (isBlank(c.profile_attempted_at)) {
     return 'profile';
