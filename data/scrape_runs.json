@@ -9473,5 +9473,29 @@
     "success": true,
     "error": null,
     "status": "success"
+  },
+  {
+    "company_id": "wwwquinoenergycom-battery-storage-electrical-energy-storage-energy-storage-energy-storage-system-grid-application-grid-infrastructure",
+    "scraped_at": "2026-04-27T18:53:46.688Z",
+    "status_code": 200,
+    "content_type": "application/json; charset=utf-8",
+    "byte_length": 2,
+    "method": "lever_api",
+    "success": true,
+    "error": null,
+    "status": "success",
+    "job_urls": []
+  },
+  {
+    "company_id": "wwwquinoenergycom-battery-storage-electrical-energy-storage-energy-storage-energy-storage-system-grid-application-grid-infrastructure",
+    "scraped_at": "2026-04-27T19:42:26.527Z",
+    "status_code": 200,
+    "content_type": "application/json; charset=utf-8",
+    "byte_length": 2,
+    "method": "lever_api",
+    "success": true,
+    "error": null,
+    "status": "success",
+    "job_urls": []
   }
 ]
