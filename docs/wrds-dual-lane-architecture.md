@@ -77,20 +77,48 @@ These constraints are **non-negotiable** and shape every query pattern:
 
 | Constraint | Detail | Mitigation |
 |---|---|---|
-| **Connection** | `wrds-pgdata.wharton.upenn.edu:9737`, strict SSL | `ssl: { rejectUnauthorized: true }` in `pg.Pool` — already in `config.js:121-127` and `wrds-schema-scout.js:56` |
-| **Schema obfuscation** | Column names are opaque identifiers | Run `wrds-scout` first → `artifacts/wrds-schema-map.json` → build `artifacts/wrds-column-map.json` (human-curated alias file) |
+| **Connection** | `wrds-pgdata.wharton.upenn.edu:9737`, strict SSL | `ssl: { rejectUnauthorized: true }` in `pg.Pool` — already in `config.js:121-127` |
 | **Statement timeout** | WRDS kills long queries | `statement_timeout: 30000` on pool; no `OFFSET` pagination |
-| **No OFFSET pagination** | Forbidden by timeout policy | **High-water mark** delta: `WHERE deal_date > $last_max_date ORDER BY deal_date ASC LIMIT 500` |
+| **No OFFSET pagination** | Forbidden by timeout policy | **High-water mark** delta: `WHERE lastupdated > $hwm ORDER BY lastupdated ASC LIMIT 500` |
 | **Rate/connection limits** | Shared academic resource | `max: 2` pool connections; single-query-at-a-time pattern |
+
+> **Schema status (resolved 2026-04-27):** Column names are **not obfuscated** — the [WRDS PitchBook variable reference](https://wrds-www.wharton.upenn.edu/pages/support/manuals-and-overviews/pitchbook/wrds-pitchbook-overview-new/#database-notes) documents plain-English column names. The `wrds-schema-scout.js` script and `artifacts/wrds-column-map.json` indirection layer are **no longer needed**. Column names can be hardcoded directly.
+
+### Confirmed Schema: `pitchbk.company`
+
+| WRDS Column | Type | Maps to | Notes |
+|---|---|---|---|
+| `companyid` | Char | `wrds_company_id` | PitchBook company identifier |
+| `companyname` | Char | `name` | |
+| `website` | Char | `domain` | Needs URL → domain normalization |
+| `description` | Char | `pitchbook_description` | Full company description |
+| `descriptionshort` | Char | — | Available as LLM context for Lane 2 |
+| `keywords` | Char | `company_profile.keywords` | **Comma-separated string → split to array** |
+| `emergingspaces` | Char | `emerging_spaces` | **Comma-separated string → split to array** |
+| `verticals` | Char | `pitchbook_verticals` | **Comma-separated string → split to array** |
+| `primaryindustrycode` | Char | `pitchbook_industry_code` | Single value |
+| `primaryindustrygroup` | Char | `pitchbook_industry_group` | Single value |
+| `primaryindustrysector` | Char | `pitchbook_industry_sector` | Single value |
+| `allindustries` | Char | — | **Bonus:** all industry codes, comma-separated. Useful as Lane 2 LLM context |
+| `employees` | Float | `company_profile.employees` | |
+| `hqlocation` | Char | `company_profile.hq` | Also: `hqcity`, `hqstate_province`, `hqcountry` for structured HQ |
+| `yearfounded` | Float | `company_profile.year_founded` | |
+| `totalraised` | Float | `funding_signals` | In native currency; also `totalraisednativecurrency` |
+| `lastfinancingdate` | Date | `funding_signals[].date` | Also: `lastfinancingsize`, `lastfinancingdealtype` |
+| `ownershipstatus` | Char | — | Filter: `Privately Held (backing)`, `Privately Held (no backing)` |
+| `lastupdated` | Date | `wrds_last_updated` | **High-water mark column** |
+| `pitchbookcreateddate` | Date | — | When PitchBook first profiled this company |
+
+> **Parsing note:** `emergingspaces`, `verticals`, `keywords`, and `allindustries` are `Char` (text) columns likely containing comma-separated or pipe-separated values. The ingest agent must split and trim these into `string[]` arrays.
 
 ### Existing Infrastructure
 
 Already implemented and tested:
 
 - **Config block:** `src/config.js:120-127` — `wrds.host`, `wrds.port`, `wrds.username`, `wrds.password`, `wrds.database`, `wrds.schema`
-- **Schema scout:** `scripts/wrds-schema-scout.js` — queries `information_schema.columns`, writes `artifacts/wrds-schema-map.json`
 - **npm scripts:** `wrds-ingest` and `wrds-scout` registered in `package.json:34-35`
 - **Dependency:** `pg@^8.20.0` already in `package.json:47`
+- **Update frequency:** Weekly (per WRDS docs, last updated 2026-04-24)
 
 ---
 
@@ -99,52 +127,59 @@ Already implemented and tested:
 ### 4.1 WRDS Ingest Agent — `src/agents/wrds-ingest.js` [NEW]
 
 **Owns:** `data/companies.json` (WRDS-sourced fields only)  
-**Reads:** WRDS PostgreSQL, `artifacts/wrds-column-map.json`
+**Reads:** WRDS PostgreSQL (`pitchbk.company`)
 
 **Responsibilities:**
 1. Connect to WRDS with pooled `pg` client (strict SSL, port 9737).
-2. Read `artifacts/wrds-column-map.json` for obfuscated→semantic column aliases.
-3. Query the `pitchbk_companies_deals` table using high-water mark pagination.
+2. Query `pitchbk.company` using `lastupdated` high-water mark pagination.
+3. Parse comma-separated classification columns (`emergingspaces`, `verticals`, `keywords`, `allindustries`) into `string[]` arrays.
 4. Map each row to `companies.json` schema via `ocr-utils.js::mergeCompanies()`.
 5. Persist new fields per company:
 
 ```javascript
 // New fields added to company records by WRDS ingest
 {
-  wrds_company_id: string | null,         // PitchBook company identifier
-  emerging_spaces: string[] | null,       // PitchBook "Emerging Space" tags (most granular)
-  pitchbook_verticals: string[] | null,   // PitchBook Vertical / Sub-Vertical tags
-  pitchbook_industry_code: string | null, // PitchBook Primary Industry Code (e.g. "Application Software")
-  pitchbook_industry_group: string | null,// PitchBook Industry Group (e.g. "Software")
-  pitchbook_industry_sector: string | null,// PitchBook Industry Sector (e.g. "Information Technology")
-  pitchbook_description: string | null,   // Full company description from PitchBook
-  pitchbook_keywords: string[] | null,    // PitchBook free-form keyword tags (already captured by OCR)
-  wrds_last_updated: string | null,       // ISO timestamp of last WRDS sync
+  wrds_company_id: string | null,         // companyid
+  emerging_spaces: string[] | null,       // emergingspaces (parsed from comma-separated Char)
+  pitchbook_verticals: string[] | null,   // verticals (parsed from comma-separated Char)
+  pitchbook_industry_code: string | null, // primaryindustrycode
+  pitchbook_industry_group: string | null,// primaryindustrygroup
+  pitchbook_industry_sector: string | null,// primaryindustrysector
+  pitchbook_description: string | null,   // description (full) — descriptionshort also available
+  pitchbook_keywords: string[] | null,    // keywords (parsed from comma-separated Char)
+  wrds_last_updated: string | null,       // lastupdated (ISO timestamp)
   category_source: 'wrds_fast' | 'wrds_medium' | 'cold' | null
 }
 ```
 
 > **PitchBook Classification Hierarchy (granular → broad):**
-> 1. **Emerging Spaces** — Curated thematic tags (e.g. "CleanTech / Solar"). Highest signal, smallest coverage.
-> 2. **Verticals / Sub-Verticals** — Sector-specific tags (e.g. "Renewable Energy", "Energy Storage"). Good signal.
-> 3. **Primary Industry Code** — PitchBook's own code (e.g. "Clean Technology"). Medium specificity.
-> 4. **Industry Group** — Broader grouping (e.g. "Energy Equipment & Services"). Low specificity.
-> 5. **Industry Sector** — Top-level sector (e.g. "Energy"). Very broad, useful only as a tiebreaker.
-> 6. **Keywords** — Free-form tags, already used by the existing `resolveByRule()` in `categorizer.js`.
+> 1. **Emerging Spaces** (`emergingspaces`) — Curated thematic tags (e.g. "CleanTech / Solar"). Highest signal, smallest coverage.
+> 2. **Verticals** (`verticals`) — Sector-specific tags (e.g. "Renewable Energy", "Energy Storage"). Good signal.
+> 3. **Primary Industry Code** (`primaryindustrycode`) — PitchBook's own code (e.g. "Clean Technology"). Medium specificity.
+> 4. **Industry Group** (`primaryindustrygroup`) — Broader grouping (e.g. "Energy Equipment & Services"). Low specificity.
+> 5. **Industry Sector** (`primaryindustrysector`) — Top-level sector (e.g. "Energy"). Very broad, useful only as a tiebreaker.
+> 6. **Keywords** (`keywords`) — Free-form tags, already used by the existing `resolveByRule()` in `categorizer.js`.
+> 7. **All Industries** (`allindustries`) — All associated industry codes. Useful as supplementary LLM context in Lane 2.
 
 **High-water mark strategy:**
 ```javascript
-// On each run, find the max deal_date already ingested
+// On each run, find the max lastupdated already ingested
 const hwm = companies
   .filter(c => c.wrds_last_updated)
   .reduce((max, c) => c.wrds_last_updated > max ? c.wrds_last_updated : max, '1970-01-01');
 
 // Query only newer records — no OFFSET, respects statement_timeout
 const query = `
-  SELECT ${columnList}
-  FROM "${schema}"."${table}"
-  WHERE "${dateColumn}" > $1
-  ORDER BY "${dateColumn}" ASC
+  SELECT companyid, companyname, website, description, descriptionshort,
+         keywords, emergingspaces, verticals, allindustries,
+         primaryindustrycode, primaryindustrygroup, primaryindustrysector,
+         employees, hqlocation, hqcity, hqstate_province, hqcountry,
+         yearfounded, totalraised, ownershipstatus,
+         lastfinancingdate, lastfinancingsize, lastfinancingdealtype,
+         lastupdated
+  FROM pitchbk.company
+  WHERE lastupdated > $1
+  ORDER BY lastupdated ASC
   LIMIT 500
 `;
 ```
@@ -152,7 +187,7 @@ const query = `
 ### 4.2 Taxonomy Mapper — `src/agents/taxonomy-mapper.js` [NEW]
 
 **Owns:** `data/companies.json` (category fields: `climate_tech_category`, `primary_sector`, `opportunity_area`, `category_confidence`, `category_resolver`, `category_source`)  
-**Reads:** `data/companies.json`, `data/climate-tech-map-industry-categories.json`, `data/emerging-space-map.json`
+**Reads:** `data/companies.json`, `data/climate-tech-map-industry-categories.json`, `data/pitchbook-taxonomy-map.json`
 
 **Responsibilities:**
 
@@ -273,7 +308,7 @@ Key changes:
 
 Manually curated multi-layer dictionary mapping PitchBook classification tags to `Tech Category Name` values from `climate-tech-map-industry-categories.json`. Organized by classification layer with decreasing specificity. Values of `null` mean "climate-relevant but too broad to assign a category". See Section 4.2 for the full example.
 
-> **NOTE:** The exact tag strings are unknown until `wrds-scout` runs against the live database. The map will be populated in Slice 2 after schema discovery.
+> **NOTE:** The exact tag strings require a live WRDS query (e.g. `SELECT DISTINCT emergingspaces FROM pitchbk.company WHERE emergingspaces IS NOT NULL LIMIT 200`). The map will be populated in Slice 0 after WRDS access is granted.
 
 ### Existing File: `data/climate-tech-map-industry-categories.json`
 
@@ -287,24 +322,24 @@ Each slice is atomic, testable, and independently mergeable.
 
 ---
 
-### Slice 0: WRDS Schema Discovery & Column Map
+### Slice 0: WRDS Connection Validation & Tag Enumeration
 
-**Goal:** Run `wrds-scout` against live WRDS, produce `artifacts/wrds-schema-map.json`, then manually curate `artifacts/wrds-column-map.json`.
+**Goal:** Validate live WRDS connectivity and enumerate the actual Emerging Space / Vertical tag values to populate `data/pitchbook-taxonomy-map.json`.
 
 **Files:**
-- `scripts/wrds-schema-scout.js` — already exists, no changes needed
-- `artifacts/wrds-column-map.json` — [NEW] human-curated after scout run
+- `scripts/wrds-schema-scout.js` — [MODIFY] update to run `SELECT DISTINCT` on classification columns
 
 **Steps:**
 1. Ensure WRDS credentials are approved and IP-whitelisted.
-2. Run `npm run wrds-scout`.
-3. Inspect output for: Emerging Space columns, Vertical/Sub-Vertical columns, Primary Industry Code, Industry Group, Industry Sector, description columns, and keyword/tag columns.
-4. Create `artifacts/wrds-column-map.json` mapping obfuscated names → semantic names.
-5. Document which classification layers are actually present in the schema (some may not be exposed by WRDS).
+2. Run `npm run wrds-scout` — updated to query `pitchbk.company` directly (columns are known; no schema discovery needed).
+3. Scout outputs distinct values for `emergingspaces`, `verticals`, `primaryindustrycode`, `primaryindustrygroup`, `primaryindustrysector`.
+4. Use the distinct tag values to populate `data/pitchbook-taxonomy-map.json` (Slice 2).
 
-**Test:** `wrds-scout` exits 0, `artifacts/wrds-schema-map.json` contains `tables` and `columns` arrays.
+**Test:** Scout connects, returns distinct tag values, exits 0.
 
-**Blocker:** Requires WRDS account approval (pending per `context.md:141`).
+**Blocker:** Requires WRDS account approval + IP whitelisting.
+
+> **Schema note (resolved):** Column names are plain English per the [WRDS variable reference](https://wrds-www.wharton.upenn.edu/pages/support/manuals-and-overviews/pitchbook/wrds-pitchbook-overview-new/#database-notes). The `artifacts/wrds-column-map.json` indirection layer is **eliminated** — column names are hardcoded in the ingest agent. `wrds-schema-scout.js` is repurposed for tag enumeration only.
 
 ---
 
@@ -542,12 +577,12 @@ async function mapCategory(company, repJob, taxonomy, llmOpts) {
 ## 7. Dependency Graph
 
 ```
-Slice 0 (Schema Discovery)  ──── blocker: WRDS account approval
+Slice 0 (Tag Enumeration)  ──── blocker: WRDS account approval
    │
    ▼
 Slice 1 (Connection Utility) ◄── can start immediately (mocked tests)
    │
-   ├──► Slice 2 (Emerging Space Map) ◄── can start immediately (pure data)
+   ├──► Slice 2 (Taxonomy Map) ◄── stub now; populate after Slice 0
    │       │
    │       ▼
    └──► Slice 3 (Ingest Agent) ──── depends on Slice 1
@@ -565,7 +600,7 @@ Slice 1 (Connection Utility) ◄── can start immediately (mocked tests)
         Slice 7 (E2E Test) ── depends on all above
 ```
 
-**Parallelizable now (no WRDS access needed):** Slices 1, 2, 4 (with mocks).
+**Parallelizable now (no WRDS access needed):** Slices 1, 2 (stub), 4 (with mocks).
 
 ---
 
@@ -574,8 +609,9 @@ Slice 1 (Connection Utility) ◄── can start immediately (mocked tests)
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | WRDS account never approved | Medium | High | Slices 1-2-4 are testable with mocks; cold lane is unchanged |
-| Emerging Space tags don't exist in schema | Medium | Medium | Lane 1 becomes empty; Lane 2 still works on descriptions |
-| Column names change between WRDS versions | Low | Medium | Column map is a separate JSON file, easy to update |
+| ~~Emerging Space tags don't exist in schema~~ | ~~Medium~~ | ~~Medium~~ | **RESOLVED** — `emergingspaces` column confirmed in WRDS variable reference |
+| Classification columns are mostly NULL/empty | Medium | Medium | Lane 2 still works on `description`; Lane 3 is unchanged |
+| Comma-separated parsing edge cases | Medium | Low | Defensive split+trim; log warnings on unexpected delimiters |
 | WRDS timeout on large queries | Medium | Low | HWM pagination + `LIMIT 500` + `statement_timeout: 30000` |
 | LLM costs increase from Lane 2 | Low | Low | Lane 2 replaces existing LLM calls, doesn't add new ones |
 
@@ -594,12 +630,16 @@ Slice 1 (Connection Utility) ◄── can start immediately (mocked tests)
 
 ## 10. Open Questions
 
-1. **Emerging Space tag format:** What are the exact string values? We won't know until Slice 0 completes. The `emerging-space-map.json` will be a stub until then.
+1. ~~**Emerging Space tag format:** What are the exact string values?~~ **RESOLVED** — Column exists as `emergingspaces` (Char). Exact tag values still need enumeration via `SELECT DISTINCT` in Slice 0, but the column is confirmed.
 
 2. **Multiple Emerging Space tags:** If a company has tags mapping to different categories, should we prefer the first match, or use a scoring heuristic like `resolveByRule()`?
 
-3. **WRDS refresh cadence:** Should `wrds-ingest` run as part of every `npm run pipeline` invocation, or on a separate schedule (e.g., weekly)?
+3. **WRDS refresh cadence:** Should `wrds-ingest` run as part of every `npm run pipeline` invocation, or on a separate schedule? WRDS updates weekly (per docs), so daily runs would produce no delta.
 
 4. **Lane 2 prompt:** Should we create a new prompt template (`categorizer-wrds.txt`) optimized for API descriptions, or reuse `categorizer.txt` with the description substituted?
 
-5. **Backfill strategy:** For the ~551 existing companies, should we run a one-time WRDS lookup to enrich them with Emerging Space tags, or only apply the new lanes to newly ingested companies?
+5. **Backfill strategy:** For the ~551 existing companies, should we run a one-time WRDS lookup (by `website` domain match) to enrich them with PitchBook classification fields, or only apply the new lanes to newly ingested companies?
+
+6. **`allindustries` utilization:** This bonus column contains all associated industry codes. Should it be stored on the company record and passed as LLM context in Lane 2, or is `primaryindustrycode` sufficient?
+
+7. **Delimiter detection:** Are `emergingspaces`/`verticals`/`keywords` comma-separated, pipe-separated, or semicolon-separated? Slice 0 must inspect sample values to determine the parsing strategy.

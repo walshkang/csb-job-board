@@ -123,7 +123,8 @@ const cfg = {
     username: process.env.WRDS_USERNAME || null,
     password: process.env.WRDS_PASSWORD || null,
     database: process.env.WRDS_DATABASE || 'wrds',
-    schema: process.env.WRDS_SCHEMA || 'pitchbk_companies_deals',
+    schema: process.env.WRDS_SCHEMA || 'pitchbk',
+    table: process.env.WRDS_TABLE || 'company',
   },
 };
 

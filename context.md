@@ -9,11 +9,11 @@ Cold vs warm (streaming / npm run pipeline only): src/utils/pipeline-stages.js::
 
 Slice 0 — WRDS PitchBook Ingest → companies.json (optional, supplements OCR)
   npm run wrds-ingest [--dry-run] [--verbose] [--full]
-  Input: WRDS PostgreSQL database (pitchbk_companies_deals schema)
+  Input: WRDS PostgreSQL database (`pitchbk.company` table)
   Connection: wrds-pgdata.wharton.upenn.edu:9737, strict SSL, credentials from WRDS_USERNAME/WRDS_PASSWORD
-  Requires: pg npm package (npm install pg), column map at artifacts/wrds-column-map.json
-  Schema discovery: npm run wrds-scout → artifacts/wrds-schema-map.json (run first to map obfuscated WRDS column names)
-  Delta updates: high-water mark on deal date — only queries deals newer than max date in existing companies.json
+  Requires: pg npm package (npm install pg)
+  Schema: columns are plain English per WRDS variable reference (no obfuscation). wrds-scout repurposed for tag enumeration.
+  Delta updates: high-water mark on `lastupdated` column — only queries records newer than max date in existing companies.json
   Full extraction: --full flag ignores high-water mark
   Transform: maps WRDS rows to identical companies.json schema using shared slugify/deterministicId from ocr-utils.js
   Merge: uses mergeCompanies() from ocr-utils.js — dedup by domain, then id; prefers existing non-null fields
