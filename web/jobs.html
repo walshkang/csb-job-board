@@ -3,60 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Executive Intelligence | MBA Job Discovery</title>
+  <title>Executive Intelligence | Job Discovery</title>
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
   <div class="app-container">
     <!-- Sidebar: Filters -->
     <aside class="sidebar">
-      <div class="sidebar-logo">
-        <a href="index.html" style="text-decoration: none; color: inherit;">Executive Intelligence</a>
-      </div>
+      <div class="sidebar-logo">Executive Intelligence</div>
       
+      <nav class="nav-group">
+        <div class="nav-label">Navigation</div>
+        <a href="index.html" class="nav-item">
+          <span>Dashboard</span>
+        </a>
+        <a href="jobs.html" class="nav-item active">
+          <span>Job Intelligence</span>
+        </a>
+      </nav>
+
       <div class="filter-section">
         <div class="nav-label">Climate Filter</div>
-        <div class="filter-group">
+        <div class="filter-group" style="padding: 0 1.25rem;">
           <label class="checkbox-container">
             <input type="checkbox" id="filter-climate" checked>
             <span class="checkmark"></span>
-            Climate Relevance Confirmed
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Climate Confirmed</span>
           </label>
         </div>
       </div>
 
       <div class="filter-section">
         <div class="nav-label">Job Function</div>
-        <div class="chips-container" id="filter-functions">
+        <div class="chips-container" id="filter-functions" style="padding: 0 1.25rem;">
           <!-- Populated by JS -->
         </div>
       </div>
 
       <div class="filter-section">
         <div class="nav-label">Seniority</div>
-        <div class="chips-container" id="filter-seniority">
+        <div class="chips-container" id="filter-seniority" style="padding: 0 1.25rem;">
           <!-- Populated by JS -->
         </div>
       </div>
       
+      <div style="flex: 1;"></div>
+      
+      <nav class="nav-group">
+        <a href="/legacy" class="nav-item">
+          <span>Legacy Panel</span>
+        </a>
+      </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content">
       <header class="header-section">
         <div>
-          <h1 class="page-title">MBA Job Discovery</h1>
-          <div class="page-subtitle" id="job-count-subtitle">Loading opportunities...</div>
+          <div class="intelligence-badge">
+            <div class="intelligence-dot"></div>
+            Market Intelligence Active
+          </div>
+          <h1 class="page-title">Job Discovery</h1>
+          <div class="page-subtitle" id="job-count-subtitle" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+            Loading opportunities...
+          </div>
         </div>
         
-        <div class="search-container">
-          <input type="text" id="search-input" class="ghost-input" placeholder="Search titles or companies...">
+        <div class="search-container" style="width: 320px;">
+          <input type="text" id="search-input" class="ghost-input" placeholder="Search titles or companies..." style="background: var(--bg-surface); border: var(--glass-border); border-radius: var(--rounded-full); padding: 0.75rem 1.5rem; color: #fff; width: 100%;">
         </div>
       </header>
 
       <!-- Job Feed -->
       <section class="job-feed" id="job-feed">
         <!-- Populated via JS -->
+        <div style="opacity: 0.5; text-align: center; padding: 4rem;">
+          Scanning database for relevant roles...
+        </div>
       </section>
       
     </main>

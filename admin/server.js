@@ -313,14 +313,54 @@ function handleCircuitReset(reqUrl, res) {
   return sendJSON(res, 200, { ok: true, stage });
 }
 
+const WEB_DIR = path.join(REPO_ROOT, 'web');
+
+const MIME_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+};
+
+function serveStatic(res, filePath) {
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    sendJSON(res, 404, { ok: false, error: 'File not found' });
+    return;
+  }
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+  res.writeHead(200, { 'Content-Type': contentType });
+  fs.createReadStream(filePath).pipe(res);
+}
+
 const server = http.createServer((req, res) => {
   const reqUrl = new URL(req.url, `http://${req.headers.host || `${HOST}:${PORT}`}`);
 
-  if (req.method === 'GET' && reqUrl.pathname === '/') {
+  // New Frontend Root
+  if (req.method === 'GET' && (reqUrl.pathname === '/' || reqUrl.pathname === '/index.html')) {
+    serveStatic(res, path.join(WEB_DIR, 'index.html'));
+    return;
+  }
+
+  // Legacy Admin Panel
+  if (req.method === 'GET' && reqUrl.pathname === '/legacy') {
     const html = fs.readFileSync(INDEX_PATH, 'utf8');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(html);
     return;
+  }
+
+  // Static Assets from /web
+  if (req.method === 'GET' && !reqUrl.pathname.startsWith('/api/')) {
+    const relativePath = reqUrl.pathname.slice(1);
+    const targetPath = path.join(WEB_DIR, relativePath);
+    if (targetPath.startsWith(WEB_DIR) && fs.existsSync(targetPath)) {
+      serveStatic(res, targetPath);
+      return;
+    }
   }
 
   if (req.method === 'GET' && reqUrl.pathname === '/api/status') {
