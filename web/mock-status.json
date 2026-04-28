@@ -1,0 +1,59 @@
+{
+  "live": {
+    "run_id": "mock-run-12345",
+    "started_at": "2026-04-27T22:18:20.602Z",
+    "updated_at": "2026-04-27T23:53:01.803Z",
+    "uptime_sec": 5681,
+    "queue_depths": {
+      "wrds_ingest": 0,
+      "profile": 0,
+      "discovery": 801,
+      "fingerprint": 0,
+      "scrape": 142,
+      "extract": 0,
+      "enrich": 0,
+      "categorize": 0
+    },
+    "in_flight": {
+      "wrds_ingest": 0,
+      "profile": 1,
+      "discovery": 6,
+      "fingerprint": 0,
+      "scrape": 3,
+      "extract": 0,
+      "enrich": 0,
+      "categorize": 0
+    },
+    "stats": {
+      "started": { "profile": 426, "discovery": 630, "categorize": 390 },
+      "completed": { "profile": 425, "discovery": 317, "categorize": 342 },
+      "no_result": { "discovery": 307, "extract": 124, "categorize": 48 },
+      "failed": { "extract": 2 },
+      "skipped": {}
+    },
+    "throughput_per_min": {
+      "discovery": 9.2,
+      "fingerprint": 6.1,
+      "categorize": 4.5
+    },
+    "breakers": {
+      "extract": { "state": "open", "failureRate": 0.85, "samples": 20, "openedAt": "2026-04-27T23:50:00Z" },
+      "profile": { "state": "closed", "failureRate": 0, "samples": 20 }
+    }
+  },
+  "panelChildRunning": true,
+  "recentLog": [
+    "[SYS] Initializing mock pipeline stream...",
+    "[profile] Processing company: Acme Corp",
+    "[discovery] Found careers page: https://acme.com/careers",
+    "[extract] ERROR: LLM Rate Limit reached",
+    "[SYS] Circuit breaker tripped for 'extract'",
+    "[categorize] Mapped Acme Corp to 'Renewable Energy'"
+  ],
+  "stageCatalog": [
+    { "stage": "profile", "title": "Company Profiling", "summary": "Builds initial company profile signal.", "driver": "ai" },
+    { "stage": "discovery", "title": "Careers Discovery", "summary": "Finds likely careers URLs.", "driver": "code" },
+    { "stage": "extract", "title": "Extraction", "summary": "Parses HTML into job records.", "driver": "ai" },
+    { "stage": "categorize", "title": "Categorization", "summary": "Assigns climate-tech category.", "driver": "ai" }
+  ]
+}

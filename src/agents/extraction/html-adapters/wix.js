@@ -26,9 +26,15 @@ function isLikelyPostingPath(pathname) {
   if (!pathname) return false;
   if (isBareListingPath(pathname)) return false;
   if (POSTING_SEGMENT_RE.test(pathname)) return true;
-  // Keep this strict: require two+ path segments for careers-ish pages.
+  // Relax: allow single-segment slugs that look like job postings (e.g. '/mechanical-engineer')
   const parts = pathname.split('/').filter(Boolean);
-  if (parts.length < 2) return false;
+  if (parts.length < 2) {
+    const single = pathname.replace(/^\/+/, '').toLowerCase();
+    // Hyphenated slugs are common for job pages; also accept common role keywords
+    if (single.includes('-')) return true;
+    if (/(engineer|developer|manager|intern|technician|specialist|analyst|operator|designer|director|consultant|architect)/i.test(single)) return true;
+    return false;
+  }
   return /(careers|career|opportunities|openings|vacancies)/i.test(pathname);
 }
 

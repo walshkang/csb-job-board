@@ -690,6 +690,7 @@ async function runStage(stage, c) {
 
   if (stage === 'categorize') {
     if (!categorizerAgent) throw new Error('categorizer LLM config unavailable');
+    c.category_attempted_at = new Date().toISOString();
     let rep = repJobByCompany.get(c.id);
     const profileDesc = ((c.company_profile && c.company_profile.description) || '').trim();
     if (!rep && profileDesc.length < 80) {

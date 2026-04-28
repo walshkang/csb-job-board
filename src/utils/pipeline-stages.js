@@ -28,7 +28,7 @@ function getStage(company) {
 
   // Unreachable careers page: skip fingerprint/scrape/extract, go straight to categorize.
   if (c.careers_page_reachable === false) {
-    if (isBlank(c.climate_tech_category) || c.climate_tech_category === 'None') {
+    if (isBlank(c.category_attempted_at) && isBlank(c.climate_tech_category)) {
       return 'categorize';
     }
     return 'done';
@@ -44,7 +44,7 @@ function getStage(company) {
 
   // Signature-gated ATS companies intentionally skip extraction when unchanged.
   if (c.last_scrape_outcome === 'skipped_signature_match') {
-    if (isBlank(c.climate_tech_category) || c.climate_tech_category === 'None') {
+    if (isBlank(c.category_attempted_at) && isBlank(c.climate_tech_category)) {
       return 'categorize';
     }
     return 'done';
@@ -58,7 +58,7 @@ function getStage(company) {
     return 'enrich';
   }
 
-  if (isBlank(c.climate_tech_category) || c.climate_tech_category === 'None') {
+  if (isBlank(c.category_attempted_at) && isBlank(c.climate_tech_category)) {
     return 'categorize';
   }
 

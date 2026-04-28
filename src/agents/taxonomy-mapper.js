@@ -143,7 +143,7 @@ async function categorizeFromDescription(company, desc, taxonomy, llmOpts, extra
     const opp = parsed.opportunity_area == null ? null : String(parsed.opportunity_area).trim();
     const conf = parsed.category_confidence == null ? null : String(parsed.category_confidence).trim();
 
-    company.climate_tech_category = ctc === 'None' ? null : ctc;
+    company.climate_tech_category = ctc;
     company.primary_sector = primary === 'None' ? null : primary;
     company.opportunity_area = opp === 'None' ? null : opp;
     company.category_confidence = conf === 'None' ? null : conf;

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Intelligence | Data Explorer</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">Executive Intelligence</div>
+      
+      <nav class="nav-group">
+        <div class="nav-label">Navigation</div>
+        <a href="index.html" class="nav-item">
+          <span>Dashboard</span>
+        </a>
+        <a href="explorer.html" class="nav-item active">
+          <span>Data Explorer</span>
+        </a>
+        <a href="jobs.html" class="nav-item">
+          <span>Job Intelligence</span>
+        </a>
+      </nav>
+
+      <div class="filter-section">
+        <div class="nav-label">Dataset</div>
+        <div class="nav-group">
+          <button id="btn-view-companies" class="nav-item active" style="width: 100%; text-align: left; background: transparent; border: none; cursor: pointer;">
+            <span>Companies</span>
+          </button>
+          <button id="btn-view-jobs" class="nav-item" style="width: 100%; text-align: left; background: transparent; border: none; cursor: pointer;">
+            <span>Jobs</span>
+          </button>
+        </div>
+      </div>
+      
+      <div style="flex: 1;"></div>
+      
+      <nav class="nav-group">
+        <a href="/legacy" class="nav-item">
+          <span>Legacy Panel</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header-section">
+        <div>
+          <div class="intelligence-badge">
+            <div class="intelligence-dot" style="background-color: var(--primary);"></div>
+            Intelligence Database
+          </div>
+          <h1 id="explorer-title" class="page-title">Company Explorer</h1>
+        </div>
+        
+        <div class="search-container" style="width: 400px; display: flex; gap: 1rem;">
+          <input type="text" id="explorer-search" class="ghost-input" placeholder="Filter records..." style="flex: 1; background: var(--bg-surface); border: var(--glass-border); border-radius: var(--rounded-full); padding: 0.75rem 1.5rem; color: #fff;">
+        </div>
+      </header>
+
+      <section class="explorer-table-container">
+        <div class="table-header-actions">
+          <div id="record-count" class="text-muted">Loading records...</div>
+          <div class="pagination-controls">
+            <button id="btn-prev-page" class="btn-icon" style="font-size: 1.25rem;">‹</button>
+            <span id="page-indicator" class="text-muted">Page 1 of 1</span>
+            <button id="btn-next-page" class="btn-icon" style="font-size: 1.25rem;">›</button>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead id="table-head">
+            <!-- Populated via JS -->
+          </thead>
+          <tbody id="table-body">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <!-- Record Detail Drawer (Reusing Drawer Logic) -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+    <aside id="record-drawer" class="stage-drawer">
+      <header class="drawer-header">
+        <div class="drawer-header-content">
+          <div id="record-badge" class="intelligence-badge">Record Detail</div>
+          <h2 id="record-title" class="drawer-title">Company Name</h2>
+        </div>
+        <button id="btn-close-drawer" class="btn-icon">×</button>
+      </header>
+      <div id="record-content" class="drawer-body">
+        <!-- JSON or Formatted Data -->
+      </div>
+    </aside>
+  </div>
+
+  <script src="explorer.js"></script>
+</body>
+</html>
