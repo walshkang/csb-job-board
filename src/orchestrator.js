@@ -693,8 +693,23 @@ async function runStage(stage, c) {
     c.category_attempted_at = new Date().toISOString();
     let rep = repJobByCompany.get(c.id);
     const profileDesc = ((c.company_profile && c.company_profile.description) || '').trim();
-    if (!rep && profileDesc.length < 80) {
-      return { outcome: 'skipped', extra: { reason: 'insufficient_signal', description_len: profileDesc.length } };
+    const pbDesc = (c.pitchbook_description || '').trim();
+    const pbSpaces = Array.isArray(c.emerging_spaces) ? c.emerging_spaces : [];
+    const pbVerticals = Array.isArray(c.pitchbook_verticals) ? c.pitchbook_verticals : [];
+    const pbCode = c.pitchbook_industry_code || '';
+    
+    // Proceed if we have ANY signal: a job, a scraped profile, or WRDS data (Lane 1/2 triggers)
+    const hasSignal = rep || profileDesc.length >= 80 || pbDesc.length >= 80 || pbSpaces.length > 0 || pbVerticals.length > 0 || pbCode;
+    
+    if (!hasSignal) {
+      return { outcome: 'skipped', extra: { 
+        reason: 'insufficient_signal', 
+        description_len: profileDesc.length,
+        pb_description_len: pbDesc.length,
+        pb_spaces_count: pbSpaces.length,
+        pb_verticals_count: pbVerticals.length,
+        has_pb_code: !!pbCode
+      }};
     }
     if (!rep) {
       rep = { job_title_normalized: '', job_function: '', climate_relevance_reason: '' };

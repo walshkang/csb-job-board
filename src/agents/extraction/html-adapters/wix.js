@@ -30,8 +30,8 @@ function isLikelyPostingPath(pathname) {
   const parts = pathname.split('/').filter(Boolean);
   if (parts.length < 2) {
     const single = pathname.replace(/^\/+/, '').toLowerCase();
-    // Hyphenated slugs are common for job pages; also accept common role keywords
-    if (single.includes('-')) return true;
+    // Hyphenated slugs are common for job pages; exclude common non-job patterns
+    if (single.includes('-') && !/(privacy|terms|cookie|about|contact|legal|policy|disclaimer|settings)/i.test(single)) return true;
     if (/(engineer|developer|manager|intern|technician|specialist|analyst|operator|designer|director|consultant|architect)/i.test(single)) return true;
     return false;
   }

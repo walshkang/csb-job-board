@@ -22,7 +22,7 @@ describe('reporter jobs tri-state summary', () => {
 
     expect(summary).toEqual({
       jobs: { net_new: 2, existing: 10, removed: 1 },
-      companies: { cold_onboarded: 1, warm_refreshed: 1 },
+      companies: { cold_onboarded: 1, warm_refreshed: 1, wrds_ingested: 0, wrds_updated: 0 },
     });
   });
 });

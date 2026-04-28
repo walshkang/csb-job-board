@@ -42,6 +42,18 @@ jest.mock('../src/agents/ocr-utils', () => ({
   saveCompanies: jest.fn().mockResolvedValue(),
 }));
 
+// Mock fs to control filters
+const fs = require('fs');
+jest.mock('fs', () => ({
+  ...jest.requireActual('fs'),
+  promises: {
+    readFile: jest.fn().mockRejectedValue(new Error('ENOENT')),
+  },
+  readFileSync: jest.requireActual('fs').readFileSync,
+  writeFileSync: jest.requireActual('fs').writeFileSync,
+  renameSync: jest.requireActual('fs').renameSync,
+}));
+
 const wrdsPool = require('../src/utils/wrds-pool');
 const ocrUtils = require('../src/agents/ocr-utils');
 const {
